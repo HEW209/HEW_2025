@@ -1,0 +1,23 @@
+プロジェクトプロパティ設定
+
+*** 共通設定 ***
+全般	> C++言語標準	> IOS C++20標準
+詳細	> 文字セット	> マルチバイト文字セット
+C/C++	> 全般		> 追加のインクルード	> $(SolutionDir)DXGameFrame\include\
+C/C++	> 全般		> 追加のインクルード	> $(SolutionDir)ThirdParty\
+C/C++	> コード生成	> ランタイムライブラリ	> Debug→MTd : Release→MT
+HLSLコンパイラ > 全般 > シェーダーモデル > 5.0
+HLSLコンパイラ > 全般 > シェーダーの種類 > シェーダーごとに設定
+HLSLコンパイラ > 出力ファイル > $(ProjectDir)Assets\○○%(Filename).cso
+
+*** ゲーム側設定 ***
+リンカ― > 全般 > 追加のライブラリディレクトリ > $(SolutionDir)DXGameFrame\lib\
+リンカ― > 全般 > 追加のライブラリディレクトリ > $(SolutionDir)ThirdParty\
+リンカ― > システム > サブシステム > Windows
+
+*** ライブラリ側設定 ***
+構成プロパティ > 全般 > 出力ディレクトリ > $(ProjectDir)lib\$(Platform)\$(Configuration)\
+構成プロパティ > 全般 > 中間ディレクトリ > $(Platform)\$(Configuration)\
+C/C++ > プリコンパイル > プリコンパイル > 使用しない
+ライブラリアン > 追加の依存ファイル > 使用するライブラリ名
+ライブラリアン > 追加のライブラリディレクトリ > $(SolutionDir)ThirdParty\
