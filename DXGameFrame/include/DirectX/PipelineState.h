@@ -18,6 +18,22 @@
 class PipelineState
 {
 public:
+	/// パイプラインステートの各種モード
+	struct ModeSet
+	{
+		RasterizerState::Mode rasterizeMode =			// ラスタライズモード
+			RasterizerState::Mode::DEFAULT;
+
+		DepthStencilState::Mode depthStencilMode =		// 深度ステンシルモード
+			DepthStencilState::Mode::DEFAULT;
+
+		BlendState::Mode blendMode =					// ブレンドモード
+			BlendState::Mode::DEFAULT;
+
+		SamplerState::Mode samplerMode =				// サンプラーモード
+			SamplerState::Mode::DEFAULT;
+	};
+
 	/**
 	 * @brief パイプラインステートの初期化
 	 * @param pDevice D3Dデバイスへのポインタ
@@ -44,6 +60,12 @@ public:
 		BlendState::Mode blendMode,
 		SamplerState::Mode samplerMode
 	);
+
+	/**
+	 * @brief 全ての描画ステートモードを設定する
+	 * @param modeSet パイプラインステートの各種モード
+	 */
+	void SetPipelineMode(ModeSet modeSet);
 
 	/**
 	 * @brief ラスタライズモードを設定する

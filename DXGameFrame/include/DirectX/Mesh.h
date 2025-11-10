@@ -35,6 +35,7 @@ public:
 	{
 		std::vector<Vertex> vtx;		//頂点データ
 		std::vector<int> idx;			//インデックスバッファのデータ
+		unsigned int materialID;		//対応マテリアルID
 		bool isWrite;					//動的な頂点の書き換え可能フラグ
 		D3D11_PRIMITIVE_TOPOLOGY topology;		//トポロジー設定
 	};
@@ -53,11 +54,20 @@ public:
 
 	/**
 	 * @brief メッシュ情報を取得
-	 * @return 
+	 * @return メッシュ情報
 	 */
-	Description GetDesc()
+	const Description& GetDesc()
 	{
 		return m_desc;
+	}
+
+	/**
+	 * @brief 対応マテリアルIDを取得
+	 * @return このメッシュに使用するマテリアルのID
+	 */
+	unsigned int GetMaterialID()
+	{
+		return m_desc.materialID;
 	}
 
 private:

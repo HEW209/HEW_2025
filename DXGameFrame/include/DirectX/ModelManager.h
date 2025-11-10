@@ -7,10 +7,8 @@
  *********************************************************************/
 #pragma once
 
-#include <DirectX/Mesh.h>
-#include <unordered_map>
-#include <string>
-#include <memory>
+#include "Model.h"
+#include <Utility/Common.h>
 
 /**
  * @brief モデルデータの管理を行う
@@ -20,24 +18,35 @@ class ModelManager
 public:
 	/**
 	 * @brief モデルデータを読み込む
-	 * @param filePath モデルデータ(.fbx)へのファイルパス
-	 * @return モデルのメッシュデータ
+	 * @param filePath モデルデータへのファイルパス
+	 * @return モデルへのポインタ
 	 */
-	std::shared_ptr<Mesh> Load(const std::string& filePath);
+	std::shared_ptr<Model> Load(const std::string& filePath);
 
 	/**
-	 * @brief 使用していないアセットを解放する
+	 * @brief 使用していないモデルデータを解放する
 	 */
 	void CollectGarbage();
 
 	/**
-	 * @brief 全てのテクスチャを解放する
+	 * @brief 全てのモデルデータを解放する
 	 */
 	void Clear();
 
 private:
-	ModelManager();
+	ModelManager() = default;
 
-	///ファイルパスとモデルデータのマップ
-	std::unordered_map<std::string, std::shared_ptr<Mesh>> m_models;
+	/// ファイルパスとモデルデータのマップ
+	std::unordered_map<std::string, std::shared_ptr<Model>> m_models;
+
+public:
+	/**
+	 * @brief 唯一のインスタンスを取得する
+	 * @return ModelManagerへの参照
+	 */
+	static ModelManager& Instance()
+	{
+		static ModelManager s_instance;
+		return s_instance;
+	}
 };

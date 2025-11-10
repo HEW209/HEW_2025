@@ -46,6 +46,16 @@ void PipelineState::SetPipelineMode(
 	m_samplerState.SetMode(samplerMode, 0);
 }
 
+void PipelineState::SetPipelineMode(ModeSet modeSet)
+{
+	SetPipelineMode(
+		modeSet.rasterizeMode,
+		modeSet.depthStencilMode,
+		modeSet.blendMode,
+		modeSet.samplerMode
+	);
+}
+
 void PipelineState::SetRasterizeMode(RasterizerState::Mode rasterizeMode)
 {
 	//ラスタライズモードを設定する

@@ -9,7 +9,7 @@
 
 #include <Component/Renderer.h>
 #include <DirectX/Material.h>
-#include <DirectX/Mesh.h>
+#include <DirectX/Model.h>
 #include <memory>
 
 class MeshRenderer : public Renderer
@@ -24,27 +24,31 @@ public:
 	void Draw() override;
 
 	/**
-	 * @brief マテリアルを設定する
-	 * @param pMaterial 設定するマテリアルへのポインタ
+	 * @brief モデルデータを読み込む
+	 * @param filePath モデルデータへのファイルパス
 	 */
-	void SetMaterial(std::shared_ptr<Material> pMaterial)
-	{
-		m_pMaterial = pMaterial;
-	}
+	void LoadModel(const std::string& filePath);
+
+	//void SetGeometry()
 
 	/**
-	 * @brief メッシュを設定する
-	 * @param pMesh 設定するメッシュへのポインタ
+	 * @brief マテリアルを取得する
+	 * @param slot マテリアルスロット番号
+	 * @return マテリアルへのポインタ
 	 */
-	void SetMesh(std::shared_ptr<Mesh> pMesh)
-	{
-		m_pMesh = pMesh;
-	}
+	Material* GetMaterial(UINT slot);
+
+	/**
+	 * @brief マテリアルを設定する
+	 * @param pMaterial マテリアルへのポインタ
+	 * @param slot マテリアルスロット番号
+	 */
+	void SetMaterial(Material* pMaterial, UINT slot);
 
 private:
-	/// マテリアルへのポインタ
-	std::shared_ptr<Material> m_pMaterial;
+	/// モデルへのポインタ
+	std::shared_ptr<Model> m_pModel;
 
-	/// メッシュへのポインタ
-	std::shared_ptr<Mesh> m_pMesh;
+	/// マテリアル配列
+	std::vector<Material> m_materials;
 };

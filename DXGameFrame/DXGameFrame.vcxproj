@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -27,7 +27,6 @@
     <ClInclude Include="include\DirectX\BlendState.h" />
     <ClInclude Include="include\DirectX\ConstantBuffer.h" />
     <ClInclude Include="include\DirectX\Debug.h" />
-    <ClInclude Include="include\DirectX\DefaultMaterial.h" />
     <ClInclude Include="include\DirectX\DepthStencilState.h" />
     <ClInclude Include="include\DirectX\Direct3D.h" />
     <ClInclude Include="include\DirectX\DirectX.h" />
@@ -36,6 +35,8 @@
     <ClInclude Include="include\DirectX\Material.h" />
     <ClInclude Include="include\DirectX\MatrixUtil.h" />
     <ClInclude Include="include\DirectX\Mesh.h" />
+    <ClInclude Include="include\DirectX\MeshGroup.h" />
+    <ClInclude Include="include\DirectX\Model.h" />
     <ClInclude Include="include\DirectX\ModelManager.h" />
     <ClInclude Include="include\DirectX\PipelineState.h" />
     <ClInclude Include="include\DirectX\PixelShader.h" />
@@ -75,13 +76,13 @@
     <ClCompile Include="src\DirectX\BlendState.cpp" />
     <ClCompile Include="src\DirectX\ConstantBuffer.cpp" />
     <ClCompile Include="src\DirectX\Debug.cpp" />
-    <ClCompile Include="src\DirectX\DefaultMaterial.cpp" />
     <ClCompile Include="src\DirectX\DepthStencilState.cpp" />
     <ClCompile Include="src\DirectX\Direct3D.cpp" />
     <ClCompile Include="src\DirectX\Geometry.cpp" />
     <ClCompile Include="src\DirectX\Material.cpp" />
     <ClCompile Include="src\DirectX\MatrixUtil.cpp" />
     <ClCompile Include="src\DirectX\Mesh.cpp" />
+    <ClCompile Include="src\DirectX\Model.cpp" />
     <ClCompile Include="src\DirectX\PipelineState.cpp" />
     <ClCompile Include="src\DirectX\PixelShader.cpp" />
     <ClCompile Include="src\DirectX\RasterizerState.cpp" />
@@ -97,6 +98,8 @@
     <ClCompile Include="src\GameFrame\Scene.cpp" />
     <ClCompile Include="src\GameFrame\SceneManager.cpp" />
     <ClCompile Include="src\GameFrame\Transform.cpp" />
+    <ClCompile Include="src\MeshGroup.cpp" />
+    <ClCompile Include="src\ModelManager.cpp" />
     <ClCompile Include="src\System\RenderSystem.cpp" />
     <ClCompile Include="src\Utility\Color.cpp" />
     <ClCompile Include="src\Utility\InputManager.cpp" />

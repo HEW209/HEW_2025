@@ -9,9 +9,6 @@
 
 #include <DirectX/DirectXInclude.h>
 
-/// WVP定数バッファのスロット番号
-constexpr UINT WVPSlotNum = 0;
-
 /**
  * @brief 定数バッファを扱う
  */
@@ -56,12 +53,40 @@ private:
 	ConstantBuffer();
 	~ConstantBuffer() = default;
 
+	/// WVP定数バッファのスロット番号
+	enum class SlotNum : UINT
+	{
+		WVP,		// WVP行列
+		LIGHT,		// ライト情報
+		BONE,		// ボーン情報
+		CUSTOM,		// カスタムパラメータ
+		COUNT		// 使用スロット数
+	};
+
 	/// WVP行列
 	struct WVP
 	{
 		DirectX::XMFLOAT4X4 world;
 		DirectX::XMFLOAT4X4 view;
 		DirectX::XMFLOAT4X4 projection;
+	};
+
+	/// ライト情報
+	struct Light
+	{
+
+	};
+
+	/// ボーン情報
+	struct Bone
+	{
+
+	};
+
+	/// カスタムパラメータ
+	struct CustomParameter
+	{
+		BYTE data[256];
 	};
 
 	/// D3Dデバイスへのポインタ
@@ -80,6 +105,30 @@ private:
 	 * @brief WVP定数バッファを更新する
 	 */
 	void UpdateWVPBuffer();
+
+	/**
+	 * @brief WVP定数バッファを作成する
+	 * @return 成功したかを返す
+	 */
+	HRESULT CreateWVPBuffer();
+
+	/**
+	 * @brief ライト情報定数バッファを作成する
+	 * @return 成功したかを返す
+	 */
+	HRESULT CreateLightBuffer();
+
+	/**
+	 * @brief ボーン情報定数バッファを作成する
+	 * @return 成功したかを返す
+	 */
+	HRESULT CreateBoneBuffer();
+
+	/**
+	 * @brief カスタムパラメータ定数バッファを作成する
+	 * @return 成功したかを返す
+	 */
+	HRESULT CreateCustomBuffer();
 
 public:
 	/**

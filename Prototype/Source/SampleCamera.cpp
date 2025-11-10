@@ -2,7 +2,7 @@
 
 SampleCamera::SampleCamera():
 	m_cameraAngle(0.0f),
-	m_cameraDistance(10.0f),
+	m_cameraDistance(15.0f),
 	m_rotateSpeed(2.0f)
 {
 }
@@ -21,6 +21,7 @@ void SampleCamera::Update()
 	Vector3 cameraPos;
 	cameraPos = GetTransform()->GetQuaternion() * Vector3::back;
 	cameraPos *= m_cameraDistance;
+	cameraPos.y += 4;
 
 	GetTransform()->m_position = cameraPos;
 }

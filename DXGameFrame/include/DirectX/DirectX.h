@@ -14,4 +14,3 @@
 #include "ShaderManager.h"
 #include "ModelManager.h"
 #include "Geometry.h"
-#include "DefaultMaterial.h"

@@ -9,7 +9,7 @@ void SampleScene::Init()
 		auto obj = CreateGameObject();
 		auto camera = obj->AddComponent<Camera>();
 		auto transform = obj->GetTransform();
-		transform->SetEulerAngle(30.0f, 45.0f, 0.0f);
+		transform->SetEulerAngle(20.0f, 45.0f, 0.0f);
 		obj->AddComponent<SampleCamera>();
 	}
 
@@ -17,7 +17,10 @@ void SampleScene::Init()
 	{
 		auto obj = CreateGameObject();
 		auto renderer = obj->AddComponent<MeshRenderer>();
+		renderer->LoadModel("Assets/Model/karubi/Ç‹ÇØÇÒéÆê‘å©Ç©ÇÈÇ—ïPàﬂëïver1.0.pmx");
 		obj->AddComponent<SamplePlayer>();
+		auto transform = obj->GetTransform();
+		transform->m_scale = { 0.5f, 0.5f, 0.5f };
 	}
 
 	//è∞

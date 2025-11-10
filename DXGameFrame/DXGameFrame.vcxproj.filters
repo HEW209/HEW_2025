@@ -186,9 +186,6 @@
     <ClInclude Include="include\DirectX\Material.h">
       <Filter>ヘッダー ファイル\DirectX\Object</Filter>
     </ClInclude>
-    <ClInclude Include="include\DirectX\DefaultMaterial.h">
-      <Filter>ヘッダー ファイル\DirectX\Object</Filter>
-    </ClInclude>
     <ClInclude Include="include\DirectX\ConstantBuffer.h">
       <Filter>ヘッダー ファイル\DirectX\Utility</Filter>
     </ClInclude>
@@ -203,6 +200,12 @@
     </ClInclude>
     <ClInclude Include="include\DirectX\MatrixUtil.h">
       <Filter>ヘッダー ファイル\DirectX\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\MeshGroup.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\Model.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -263,9 +266,6 @@
     <ClCompile Include="src\DirectX\Debug.cpp">
       <Filter>ソース ファイル\DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="src\DirectX\DefaultMaterial.cpp">
-      <Filter>ソース ファイル\DirectX</Filter>
-    </ClCompile>
     <ClCompile Include="src\DirectX\DepthStencilState.cpp">
       <Filter>ソース ファイル\DirectX</Filter>
     </ClCompile>
@@ -312,6 +312,15 @@
       <Filter>ソース ファイル\DirectX</Filter>
     </ClCompile>
     <ClCompile Include="src\DirectX\VertexShader.cpp">
+      <Filter>ソース ファイル\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DirectX\Model.cpp">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MeshGroup.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ModelManager.cpp">
       <Filter>ソース ファイル\DirectX</Filter>
     </ClCompile>
   </ItemGroup>
