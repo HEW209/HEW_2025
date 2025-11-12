@@ -7,8 +7,8 @@
  *********************************************************************/
 #pragma once
 
-#include <DirectX/VertexShader.h>
-#include <DirectX/PixelShader.h>
+#include "VertexShader.h"
+#include "PixelShader.h"
 #include <unordered_map>
 #include <memory>
 

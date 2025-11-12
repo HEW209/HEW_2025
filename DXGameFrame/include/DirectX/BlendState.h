@@ -21,12 +21,12 @@ public:
 	/// ブレンドモード
 	enum Mode
 	{
-		DEFAULT,		//ブレンド無し
-		ALPHA,			//通常のアルファブレンド
-		ADD,			//加算
-		SUB,			//減算
-		MUL,			//乗算
-		COUNT			//ブレンドモードの種類数
+		DEFAULT,		// ブレンド無し
+		ALPHA,			// 通常のアルファブレンド
+		ADD,			// 加算
+		SUB,			// 減算
+		MUL,			// 乗算
+		COUNT			// ブレンドモードの種類数
 	};
 
 	/**

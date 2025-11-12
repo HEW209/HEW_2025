@@ -1,4 +1,4 @@
-//Shader.cpp
+// Shader.cpp
 #include <DirectX/Shader.h>
 #include <DirectX/Debug.h>
 

@@ -21,10 +21,10 @@ public:
 	/// 深度ステンシルモード
 	enum Mode
 	{
-		DEFAULT,		//深度テストON 書き込みON (通常)
-		READ_ONLY,		//深度テストON 書き込みOFF (半透明用)
-		DISABLE,		//深度テストOFF (UI・2D用)
-		STENCIL,		//ステンシルON
+		DEFAULT,		// 深度テストON 書き込みON (通常)
+		READ_ONLY,		// 深度テストON 書き込みOFF (半透明用)
+		DISABLE,		// 深度テストOFF (UI・2D用)
+		STENCIL,		// ステンシルON
 		COUNT
 	};
 

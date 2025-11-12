@@ -7,8 +7,8 @@
  *********************************************************************/
 #pragma once
 
-#include <DirectX/Mesh.h>
-#include <DirectX/Material.h>
+#include "Mesh.h"
+#include "Material.h"
 #include <assimp/scene.h>
 
 /**
@@ -25,6 +25,13 @@ public:
 	 * @param pScene assimpのシーンへのポインタ
 	 */
 	void Create(const aiScene* pScene);
+
+	/**
+	 * @brief メッシュ情報から単一のメッシュを作成する
+	 * @param desc メッシュ情報
+	 * @return 成功したかを返す
+	 */
+	HRESULT Create(const Mesh::Description& desc);
 
 	/**
 	 * @brief メッシュグループの描画処理

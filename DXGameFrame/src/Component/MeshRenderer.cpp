@@ -1,11 +1,14 @@
-//MeshRenderer.cpp
+// MeshRenderer.cpp
 #include <Component/MeshRenderer.h>
 #include <DirectX/ModelManager.h>
 #include <DirectX/ConstantBuffer.h>
 #include <DirectX/MatrixUtil.h>
+#include <DirectX/Geometry.h>
 
 MeshRenderer::MeshRenderer()
 {
+	m_pModel = Geometry::Instance().GetModel(Geometry::Type::BOX);
+	m_materials = m_pModel->GetMaterials();
 }
 
 void MeshRenderer::Draw()

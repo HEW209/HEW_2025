@@ -14,7 +14,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-
 	WNDCLASSEX wcex;	//ウィンドウクラス
 	HWND hWnd;			//ウィンドウハンドル
 	MSG message;		//メッセージ

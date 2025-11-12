@@ -1,4 +1,4 @@
-//MeshGroup.cpp
+// MeshGroup.cpp
 #include <DirectX/MeshGroup.h>
 
 void MeshGroup::Create(const aiScene* pScene)
@@ -70,6 +70,16 @@ void MeshGroup::Create(const aiScene* pScene)
 		// メッシュ作成
 		m_meshes[i].Create(desc);
 	}
+}
+
+HRESULT MeshGroup::Create(const Mesh::Description& desc)
+{
+	// メッシュの初期化
+	m_meshes.clear();
+	m_bones.clear();
+	m_meshes.emplace_back();
+
+	return m_meshes[0].Create(desc);
 }
 
 void MeshGroup::Draw(const std::vector<Material>& materials)

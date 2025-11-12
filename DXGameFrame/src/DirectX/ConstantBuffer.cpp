@@ -1,4 +1,4 @@
-//ConstantBuffer.cpp
+// ConstantBuffer.cpp
 #include <DirectX/ConstantBuffer.h>
 
 ConstantBuffer::ConstantBuffer() :
@@ -79,9 +79,9 @@ void ConstantBuffer::UpdateWVPBuffer()
 
 HRESULT ConstantBuffer::CreateWVPBuffer()
 {
-	HRESULT hr = S_OK;		//関数の結果
+	HRESULT hr = S_OK;		// 関数の結果
 
-	//WVP定数バッファの設定
+	// WVP定数バッファの設定
 	D3D11_BUFFER_DESC cbDesc = {};
 	cbDesc.ByteWidth = sizeof(WVP);
 	cbDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -90,7 +90,7 @@ HRESULT ConstantBuffer::CreateWVPBuffer()
 	cbDesc.MiscFlags = 0;
 	cbDesc.StructureByteStride = 0;
 
-	//WVP定数バッファの作成
+	// WVP定数バッファの作成
 	hr = m_pDevice->CreateBuffer(&cbDesc, nullptr, m_WVPBuffer.GetAddressOf());
 	if (FAILED(hr)) { return hr; }
 

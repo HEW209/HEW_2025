@@ -1,8 +1,11 @@
+// Mesh.cpp
 #include <DirectX/Mesh.h>
 #include <DirectX/Direct3D.h>
 
 Mesh::Mesh() :
-	m_desc{}
+	m_desc{},
+	m_pVtxBuffer(nullptr),
+	m_pIdxBuffer(nullptr)
 {
 }
 
@@ -32,14 +35,14 @@ void Mesh::Draw()
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
 
-	//描画用情報をセット
+	// 描画用情報をセット
 	pContext->IASetPrimitiveTopology(m_desc.topology);
 	pContext->IASetVertexBuffers(0, 1, m_pVtxBuffer.GetAddressOf(), &stride, &offset);
 
 	// 描画
 	if (!m_desc.idx.empty())
 	{
-		//インデックスバッファを使用して描画
+		// インデックスバッファを使用して描画
 		DXGI_FORMAT format = {};
 		switch (sizeof(int))
 		{
@@ -62,8 +65,8 @@ HRESULT Mesh::CreateVertexBuffer(const std::vector<Vertex>& vtx, bool isWrite)
 {
 	HRESULT hr = S_OK;
 
-	//頂点バッファの設定
-	D3D11_BUFFER_DESC bufDesc;		//頂点バッファ設定情報
+	// 頂点バッファの設定
+	D3D11_BUFFER_DESC bufDesc;		// 頂点バッファ設定情報
 	ZeroMemory(&bufDesc, sizeof(bufDesc));
 	bufDesc.ByteWidth = (UINT)(sizeof(Vertex) * vtx.size());
 	bufDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -74,12 +77,12 @@ HRESULT Mesh::CreateVertexBuffer(const std::vector<Vertex>& vtx, bool isWrite)
 		bufDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	}
 
-	//初期化用データ設定
+	// 初期化用データ設定
 	D3D11_SUBRESOURCE_DATA subResource;
 	ZeroMemory(&subResource, sizeof(subResource));
 	subResource.pSysMem = vtx.data();
 
-	//頂点バッファの作成
+	// 頂点バッファの作成
 	ID3D11Device* pDevice = Direct3D::Instance().GetDevice();
 	hr = pDevice->CreateBuffer(&bufDesc, &subResource, m_pVtxBuffer.GetAddressOf());
 
@@ -90,19 +93,19 @@ HRESULT Mesh::CreateIndexBuffer(const std::vector<int>& idx)
 {
 	HRESULT hr = S_OK;
 
-	//インデックスバッファの設定
+	// インデックスバッファの設定
 	D3D11_BUFFER_DESC bufDesc;
 	ZeroMemory(&bufDesc, sizeof(bufDesc));
 	bufDesc.ByteWidth = (UINT)(sizeof(int) * idx.size());
 	bufDesc.Usage = D3D11_USAGE_DEFAULT;
 	bufDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 
-	//初期化用データ設定
+	// 初期化用データ設定
 	D3D11_SUBRESOURCE_DATA subResource;
 	ZeroMemory(&subResource, sizeof(subResource));
 	subResource.pSysMem = idx.data();
 
-	//インデックスバッファの作成
+	// インデックスバッファの作成
 	ID3D11Device* pDevice = Direct3D::Instance().GetDevice();
 	hr = pDevice->CreateBuffer(&bufDesc, &subResource, m_pIdxBuffer.GetAddressOf());
 

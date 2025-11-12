@@ -1,6 +1,5 @@
 //Geometry.cpp
 #include <DirectX/Geometry.h>
-#include <DirectX/Mesh.h>
 
 HRESULT Geometry::Init()
 {
@@ -14,7 +13,10 @@ HRESULT Geometry::Init()
 
 void Geometry::Uninit()
 {
-	m_pBoxMesh = nullptr;
+	for (int i = 0; i < Type::COUNT; ++i)
+	{
+		m_pModels[i] = nullptr;
+	}
 }
 
 HRESULT Geometry::CreateBox()
@@ -84,11 +86,13 @@ HRESULT Geometry::CreateBox()
 
 	//その他のデータを設定
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	m_pBoxMesh = std::make_shared<Mesh>();
 
-	//メッシュを作成
-	hr = m_pBoxMesh->Create(desc);
+	// モデルを作成
+	auto model = std::make_shared<Model>();
+	hr = model->CreateMesh(desc);
 	if (FAILED(hr)) { return hr; };
+
+	m_pModels[Type::BOX] = model;
 
     return hr;
 }

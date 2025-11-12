@@ -1,10 +1,11 @@
-//Material.cpp
+// Material.cpp
 #include <DirectX/Material.h>
 #include <DirectX/TextureManager.h>
 #include <DirectX/ShaderManager.h>
 
 Material::Material()
 {
+	// デフォルトのテクスチャとシェーダーをセット
 	m_pTextures[0] = TextureManager::Instance().LoadTexture("Assets/Default/Default.png");
 	m_pVS = ShaderManager::Instance().LoadVertexShader("Assets/Default/Default_VS.cso");
 	m_pPS = ShaderManager::Instance().LoadPixelShader("Assets/Default/Default_PS.cso");
@@ -13,7 +14,7 @@ Material::Material()
 void Material::Bind() const
 {
 	// テクスチャをセット
-	for (int i = 0; i < MaxTextureSlot; ++i)
+	for (int i = 0; i < TextureSlot::Count; ++i)
 	{
 		if (m_pTextures[i] == nullptr)
 			continue;

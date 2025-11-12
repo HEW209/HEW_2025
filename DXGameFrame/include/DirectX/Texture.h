@@ -10,6 +10,13 @@
 #include "DirectXInclude.h"
 #include <string>
 
+/// テクスチャのスロット番号
+namespace TextureSlot
+{
+	constexpr UINT Count = 8;		// 使用可能スロット数
+	constexpr UINT Main = 0;		// メインテクスチャ
+}
+
 /**
  * @brief テクスチャ情報を扱う
  */
@@ -22,14 +29,15 @@ public:
 	/**
 	 * @brief テクスチャを読み込む
 	 * @param filePath テクスチャ画像へのファイルパス
+	 * @return 成功したかを返す
 	 */
-	void Load(const std::string& filePath);
+	HRESULT Load(const std::string& filePath);
 
 	/**
 	 * @brief テクスチャをシェーダーにセットする
 	 * @param slot 設定するスロット番号
 	 */
-	void Bind(UINT slot = 0);
+	void Bind(UINT slot = TextureSlot::Main);
 	
 private:
 	/// シェーダーリソースビュー

@@ -1,4 +1,4 @@
-//Camera.cpp
+// Camera.cpp
 #include <Component/Camera.h>
 
 Camera* Camera::s_pMainCamera = nullptr;

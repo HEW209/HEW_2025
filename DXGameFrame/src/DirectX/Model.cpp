@@ -1,4 +1,4 @@
-//Model.cpp
+// Model.cpp
 #include <DirectX/Model.h>
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
@@ -26,24 +26,18 @@
 
 Model::Model()
 {
-
-}
-
-Model::~Model()
-{
-
 }
 
 bool Model::Load(const std::string& filePath)
 {
-	//モデル読み込み設定
+	// モデル読み込み設定
 	Assimp::Importer importer;
 	int flag = 0;
 	flag |= aiProcess_Triangulate;
 	flag |= aiProcess_FlipUVs;
 	flag |= aiProcess_MakeLeftHanded;
 
-	//モデルデータ読み込み
+	// モデルデータ読み込み
 	const aiScene* pScene = importer.ReadFile(filePath, flag);
 	if (pScene == nullptr)
 	{
@@ -72,6 +66,13 @@ bool Model::Load(const std::string& filePath)
 	return true;
 }
 
+HRESULT Model::CreateMesh(const Mesh::Description& desc)
+{
+	m_materials.clear();
+	m_materials.emplace_back();
+	return m_meshGroup.Create(desc);
+}
+
 void Model::Draw(const std::vector<Material>& materials)
 {
 	m_meshGroup.Draw(materials);
@@ -98,24 +99,7 @@ void Model::CreateMaterials(const aiScene* pScene, const std::string& directory)
 			continue;
 		}
 
+		// テクスチャの読み込み
 		m_materials[i].SetTexture(directory + path.C_Str());
-		continue;
-
-		// モデルと同じ階層を探索
-		// パスからファイル名のみ取得
-		std::string fullPath = path.C_Str();
-		std::string::iterator strIt = fullPath.begin();
-		while (strIt != fullPath.end()) {
-			if (*strIt == '/')
-				*strIt = '\\';
-			++strIt;
-		}
-		size_t find = fullPath.find_last_of("\\");
-		std::string fileName = fullPath;
-		if (find != std::string::npos)
-			fileName = fileName.substr(find + 1);
-
-		// テクスチャの読込
-
 	}
 }

@@ -7,7 +7,7 @@
  *********************************************************************/
 #pragma once
 
-#include <DirectX/DirectXInclude.h>
+#include "DirectXInclude.h"
 #include <vector>
 
 /**
@@ -22,22 +22,22 @@ public:
 	/// 頂点情報
 	struct Vertex
 	{
-		DirectX::XMFLOAT3 pos;			//座標
-		DirectX::XMFLOAT3 normal;		//法線
-		DirectX::XMFLOAT2 uv;			//UV座標
-		DirectX::XMFLOAT4 color;		//頂点カラー
-		float weight[4];				//ボーンへのウェイト
-		unsigned int index[4];			//対応するボーンへのインデックス
+		DirectX::XMFLOAT3 pos;			// 座標
+		DirectX::XMFLOAT3 normal;		// 法線
+		DirectX::XMFLOAT2 uv;			// UV座標
+		DirectX::XMFLOAT4 color;		// 頂点カラー
+		float weight[4];				// ボーンへのウェイト
+		unsigned int index[4];			// 対応するボーンへのインデックス
 	};
 
 	/// メッシュ情報
 	struct Description
 	{
-		std::vector<Vertex> vtx;		//頂点データ
-		std::vector<int> idx;			//インデックスバッファのデータ
-		unsigned int materialID;		//対応マテリアルID
-		bool isWrite;					//動的な頂点の書き換え可能フラグ
-		D3D11_PRIMITIVE_TOPOLOGY topology;		//トポロジー設定
+		std::vector<Vertex> vtx;		// 頂点データ
+		std::vector<int> idx;			// インデックスバッファのデータ
+		unsigned int materialID;		// 対応マテリアルID
+		bool isWrite;					// 動的な頂点の書き換え可能フラグ
+		D3D11_PRIMITIVE_TOPOLOGY topology;		// トポロジー設定
 	};
 
 	/**

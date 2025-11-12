@@ -1,19 +1,22 @@
-//TextureManager.cpp
+// TextureManager.cpp
 #include <DirectX/TextureManager.h>
 
 std::shared_ptr<Texture> TextureManager::LoadTexture(const std::string& filePath)
 {
-	//テクスチャ検索
+	// テクスチャ検索
 	auto it = m_textures.find(filePath);
 	if (it != m_textures.end())
 	{
-		//テクスチャを返す
+		// テクスチャを返す
 		return it->second;
 	}
 
-	//新規テクスチャ読み込み・追加
+	// 新規テクスチャ読み込み・追加
 	auto newTex = std::make_shared<Texture>();
-	newTex->Load(filePath);
+	if (FAILED(newTex->Load(filePath)))
+	{
+		return nullptr;
+	}
 	m_textures[filePath] = newTex;
 	return newTex;
 }
@@ -22,7 +25,7 @@ void TextureManager::CollectGarbage()
 {
 	for (auto it = m_textures.begin(); it != m_textures.end();)
 	{
-		//使用中チェック
+		// 使用中チェック
 		if (it->second.use_count() > 1)
 		{
 			++it;

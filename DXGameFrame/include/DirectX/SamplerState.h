@@ -21,14 +21,14 @@ public:
 	/// サンプラーモード
 	enum Mode
 	{
-		DEFAULT = 0,			//LINEAR_WRAPが使用される
-		LINEAR_WRAP = 0,		//線形補間 + 繰り返し
-		LINEAR_CLAMP,			//線形補間 + 端固定
-		POINT_WRAP,				//最近傍 + 繰り返し（ドット絵向け）
-		POINT_CLAMP,			//最近傍 + 端固定（UI向け）
-		ANISOTROPIC_WRAP,		//異方性 + 繰り返し
-		ANISOTROPIC_CLAMP,		//異方性 + 端固定
-		BORDER_BLACK,			//枠外黒
+		DEFAULT = 0,			// LINEAR_WRAPが使用される
+		LINEAR_WRAP = 0,		// 線形補間 + 繰り返し
+		LINEAR_CLAMP,			// 線形補間 + 端固定
+		POINT_WRAP,				// 最近傍 + 繰り返し（ドット絵向け）
+		POINT_CLAMP,			// 最近傍 + 端固定（UI向け）
+		ANISOTROPIC_WRAP,		// 異方性 + 繰り返し
+		ANISOTROPIC_CLAMP,		// 異方性 + 端固定
+		BORDER_BLACK,			// 枠外黒
 		COUNT
 	};
 

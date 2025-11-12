@@ -7,8 +7,8 @@
  *********************************************************************/
 #pragma once
 
-#include <DirectX/Mesh.h>
-#include <Utility/Common.h>
+#include "Model.h"
+#include <memory>
 
 /**
  * @brief 基本図形の生成を行う
@@ -16,6 +16,15 @@
 class Geometry
 {
 public:
+	/// ジオメトリタイプ
+	enum Type
+	{
+		BOX,		// 箱
+		CYLINDER,	// 円柱
+		SHPERE,		// 球
+		COUNT
+	};
+
 	/**
 	 * @brief ジオメトリの初期化
 	 * @return 成功したかを返す
@@ -28,18 +37,18 @@ public:
 	void Uninit();
 
 	/**
-	 * @brief 箱のメッシュを取得する
+	 * @brief ジオメトリモデルを取得する
 	 */
-	std::shared_ptr<Mesh> GetBox()
+	std::shared_ptr<Model> GetModel(Type geometryType)
 	{
-		return m_pBoxMesh;
+		return m_pModels[geometryType];
 	}
 
 private:
 	Geometry() = default;
 
-	/// 箱のメッシュ
-	std::shared_ptr<Mesh> m_pBoxMesh;
+	/// ジオメトリモデル配列
+	std::shared_ptr<Model> m_pModels[Type::COUNT];
 
 	/**
 	 * @brief 箱のメッシュを生成する

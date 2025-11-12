@@ -11,10 +11,8 @@
 #include "VertexShader.h"
 #include "PixelShader.h"
 #include "PipelineState.h"
-#include <Utility/Common.h>
-
-constexpr UINT MaxTextureSlot = 8;		// テクスチャスロット数
-constexpr UINT MainTextureSlot = 0;		// メインテクスチャのスロット番号
+#include <vector>
+#include <memory>
 
 /**
  * @brief マテリアルクラス
@@ -60,7 +58,46 @@ public:
 	 * @brief パイプラインステートモードを設定する
 	 * @param pipelineMode パイプラインステートごとのモード設定
 	 */
-	void SetPipelineMode(PipelineState::ModeSet pipelineMode);
+	void SetPipelineMode(PipelineState::ModeSet pipelineMode)
+	{
+		m_pipelineMode = pipelineMode;
+	}
+
+	/**
+	 * @brief ラスタライズモードを設定する
+	 * @param rasterizeMode ラスタライズモード設定
+	 */
+	void SetRasterizeMode(RasterizerState::Mode rasterizeMode)
+	{
+		m_pipelineMode.rasterizeMode = rasterizeMode;
+	}
+
+	/**
+	 * @brief 深度ステンシルモードを設定する
+	 * @param depthStencilMode 深度ステンシルモード設定
+	 */
+	void SetDepthStencilMode(DepthStencilState::Mode depthStencilMode)
+	{
+		m_pipelineMode.depthStencilMode = depthStencilMode;
+	}
+
+	/**
+	 * @brief ブレンドモードを設定する
+	 * @param blendMode ブレンドモード設定
+	 */
+	void SetBlendMode(BlendState::Mode blendMode)
+	{
+		m_pipelineMode.blendMode = blendMode;
+	}
+
+	/**
+	 * @brief サンプラーモードを設定する
+	 * @param samplerMode サンプラーモード設定
+	 */
+	void SetSamplerMode(SamplerState::Mode samplerMode)
+	{
+		m_pipelineMode.samplerMode = samplerMode;
+	}
 
 private:
 	/// 頂点シェーダーへのポインタ
@@ -69,8 +106,8 @@ private:
 	/// ピクセルシェーダーへのポインタ
 	std::shared_ptr<PixelShader> m_pPS;
 
-	/// テクスチャ情報
-	std::shared_ptr<Texture> m_pTextures[MaxTextureSlot];
+	/// テクスチャ配列
+	std::shared_ptr<Texture> m_pTextures[TextureSlot::Count];
 	
 	/// マテリアルごとのパラメータ
 	std::vector<BYTE> m_customParameter;

@@ -21,10 +21,10 @@ public:
 	/// ƒJƒƒ‰İ’è
 	struct Config
 	{
-		float fovAngle = 60.0f;					//‹–ìŠp
-		float screenRatio = 16.0f / 9.0f;		//‰æ–Ê”ä—¦
-		float nearZ = 0.1f;						//Å‹ß‹——£
-		float farZ = 1000.0f;					//Å‰“‹——£
+		float fovAngle = 60.0f;					// ‹–ìŠp
+		float screenRatio = 16.0f / 9.0f;		// ‰æ–Ê”ä—¦
+		float nearZ = 0.1f;						// Å‹ß‹——£
+		float farZ = 1000.0f;					// Å‰“‹——£
 	};
 
 	/**

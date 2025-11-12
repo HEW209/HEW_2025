@@ -1,4 +1,4 @@
-//Renderer2D.cpp
+// Renderer2D.cpp
 #include <Component/Renderer2D.h>
 #include <System/RenderSystem.h>
 

@@ -9,9 +9,9 @@
 
 #include <GameFrame/Component.h>
 
- /**
-  * @brief 3D描画コンポーネントの基底クラス
-  */
+/**
+ * @brief 3D描画コンポーネントの基底クラス
+ */
 class Renderer : public Component
 {
 public:

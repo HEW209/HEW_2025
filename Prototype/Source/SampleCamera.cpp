@@ -2,7 +2,7 @@
 
 SampleCamera::SampleCamera():
 	m_cameraAngle(0.0f),
-	m_cameraDistance(15.0f),
+	m_cameraDistance(10.0f),
 	m_rotateSpeed(2.0f)
 {
 }

@@ -21,11 +21,11 @@ public:
 	/// ラスタライズモード
 	enum Mode
 	{
-		DEFAULT,        //デフォルト (前面描画)
-		BACK,           //背面描画
-		NONE,           //両面描画
-		SCISSOR,		//シザー矩形を利用する(両面描画)
-		WIREFRAME,      //ワイヤーフレーム描画
+		DEFAULT,        // デフォルト (前面描画)
+		BACK,           // 背面描画
+		NONE,           // 両面描画
+		SCISSOR,		// シザー矩形を利用する(両面描画)
+		WIREFRAME,      // ワイヤーフレーム描画
 		COUNT
 	};
 

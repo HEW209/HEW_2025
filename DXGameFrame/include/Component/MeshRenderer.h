@@ -12,6 +12,9 @@
 #include <DirectX/Model.h>
 #include <memory>
 
+/**
+ * @brief メッシュの描画を行う
+ */
 class MeshRenderer : public Renderer
 {
 public:
@@ -31,6 +34,15 @@ public:
 
 	//void SetGeometry()
 
+	/**
+	 * @brief マテリアル数を取得する
+	 * @return 現在のマテリアル数
+	 */
+	int GetMaterialNum()
+	{
+		return m_materials.size();
+	}
+	
 	/**
 	 * @brief マテリアルを取得する
 	 * @param slot マテリアルスロット番号

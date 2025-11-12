@@ -20,7 +20,7 @@ void SampleScene::Init()
 		renderer->LoadModel("Assets/Model/karubi/‚Ü‚¯‚ñŽ®ÔŒ©‚©‚é‚Ñ•Pˆß‘•ver1.0.pmx");
 		obj->AddComponent<SamplePlayer>();
 		auto transform = obj->GetTransform();
-		transform->m_scale = { 0.5f, 0.5f, 0.5f };
+		transform->m_scale = { 0.1f, 0.1f, 0.1f };
 	}
 
 	//°
@@ -28,7 +28,8 @@ void SampleScene::Init()
 		auto obj = CreateGameObject();
 		auto renderer = obj->AddComponent<MeshRenderer>();
 		auto transform = obj->GetTransform();
-		transform->m_position.y = -1.0f;
-		transform->m_scale = { 10.0f, 1.0f, 10.0f };
+		transform->m_position.y = -0.5f;
+		transform->m_scale = { 1.0f, 1.0f, 1.0f };
 	}
+
 }

@@ -9,9 +9,9 @@
 
 #include <GameFrame/Component.h>
 
- /**
-  * @brief 2D描画コンポーネントの基底クラス
-  */
+/**
+ * @brief 2D描画コンポーネントの基底クラス
+ */
 class Renderer2D : public Component
 {
 public:

@@ -18,7 +18,7 @@ class Model
 {
 public:
 	Model();
-	~Model();
+	~Model() = default;
 
 	/**
 	 * @brief モデルデータを読み込む
@@ -28,11 +28,22 @@ public:
 	bool Load(const std::string& filePath);
 
 	/**
+	 * @brief 単一メッシュのモデルを作成する
+	 * @param desc メッシュ情報
+	 * @return 成功したかを返す
+	 */
+	HRESULT CreateMesh(const Mesh::Description& desc);
+
+	/**
 	 * @brief モデルの描画を行う
 	 * @param materials 使用するマテリアル配列
 	 */
 	void Draw(const std::vector<Material>& materials);
 
+	/**
+	 * @brief マテリアル配列を取得する
+	 * @return マテリアル配列への参照
+	 */
 	const std::vector<Material>& GetMaterials()
 	{
 		return m_materials;

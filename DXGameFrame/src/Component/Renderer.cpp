@@ -1,4 +1,4 @@
-//Renderer.cpp
+// Renderer.cpp
 #include <Component/Renderer.h>
 #include <System/RenderSystem.h>
 
