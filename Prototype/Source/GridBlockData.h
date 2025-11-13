@@ -15,6 +15,7 @@ public:
 	bool CanPlace(const BlockSetData& blockSetData, const Vec3Int& position, const Quaternion& rotation);
 	bool PlaceBlock();
 
+
 private:
 	Vec3Int m_size;
 	DynamicArray3D<bool> m_blockData;
