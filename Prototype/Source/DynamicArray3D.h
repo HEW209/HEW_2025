@@ -10,7 +10,7 @@
 template <typename T>
 class DynamicArray3D {
 public:
-    // イテレータ型定義 (vectorのイテレータをそのまま使う)
+    // イテレータ型定義
     using iterator = typename std::vector<T>::iterator;
     using const_iterator = typename std::vector<T>::const_iterator;
     // STL互換のための型定義
@@ -46,7 +46,7 @@ public:
     T& at(size_t x, size_t y, size_t z)
     {
         if (x >= m_width || y >= m_height || z >= m_depth) {
-            throw std::out_of_range("Grid coordinates out of range");
+            throw std::out_of_range("Array3D coordinates out of range");
         }
         return m_data[getIndex(x, y, z)];
     }
@@ -87,17 +87,17 @@ public:
         m_depth = newDepth;
     }
 
-    // 幅を増やすヘルパー
+    // 幅を増やす
     void ExpandWidth(size_t addAmount, const T& val = T()) {
         Resize(m_width + addAmount, m_height, m_depth, val);
     }
 
-    // 高さを増やすヘルパー
+    // 高さを増やす
     void ExpandHeight(size_t addAmount, const T& val = T()) {
         Resize(m_width, m_height + addAmount, m_depth, val);
     }
 
-    // 奥行きを増やすヘルパー
+    // 奥行きを増やす
     void ExpandDepth(size_t addAmount, const T& val = T()) {
         Resize(m_width, m_height, m_depth + addAmount, val);
     }
@@ -129,13 +129,11 @@ public:
     const_iterator end() const noexcept { return m_data.end(); }
     const_iterator cend() const noexcept { return m_data.cend(); }
 
-    // イテレータから座標 (x, y, z) を逆算するヘルパー関数
+    // イテレータから座標を取得
     void GetCoordinates(const_iterator it, size_t& outX, size_t& outY, size_t& outZ) const {
-        // 先頭からの距離(インデックス)を計算
         size_t index = std::distance(m_data.cbegin(), it);
 
         // インデックスから3次元座標へ変換
-        // index = x + (y * w) + (z * w * h) の逆算
         size_t xyArea = m_width * m_height;
         outZ = index / xyArea;
         size_t rem = index % xyArea;
@@ -144,8 +142,7 @@ public:
     }
 
 private:
-    // 3次元座標を1次元インデックスに変換する
-    // Layout: X (Width) -> Y (Height) -> Z (Depth)
+    // 3次元座標を1次元インデックスに変換
     inline size_t getIndex(size_t x, size_t y, size_t z) const
     {
         return x + (y * m_width) + (z * m_width * m_height);
@@ -161,11 +158,9 @@ private:
 template <>
 class DynamicArray3D<bool> {
 public:
-    // std::vector<bool> 用の特殊なイテレータ型
     using iterator = std::vector<bool>::iterator;
     using const_iterator = std::vector<bool>::const_iterator;
 
-    // vector<bool>特有のプロキシ参照型
     using reference = std::vector<bool>::reference;
     using const_reference = std::vector<bool>::const_reference;
 
@@ -179,8 +174,7 @@ public:
     DynamicArray3D() : m_width(0), m_height(0), m_depth(0) {}
 
     // アクセッサ (読み書き用)
-    // 戻り値は bool& ではなく、std::vector<bool>::reference という特殊な型
-    // grid(x,y,z) = true; のように代入が可能
+    // 戻り値は bool& ではなく、std::vector<bool>::reference
     reference operator()(size_t x, size_t y, size_t z) {
         assert(x < m_width && y < m_height && z < m_depth);
         return m_data[getIndex(x, y, z)];
@@ -207,7 +201,7 @@ public:
             return;
         }
 
-        Container newData(newWidth * newHeight * newDepth, defaultValue);
+        std::vector<bool> newData(newWidth * newHeight * newDepth, defaultValue);
 
         const size_t copyWidth = std::min(m_width, newWidth);
         const size_t copyHeight = std::min(m_height, newHeight);
@@ -254,7 +248,6 @@ public:
     const_iterator end() const noexcept { return m_data.end(); }
     const_iterator cend() const noexcept { return m_data.cend(); }
 
-    // 座標逆算ヘルパー
     void GetCoordinates(const_iterator it, size_t& outX, size_t& outY, size_t& outZ) const {
         size_t index = std::distance(m_data.cbegin(), it);
         size_t xyArea = m_width * m_height;

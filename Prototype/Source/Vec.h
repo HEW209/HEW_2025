@@ -227,7 +227,7 @@ struct Vec : public VectorStorage<T, N>
     }
 
     // クォータニオンによる回転
-    friend constexpr Vec operator*(Quaternion& q, Vec& v)
+    friend constexpr Vec operator*(const Quaternion& q, const Vec& v)
         requires (N == 3)
     {
         Vec<T, N> qVec(q.x, q.y, q.z);

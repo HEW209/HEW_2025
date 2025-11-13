@@ -10,10 +10,12 @@
 class GridBlockData
 {
 public:
-	bool CanPlace(const BlockSetData& blockSetData, Vec3Int position, Quaternion rotation);
+	GridBlockData(size_t width, size_t height, size_t depth);
 
-	bool PlaceBlockSet();
+	bool CanPlace(const BlockSetData& blockSetData, const Vec3Int& position, const Quaternion& rotation);
+	bool PlaceBlock();
 
 private:
+	Vec3Int m_size;
 	DynamicArray3D<bool> m_blockData;
 };
