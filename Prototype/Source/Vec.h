@@ -6,6 +6,8 @@
 #include <cstddef>
 #include <iostream>
 
+#include <DXGameFrame>
+
 
 // 算術型のコンセプト
 template <typename T>
@@ -222,6 +224,19 @@ struct Vec : public VectorStorage<T, N>
     friend constexpr Vec operator/(Vec lhs, T scalar) {
         lhs /= scalar;
         return lhs;
+    }
+
+    // クォータニオンによる回転
+    friend constexpr Vec operator*(Quaternion& q, Vec& v)
+        requires (N == 3)
+    {
+        Vec<T, N> qVec(q.x, q.y, q.z);
+
+        float qScalar = q.w;
+
+        Vec<T, N> t = static_cast<Vec<T, N>>(2 * qVec.Cross(v));
+
+        return v + (qScalar * t) + qVec.Cross(t);
     }
 
     // 比較演算子
