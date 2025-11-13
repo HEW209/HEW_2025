@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Collider.h" />
     <ClInclude Include="Source\Config.h" />
     <ClInclude Include="Source\SampleCamera.h" />
     <ClInclude Include="Source\SamplePlayer.h" />
