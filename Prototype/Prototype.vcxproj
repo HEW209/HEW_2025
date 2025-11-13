@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="Source\BlockObject.h" />
     <ClInclude Include="Source\BlockData.h" />
+    <ClInclude Include="Collider.h" />
     <ClInclude Include="Source\Config.h" />
     <ClInclude Include="Source\GridField.h" />
     <ClInclude Include="Source\PlaceCursor.h" />
