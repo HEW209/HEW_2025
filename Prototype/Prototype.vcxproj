@@ -146,8 +146,10 @@
     <ClInclude Include="Source\SampleCamera.h" />
     <ClInclude Include="Source\SamplePlayer.h" />
     <ClInclude Include="Source\SampleScene.h" />
+    <ClInclude Include="Source\Vec.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\GridBlockData.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\SampleCamera.cpp" />
     <ClCompile Include="Source\SamplePlayer.cpp" />
