@@ -109,7 +109,6 @@ struct Vec : public VectorStorage<T, N>
     explicit constexpr Vec(const Other& other, T fillValue = static_cast<T>(0))
         : VectorStorage<T, N>{}
     {
-        // --- ‘æ1¬•ª (x or r) ---
         if constexpr (N >= 1) {
             if constexpr (HasX<Other>)      data[0] = static_cast<T>(other.x);
             else if constexpr (HasR<Other>) data[0] = static_cast<T>(other.r);
@@ -117,7 +116,6 @@ struct Vec : public VectorStorage<T, N>
             else                            data[0] = fillValue;
         }
 
-        // --- ‘æ2¬•ª (y or g) ---
         if constexpr (N >= 2) {
             if constexpr (HasY<Other>)      data[1] = static_cast<T>(other.y);
             else if constexpr (HasG<Other>) data[1] = static_cast<T>(other.g);
@@ -125,14 +123,12 @@ struct Vec : public VectorStorage<T, N>
             else                            data[1] = fillValue;
         }
 
-        // --- ‘æ3¬•ª (z or b) ---
         if constexpr (N >= 3) {
             if constexpr (HasZ<Other>)      data[2] = static_cast<T>(other.z);
             else if constexpr (HasB<Other>) data[2] = static_cast<T>(other.b);
             else                            data[2] = fillValue;
         }
 
-        // --- ‘æ4¬•ª (w or a) ---
         if constexpr (N >= 4) {
             if constexpr (HasW<Other>)      data[3] = static_cast<T>(other.w);
             else if constexpr (HasA<Other>) data[3] = static_cast<T>(other.a);
