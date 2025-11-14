@@ -207,6 +207,9 @@
     <ClInclude Include="include\DirectX\MeshGroup.h">
       <Filter>ヘッダー ファイル\DirectX\Object</Filter>
     </ClInclude>
+    <ClInclude Include="include\Component\DirectionalLight.h">
+      <Filter>ヘッダー ファイル\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Utility\Color.cpp">
@@ -322,6 +325,9 @@
     </ClCompile>
     <ClCompile Include="src\DirectX\Model.cpp">
       <Filter>ソース ファイル\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Component\DirectionalLight.cpp">
+      <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
