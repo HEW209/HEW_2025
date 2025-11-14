@@ -26,8 +26,8 @@ private:
 	const Vector3 currentBlockPos{ 10.0f, 0.0f, 0.0f };
 	const Vector3 gridFieldPos{ -10.0f, 0.0f, -1.0f };
 
-	ObjPtr<GameObject> m_currentBlock;
-	ObjPtr<BlockObject> m_currentBlockComponent;
-	std::vector<ObjPtr<GameObject>> m_placedBlocks;
+	ObjPtr<GameObject> m_pCurrentBlock;
+	ObjPtr<BlockObject> m_pCurrentBlockComponent;
+	std::vector<ObjPtr<GameObject>> m_pPlacedBlocks;
 	GridBlockData m_gridData;
 };

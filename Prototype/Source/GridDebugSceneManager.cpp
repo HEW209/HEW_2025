@@ -8,21 +8,21 @@ GridDebugSceneManager::GridDebugSceneManager()
 
 void GridDebugSceneManager::Start()
 {
-	m_currentBlock = SceneManager::GetActiveScene()->CreateGameObject();
-	m_currentBlockComponent = m_currentBlock->AddComponent<BlockObject>();
-	m_currentBlock->GetTransform()->m_position = currentBlockPos;
+	m_pCurrentBlock = SceneManager::GetActiveScene()->CreateGameObject();
+	m_pCurrentBlockComponent = m_pCurrentBlock->AddComponent<BlockObject>();
+	m_pCurrentBlock->GetTransform()->m_position = currentBlockPos;
 }
 
 void GridDebugSceneManager::Update()
 {
 	if (InputManager::GetKeyDown(Input::RIGHT))
-		m_currentBlock->GetTransform()->Rotate(0, 90, 0);
+		m_pCurrentBlock->GetTransform()->Rotate(0, 90, 0);
 	if (InputManager::GetKeyDown(Input::LEFT))
-		m_currentBlock->GetTransform()->Rotate(0, -90, 0);
+		m_pCurrentBlock->GetTransform()->Rotate(0, -90, 0);
 	if (InputManager::GetKeyDown(Input::UP))
-		m_currentBlock->GetTransform()->Rotate(90, 0, 0);
+		m_pCurrentBlock->GetTransform()->Rotate(90, 0, 0);
 	if (InputManager::GetKeyDown(Input::DOWN))
-		m_currentBlock->GetTransform()->Rotate(-90, 0, 0);
+		m_pCurrentBlock->GetTransform()->Rotate(-90, 0, 0);
 
 
 	if (InputManager::GetKeyHold(Input::SPACE))
@@ -82,34 +82,34 @@ void GridDebugSceneManager::Update()
 	else
 	{
 		if (InputManager::GetKeyDown(Input::KEY_1)) {
-			m_currentBlock->GetTransform()->SetEulerAngle(0, 0, 0);
+			m_pCurrentBlock->GetTransform()->SetEulerAngle(0, 0, 0);
 
 			BlockSetData data;
 			data.blocks.resize(1);
 			data.blocks[0] = { 0, 0, 0 };
-			m_currentBlockComponent->SetBlockSet(data);
+			m_pCurrentBlockComponent->SetBlockSet(data);
 		}
 		if (InputManager::GetKeyDown(Input::KEY_2)) {
-			m_currentBlock->GetTransform()->SetEulerAngle(0, 0, 0);
+			m_pCurrentBlock->GetTransform()->SetEulerAngle(0, 0, 0);
 
 			BlockSetData data;
 			data.blocks.resize(2);
 			data.blocks[0] = { 0, 0, 0 };
 			data.blocks[1] = { 1, 0, 0 };
-			m_currentBlockComponent->SetBlockSet(data);
+			m_pCurrentBlockComponent->SetBlockSet(data);
 		}
 		if (InputManager::GetKeyDown(Input::KEY_3)) {
-			m_currentBlock->GetTransform()->SetEulerAngle(0, 0, 0);
+			m_pCurrentBlock->GetTransform()->SetEulerAngle(0, 0, 0);
 
 			BlockSetData data;
 			data.blocks.resize(3);
 			data.blocks[0] = { 0, 0, 0 };
 			data.blocks[1] = { 1, 0, 0 };
 			data.blocks[2] = { 0, 1, 0 };
-			m_currentBlockComponent->SetBlockSet(data);
+			m_pCurrentBlockComponent->SetBlockSet(data);
 		}
 		if (InputManager::GetKeyDown(Input::KEY_4)) {
-			m_currentBlock->GetTransform()->SetEulerAngle(0, 0, 0);
+			m_pCurrentBlock->GetTransform()->SetEulerAngle(0, 0, 0);
 
 			BlockSetData data;
 			data.blocks.resize(4);
@@ -117,10 +117,10 @@ void GridDebugSceneManager::Update()
 			data.blocks[1] = { 1, 0, 0 };
 			data.blocks[2] = { 0, 1, 0 };
 			data.blocks[3] = { 1, 1, 0 };
-			m_currentBlockComponent->SetBlockSet(data);
+			m_pCurrentBlockComponent->SetBlockSet(data);
 		}
 		if (InputManager::GetKeyDown(Input::KEY_5)) {
-			m_currentBlock->GetTransform()->SetEulerAngle(0, 0, 0);
+			m_pCurrentBlock->GetTransform()->SetEulerAngle(0, 0, 0);
 
 			BlockSetData data;
 			data.blocks.resize(4);
@@ -128,10 +128,10 @@ void GridDebugSceneManager::Update()
 			data.blocks[1] = { 1, 0, 0 };
 			data.blocks[2] = { 0, 1, 0 };
 			data.blocks[3] = { 0, 0, 1 };
-			m_currentBlockComponent->SetBlockSet(data);
+			m_pCurrentBlockComponent->SetBlockSet(data);
 		}
 		if (InputManager::GetKeyDown(Input::KEY_6)) {
-			m_currentBlock->GetTransform()->SetEulerAngle(0, 0, 0);
+			m_pCurrentBlock->GetTransform()->SetEulerAngle(0, 0, 0);
 
 			BlockSetData data;
 			data.blocks.resize(5);
@@ -140,10 +140,10 @@ void GridDebugSceneManager::Update()
 			data.blocks[2] = { 0, 1, 0 };
 			data.blocks[3] = { 1, 1, 0 };
 			data.blocks[4] = { 0, 0, 1 };
-			m_currentBlockComponent->SetBlockSet(data);
+			m_pCurrentBlockComponent->SetBlockSet(data);
 		}
 		if (InputManager::GetKeyDown(Input::KEY_7)) {
-			m_currentBlock->GetTransform()->SetEulerAngle(0, 0, 0);
+			m_pCurrentBlock->GetTransform()->SetEulerAngle(0, 0, 0);
 
 			BlockSetData data;
 			data.blocks.resize(6);
@@ -153,10 +153,10 @@ void GridDebugSceneManager::Update()
 			data.blocks[3] = { 1, 1, 0 };
 			data.blocks[4] = { 0, 0, 1 };
 			data.blocks[5] = { 1, 0, 1 };
-			m_currentBlockComponent->SetBlockSet(data);
+			m_pCurrentBlockComponent->SetBlockSet(data);
 		}
 		if (InputManager::GetKeyDown(Input::KEY_8)) {
-			m_currentBlock->GetTransform()->SetEulerAngle(0, 0, 0);
+			m_pCurrentBlock->GetTransform()->SetEulerAngle(0, 0, 0);
 
 			BlockSetData data;
 			data.blocks.resize(6);
@@ -166,10 +166,10 @@ void GridDebugSceneManager::Update()
 			data.blocks[3] = { 1, 1, 0 };
 			data.blocks[4] = { 0, 0, 1 };
 			data.blocks[5] = { 1, 1, 1 };
-			m_currentBlockComponent->SetBlockSet(data);
+			m_pCurrentBlockComponent->SetBlockSet(data);
 		}
 		if (InputManager::GetKeyDown(Input::KEY_9)) {
-			m_currentBlock->GetTransform()->SetEulerAngle(0, 0, 0);
+			m_pCurrentBlock->GetTransform()->SetEulerAngle(0, 0, 0);
 
 			BlockSetData data;
 			data.blocks.resize(7);
@@ -180,10 +180,10 @@ void GridDebugSceneManager::Update()
 			data.blocks[4] = { 0, 0, 1 };
 			data.blocks[5] = { 1, 0, 1 };
 			data.blocks[6] = { 0, 1, 1 };
-			m_currentBlockComponent->SetBlockSet(data);
+			m_pCurrentBlockComponent->SetBlockSet(data);
 		}
 		if (InputManager::GetKeyDown(Input::KEY_0)) {
-			m_currentBlock->GetTransform()->SetEulerAngle(0, 0, 0);
+			m_pCurrentBlock->GetTransform()->SetEulerAngle(0, 0, 0);
 
 			BlockSetData data;
 			data.blocks.resize(8);
@@ -195,14 +195,14 @@ void GridDebugSceneManager::Update()
 			data.blocks[5] = { 1, 0, 1 };
 			data.blocks[6] = { 0, 1, 1 };
 			data.blocks[7] = { 1, 1, 1 };
-			m_currentBlockComponent->SetBlockSet(data);
+			m_pCurrentBlockComponent->SetBlockSet(data);
 		}
 	}
 }
 
 void GridDebugSceneManager::PlaceBlock(Vec3Int position)
 {
-	auto blockId = m_gridData.PlaceBlock(m_currentBlockComponent->GetBlockSet(), position, m_currentBlock->GetTransform()->GetQuaternion());
+	auto blockId = m_gridData.PlaceBlock(m_pCurrentBlockComponent->GetBlockSet(), position, m_pCurrentBlock->GetTransform()->GetQuaternion());
 
 	if (!blockId) {
 		return;
@@ -213,17 +213,17 @@ void GridDebugSceneManager::PlaceBlock(Vec3Int position)
 	pos.y += position.y;
 	pos.z += position.z;
 	
-	m_currentBlock->GetTransform()->m_position = pos;
+	m_pCurrentBlock->GetTransform()->m_position = pos;
 
-	if (m_placedBlocks.size() < blockId) {
-		m_placedBlocks.resize(blockId);
+	if (m_pPlacedBlocks.size() < blockId) {
+		m_pPlacedBlocks.resize(blockId);
 	}
 
-	m_placedBlocks[blockId - 1] = m_currentBlock;
+	m_pPlacedBlocks[blockId - 1] = m_pCurrentBlock;
 
-	m_currentBlock = SceneManager::GetActiveScene()->CreateGameObject();
-	m_currentBlockComponent = m_currentBlock->AddComponent<BlockObject>();
-	m_currentBlock->GetTransform()->m_position = currentBlockPos;
+	m_pCurrentBlock = SceneManager::GetActiveScene()->CreateGameObject();
+	m_pCurrentBlockComponent = m_pCurrentBlock->AddComponent<BlockObject>();
+	m_pCurrentBlock->GetTransform()->m_position = currentBlockPos;
 }
 
 void GridDebugSceneManager::RemoveBlock(Vec3Int position)
@@ -234,10 +234,10 @@ void GridDebugSceneManager::RemoveBlock(Vec3Int position)
 		return;
 	}
 
-	m_currentBlock->Destroy();
-	m_currentBlock = m_placedBlocks[blockId - 1];
-	m_currentBlockComponent = m_currentBlock->GetComponent<BlockObject>();
-	m_placedBlocks[blockId - 1] = nullptr;
+	m_pCurrentBlock->Destroy();
+	m_pCurrentBlock = m_pPlacedBlocks[blockId - 1];
+	m_pCurrentBlockComponent = m_pCurrentBlock->GetComponent<BlockObject>();
+	m_pPlacedBlocks[blockId - 1] = nullptr;
 
-	m_currentBlock->GetTransform()->m_position = currentBlockPos;
+	m_pCurrentBlock->GetTransform()->m_position = currentBlockPos;
 }

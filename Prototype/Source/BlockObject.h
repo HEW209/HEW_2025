@@ -20,5 +20,5 @@ public:
 
 private:
 	BlockSetData m_blockSet;
-	std::vector<ObjPtr<GameObject>> m_blocks;
+	std::vector<ObjPtr<GameObject>> m_pBlocks;
 };

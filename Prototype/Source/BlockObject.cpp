@@ -2,7 +2,7 @@
 
 void BlockObject::OnDestroy()
 {
-	for (auto&& block : m_blocks) {
+	for (auto&& block : m_pBlocks) {
 		if (block) {
 			block->Destroy();
 		}
@@ -13,13 +13,13 @@ void BlockObject::SetBlockSet(BlockSetData& blockSet)
 {
 	m_blockSet = blockSet;
 
-	for (auto&& block : m_blocks) {
+	for (auto&& block : m_pBlocks) {
 		if (block) {
 			block->Destroy();
 		}
 	}
-	m_blocks.clear();
-	m_blocks.reserve(m_blockSet.blocks.size());
+	m_pBlocks.clear();
+	m_pBlocks.reserve(m_blockSet.blocks.size());
 	
 	for (auto&& blockPos : blockSet.blocks) {
 		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
@@ -28,6 +28,6 @@ void BlockObject::SetBlockSet(BlockSetData& blockSet)
 		pos.x = blockPos.x;
 		pos.y = blockPos.y;
 		pos.z = blockPos.z;
-		m_blocks.push_back(obj);
+		m_pBlocks.push_back(obj);
 	}
 }
