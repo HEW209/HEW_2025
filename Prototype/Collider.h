@@ -22,19 +22,15 @@ public:
 	};
 
 	Collider();
-	~Collider() = default;
+	~Collider();
 
-	void Update()override;
-	void Awake()override;
-	void OnDestroy()override;
-
-	static void CheckCollision();
+	Quaternion GetQuaternion() { return m_rotateOffset; }
 
 private:
-
-	Transform m_transform;
-
-	static std::vector<Collider*> s_colliders;
-	static std::vector<Axis3> s_axis;
-
+	
+	Vector3 m_positionOffset;
+	Quaternion m_rotateOffset;
+	Vector3 m_scale;
 };
+
+void CheckCollision();
