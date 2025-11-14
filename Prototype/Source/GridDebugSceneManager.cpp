@@ -16,9 +16,9 @@ void GridDebugSceneManager::Start()
 void GridDebugSceneManager::Update()
 {
 	if (InputManager::GetKeyDown(Input::RIGHT))
-		m_pCurrentBlock->GetTransform()->Rotate(0, 90, 0);
+		m_pCurrentBlock->GetTransform()->Rotate(0, 0, 90);
 	if (InputManager::GetKeyDown(Input::LEFT))
-		m_pCurrentBlock->GetTransform()->Rotate(0, -90, 0);
+		m_pCurrentBlock->GetTransform()->Rotate(0, 0, -90);
 	if (InputManager::GetKeyDown(Input::UP))
 		m_pCurrentBlock->GetTransform()->Rotate(90, 0, 0);
 	if (InputManager::GetKeyDown(Input::DOWN))
