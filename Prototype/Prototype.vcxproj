@@ -146,6 +146,7 @@
     <ClInclude Include="Source\SampleScene.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\SampleCamera.cpp" />
     <ClCompile Include="Source\SamplePlayer.cpp" />
