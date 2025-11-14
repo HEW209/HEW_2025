@@ -15,6 +15,11 @@ ConstantBuffer::ConstantBuffer() :
 	m_WVP.world = identity;
 	m_WVP.view = identity;
 	m_WVP.projection = identity;
+
+	// ライトの初期化
+	m_light.lightDir = { 0.0f, -1.0f, 0.0f };
+	m_light.lightColor = { 1.0f, 1.0f, 1.0f };
+	m_light.ambientColor = { 0.5f, 0.5f, 0.5f };
 }
 
 HRESULT ConstantBuffer::Init(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -68,6 +73,14 @@ void ConstantBuffer::SetProjection(const DirectX::XMFLOAT4X4& projection, bool b
 		UpdateWVPBuffer();
 }
 
+void ConstantBuffer::SetLight(const Light& light)
+{
+	m_light = light;
+
+	m_pContext->UpdateSubresource(m_pLightBuffer.Get(), 0, nullptr, &m_light, 0, 0);
+	m_pContext->PSSetConstantBuffers((UINT)SlotNum::LIGHT, 1, m_pLightBuffer.GetAddressOf());
+}
+
 void ConstantBuffer::UpdateWVPBuffer()
 {
 	if (m_pContext == nullptr)
@@ -99,7 +112,22 @@ HRESULT ConstantBuffer::CreateWVPBuffer()
 
 HRESULT ConstantBuffer::CreateLightBuffer()
 {
-	return S_OK;
+	HRESULT hr = S_OK;		// 関数の結果
+
+	// WVP定数バッファの設定
+	D3D11_BUFFER_DESC cbDesc = {};
+	cbDesc.ByteWidth = sizeof(Light);
+	cbDesc.Usage = D3D11_USAGE_DEFAULT;
+	cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cbDesc.CPUAccessFlags = 0;
+	cbDesc.MiscFlags = 0;
+	cbDesc.StructureByteStride = 0;
+
+	// WVP定数バッファの作成
+	hr = m_pDevice->CreateBuffer(&cbDesc, nullptr, m_pLightBuffer.GetAddressOf());
+	if (FAILED(hr)) { return hr; }
+
+	return hr;
 }
 
 HRESULT ConstantBuffer::CreateBoneBuffer()

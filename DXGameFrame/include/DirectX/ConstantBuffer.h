@@ -15,6 +15,17 @@
 class ConstantBuffer
 {
 public:
+	/// ライト情報
+	struct Light
+	{
+		DirectX::XMFLOAT3 lightDir;			// ライト方向
+		float pad1;
+		DirectX::XMFLOAT3 lightColor;		// ライト色
+		float pad2;
+		DirectX::XMFLOAT3 ambientColor;		// 環境光
+		float pad3;
+	};
+
 	/**
 	 * @brief 定数バッファの初期化
 	 * @param pDevice D3Dデバイスへのポインタ
@@ -49,6 +60,12 @@ public:
 	 */
 	void SetProjection(const DirectX::XMFLOAT4X4&, bool bufferUpdate = false);
 
+	/**
+	 * @brief ライト情報を設定する
+	 * @param light ライト情報
+	 */
+	void SetLight(const Light& light);
+
 private:
 	ConstantBuffer();
 	~ConstantBuffer() = default;
@@ -69,12 +86,6 @@ private:
 		DirectX::XMFLOAT4X4 world;
 		DirectX::XMFLOAT4X4 view;
 		DirectX::XMFLOAT4X4 projection;
-	};
-
-	/// ライト情報
-	struct Light
-	{
-
 	};
 
 	/// ボーン情報
@@ -100,6 +111,12 @@ private:
 
 	/// WVP定数バッファ
 	ComPtr<ID3D11Buffer> m_WVPBuffer;
+
+	/// ライト情報
+	Light m_light;
+
+	/// ライト定数バッファ
+	ComPtr<ID3D11Buffer> m_pLightBuffer;
 
 	/**
 	 * @brief WVP定数バッファを更新する
