@@ -4,7 +4,7 @@
 
 #include <DXGameFrame.h>
 
-#include "BlockSetData.h"
+#include "BlockData.h"
 #include "DynamicDimensionalArray.h"
 #include "IDGenerator.h"
 #include "Vec.h"
@@ -22,7 +22,7 @@ public:
 	bool PlaceBlock(const BlockSetData& blockSetData, const Vec3Int& position, const Quaternion& rotation);
 
 	// ブロックを取り除く。戻り値は取り除いたブロックのデータを格納したoptional<BlockSetData>。ブロックが存在しない場合はnulloptを返す
-	std::optional<BlockSetData> RemoveBlock(const Vec3Int position);
+	std::optional<BlockSetAndRotationData> RemoveBlock(const Vec3Int position);
 
 	// 二次元の形状（シルエット）を取得
 	// projectionAxis: 0=X, 1=Y, 2=Z

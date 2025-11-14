@@ -10,3 +10,9 @@ struct BlockSetData
 {
 	std::vector<Vec3Int> blocks;
 };
+
+struct BlockSetAndRotationData
+{
+	BlockSetData	blockSet;
+	Quaternion		rotation;
+};

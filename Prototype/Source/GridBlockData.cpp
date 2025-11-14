@@ -55,7 +55,7 @@ bool GridBlockData::PlaceBlock(const BlockSetData& blockSetData, const Vec3Int& 
 	}
 }
 
-std::optional<BlockSetData> GridBlockData::RemoveBlock(const Vec3Int position)
+std::optional<BlockSetAndRotationData> GridBlockData::RemoveBlock(const Vec3Int position)
 {
 	// 境界チェック
 	for (int i = 0; i < 3; ++i) {
@@ -82,7 +82,11 @@ std::optional<BlockSetData> GridBlockData::RemoveBlock(const Vec3Int position)
 
 	m_blockIdGen.Release(blockId);
 
-	return blockData.blockSet;
+	BlockSetAndRotationData data;
+	data.blockSet = blockData.blockSet;
+	data.rotation = blockData.rotation;
+
+	return data;
 }
 
 DynamicDimArray<bool, 2> GridBlockData::GetShape(int projectionAxis)

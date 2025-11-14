@@ -139,7 +139,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Source\BlockSetData.h" />
+    <ClInclude Include="Source\BlockObject.h" />
+    <ClInclude Include="Source\BlockData.h" />
     <ClInclude Include="Source\Config.h" />
     <ClInclude Include="Source\DynamicDimensionalArray.h" />
     <ClInclude Include="Source\GridBlockData.h" />
@@ -151,6 +152,7 @@
     <ClInclude Include="Source\Vec.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\BlockObject.cpp" />
     <ClCompile Include="Source\GridBlockData.cpp" />
     <ClCompile Include="Source\GridDebugScene.cpp" />
     <ClCompile Include="Source\main.cpp" />
