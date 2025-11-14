@@ -1,11 +1,12 @@
 #include "GridBlockData.h"
+#include "GridDebugSceneManager.h"
 
 GridBlockData::GridBlockData(size_t width, size_t height, size_t depth)
 {
 	m_size.x = width;
 	m_size.y = height;
 	m_size.z = depth;
-	m_gridData.Resize(width, height, depth, 0u);
+	m_gridData.Resize(width, height, depth, BlockIdType());
 }
 
 bool GridBlockData::CanPlace(const BlockSetData& blockSetData, const Vec3Int& position, const Quaternion& rotation)
@@ -27,11 +28,11 @@ bool GridBlockData::CanPlace(const BlockSetData& blockSetData, const Vec3Int& po
 	return true;
 }
 
-bool GridBlockData::PlaceBlock(const BlockSetData& blockSetData, const Vec3Int& position, const Quaternion& rotation)
+auto GridBlockData::PlaceBlock(const BlockSetData& blockSetData, const Vec3Int& position, const Quaternion& rotation) -> BlockIdType
 {
 	// 置けるか確認
 	if (!CanPlace(blockSetData, position, rotation)) {
-		return true;
+		return BlockIdType();
 	}
 
 	// ブロックID生成
@@ -53,14 +54,16 @@ bool GridBlockData::PlaceBlock(const BlockSetData& blockSetData, const Vec3Int& 
 		Vec3Int pos = rotation * blockPos + position;
 		m_gridData(pos.x, pos.y, pos.z) = blockId;
 	}
+
+	return blockId;
 }
 
-std::optional<BlockSetAndRotationData> GridBlockData::RemoveBlock(const Vec3Int position)
+auto GridBlockData::RemoveBlock(const Vec3Int position) -> BlockIdType
 {
 	// 境界チェック
 	for (int i = 0; i < 3; ++i) {
 		if (position[i] < 0 || m_size[i] <= position[i]) {
-			return std::nullopt;
+			return BlockIdType();
 		}
 	}
 
@@ -69,7 +72,7 @@ std::optional<BlockSetAndRotationData> GridBlockData::RemoveBlock(const Vec3Int 
 
 	// ブロックが無ければnulloptを返す
 	if (!blockId) {
-		return std::nullopt;
+		return BlockIdType();
 	}
 
 	BlockData blockData = m_blocks[blockId - 1];
@@ -82,11 +85,7 @@ std::optional<BlockSetAndRotationData> GridBlockData::RemoveBlock(const Vec3Int 
 
 	m_blockIdGen.Release(blockId);
 
-	BlockSetAndRotationData data;
-	data.blockSet = blockData.blockSet;
-	data.rotation = blockData.rotation;
-
-	return data;
+	return blockId;
 }
 
 DynamicDimArray<bool, 2> GridBlockData::GetShape(int projectionAxis)

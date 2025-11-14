@@ -13,9 +13,10 @@ public:
 	BlockObject() = default;
 	~BlockObject() = default;
 
-	void Update() override;
+	void OnDestroy() override;
 
 	void SetBlockSet(BlockSetData& blockSet);
+	const BlockSetData& GetBlockSet() const { return m_blockSet; }
 
 private:
 	BlockSetData m_blockSet;

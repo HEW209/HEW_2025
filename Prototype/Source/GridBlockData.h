@@ -12,17 +12,20 @@
 
 class GridBlockData
 {
+private:
+	using BlockIdType = uint8_t;
+
 public:
 	GridBlockData(size_t width, size_t height, size_t depth);
 
 	// ブロックを置ける場合はtrueを返す
 	bool CanPlace(const BlockSetData& blockSetData, const Vec3Int& position, const Quaternion& rotation);
 
-	// ブロックを置く。置けない場合はtrueを返す
-	bool PlaceBlock(const BlockSetData& blockSetData, const Vec3Int& position, const Quaternion& rotation);
+	// ブロックを置く。戻り値は置いたブロックのId。置けない場合は0を返す
+	BlockIdType PlaceBlock(const BlockSetData& blockSetData, const Vec3Int& position, const Quaternion& rotation);
 
-	// ブロックを取り除く。戻り値は取り除いたブロックのデータを格納したoptional<BlockSetData>。ブロックが存在しない場合はnulloptを返す
-	std::optional<BlockSetAndRotationData> RemoveBlock(const Vec3Int position);
+	// ブロックを取り除く。戻り値は取り除いたブロックのId。ブロックが存在しない場合は0を返す
+	BlockIdType RemoveBlock(const Vec3Int position);
 
 	// 二次元の形状（シルエット）を取得
 	// projectionAxis: 0=X, 1=Y, 2=Z
@@ -32,8 +35,6 @@ public:
 	DynamicDimArray<bool, 2> GetShapeZ() { return GetShape(2); }
 
 private:
-	using BlockIdType = uint8_t;
-
 	struct BlockData
 	{
 		BlockSetData	blockSet;
