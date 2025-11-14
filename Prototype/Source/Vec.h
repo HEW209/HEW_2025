@@ -6,7 +6,7 @@
 #include <cstddef>
 #include <iostream>
 
-#include <DXGameFrame>
+#include <DXGameFrame.h>
 
 
 // 算術型のコンセプト

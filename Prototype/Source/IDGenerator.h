@@ -40,7 +40,7 @@ public:
         }
 
         // オーバーフロー対策
-        if (m_placeholder == std::numeric_limits<IdType>::max()) [[unlikely]]
+        if (m_placeholder == (std::numeric_limits<IdType>::max)()) [[unlikely]]
         {
             assert(false && "IDGenerator: IDが枯渇しました");
             return INVALID_ID;
