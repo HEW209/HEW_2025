@@ -11,5 +11,24 @@
 
 class Collider :public Component
 {
-	Vector3 offset;
+public:
+
+	struct Axis3
+	{
+		Vector3 x, y, z;
+	};
+
+	Collider();
+	~Collider();
+
+	Quaternion GetQuaternion() { return m_rotateOffset; }
+
+private:
+	
+	Vector3 m_positionOffset;
+	Quaternion m_rotateOffset;
+	Vector3 m_scale;
+};
+
+void CheckCollision();
 };
