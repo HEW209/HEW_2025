@@ -5,7 +5,7 @@
 #include <DXGameFrame.h>
 
 #include "BlockSetData.h"
-#include "DynamicArray3D.h"
+#include "DynamicDimensionalArray.h"
 #include "IDGenerator.h"
 #include "Vec.h"
 

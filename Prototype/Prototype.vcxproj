@@ -141,7 +141,7 @@
   <ItemGroup>
     <ClInclude Include="Source\BlockSetData.h" />
     <ClInclude Include="Source\Config.h" />
-    <ClInclude Include="Source\DynamicArray3D.h" />
+    <ClInclude Include="Source\DynamicDimensionalArray.h" />
     <ClInclude Include="Source\GridBlockData.h" />
     <ClInclude Include="Source\GridDebugScene.h" />
     <ClInclude Include="Source\IDGenerator.h" />

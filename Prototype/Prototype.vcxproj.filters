@@ -33,7 +33,7 @@
     <ClInclude Include="Source\GridBlockData.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Source\DynamicArray3D.h">
+    <ClInclude Include="Source\DynamicDimensionalArray.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vec.h">
