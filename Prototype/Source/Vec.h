@@ -302,15 +302,12 @@ struct Vec : public VectorStorage<T, N>
         *this = Normalized();
     }
 
-    // ---------------------------------------------------------
-    // 6. DistanceFrom (指定ベクトルまでの距離)
-    // ---------------------------------------------------------
-    // ・(target - current).Length() と同義
+    // 距離
     constexpr T DistanceFrom(const Vec& other) const {
         return (*this - other).Length();
     }
 
-    // 距離の二乗版（高速比較用）
+    // 距離の二乗
     constexpr T DistanceSqFrom(const Vec& other) const {
         return (*this - other).LengthSq();
     }
