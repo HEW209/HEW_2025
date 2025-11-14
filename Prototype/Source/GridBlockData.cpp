@@ -12,7 +12,7 @@ GridBlockData::GridBlockData(size_t width, size_t height, size_t depth)
 bool GridBlockData::CanPlace(const BlockSetData& blockSetData, const Vec3Int& position, const Quaternion& rotation)
 {
 	for (auto&& blockPos : blockSetData.blocks) {
-		Vec3Int pos = rotation * blockPos + position;
+		Vec3Int pos = static_cast<Vec3Int>(rotation * blockPos) + position;
 		// 境界チェック
 		for (int i = 0; i < 3; ++i) {
 			if (pos[i] < 0 || m_size[i] <= pos[i]) {
@@ -51,7 +51,7 @@ auto GridBlockData::PlaceBlock(const BlockSetData& blockSetData, const Vec3Int& 
 
 	// 配置する座標にブロックIDを記録
 	for (auto&& blockPos : blockSetData.blocks) {
-		Vec3Int pos = rotation * blockPos + position;
+		Vec3Int pos = static_cast<Vec3Int>(rotation * blockPos) + position;
 		m_gridData(pos.x, pos.y, pos.z) = blockId;
 	}
 
@@ -79,7 +79,7 @@ auto GridBlockData::RemoveBlock(const Vec3Int position) -> BlockIdType
 
 	// 配置されているブロックの座標に無効値0uを記録
 	for (auto&& blockPos : blockData.blockSet.blocks) {
-		Vec3Int pos = blockData.rotation * blockPos + blockData.position;
+		Vec3Int pos = static_cast<Vec3Int>(blockData.rotation * blockPos) + blockData.position;
 		m_gridData(pos.x, pos.y, pos.z) = 0u;
 	}
 

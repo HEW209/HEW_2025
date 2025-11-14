@@ -223,16 +223,17 @@ struct Vec : public VectorStorage<T, N>
     }
 
     // クォータニオンによる回転
-    friend constexpr Vec operator*(const Quaternion& q, const Vec& v)
+    friend constexpr Vec<float, N> operator*(const Quaternion& q, const Vec& v)
         requires (N == 3)
     {
-        Vec<T, N> qVec(q.x, q.y, q.z);
+        Vec<float, N> vec(v);
+        Vec<float, N> qVec(q.x, q.y, q.z);
 
         float qScalar = q.w;
 
-        Vec<T, N> t = static_cast<Vec<T, N>>(2 * qVec.Cross(v));
+        Vec<float, N> t = static_cast<Vec<float, N>>(2 * qVec.Cross(vec));
 
-        return v + (qScalar * t) + qVec.Cross(t);
+        return vec + (qScalar * t) + qVec.Cross(t);
     }
 
     // 比較演算子

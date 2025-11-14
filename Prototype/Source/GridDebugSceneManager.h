@@ -23,8 +23,8 @@ private:
 	void PlaceBlock(Vec3Int position);
 	void RemoveBlock(Vec3Int position);
 
-	const Vector3 currentBlockPos{ 10.0f, 0.0f, 0.0f };
-	const Vector3 gridFieldPos{ -10.0f, 0.0f, -1.0f };
+	const Vector3 currentBlockPos{ 5.0f, 0.0f, 0.0f };
+	const Vector3 gridFieldPos{ -5.0f, 0.0f, -1.0f };
 
 	ObjPtr<GameObject> m_pCurrentBlock;
 	ObjPtr<BlockObject> m_pCurrentBlockComponent;

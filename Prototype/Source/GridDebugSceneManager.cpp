@@ -15,14 +15,21 @@ void GridDebugSceneManager::Start()
 
 void GridDebugSceneManager::Update()
 {
-	if (InputManager::GetKeyDown(Input::RIGHT))
-		m_pCurrentBlock->GetTransform()->Rotate(0, 0, 90);
-	if (InputManager::GetKeyDown(Input::LEFT))
-		m_pCurrentBlock->GetTransform()->Rotate(0, 0, -90);
-	if (InputManager::GetKeyDown(Input::UP))
-		m_pCurrentBlock->GetTransform()->Rotate(90, 0, 0);
-	if (InputManager::GetKeyDown(Input::DOWN))
-		m_pCurrentBlock->GetTransform()->Rotate(-90, 0, 0);
+	{
+		auto blockTransform = m_pCurrentBlock->GetTransform();
+		if (InputManager::GetKeyDown(Input::RIGHT)) {
+			blockTransform->SetQuaternion(Quaternion::Euler( 0.0f, 0.0f, -90.0f) * blockTransform->GetQuaternion());
+		}
+		if (InputManager::GetKeyDown(Input::LEFT)) {
+			blockTransform->SetQuaternion(Quaternion::Euler(0.0f, 0.0f, 90.0f) * blockTransform->GetQuaternion());
+		}
+		if (InputManager::GetKeyDown(Input::UP)) {
+			blockTransform->SetQuaternion(Quaternion::Euler(90.0f, 0.0f, 0.0f) * blockTransform->GetQuaternion());
+		}
+		if (InputManager::GetKeyDown(Input::DOWN)) {
+			blockTransform->SetQuaternion(Quaternion::Euler(-90.0f, 0.0f, 0.0f) * blockTransform->GetQuaternion());
+		}
+	}
 
 
 	if (InputManager::GetKeyHold(Input::SPACE))

@@ -24,7 +24,9 @@ void BlockObject::SetBlockSet(BlockSetData& blockSet)
 	for (auto&& blockPos : blockSet.blocks) {
 		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
 		auto renderer = obj->AddComponent<MeshRenderer>();
-		auto& pos = obj->GetTransform()->m_position;
+		auto transform = obj->GetTransform();
+		transform->SetParent(GetTransform());
+		auto& pos = transform->m_position;
 		pos.x = blockPos.x;
 		pos.y = blockPos.y;
 		pos.z = blockPos.z;
