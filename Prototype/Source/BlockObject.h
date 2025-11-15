@@ -1,3 +1,12 @@
+/*********************************************************************
+ * @file   BlockObject.h
+ * @brief  ブロックのコンポーネント
+ *
+ * @author 芝晃佑
+ * @date   2025/11/15
+ *********************************************************************/
+
+
 #pragma once
 
 #include <vector>
@@ -7,6 +16,9 @@
 #include "BlockData.h"
 
 
+/**
+ * @brief ブロックのコンポーネント
+ */
 class BlockObject : public Component
 {
 public:

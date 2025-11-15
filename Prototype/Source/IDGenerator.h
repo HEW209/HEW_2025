@@ -1,3 +1,11 @@
+/*********************************************************************
+ * @file   IDGenerator.h
+ * @brief  汎用ID生成クラス
+ *
+ * @author 芝晃佑
+ * @date   2025/11/15
+ *********************************************************************/
+
 #pragma once
 
 #include <cassert>
@@ -7,6 +15,11 @@
 #include <algorithm>
 #include <limits>
 
+
+/**
+ * @brief 汎用ID生成クラス
+ * @tparam T IDの型
+ */
 template <std::unsigned_integral T = uint32_t>
 class IDGenerator final
 {

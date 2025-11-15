@@ -1,3 +1,11 @@
+/*********************************************************************
+ * @file   Vec.h
+ * @brief  汎用多次元ベクトルクラス
+ *
+ * @author 芝晃佑
+ * @date   2025/11/15
+ *********************************************************************/
+
 #pragma once
 
 #include <array>
@@ -31,9 +39,7 @@ template <typename T>
 concept VectorOrColorLike = (HasX<T> || HasR<T> || HasU<T>);
 
 
-// ストレージの定義
-
-// 基本定義
+// Vec用ストレージ
 template <typename T, std::size_t N>
 struct VectorStorage {
     std::array<T, N> data;
@@ -70,8 +76,11 @@ struct VectorStorage<T, 4> {
 };
 
 
-// ベクトル本体の定義（Storageを継承）
-
+/**
+ * @brief 汎用多次元ベクトルクラス
+ * @tparam T 値の型（算術型のみ）
+ * @tparam N 次元数
+ */
 template <Arithmetic T, std::size_t N>
 struct Vec : public VectorStorage<T, N>
 {

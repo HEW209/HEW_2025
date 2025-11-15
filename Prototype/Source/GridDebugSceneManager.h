@@ -1,3 +1,11 @@
+/*********************************************************************
+ * @file   GridDebugSceneManager.h
+ * @brief  グリッドデバッグ用シーンの管理コンポーネント
+ *
+ * @author 芝晃佑
+ * @date   2025/11/15
+ *********************************************************************/
+
 #pragma once
 
 #include <vector>
@@ -10,6 +18,9 @@
 #include "Vec.h"
 
 
+/**
+ * @brief グリッドデバッグ用シーンの管理コンポーネント
+ */
 class GridDebugSceneManager : public Component
 {
 public:
