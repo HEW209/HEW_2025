@@ -27,10 +27,6 @@
     <ClInclude Include="Source\SampleScene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Source\PlayerMove.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\PlayerMoveDebugScene.h">
     <ClInclude Include="Source\BlockData.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -69,10 +65,6 @@
     <ClCompile Include="Source\SampleScene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Source\PlayerMove.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\PlayerMoveDebugScene.cpp">
     <ClCompile Include="Source\GridBlockData.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
