@@ -10,7 +10,13 @@
 #include "Component.h"
 #include <Utility/Vector3.h>
 #include <Utility/Quaternion.h>
-#include <DirectX/MatrixUtil.h>
+
+/// 座標空間
+enum class Space
+{
+	WORLD,		// ワールド座標空間
+	LOCAL		// ローカル座標空間
+};
 
 /**
  * @brief オブジェクトの座標・スケール・回転を表す
@@ -19,39 +25,106 @@ class Transform : public Component
 {
 public:
 	Transform(GameObject* owner);
-	~Transform() = default;
+	~Transform();
 
-	/// オブジェクトの座標
-	Vector3 m_position;
+	/**
+	 * @brief オブジェクトの座標を取得する
+	 * @param space 取得に使用する座標空間
+	 * @return 現在のオブジェクトの座標
+	 */
+	Vector3 GetPosition(Space space = Space::WORLD);
 
-	/// オブジェクトのスケール
-	Vector3 m_scale;
+	/**
+	 * @brief オブジェクトのスケールを取得する
+	 * @return 現在のオブジェクトのローカルスケール
+	 */
+	Vector3 GetScale();
+	
+	/**
+	 * @brief オブジェクトの回転をオイラー角で取得する
+	 * @param space 取得に使用する座標空間
+	 * @return 現在のオブジェクトの回転 (オイラー角)
+	 */
+	Vector3 GetEulerAngle(Space space = Space::WORLD);
 
-	/// 親Transformへのポインタ
-	Transform* m_pParent;
+	/**
+	 * @brief オブジェクトの回転をクォータニオンで取得する
+	 * @param space 取得に使用する座標空間
+	 * @return 現在のオブジェクトの回転 (クォータニオン)
+	 */
+	Quaternion GetQuaternion(Space space = Space::WORLD);
 
-	/// 子Transformへのポインタ
-	std::vector<Transform*> m_pChildren;
+	/**
+	 * @brief 座標を設定する
+	 * @param position 設定するローカル座標
+	 */
+	void SetPosition(Vector3 position);
 
+	/**
+	 * @brief 座標を設定する
+	 * @param x ローカルx座標
+	 * @param y ローカルy座標
+	 * @param z ローカルz座標
+	 */
+	void SetPosition(float x, float y, float z);
+
+	/**
+	 * @brief スケールを設定する
+	 * @param scale 設定するローカルスケール
+	 */
+	void SetScale(Vector3 scale);
+
+	/**
+	 * @brief 座標を設定する
+	 * @param x ローカルx座標
+	 * @param y ローカルy座標
+	 * @param z ローカルz座標
+	 */
+	void SetScale(float x, float y, float z);
+
+	/**
+	 * @brief ★オブジェクトの回転をオイラー角で設定する
+	 * @param euler 設定する回転 (オイラー角)
+	 */
+	void SetEulerAngle(Vector3 euler);
+
+	/**
+	 * @brief オブジェクトの回転をオイラー角で設定する
+	 * @param x x軸回転
+	 * @param y y軸回転
+	 * @param z z軸回転
+	 */
+	void SetEulerAngle(float x, float y, float z);
+
+	/**
+	 * @brief オブジェクトの回転をクォータニオンで設定する
+	 * @param quaternion 設定する回転 (クォータニオン)
+	 */
+	void SetQuaternion(Quaternion quaternion);
+
+	/**
+	 * @brief 親Transformを設定する
+	 * @param transform 親Transformへのポインタ
+	 */
 	void SetParent(Transform* transform)
 	{
 		m_pParent = transform;
 		transform->m_pChildren.emplace_back(this);
 	}
 
-	Vector3 GetWorldPosition();
-	Vector3 GetWorldScale();
-	Quaternion GetWorldQuaternion();
-
+	/**
+	 * @brief ワールド変換行列を取得する
+	 * @return このTransformのワールド変換行列
+	 */
 	DirectX::XMMATRIX GetWorldMatrix();
 
 	/**
 	 * @brief ★オブジェクトを移動させる
 	 * @param translation オブジェクトの移動量
 	 */
-	void TransLate(Vector3 translation)
+	void Translate(Vector3 translation)
 	{
-		m_position += translation;
+		m_localPosition += translation;
 	}
 
 	/**
@@ -62,9 +135,7 @@ public:
 	 */
 	void TransLate(float x, float y, float z)
 	{
-		m_position.x += x;
-		m_position.y += y;
-		m_position.z += z;
+		m_localPosition += Vector3(x, y, z);
 	}
 
 	/**
@@ -73,8 +144,8 @@ public:
 	 */
 	void Rotate(Vector3 euler)
 	{
-		m_euler += euler;
-		m_quaternion = Quaternion::Euler(m_euler);
+		m_localEuler += euler;
+		m_localQuaternion = Quaternion::Euler(m_localEuler);
 	}
 
 	/**
@@ -85,72 +156,29 @@ public:
 	 */
 	void Rotate(float x, float y, float z)
 	{
-		m_euler.x += x;
-		m_euler.y += y;
-		m_euler.z += z;
-		m_quaternion = Quaternion::Euler(m_euler);
-	}
-
-	/**
-	 * @brief ★オブジェクトの回転をオイラー角で取得する
-	 * @return 現在のオブジェクトの回転 (オイラー角)
-	 */
-	Vector3 GetEulerAngle()
-	{
-		return m_euler;
-	}
-
-	/**
-	 * @brief ★オブジェクトの回転をオイラー角で設定する
-	 * @param euler 設定する回転 (オイラー角)
-	 */
-	void SetEulerAngle(Vector3 euler)
-	{
-		m_euler = euler;
-		m_quaternion = Quaternion::Euler(m_euler);
-	}
-
-	/**
-	 * @brief ★オブジェクトの回転をオイラー角で設定する
-	 * @param x x軸回転
-	 * @param y y軸回転
-	 * @param z z軸回転
-	 */
-	void SetEulerAngle(float x, float y, float z)
-	{
-		m_euler.x = x;
-		m_euler.y = y;
-		m_euler.z = z;
-		m_quaternion = Quaternion::Euler(m_euler);
-	}
-
-	/**
-	 * @brief オブジェクトの回転をクォータニオンで取得する
-	 * @return 現在のオブジェクトの回転 (クォータニオン)
-	 */
-	Quaternion GetQuaternion()
-	{
-		return m_quaternion;
-	}
-
-	/**
-	 * @brief オブジェクトの回転をクォータニオンで設定する
-	 * @param quaternion 設定する回転 (クォータニオン)
-	 */
-	void SetQuaternion(Quaternion quaternion)
-	{
-		m_quaternion = quaternion;
-		m_euler = m_quaternion.ToEuler();
+		Rotate(Vector3(x, y, z));
 	}
 
 private:
-	//Transformクラスでは隠す
+	// Transformクラスでは隠す
 	using Component::SetEnabled;
 	using Component::Destroy;
 
-	/// オブジェクトのクォータニオン
-	Quaternion m_quaternion;
+	/// オブジェクトのローカル座標
+	Vector3 m_localPosition;
 
-	/// オブジェクトのオイラー角
-	Vector3 m_euler;
+	/// オブジェクトのローカルスケール
+	Vector3 m_localScale;
+
+	/// オブジェクトのローカルクォータニオン
+	Quaternion m_localQuaternion;
+
+	/// オブジェクトのローカルオイラー角
+	Vector3 m_localEuler;
+
+	/// 親Transformへのポインタ
+	Transform* m_pParent;
+
+	/// 子Transformへのポインタ
+	std::vector<Transform*> m_pChildren;
 };
