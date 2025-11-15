@@ -139,14 +139,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Collider.h" />
+    <ClInclude Include="Source\Collider.h" />
     <ClInclude Include="Source\Config.h" />
     <ClInclude Include="Source\SampleCamera.h" />
     <ClInclude Include="Source\SamplePlayer.h" />
     <ClInclude Include="Source\SampleScene.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="Source\Collider.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\SampleCamera.cpp" />
     <ClCompile Include="Source\SamplePlayer.cpp" />

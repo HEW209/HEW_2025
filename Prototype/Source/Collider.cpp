@@ -8,6 +8,8 @@ Collider::Collider() :Component::Component(),onCollision(nullptr)
 {
 	// collider‚ð‚Ü‚Æ‚ß‚é”z—ñ‚É’Ç‰Á
 	s_colliders.push_back(this);
+
+    m_scale = { 1.0f,1.0f,1.0f };
 }
 
 Collider::~Collider()

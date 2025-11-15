@@ -8,6 +8,14 @@ SamplePlayer::SamplePlayer() :
 {
 }
 
+void SamplePlayer::Awake()
+{
+	GameObject* pObj = GetGameObject();
+	GetGameObject()->GetComponent<Collider>()->onCollision = [pObj](GameObject* other) {
+		pObj->GetTransform()->m_scale.y += 0.1;
+		};
+}
+
 void SamplePlayer::Update()
 {
 	Vector3 input;

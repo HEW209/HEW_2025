@@ -1,6 +1,7 @@
 #pragma once
 
 #include <DXGameFrame.h>
+#include "collider.h"
 
 class SamplePlayer : public Component
 {
@@ -9,6 +10,7 @@ public:
 	~SamplePlayer() = default;
 
 	void Update() override;
+	void Awake() override;
 
 private:
 	float m_moveSpeed;

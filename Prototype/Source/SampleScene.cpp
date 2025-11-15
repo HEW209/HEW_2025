@@ -17,10 +17,13 @@ void SampleScene::Init()
 	{
 		auto obj = CreateGameObject();
 		auto renderer = obj->AddComponent<MeshRenderer>();
-		renderer->LoadModel("Assets/Model/karubi/‚Ü‚¯‚ñŽ®ÔŒ©‚©‚é‚Ñ•Pˆß‘•ver1.0.pmx");
+		//renderer->LoadModel("Assets/Model/karubi/‚Ü‚¯‚ñŽ®ÔŒ©‚©‚é‚Ñ•Pˆß‘•ver1.0.pmx");
+		obj->AddComponent<Collider>();
 		obj->AddComponent<SamplePlayer>();
 		auto transform = obj->GetTransform();
-		transform->m_scale = { 0.1f, 0.1f, 0.1f };
+		transform->m_scale = { 1.0f, 1.0f, 1.0f };
+		transform->m_position = { 0.0f, 2.0f, 0.0f };
+		//transform->m_scale = { 0.1f, 0.1f, 0.1f };
 	}
 
 	//°
@@ -30,6 +33,7 @@ void SampleScene::Init()
 		auto transform = obj->GetTransform();
 		transform->m_position.y = -0.5f;
 		transform->m_scale = { 1.0f, 1.0f, 1.0f };
+		obj->AddComponent<Collider>();
 	}
 
 }
