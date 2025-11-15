@@ -142,6 +142,7 @@
     <ClInclude Include="Source\BlockObject.h" />
     <ClInclude Include="Source\BlockData.h" />
     <ClInclude Include="Collider.h" />
+    <ClInclude Include="Source\Collider.h" />
     <ClInclude Include="Source\Config.h" />
     <ClInclude Include="Source\GridField.h" />
     <ClInclude Include="Source\PlaceCursor.h" />
@@ -159,6 +160,7 @@
     <ClInclude Include="Source\VecUtil.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Collider.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Source\BlockObject.cpp" />
     <ClCompile Include="Source\GridBlockData.cpp" />
