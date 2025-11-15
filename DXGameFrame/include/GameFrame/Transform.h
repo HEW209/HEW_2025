@@ -104,13 +104,9 @@ public:
 
 	/**
 	 * @brief 親Transformを設定する
-	 * @param transform 親Transformへのポインタ
+	 * @param pParent 親Transformへのポインタ
 	 */
-	void SetParent(Transform* transform)
-	{
-		m_pParent = transform;
-		transform->m_pChildren.emplace_back(this);
-	}
+	void SetParent(Transform* pParent);
 
 	/**
 	 * @brief ワールド変換行列を取得する
@@ -181,4 +177,10 @@ private:
 
 	/// 子Transformへのポインタ
 	std::vector<Transform*> m_pChildren;
+
+	/**
+	 * @brief 子Transform登録を削除する
+	 * @param child 登録削除するTransformコンポーネントへのポインタ
+	 */
+	void DeleteChild(Transform* child);
 };

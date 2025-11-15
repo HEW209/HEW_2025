@@ -8,8 +8,8 @@ DirectX::XMFLOAT4X4 MatrixUtil::CreateWorldMatrix(Transform* pTransform)
 	DirectX::XMMATRIX S;	// スケール行列
 	DirectX::XMMATRIX R;	// 回転行列
 
-	Vector3 pos = pTransform->m_position;
-	Vector3 scale = pTransform->m_scale;
+	Vector3 pos = pTransform->GetPosition();
+	Vector3 scale = pTransform->GetScale();
 	Quaternion qua = pTransform->GetQuaternion();
 
 	// それぞれの変換行列を求める

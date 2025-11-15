@@ -13,7 +13,12 @@ Transform::Transform(GameObject* owner) :
 
 Transform::~Transform()
 {
-	
+	m_pParent->
+
+	for (auto child : m_pChildren)
+	{
+		child->SetParent(nullptr);
+	}
 }
 
 Vector3 Transform::GetPosition(Space space)
@@ -90,7 +95,7 @@ void Transform::SetPosition(Vector3 position)
 
 void Transform::SetPosition(float x, float y, float z)
 {
-	SetPosition(x, y, z);
+	SetPosition(Vector3(x, y, z));
 }
 
 void Transform::SetScale(Vector3 scale)
@@ -100,7 +105,7 @@ void Transform::SetScale(Vector3 scale)
 
 void Transform::SetScale(float x, float y, float z)
 {
-	SetScale(x, y, z);
+	SetScale(Vector3(x, y, z));
 }
 
 void Transform::SetEulerAngle(Vector3 euler)
@@ -118,6 +123,14 @@ void Transform::SetQuaternion(Quaternion quaternion)
 {
 	m_localQuaternion = quaternion;
 	m_localEuler = m_localQuaternion.ToEuler();
+}
+
+void Transform::SetParent(Transform* pParent)
+{
+	// 元の親から自身の登録削除
+	m_pParent->DeleteChild(this);
+
+	pParent->m_pChildren.emplace_back(this);
 }
 
 DirectX::XMMATRIX Transform::GetWorldMatrix()
@@ -144,4 +157,10 @@ DirectX::XMMATRIX Transform::GetWorldMatrix()
 		// 親がなければ終了
 		return localMatrix;
 	}
+}
+
+void Transform::DeleteChild(Transform* child)
+{
+	auto it = std::remove(m_pChildren.begin(), m_pChildren.end(), child);
+	m_pChildren.erase(it, m_pChildren.end());
 }
