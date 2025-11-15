@@ -6,6 +6,7 @@
 #include "Config.h"
 #include <DXGameFrame.h>
 #include "SampleScene.h"
+#include "GridDebugScene.h"
 
 //ウィンドウプロシージャ
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPalam);
@@ -86,7 +87,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//-----------------------
 	//		シーンの作成
 	//-----------------------
-	SceneManager::Init(std::make_unique<SampleScene>());
+	//SceneManager::Init(std::make_unique<SampleScene>());
+	SceneManager::Init(std::make_unique<GridDebugScene>());
 
 	//------------------------
 	//		FPS固定の準備
