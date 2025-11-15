@@ -10,7 +10,7 @@
 #include <DXGameFrame.h>
 #include <vector>
 
-
+#include <functional>
 
 class Collider :public Component
 {
@@ -21,16 +21,42 @@ public:
 		Vector3 x, y, z;
 	};
 
+	struct ObbData
+	{
+		Vector3 pos;
+		Vector3 scale;
+		Axis3 axis;
+	};
+
 	Collider();
 	~Collider();
 
+
 	Quaternion GetQuaternion() { return m_rotateOffset; }
+	Vector3 GetPosition() { return m_positionOffset; }
+	Vector3 GetScale() { return m_scale; }
+
+	Vector3 m_positionOffset;
+	Vector3 m_scale;
+	std::function<void(GameObject* other)> onCollision;
 
 private:
 	
-	Vector3 m_positionOffset;
 	Quaternion m_rotateOffset;
-	Vector3 m_scale;
 };
 
 void CheckCollision();
+
+double GetProjectionRadius(const Vector3 scale, const Vector3 axis, const Collider::Axis3 obbAxes);
+
+float Dot(Vector3 v, Vector3 other);
+
+/**
+ * @brief OBBìØémÇÃè’ìÀîªíË (SAT)
+ * @param a OBB A
+ * @param b OBB B
+ * @return è’ìÀÇµÇƒÇ¢ÇÍÇŒ true
+ */
+bool CheckCollisionOBB(Collider::ObbData data, Collider::ObbData otherData);
+
+Vector3 Cross(Vector3 v, Vector3 other);
