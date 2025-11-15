@@ -4,7 +4,6 @@
 #include <DirectX/Direct3D.h>
 #include <DirectX/MatrixUtil.h>
 #include <DirectX/ConstantBuffer.h>
-#include <Component/DirectionalLight.h>
 #include <algorithm>
 
 RenderSystem::RenderSystem() :
@@ -25,14 +24,6 @@ void RenderSystem::DrawAll()
 	//プロジェクション行列設定
 	DirectX::XMFLOAT4X4 projection = MatrixUtil::CreateProjectionMatrix(pMainCamera);
 	ConstantBuffer::Instance().SetProjection(projection);
-
-	// ライト設定
-	DirectionalLight* pDirLight = DirectionalLight::GetMain();
-	if (pDirLight != nullptr)
-	{
-		ConstantBuffer::Light light = pDirLight->GetLightData();
-		ConstantBuffer::Instance().SetLight(light);
-	}
 
 	//3D描画処理
 	for (auto* renderer : m_pRendererComponents)
