@@ -17,9 +17,14 @@ void MeshRenderer::Draw()
 		return;
 
 	// Transformからワールド行列をセット
-	ConstantBuffer::Instance().SetWorld(
-		MatrixUtil::CreateWorldMatrix(GetTransform())
-	);
+	//ConstantBuffer::Instance().SetWorld(
+	//	MatrixUtil::CreateWorldMatrix(GetTransform())
+	//);
+
+	DirectX::XMFLOAT4X4 matrix;
+	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixTranspose(
+		GetTransform()->GetWorldMatrix()));
+	ConstantBuffer::Instance().SetWorld(matrix);
 
 	// モデル描画処理
 	m_pModel->Draw(m_materials);
