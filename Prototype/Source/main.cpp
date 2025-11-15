@@ -8,6 +8,10 @@
 #include "SampleScene.h"
 #include "GridDebugScene.h"
 
+
+#include"PlayerMoveDebugScene.h"
+
+
 //ウィンドウプロシージャ
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPalam);
 

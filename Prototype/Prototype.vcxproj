@@ -142,6 +142,8 @@
     <ClInclude Include="Source\BlockObject.h" />
     <ClInclude Include="Source\BlockData.h" />
     <ClInclude Include="Source\Config.h" />
+    <ClInclude Include="Source\PlayerMove.h" />
+    <ClInclude Include="Source\PlayerMoveDebugScene.h" />
     <ClInclude Include="Source\DynamicDimensionalArray.h" />
     <ClInclude Include="Source\GridBlockData.h" />
     <ClInclude Include="Source\GridDebugScene.h" />
@@ -158,6 +160,8 @@
     <ClCompile Include="Source\GridDebugScene.cpp" />
     <ClCompile Include="Source\GridDebugSceneManager.cpp" />
     <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\PlayerMove.cpp" />
+    <ClCompile Include="Source\PlayerMoveDebugScene.cpp" />
     <ClCompile Include="Source\SampleCamera.cpp" />
     <ClCompile Include="Source\SamplePlayer.cpp" />
     <ClCompile Include="Source\SampleScene.cpp" />
