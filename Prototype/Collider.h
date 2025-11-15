@@ -8,6 +8,12 @@
 #pragma once
 
 #include <DXGameFrame.h>
+<<<<<<< HEAD
+=======
+#include <vector>
+
+#include <functional>
+>>>>>>> CheckCollision螳溯｣・＠縺・
 
 class Collider :public Component
 {
@@ -18,17 +24,46 @@ public:
 		Vector3 x, y, z;
 	};
 
+	struct ObbData
+	{
+		Vector3 pos;
+		Vector3 scale;
+		Axis3 axis;
+	};
+
 	Collider();
 	~Collider();
 
+
 	Quaternion GetQuaternion() { return m_rotateOffset; }
+	Vector3 GetPosition() { return m_positionOffset; }
+	Vector3 GetScale() { return m_scale; }
+
+	Vector3 m_positionOffset;
+	Vector3 m_scale;
+	std::function<void(GameObject* other)> onCollision;
 
 private:
 	
-	Vector3 m_positionOffset;
 	Quaternion m_rotateOffset;
-	Vector3 m_scale;
 };
 
 void CheckCollision();
+<<<<<<< HEAD
 };
+=======
+
+double GetProjectionRadius(const Vector3 scale, const Vector3 axis, const Collider::Axis3 obbAxes);
+
+float Dot(Vector3 v, Vector3 other);
+
+/**
+ * @brief OBB同士の衝突判定 (SAT)
+ * @param a OBB A
+ * @param b OBB B
+ * @return 衝突していれば true
+ */
+bool CheckCollisionOBB(Collider::ObbData data, Collider::ObbData otherData);
+
+Vector3 Cross(Vector3 v, Vector3 other);
+>>>>>>> CheckCollision螳溯｣・＠縺・
