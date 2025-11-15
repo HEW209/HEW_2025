@@ -18,7 +18,7 @@ HRESULT PixelShader::LoadFromCSOFile(const std::string& filePath)
 	HRESULT hr;			// 関数の結果
 	FILE* fp;			// ファイルポインタ
 	char* data;			// ファイル読み込み先
-	long dataSize;		// ファイルサイズ
+	long dataSize;		// ファイルサイズ 
 
 	// csoファイルを開く
 	fopen_s(&fp, filePath.c_str(), "rb");

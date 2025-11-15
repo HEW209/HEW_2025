@@ -10,7 +10,6 @@
 #include "Component.h"
 #include <Utility/Vector3.h>
 #include <Utility/Quaternion.h>
-#include <DirectX/MatrixUtil.h>
 
 /**
  * @brief オブジェクトの座標・スケール・回転を表す
@@ -26,24 +25,6 @@ public:
 
 	/// オブジェクトのスケール
 	Vector3 m_scale;
-
-	/// 親Transformへのポインタ
-	Transform* m_pParent;
-
-	/// 子Transformへのポインタ
-	std::vector<Transform*> m_pChildren;
-
-	void SetParent(Transform* transform)
-	{
-		m_pParent = transform;
-		transform->m_pChildren.emplace_back(this);
-	}
-
-	Vector3 GetWorldPosition();
-	Vector3 GetWorldScale();
-	Quaternion GetWorldQuaternion();
-
-	DirectX::XMMATRIX GetWorldMatrix();
 
 	/**
 	 * @brief ★オブジェクトを移動させる

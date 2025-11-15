@@ -11,4 +11,3 @@
 #include "Component/Renderer.h"
 #include "Component/Renderer2D.h"
 #include "Component/MeshRenderer.h"
-#include "Component/DirectionalLight.h"
