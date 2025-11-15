@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="include\Component\Camera.h" />
     <ClInclude Include="include\Component\DefaultComponent.h" />
+    <ClInclude Include="include\Component\DirectionalLight.h" />
     <ClInclude Include="include\Component\MeshRenderer.h" />
     <ClInclude Include="include\Component\Renderer.h" />
     <ClInclude Include="include\Component\Renderer2D.h" />
@@ -70,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Component\Camera.cpp" />
+    <ClCompile Include="src\Component\DirectionalLight.cpp" />
     <ClCompile Include="src\Component\MeshRenderer.cpp" />
     <ClCompile Include="src\Component\Renderer.cpp" />
     <ClCompile Include="src\Component\Renderer2D.cpp" />
