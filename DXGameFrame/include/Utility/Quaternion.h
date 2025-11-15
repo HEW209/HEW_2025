@@ -8,6 +8,7 @@
 #pragma once
 
 #include "Vector3.h"
+#include <DirectX/DirectXInclude.h>
 
 /**
  * @brief クォータニオンを扱う
@@ -62,6 +63,21 @@ public:
 		Quaternion inv(-x, -y, -z, w);
 		Quaternion res = (*this) * qv * inv;
 		return Vector3(res.x, res.y, res.z);
+	}
+
+	/**
+	 * @brief 
+	 * @param newX
+	 * @param newY
+	 * @param newZ
+	 * @param newW
+	 */
+	void SetQuaternion(float newX, float newY, float newZ, float newW)
+	{
+		x = newX;
+		y = newY;
+		z = newZ;
+		w = newW;
 	}
 
 	/**

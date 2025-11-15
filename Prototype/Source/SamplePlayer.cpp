@@ -11,6 +11,7 @@ SamplePlayer::SamplePlayer() :
 void SamplePlayer::Update()
 {
 	Vector3 input;
+	float rotate = 0.0f;
 	Vector3 move;
 
 	//“ü—Í‚ðŽæ“¾
@@ -22,6 +23,11 @@ void SamplePlayer::Update()
 		input.z -= 1.0f;
 	if (InputManager::GetKeyHold(Input::W))
 		input.z += 1.0f;
+
+	if (InputManager::GetKeyHold(Input::Q))
+		rotate -= 1.0f;
+	if (InputManager::GetKeyHold(Input::E))
+		rotate += 1.0f;
 
 	//ƒWƒƒƒ“ƒv
 	if (InputManager::GetKeyDown(Input::SPACE))
@@ -39,10 +45,15 @@ void SamplePlayer::Update()
 	move.y = m_velocity_y;
 
 	//ŽÀÛ‚ÌˆÚ“®
+	Vector3 pos = GetTransform()->GetWorldPosition();
+	Vector3 scale = GetTransform()->GetWorldScale();
+	Quaternion qua = GetTransform()->GetWorldQuaternion();
+	Vector3 rotatevec = qua.ToEuler();
 	GetTransform()->TransLate(move);
 	if (GetTransform()->m_position.y < 0.0f)
 	{
 		GetTransform()->m_position.y = 0.0f;
 		m_velocity_y = 0.0f;
 	}
+	GetTransform()->Rotate(0.0f, rotate, 0.0f);
 }
