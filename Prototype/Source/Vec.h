@@ -94,6 +94,11 @@ struct Vec : public VectorStorage<T, N>
     requires (sizeof...(Args) == N) && (std::convertible_to<Args, T> && ...)
     constexpr Vec(Args... args) : VectorStorage<T, N>{ {static_cast<T>(args)...} } {}
 
+    // すべての要素を scalar で埋めるコンストラクタ
+    explicit constexpr Vec(T scalar) : VectorStorage<T, N>{} {
+        for (std::size_t i = 0; i < N; ++i) data[i] = scalar;
+    }
+
     // 異なる型や次元数からの変換コンストラクタ
     template <typename U, std::size_t M>
     explicit constexpr Vec(const Vec<U, M>& other, T fillValue = static_cast<T>(0))
@@ -102,7 +107,13 @@ struct Vec : public VectorStorage<T, N>
         constexpr std::size_t copyCount = (N < M) ? N : M;
 
         for (std::size_t i = 0; i < copyCount; ++i) {
-            data[i] = static_cast<T>(other[i]);
+            if constexpr (std::is_integral_v<T> && std::is_floating_point_v<U>) {
+                U eps = (other[i] >= 0) ? EpsilonScalar : -EpsilonScalar;
+                data[i] = static_cast<T>(other[i] + eps);
+            }
+            else {
+                data[i] = static_cast<T>(other[i]);
+            }
         }
 
         if constexpr (N > M) {
@@ -285,9 +296,23 @@ struct Vec : public VectorStorage<T, N>
     }
 
     // 近似比較
-    constexpr bool NearEqual(const Vec& other, T epsilon = static_cast<T>(1e-5)) const {
+    constexpr bool NearEqual(const Vec& other, T epsilon = EpsilonScalar) const {
+        if constexpr (!std::is_floating_point_v<T>) {
+            return *this == other;
+        }
+
         for (std::size_t i = 0; i < N; ++i) {
             if (std::abs(data[i] - other[i]) > epsilon) return false;
+        }
+        return true;
+    }
+
+    // ゼロベクトルか判定（浮動小数点誤差考慮）
+    constexpr bool IsZero(T epsilon = EpsilonScalar) const {
+        for (std::size_t i = 0; i < N; ++i) {
+            if (std::abs(data[i]) > epsilon) {
+                return false;
+            }
         }
         return true;
     }
@@ -360,16 +385,32 @@ struct Vec : public VectorStorage<T, N>
     }
 
 
+    // 極小の値のスカラー
+    static constexpr T EpsilonScalar = []() {
+        if constexpr (std::is_same_v<T, float>) {
+            return 1e-5f;
+        }
+        else if constexpr (std::is_same_v<T, double>) {
+            return 1e-9;
+        }
+        else {
+            return static_cast<T>(0);
+        }
+    }();
+
+    // 極小のベクトル
+    static constexpr Vec Epsilon() {
+        return Vec(EpsilonScalar);
+    }
+
     // ゼロベクトル (0, 0, 0, ...)
     static constexpr Vec Zero() {
-        return Vec(); // デフォルトコンストラクタがゼロ初期化を行う前提
+        return Vec();
     }
 
     // 全て1のベクトル (1, 1, 1, ...)
     static constexpr Vec One() {
-        Vec v;
-        for (std::size_t i = 0; i < N; ++i) v[i] = static_cast<T>(1);
-        return v;
+        return Vec(static_cast<T>(1));
     }
 
     // 右 (1, 0, 0)
