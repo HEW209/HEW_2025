@@ -29,20 +29,34 @@ void SampleScene::Init()
 	{
 		auto parent = CreateGameObject();
 		auto obj = CreateGameObject();
-		auto renderer = obj->AddComponent<MeshRenderer>();
-		renderer->LoadModel("Assets/Model/karubi/Ç‹ÇØÇÒéÆê‘å©Ç©ÇÈÇ—ïPàﬂëïver1.0.pmx");
+		//auto renderer = obj->AddComponent<MeshRenderer>();
+		//renderer->LoadModel("Assets/Model/HEW/FBX/atama.fbx");
 		obj->AddComponent<SamplePlayer>();
 		auto transform = obj->GetTransform();
-		transform->m_scale = { 0.3f, 0.3f, 0.3f };
+		transform->m_scale = { 1.0f, 1.0f, 1.0f };
 		transform->m_position = { 0.0f, 5.0f, 0.0f };
 		transform->SetParent(parent->GetTransform());
 		parent->GetTransform()->SetEulerAngle(0.0f, 0.0f, 0.0f);
 		parent->GetTransform()->m_scale = { 1.0f,1.0f,1.0f };
 		parent->AddComponent<MeshRenderer>();
 
-		auto child = CreateGameObject();
-		child->GetTransform()->SetParent(obj->GetTransform());
-		child->AddComponent<MeshRenderer>();
+		const char* name[] =
+		{
+			"Assets/Model/HEW/FBX/atama.fbx",
+			"Assets/Model/HEW/FBX/hidariude.fbx",
+			"Assets/Model/HEW/FBX/migiude.fbx",
+			"Assets/Model/HEW/FBX/ketu.fbx",
+			"Assets/Model/HEW/FBX/kyatapira.fbx",
+			"Assets/Model/HEW/FBX/mune.fbx",
+		};
+
+		for (int i = 0; i < 6; ++i)
+		{
+			auto child = CreateGameObject();
+			child->GetTransform()->SetParent(obj->GetTransform());
+			auto childRenderer = child->AddComponent<MeshRenderer>();
+			childRenderer->LoadModel(name[i]);
+		}
 	}
 
 	// è∞

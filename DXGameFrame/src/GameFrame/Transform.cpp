@@ -176,6 +176,9 @@ DirectX::XMMATRIX Transform::GetWorldMatrix()
 
 void Transform::DeleteChild(Transform* child)
 {
+	if (m_pChildren.empty())
+		return;
+
 	auto it = std::remove(m_pChildren.begin(), m_pChildren.end(), child);
 	m_pChildren.erase(it, m_pChildren.end());
 }
