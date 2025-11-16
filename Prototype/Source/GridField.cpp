@@ -62,7 +62,7 @@ void GridField::SetPlaceCursor(const BlockSetData& blockSet, const Vector3& posi
 
 	m_pPlaceCursorComponent->SetBlockSet(blockSet);
 	m_pPlaceCursorComponent->SetPlaceable(CanPlace(blockSet, position, snappedRot));
-	m_pPlaceCursor->GetTransform()->m_position = SnapGrid(position);
+	m_pPlaceCursor->GetTransform()->m_position = SnapGrid(position) + Vector3{0.5f, 0.5f, 0.5f};
 	m_pPlaceCursor->GetTransform()->SetQuaternion(snappedRot);
 }
 
@@ -82,7 +82,7 @@ bool GridField::PlaceBlock()
 	Vector3 pos = m_pPlaceCursor->GetTransform()->m_position;
 	Quaternion rot = m_pPlaceCursor->GetTransform()->GetQuaternion();
 
-	Vec3Int posGrid = CalcGridCoord(pos);
+	Vec3Int posGrid = CalcGridCoord(pos - Vector3{0.5f, 0.5f, 0.5f});
 
 	auto blockId = m_gridData.PlaceBlock(blockSet, posGrid, rot);
 
