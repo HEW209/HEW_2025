@@ -36,8 +36,13 @@ void SampleScene::Init()
 		transform->m_scale = { 0.3f, 0.3f, 0.3f };
 		transform->m_position = { 0.0f, 5.0f, 0.0f };
 		transform->SetParent(parent->GetTransform());
-		parent->GetTransform()->SetEulerAngle(90.0f, 0.0f, 0.0f);
-		parent->GetTransform()->m_scale = { 1.0f,2.0f,1.0f };
+		parent->GetTransform()->SetEulerAngle(0.0f, 0.0f, 0.0f);
+		parent->GetTransform()->m_scale = { 1.0f,1.0f,1.0f };
+		parent->AddComponent<MeshRenderer>();
+
+		auto child = CreateGameObject();
+		child->GetTransform()->SetParent(obj->GetTransform());
+		child->AddComponent<MeshRenderer>();
 	}
 
 	// è∞

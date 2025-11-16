@@ -45,15 +45,18 @@ void SamplePlayer::Update()
 	move.y = m_velocity_y;
 
 	//ŽÀÛ‚ÌˆÚ“®
-	Vector3 pos = GetTransform()->GetWorldPosition();
-	Vector3 scale = GetTransform()->GetWorldScale();
-	Quaternion qua = GetTransform()->GetWorldQuaternion();
+	Vector3 pos = GetTransform()->GetPosition();
+	Vector3 scale = GetTransform()->GetScale();
+	Quaternion qua = GetTransform()->GetQuaternion();
 	Vector3 rotatevec = qua.ToEuler();
-	GetTransform()->TransLate(move);
+	GetTransform()->Translate(move);
 	if (GetTransform()->m_position.y < 0.0f)
 	{
 		GetTransform()->m_position.y = 0.0f;
 		m_velocity_y = 0.0f;
 	}
 	GetTransform()->Rotate(0.0f, rotate, 0.0f);
+
+	if (InputManager::GetKeyDown(Input::ENTER))
+		GetTransform()->GetParent()->GetGameObject()->Destroy();
 }

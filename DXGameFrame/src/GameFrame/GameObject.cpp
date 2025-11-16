@@ -108,6 +108,19 @@ void GameObject::OnDestroy()
 	}
 }
 
+void GameObject::Destroy()
+{
+	// 削除フラグを立てる
+	m_destroyed = true;
+
+	// 子に削除を伝播
+	std::vector<Transform*> children = m_pTransform->GetChildren();
+	for (auto child : children)
+	{
+		child->GetGameObject()->Destroy();
+	}
+}
+
 void GameObject::ApplyRemoveComponent()
 {
 	std::vector<Component*> comBuffer;		//操作するコンポーネントへのポインタリスト

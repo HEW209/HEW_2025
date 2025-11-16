@@ -2,10 +2,10 @@
 #include <GameFrame/Transform.h>
 
 Transform::Transform(GameObject* owner) :
-	m_localPosition(Vector3::zero),
-	m_localScale(Vector3::one),
-	m_localEuler(Vector3::zero),
-	m_localQuaternion(Quaternion::identity),
+	m_position(Vector3::zero),
+	m_scale(Vector3::one),
+	m_euler(Vector3::zero),
+	m_quaternion(Quaternion::identity),
 	m_pParent(nullptr),
 	m_pChildren{}
 {
@@ -13,7 +13,8 @@ Transform::Transform(GameObject* owner) :
 
 Transform::~Transform()
 {
-	m_pParent->DeleteChild(this);
+	if (m_pParent != nullptr)
+		m_pParent->DeleteChild(this);
 
 	for (auto child : m_pChildren)
 	{
@@ -24,12 +25,12 @@ Transform::~Transform()
 Vector3 Transform::GetPosition(Space space)
 {
 	if (space == Space::LOCAL)
-		return m_localPosition;
+		return m_position;
 
 	if (space == Space::WORLD)
 	{
 		if (m_pParent == nullptr)
-			return m_localPosition;
+			return m_position;
 
 		// 親のワールド行列を取得
 		DirectX::XMMATRIX parentMatrix = m_pParent->GetWorldMatrix();
@@ -37,7 +38,7 @@ Vector3 Transform::GetPosition(Space space)
 		// 自身のワールド座標を求める
 		DirectX::XMVECTOR worldPos;
 		worldPos = DirectX::XMVector3Transform(
-			m_localPosition.ToXMVector(),
+			m_position.ToXMVector(),
 			parentMatrix
 		);
 
@@ -52,13 +53,13 @@ Vector3 Transform::GetPosition(Space space)
 
 Vector3 Transform::GetScale()
 {
-	return m_localPosition;
+	return m_position;
 }
 
 Vector3 Transform::GetEulerAngle(Space space)
 {
 	if (space == Space::LOCAL)
-		return m_localEuler;
+		return m_euler;
 
 	if (space == Space::WORLD)
 		return GetQuaternion(Space::WORLD).ToEuler();
@@ -69,19 +70,19 @@ Vector3 Transform::GetEulerAngle(Space space)
 Quaternion Transform::GetQuaternion(Space space)
 {
 	if (space == Space::LOCAL)
-		return m_localQuaternion;
+		return m_quaternion;
 
 	if (space == Space::WORLD)
 	{
 		if (m_pParent != nullptr)
 		{
 			// 再帰的に回転を求める
-			return m_localQuaternion * m_pParent->GetQuaternion(Space::WORLD);
+			return m_quaternion * m_pParent->GetQuaternion(Space::WORLD);
 		}
 		else
 		{
 			// 親がなければ終了
-			return m_localQuaternion;
+			return m_quaternion;
 		}
 	}
 
@@ -90,7 +91,7 @@ Quaternion Transform::GetQuaternion(Space space)
 
 void Transform::SetPosition(Vector3 position)
 {
-	m_localPosition = position;
+	m_position = position;
 }
 
 void Transform::SetPosition(float x, float y, float z)
@@ -100,7 +101,7 @@ void Transform::SetPosition(float x, float y, float z)
 
 void Transform::SetScale(Vector3 scale)
 {
-	m_localScale = scale;
+	m_scale = scale;
 }
 
 void Transform::SetScale(float x, float y, float z)
@@ -110,8 +111,8 @@ void Transform::SetScale(float x, float y, float z)
 
 void Transform::SetEulerAngle(Vector3 euler)
 {
-	m_localEuler = euler;
-	m_localQuaternion = Quaternion::Euler(m_localEuler);
+	m_euler = euler;
+	m_quaternion = Quaternion::Euler(m_euler);
 }
 
 void Transform::SetEulerAngle(float x, float y, float z)
@@ -121,8 +122,8 @@ void Transform::SetEulerAngle(float x, float y, float z)
 
 void Transform::SetQuaternion(Quaternion quaternion)
 {
-	m_localQuaternion = quaternion;
-	m_localEuler = m_localQuaternion.ToEuler();
+	m_quaternion = quaternion;
+	m_euler = m_quaternion.ToEuler();
 }
 
 void Transform::SetParent(Transform* pParent)
@@ -133,7 +134,18 @@ void Transform::SetParent(Transform* pParent)
 
 	// 新しい親子関係を構築
 	m_pParent = pParent;
-	m_pParent->m_pChildren.emplace_back(this);
+	if (m_pParent != nullptr)
+		m_pParent->m_pChildren.emplace_back(this);
+}
+
+Transform* Transform::GetParent()
+{
+	return m_pParent;
+}
+
+std::vector<Transform*> Transform::GetChildren()
+{
+	return m_pChildren;
 }
 
 DirectX::XMMATRIX Transform::GetWorldMatrix()
@@ -143,9 +155,9 @@ DirectX::XMMATRIX Transform::GetWorldMatrix()
 	DirectX::XMMATRIX R;	// 回転行列
 
 	// それぞれの変換行列を求める
-	T = DirectX::XMMatrixTranslation(m_localPosition.x, m_localPosition.y, m_localPosition.z);
-	S = DirectX::XMMatrixScaling(m_localScale.x, m_localScale.y, m_localScale.z);
-	R = DirectX::XMMatrixRotationQuaternion(m_localQuaternion.ToXMVector());
+	T = DirectX::XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
+	S = DirectX::XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
+	R = DirectX::XMMatrixRotationQuaternion(m_quaternion.ToXMVector());
 
 	// 変換行列の合成
 	DirectX::XMMATRIX localMatrix = S * R * T;

@@ -11,6 +11,8 @@
 #include <Utility/Vector3.h>
 #include <Utility/Quaternion.h>
 
+class Transform;
+
 /// 座標空間
 enum class Space
 {
@@ -26,6 +28,12 @@ class Transform : public Component
 public:
 	Transform(GameObject* owner);
 	~Transform();
+
+	/// オブジェクトのローカル座標
+	Vector3 m_position;
+
+	/// オブジェクトのローカルスケール
+	Vector3 m_scale;
 
 	/**
 	 * @brief オブジェクトの座標を取得する
@@ -109,6 +117,18 @@ public:
 	void SetParent(Transform* pParent);
 
 	/**
+	 * @brief 親Transformを取得する
+	 * @return 親Transformへのポインタ
+	 */
+	Transform* GetParent();
+
+	/**
+	 * @brief このTransformの子Transformを取得する
+	 * @return 子Transformへのポインタ配列
+	 */
+	std::vector<Transform*> GetChildren();
+
+	/**
 	 * @brief ワールド変換行列を取得する
 	 * @return このTransformのワールド変換行列
 	 */
@@ -120,7 +140,7 @@ public:
 	 */
 	void Translate(Vector3 translation)
 	{
-		m_localPosition += translation;
+		m_position += translation;
 	}
 
 	/**
@@ -129,9 +149,9 @@ public:
 	 * @param y オブジェクトのy移動量
 	 * @param z オブジェクトのz移動量
 	 */
-	void TransLate(float x, float y, float z)
+	void Translate(float x, float y, float z)
 	{
-		m_localPosition += Vector3(x, y, z);
+		m_position += Vector3(x, y, z);
 	}
 
 	/**
@@ -140,8 +160,8 @@ public:
 	 */
 	void Rotate(Vector3 euler)
 	{
-		m_localEuler += euler;
-		m_localQuaternion = Quaternion::Euler(m_localEuler);
+		m_euler += euler;
+		m_quaternion = Quaternion::Euler(m_euler);
 	}
 
 	/**
@@ -160,17 +180,11 @@ private:
 	using Component::SetEnabled;
 	using Component::Destroy;
 
-	/// オブジェクトのローカル座標
-	Vector3 m_localPosition;
-
-	/// オブジェクトのローカルスケール
-	Vector3 m_localScale;
-
 	/// オブジェクトのローカルクォータニオン
-	Quaternion m_localQuaternion;
+	Quaternion m_quaternion;
 
 	/// オブジェクトのローカルオイラー角
-	Vector3 m_localEuler;
+	Vector3 m_euler;
 
 	/// 親Transformへのポインタ
 	Transform* m_pParent;
