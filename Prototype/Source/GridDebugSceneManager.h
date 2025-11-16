@@ -42,7 +42,7 @@ private:
 	ObjPtr<BlockObject> m_pCurrentBlockComponent;
 	ObjPtr<GameObject> m_pGridField;
 	ObjPtr<GridField> m_pGridFieldComponent;
-	Vector3 m_cursorPos;
+	Vec3Int m_cursorPos;;
 	bool m_isPlacing;
 	bool m_isRemoving;
 };

@@ -11,7 +11,7 @@ GridBlockData::GridBlockData(size_t width, size_t height, size_t depth)
 	m_gridData.Resize(width, height, depth, BlockIdType());
 }
 
-auto GridBlockData::GetId(const Vec3Int& position) -> BlockIdType
+auto GridBlockData::GetId(const Vec3Int& position) const -> BlockIdType
 {
 	// 境界チェック
 	for (int i = 0; i < 3; ++i) {
@@ -26,7 +26,7 @@ auto GridBlockData::GetId(const Vec3Int& position) -> BlockIdType
 	return blockId;
 }
 
-bool GridBlockData::CanPlace(const BlockSetData& blockSetData, const Vec3Int& position, const Quaternion& rotation)
+bool GridBlockData::CanPlace(const BlockSetData& blockSetData, const Vec3Int& position, const Quaternion& rotation) const
 {
 	if (blockSetData.blocks.empty()) {
 		return false;
@@ -132,7 +132,7 @@ std::optional<BlockSetAndRotationData> GridBlockData::RemoveBlock(BlockIdType bl
 	return data;
 }
 
-DynamicDimArray<bool, 2> GridBlockData::GetShape(int projectionAxis)
+DynamicDimArray<bool, 2> GridBlockData::GetShape(int projectionAxis) const
 {
 	if (projectionAxis < 0 || projectionAxis > 2) {
 		assert(false && "Invalid projection axis");

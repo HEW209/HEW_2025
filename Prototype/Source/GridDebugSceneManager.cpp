@@ -27,15 +27,31 @@ void GridDebugSceneManager::Update()
 		auto blockTransform = m_pCurrentBlock->GetTransform();
 		if (InputManager::GetKeyDown(Input::RIGHT)) {
 			blockTransform->SetQuaternion(Quaternion::Euler( 0.0f, 0.0f, -90.0f) * blockTransform->GetQuaternion());
+			if (m_isPlacing) {
+				auto pos = gridFieldPos + static_cast<Vector3>(m_cursorPos - Vec3Int(m_pGridFieldComponent->GetSize().x + 1, 0, m_pGridFieldComponent->GetSize().z + 1) / 2);
+				m_pGridFieldComponent->SetPlaceCursor(m_pCurrentBlockComponent->GetBlockSet(), pos, m_pCurrentBlock->GetTransform()->GetQuaternion());
+			}
 		}
 		if (InputManager::GetKeyDown(Input::LEFT)) {
 			blockTransform->SetQuaternion(Quaternion::Euler(0.0f, 0.0f, 90.0f) * blockTransform->GetQuaternion());
+			if (m_isPlacing) {
+				auto pos = gridFieldPos + static_cast<Vector3>(m_cursorPos - Vec3Int(m_pGridFieldComponent->GetSize().x + 1, 0, m_pGridFieldComponent->GetSize().z + 1) / 2);
+				m_pGridFieldComponent->SetPlaceCursor(m_pCurrentBlockComponent->GetBlockSet(), pos, m_pCurrentBlock->GetTransform()->GetQuaternion());
+			}
 		}
 		if (InputManager::GetKeyDown(Input::UP)) {
 			blockTransform->SetQuaternion(Quaternion::Euler(90.0f, 0.0f, 0.0f) * blockTransform->GetQuaternion());
+			if (m_isPlacing) {
+				auto pos = gridFieldPos + static_cast<Vector3>(m_cursorPos - Vec3Int(m_pGridFieldComponent->GetSize().x + 1, 0, m_pGridFieldComponent->GetSize().z + 1) / 2);
+				m_pGridFieldComponent->SetPlaceCursor(m_pCurrentBlockComponent->GetBlockSet(), pos, m_pCurrentBlock->GetTransform()->GetQuaternion());
+			}
 		}
 		if (InputManager::GetKeyDown(Input::DOWN)) {
 			blockTransform->SetQuaternion(Quaternion::Euler(-90.0f, 0.0f, 0.0f) * blockTransform->GetQuaternion());
+			if (m_isPlacing) {
+				auto pos = gridFieldPos + static_cast<Vector3>(m_cursorPos - Vec3Int(m_pGridFieldComponent->GetSize().x + 1, 0, m_pGridFieldComponent->GetSize().z + 1) / 2);
+				m_pGridFieldComponent->SetPlaceCursor(m_pCurrentBlockComponent->GetBlockSet(), pos, m_pCurrentBlock->GetTransform()->GetQuaternion());
+			}
 		}
 	}
 
@@ -45,15 +61,17 @@ void GridDebugSceneManager::Update()
 				m_pGridFieldComponent->ResetRemoveCursor();
 			}
 			m_isPlacing = true;
-			m_cursorPos = gridFieldPos;
-			m_pGridFieldComponent->SetPlaceCursor(m_pCurrentBlockComponent->GetBlockSet(), m_cursorPos, m_pCurrentBlock->GetTransform()->GetQuaternion());
+			m_cursorPos = Vec3Int{0, 0, 0};
+			auto pos = gridFieldPos + static_cast<Vector3>(m_cursorPos - Vec3Int(m_pGridFieldComponent->GetSize().x + 1, 0, m_pGridFieldComponent->GetSize().z + 1) / 2);
+			m_pGridFieldComponent->SetPlaceCursor(m_pCurrentBlockComponent->GetBlockSet(), pos, m_pCurrentBlock->GetTransform()->GetQuaternion());
 		}
 	}
 	else if (InputManager::GetKeyDown(Input::SHIFT)) {
 		if (!m_isPlacing && !m_isRemoving) {
 			m_isRemoving = true;
-			m_cursorPos = gridFieldPos;
-			m_pGridFieldComponent->SetRemoveCursor(m_cursorPos);
+			m_cursorPos = Vec3Int{ 0, 0, 0 };
+			auto pos = gridFieldPos + static_cast<Vector3>(m_cursorPos - Vec3Int(m_pGridFieldComponent->GetSize().x + 1, 0, m_pGridFieldComponent->GetSize().z + 1) / 2);
+			m_pGridFieldComponent->SetRemoveCursor(pos);
 		}
 	}
 
@@ -73,28 +91,46 @@ void GridDebugSceneManager::Update()
 	if (m_isPlacing)
 	{
 		if (InputManager::GetKeyDown(Input::A)) {
-			m_cursorPos.x -= 1.0f;
-			m_pGridFieldComponent->SetPlaceCursor(m_pCurrentBlockComponent->GetBlockSet(), m_cursorPos, m_pCurrentBlock->GetTransform()->GetQuaternion());
+			if (m_cursorPos.x > 0) {
+				m_cursorPos.x -= 1;
+				auto pos = gridFieldPos + static_cast<Vector3>(m_cursorPos - Vec3Int(m_pGridFieldComponent->GetSize().x + 1, 0, m_pGridFieldComponent->GetSize().z + 1) / 2);
+				m_pGridFieldComponent->SetPlaceCursor(m_pCurrentBlockComponent->GetBlockSet(), pos, m_pCurrentBlock->GetTransform()->GetQuaternion());
+			}
 		}
 		if (InputManager::GetKeyDown(Input::D)) {
-			m_cursorPos.x += 1.0f;
-			m_pGridFieldComponent->SetPlaceCursor(m_pCurrentBlockComponent->GetBlockSet(), m_cursorPos, m_pCurrentBlock->GetTransform()->GetQuaternion());
+			if (m_cursorPos.x < m_pGridFieldComponent->GetSize().x - 1) {
+				m_cursorPos.x += 1;
+				auto pos = gridFieldPos + static_cast<Vector3>(m_cursorPos - Vec3Int(m_pGridFieldComponent->GetSize().x + 1, 0, m_pGridFieldComponent->GetSize().z + 1) / 2);
+				m_pGridFieldComponent->SetPlaceCursor(m_pCurrentBlockComponent->GetBlockSet(), pos, m_pCurrentBlock->GetTransform()->GetQuaternion());
+			}
 		}
 		if (InputManager::GetKeyDown(Input::Q)) {
-			m_cursorPos.y -= 1.0f;
-			m_pGridFieldComponent->SetPlaceCursor(m_pCurrentBlockComponent->GetBlockSet(), m_cursorPos, m_pCurrentBlock->GetTransform()->GetQuaternion());
+			if (m_cursorPos.y > 0) {
+				m_cursorPos.y -= 1;
+				auto pos = gridFieldPos + static_cast<Vector3>(m_cursorPos - Vec3Int(m_pGridFieldComponent->GetSize().x + 1, 0, m_pGridFieldComponent->GetSize().z + 1) / 2);
+				m_pGridFieldComponent->SetPlaceCursor(m_pCurrentBlockComponent->GetBlockSet(), pos, m_pCurrentBlock->GetTransform()->GetQuaternion());
+			}
 		}
 		if (InputManager::GetKeyDown(Input::E)) {
-			m_cursorPos.y += 1.0f;
-			m_pGridFieldComponent->SetPlaceCursor(m_pCurrentBlockComponent->GetBlockSet(), m_cursorPos, m_pCurrentBlock->GetTransform()->GetQuaternion());
+			if (m_cursorPos.y < m_pGridFieldComponent->GetSize().y - 1) {
+				m_cursorPos.y += 1;
+				auto pos = gridFieldPos + static_cast<Vector3>(m_cursorPos - Vec3Int(m_pGridFieldComponent->GetSize().x + 1, 0, m_pGridFieldComponent->GetSize().z + 1) / 2);
+				m_pGridFieldComponent->SetPlaceCursor(m_pCurrentBlockComponent->GetBlockSet(), pos, m_pCurrentBlock->GetTransform()->GetQuaternion());
+			}
 		}
 		if (InputManager::GetKeyDown(Input::S)) {
-			m_cursorPos.z -= 1.0f;
-			m_pGridFieldComponent->SetPlaceCursor(m_pCurrentBlockComponent->GetBlockSet(), m_cursorPos, m_pCurrentBlock->GetTransform()->GetQuaternion());
+			if (m_cursorPos.z > 0) {
+				m_cursorPos.z -= 1;
+				auto pos = gridFieldPos + static_cast<Vector3>(m_cursorPos - Vec3Int(m_pGridFieldComponent->GetSize().x + 1, 0, m_pGridFieldComponent->GetSize().z + 1) / 2);
+				m_pGridFieldComponent->SetPlaceCursor(m_pCurrentBlockComponent->GetBlockSet(), pos, m_pCurrentBlock->GetTransform()->GetQuaternion());
+			}
 		}
 		if (InputManager::GetKeyDown(Input::W)) {
-			m_cursorPos.z += 1.0f;
-			m_pGridFieldComponent->SetPlaceCursor(m_pCurrentBlockComponent->GetBlockSet(), m_cursorPos, m_pCurrentBlock->GetTransform()->GetQuaternion());
+			if (m_cursorPos.z < m_pGridFieldComponent->GetSize().z - 1) {
+				m_cursorPos.z += 1;
+				auto pos = gridFieldPos + static_cast<Vector3>(m_cursorPos - Vec3Int(m_pGridFieldComponent->GetSize().x + 1, 0, m_pGridFieldComponent->GetSize().z + 1) / 2);
+				m_pGridFieldComponent->SetPlaceCursor(m_pCurrentBlockComponent->GetBlockSet(), pos, m_pCurrentBlock->GetTransform()->GetQuaternion());
+			}
 		}
 
 		if (InputManager::GetKeyDown(Input::ENTER)) {
@@ -104,28 +140,46 @@ void GridDebugSceneManager::Update()
 	else if (m_isRemoving)
 	{
 		if (InputManager::GetKeyDown(Input::A)) {
-			m_cursorPos.x -= 1.0f;
-			m_pGridFieldComponent->SetRemoveCursor(m_cursorPos);
+			if (m_cursorPos.x > 0) {
+				m_cursorPos.x -= 1;
+				auto pos = gridFieldPos + static_cast<Vector3>(m_cursorPos - Vec3Int(m_pGridFieldComponent->GetSize().x + 1, 0, m_pGridFieldComponent->GetSize().z + 1) / 2);
+				m_pGridFieldComponent->SetRemoveCursor(pos);
+			}
 		}
 		if (InputManager::GetKeyDown(Input::D)) {
-			m_cursorPos.x += 1.0f;
-			m_pGridFieldComponent->SetRemoveCursor(m_cursorPos);
+			if (m_cursorPos.x < m_pGridFieldComponent->GetSize().x - 1) {
+				m_cursorPos.x += 1;
+				auto pos = gridFieldPos + static_cast<Vector3>(m_cursorPos - Vec3Int(m_pGridFieldComponent->GetSize().x + 1, 0, m_pGridFieldComponent->GetSize().z + 1) / 2);
+				m_pGridFieldComponent->SetRemoveCursor(pos);
+			}
 		}
 		if (InputManager::GetKeyDown(Input::Q)) {
-			m_cursorPos.y -= 1.0f;
-			m_pGridFieldComponent->SetRemoveCursor(m_cursorPos);
+			if (m_cursorPos.y > 0) {
+				m_cursorPos.y -= 1;
+				auto pos = gridFieldPos + static_cast<Vector3>(m_cursorPos - Vec3Int(m_pGridFieldComponent->GetSize().x + 1, 0, m_pGridFieldComponent->GetSize().z + 1) / 2);
+				m_pGridFieldComponent->SetRemoveCursor(pos);
+			}
 		}
 		if (InputManager::GetKeyDown(Input::E)) {
-			m_cursorPos.y += 1.0f;
-			m_pGridFieldComponent->SetRemoveCursor(m_cursorPos);
+			if (m_cursorPos.y < m_pGridFieldComponent->GetSize().y - 1) {
+				m_cursorPos.y += 1;
+				auto pos = gridFieldPos + static_cast<Vector3>(m_cursorPos - Vec3Int(m_pGridFieldComponent->GetSize().x + 1, 0, m_pGridFieldComponent->GetSize().z + 1) / 2);
+				m_pGridFieldComponent->SetRemoveCursor(pos);
+			}
 		}
 		if (InputManager::GetKeyDown(Input::S)) {
-			m_cursorPos.z -= 1.0f;
-			m_pGridFieldComponent->SetRemoveCursor(m_cursorPos);
+			if (m_cursorPos.z > 0) {
+				m_cursorPos.z -= 1;
+				auto pos = gridFieldPos + static_cast<Vector3>(m_cursorPos - Vec3Int(m_pGridFieldComponent->GetSize().x + 1, 0, m_pGridFieldComponent->GetSize().z + 1) / 2);
+				m_pGridFieldComponent->SetRemoveCursor(pos);
+			}
 		}
 		if (InputManager::GetKeyDown(Input::W)) {
-			m_cursorPos.z += 1.0f;
-			m_pGridFieldComponent->SetRemoveCursor(m_cursorPos);
+			if (m_cursorPos.z < m_pGridFieldComponent->GetSize().z - 1) {
+				m_cursorPos.z += 1;
+				auto pos = gridFieldPos + static_cast<Vector3>(m_cursorPos - Vec3Int(m_pGridFieldComponent->GetSize().x + 1, 0, m_pGridFieldComponent->GetSize().z + 1) / 2);
+				m_pGridFieldComponent->SetRemoveCursor(pos);
+			}
 		}
 
 		if (InputManager::GetKeyDown(Input::ENTER)) {

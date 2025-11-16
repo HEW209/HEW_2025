@@ -108,7 +108,7 @@ struct Vec : public VectorStorage<T, N>
 
         for (std::size_t i = 0; i < copyCount; ++i) {
             if constexpr (std::is_integral_v<T> && std::is_floating_point_v<U>) {
-                U eps = (other[i] >= 0) ? EpsilonScalar : -EpsilonScalar;
+                U eps = (other[i] >= 0) ? Vec<U, M>::EpsilonScalar : -Vec<U, M>::EpsilonScalar;
                 data[i] = static_cast<T>(other[i] + eps);
             }
             else {
@@ -221,8 +221,7 @@ struct Vec : public VectorStorage<T, N>
     }
 
     constexpr Vec& operator/=(T scalar) {
-        T inv = static_cast<T>(1) / scalar;
-        for (std::size_t i = 0; i < N; ++i) data[i] *= inv;
+        for (std::size_t i = 0; i < N; ++i) data[i] /= scalar;
         return *this;
     }
 

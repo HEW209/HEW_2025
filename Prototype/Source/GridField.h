@@ -31,6 +31,7 @@ public:
 	void OnDestroy() override;
 
 	void SetSize(Vec3Int size);
+	Vec3Int GetSize() const { return m_gridData.GetSize(); }
 
 	// ブロックがグリッドに少しでも重なっているか
 	bool IsOverlap(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation);
