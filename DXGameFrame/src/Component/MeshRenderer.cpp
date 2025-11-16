@@ -2,7 +2,7 @@
 #include <Component/MeshRenderer.h>
 #include <DirectX/ModelManager.h>
 #include <DirectX/ConstantBuffer.h>
-#include <DirectX/MatrixUtil.h>
+#include <GameFrame/Transform.h>
 #include <DirectX/Geometry.h>
 
 MeshRenderer::MeshRenderer()
@@ -17,10 +17,6 @@ void MeshRenderer::Draw()
 		return;
 
 	// Transformからワールド行列をセット
-	//ConstantBuffer::Instance().SetWorld(
-	//	MatrixUtil::CreateWorldMatrix(GetTransform())
-	//);
-
 	DirectX::XMFLOAT4X4 matrix;
 	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixTranspose(
 		GetTransform()->GetWorldMatrix()));

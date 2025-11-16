@@ -13,7 +13,7 @@ Transform::Transform(GameObject* owner) :
 
 Transform::~Transform()
 {
-	m_pParent->
+	m_pParent->DeleteChild(this);
 
 	for (auto child : m_pChildren)
 	{
@@ -128,9 +128,12 @@ void Transform::SetQuaternion(Quaternion quaternion)
 void Transform::SetParent(Transform* pParent)
 {
 	// Œ³‚Ìe‚©‚çŽ©g‚Ì“o˜^íœ
-	m_pParent->DeleteChild(this);
+	if (m_pParent != nullptr)
+		m_pParent->DeleteChild(this);
 
-	pParent->m_pChildren.emplace_back(this);
+	// V‚µ‚¢eŽqŠÖŒW‚ð\’z
+	m_pParent = pParent;
+	m_pParent->m_pChildren.emplace_back(this);
 }
 
 DirectX::XMMATRIX Transform::GetWorldMatrix()

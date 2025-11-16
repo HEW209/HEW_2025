@@ -8,6 +8,7 @@
 #pragma once
 
 #include <GameFrame/Component.h>
+#include <DirectX/DirectXInclude.h>
 
 /**
  * @brief カメラ情報を扱う
@@ -52,6 +53,18 @@ public:
 	{
 		s_pMainCamera = this;
 	}
+
+	/**
+	 * @brief このカメラからビュー行列を作成する
+	 * @return このカメラのビュー行列
+	 */
+	DirectX::XMFLOAT4X4 GetViewMatrix();
+
+	/**
+	 * @brief このカメラからプロジェクション行列を作成する
+	 * @return このカメラのプロジェクション行列
+	 */
+	DirectX::XMFLOAT4X4 GetProjectionMatrix();
 
 private:
 	/// カメラ設定

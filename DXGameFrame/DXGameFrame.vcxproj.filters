@@ -198,9 +198,6 @@
     <ClInclude Include="include\DirectX\SpriteDrawer.h">
       <Filter>ヘッダー ファイル\DirectX\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="include\DirectX\MatrixUtil.h">
-      <Filter>ヘッダー ファイル\DirectX\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="include\DirectX\Model.h">
       <Filter>ヘッダー ファイル\DirectX\Object</Filter>
     </ClInclude>
@@ -279,9 +276,6 @@
       <Filter>ソース ファイル\DirectX</Filter>
     </ClCompile>
     <ClCompile Include="src\DirectX\Material.cpp">
-      <Filter>ソース ファイル\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DirectX\MatrixUtil.cpp">
       <Filter>ソース ファイル\DirectX</Filter>
     </ClCompile>
     <ClCompile Include="src\DirectX\Mesh.cpp">
