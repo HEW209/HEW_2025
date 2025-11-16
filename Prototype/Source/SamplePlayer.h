@@ -1,7 +1,6 @@
 #pragma once
 
 #include <DXGameFrame.h>
-#include "collider.h"
 
 class SamplePlayer : public Component
 {

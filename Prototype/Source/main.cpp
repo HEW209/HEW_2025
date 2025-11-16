@@ -6,7 +6,6 @@
 #include "Config.h"
 #include <DXGameFrame.h>
 #include "SampleScene.h"
-#include "Collider.h"
 
 //ウィンドウプロシージャ
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPalam);
@@ -140,8 +139,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			InputManager::Update();
 			SceneManager::Execute();
 
-			// 当たり判定チェック
-			CheckCollision();
 		}
 	}
 

@@ -12,7 +12,7 @@ void SamplePlayer::Awake()
 {
 	GameObject* pObj = GetGameObject();
 	GetGameObject()->GetComponent<Collider>()->onCollision = [pObj](GameObject* other) {
-		pObj->GetTransform()->m_scale.y += 0.1;
+		pObj->GetComponent<SamplePlayer>()->m_velocity_y = 0.0f;
 		};
 }
 
@@ -48,9 +48,9 @@ void SamplePlayer::Update()
 
 	//ŽÀÛ‚ÌˆÚ“®
 	GetTransform()->TransLate(move);
-	if (GetTransform()->m_position.y < 0.0f)
+	/*if(GetTransform()->m_position.y < 0.0f)
 	{
 		GetTransform()->m_position.y = 0.0f;
 		m_velocity_y = 0.0f;
-	}
+	}*/
 }
