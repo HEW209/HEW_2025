@@ -172,16 +172,18 @@ bool GridField::CanPlace(const BlockSetData& blockSet, const Vector3& position, 
 
 Vec3Int GridField::CalcGridCoord(const Vector3& position)
 {
+	Vector3 epsilon(0.001f, 0.001f, 0.001f);
 	Vector3 coordFloat = SnapGrid(position - GetGridOrigin());
-	return static_cast<Vec3Int>(coordFloat);
+	return static_cast<Vec3Int>(coordFloat + epsilon);
 }
 
 Vector3 GridField::SnapGrid(const Vector3& position)
 {
-	Vector3 tmp;
-	tmp.x = floor(position.x);
-	tmp.y = floor(position.y);
-	tmp.z = floor(position.z);
+	Vector3 epsilon(0.001f, 0.001f, 0.001f);
+	Vector3 tmp = position + epsilon;
+	tmp.x = floor(tmp.x);
+	tmp.y = floor(tmp.y);
+	tmp.z = floor(tmp.z);
 
 	return tmp;
 }
