@@ -204,6 +204,12 @@
     <ClInclude Include="include\DirectX\MeshGroup.h">
       <Filter>ヘッダー ファイル\DirectX\Object</Filter>
     </ClInclude>
+    <ClInclude Include="include\System\ColliderSystem.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Component\Collider.h">
+      <Filter>ヘッダー ファイル\Component</Filter>
+    </ClInclude>
     <ClInclude Include="include\Component\DirectionalLight.h">
       <Filter>ヘッダー ファイル\Component</Filter>
     </ClInclude>
@@ -278,6 +284,9 @@
     <ClCompile Include="src\DirectX\Material.cpp">
       <Filter>ソース ファイル\DirectX</Filter>
     </ClCompile>
+    <ClCompile Include="src\DirectX\MatrixUtil.cpp">
+      <Filter>ソース ファイル\DirectX</Filter>
+    </ClCompile>
     <ClCompile Include="src\DirectX\Mesh.cpp">
       <Filter>ソース ファイル\DirectX</Filter>
     </ClCompile>
@@ -319,6 +328,12 @@
     </ClCompile>
     <ClCompile Include="src\DirectX\Model.cpp">
       <Filter>ソース ファイル\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\ColliderSystem.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Component\Collider.cpp">
+      <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
     <ClCompile Include="src\Component\DirectionalLight.cpp">
       <Filter>ソース ファイル\Component</Filter>

@@ -37,7 +37,7 @@ void SampleScene::Init()
 		obj->AddComponent<SamplePlayer>();
 		auto transform = obj->GetTransform();
 		transform->m_scale = { 1.0f, 1.0f, 1.0f };
-		transform->m_position = { 0.0f, 2.0f, 0.0f };
+		transform->m_position = { 2.0f, 10.0f, 0.0f };
 		//transform->m_scale = { 0.1f, 0.1f, 0.1f };
 		transform->m_scale = { 1.0f, 1.0f, 1.0f };
 		transform->m_position = { 0.0f, 5.0f, 0.0f };
@@ -74,6 +74,9 @@ void SampleScene::Init()
 		transform->m_scale = { 1.0f, 1.0f, 1.0f };
 		obj->AddComponent<Collider>();
 		transform->m_scale = { 10.0f, 1.0f, 10.0f };
+		transform->m_scale = { 10.0f, 1.0f, 10.0f };
+		transform->SetEulerAngle(0.0f, 0.0f, 30.0f);
+		auto collider = obj->AddComponent<Collider>();
+		collider->m_scale = { 10.0f, 1.0f, 10.0f };
 	}
-
 }

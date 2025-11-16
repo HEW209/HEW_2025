@@ -67,6 +67,8 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Collider.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Collider.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>

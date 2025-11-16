@@ -12,7 +12,7 @@ void SamplePlayer::Awake()
 {
 	GameObject* pObj = GetGameObject();
 	GetGameObject()->GetComponent<Collider>()->onCollision = [pObj](GameObject* other) {
-		pObj->GetTransform()->m_scale.y += 0.1;
+		pObj->GetComponent<SamplePlayer>()->m_velocity_y = 0.0f;
 		};
 }
 
