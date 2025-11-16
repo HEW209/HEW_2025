@@ -28,6 +28,11 @@ private:
 
 public:
 	GridBlockData(size_t width, size_t height, size_t depth);
+	GridBlockData(Vec3Int size) : GridBlockData(size.x, size.y, size.z) {}
+	GridBlockData() : GridBlockData(0, 0, 0) {}
+
+	Vec3Int GetSize() { return m_size; }
+	BlockIdType GetId(const Vec3Int& position);
 
 	// ブロックを置ける場合はtrueを返す
 	bool CanPlace(const BlockSetData& blockSetData, const Vec3Int& position, const Quaternion& rotation);
@@ -37,6 +42,8 @@ public:
 
 	// ブロックを取り除く。戻り値は取り除いたブロックのId。ブロックが存在しない場合は0を返す
 	BlockIdType RemoveBlock(const Vec3Int position);
+
+	std::optional<BlockSetAndRotationData> RemoveBlock(BlockIdType blockId);
 
 	// 二次元の形状（シルエット）を取得
 	// projectionAxis: 0=X, 1=Y, 2=Z

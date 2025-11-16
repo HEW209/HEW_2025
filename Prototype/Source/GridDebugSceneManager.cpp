@@ -4,15 +4,21 @@
 
 
 GridDebugSceneManager::GridDebugSceneManager()
-	: m_gridData(2, 2, 2)
+	: m_isPlacing(false)
+	, m_isRemoving(false)
 {
 }
 
 void GridDebugSceneManager::Start()
 {
 	m_pCurrentBlock = SceneManager::GetActiveScene()->CreateGameObject();
-	m_pCurrentBlockComponent = m_pCurrentBlock->AddComponent<BlockObject>();
 	m_pCurrentBlock->GetTransform()->m_position = currentBlockPos;
+	m_pCurrentBlockComponent = m_pCurrentBlock->AddComponent<BlockObject>();
+
+	m_pGridField = SceneManager::GetActiveScene()->CreateGameObject();
+	m_pGridField->GetTransform()->m_position = gridFieldPos;
+	m_pGridFieldComponent = m_pGridField->AddComponent<GridField>();
+	m_pGridFieldComponent->SetSize({ 4, 4, 4 });
 }
 
 void GridDebugSceneManager::Update()
@@ -33,59 +39,97 @@ void GridDebugSceneManager::Update()
 		}
 	}
 
-
-	if (InputManager::GetKeyHold(Input::SPACE))
-	{
-		if (InputManager::GetKeyDown(Input::KEY_1)) {
-			PlaceBlock({ 0, 0, 0 });
-		}
-		if (InputManager::GetKeyDown(Input::KEY_2)) {
-			PlaceBlock({ 1, 0, 0 });
-		}
-		if (InputManager::GetKeyDown(Input::KEY_3)) {
-			PlaceBlock({ 0, 0, 1 });
-		}
-		if (InputManager::GetKeyDown(Input::KEY_4)) {
-			PlaceBlock({ 1, 0, 1 });
-		}
-		if (InputManager::GetKeyDown(Input::KEY_5)) {
-			PlaceBlock({ 0, 1, 0 });
-		}
-		if (InputManager::GetKeyDown(Input::KEY_6)) {
-			PlaceBlock({ 1, 1, 0 });
-		}
-		if (InputManager::GetKeyDown(Input::KEY_7)) {
-			PlaceBlock({ 0, 1, 1 });
-		}
-		if (InputManager::GetKeyDown(Input::KEY_8)) {
-			PlaceBlock({ 1, 1, 1 });
+	if (InputManager::GetKeyDown(Input::SPACE)) {
+		if (!m_isPlacing) {
+			if (m_isRemoving) {
+				m_pGridFieldComponent->ResetRemoveCursor();
+			}
+			m_isPlacing = true;
+			m_cursorPos = gridFieldPos + Vector3{0.0f, 1.0f, 0.0f};
+			m_pGridFieldComponent->SetPlaceCursor(m_pCurrentBlockComponent->GetBlockSet(), m_cursorPos, m_pCurrentBlock->GetTransform()->GetQuaternion());
 		}
 	}
-	else if (InputManager::GetKeyHold(Input::SHIFT))
+	else if (InputManager::GetKeyDown(Input::SHIFT)) {
+		if (!m_isPlacing && !m_isRemoving) {
+			m_isRemoving = true;
+			m_cursorPos = gridFieldPos + Vector3{ 0.0f, 1.0f, 0.0f };
+			m_pGridFieldComponent->SetRemoveCursor(m_cursorPos);
+		}
+	}
+
+	if (InputManager::GetKeyUp(Input::SPACE)) {
+		if (m_isPlacing) {
+			m_isPlacing = false;
+			m_pGridFieldComponent->ResetPlaceCursor();
+		}
+	}
+	else if (InputManager::GetKeyUp(Input::SHIFT)) {
+		if (m_isRemoving) {
+			m_isRemoving = false;
+			m_pGridFieldComponent->ResetRemoveCursor();
+		}
+	}
+
+	if (m_isPlacing)
 	{
-		if (InputManager::GetKeyDown(Input::KEY_1)) {
-			RemoveBlock({ 0, 0, 0 });
+		if (InputManager::GetKeyDown(Input::A)) {
+			m_cursorPos.x -= 1.0f;
+			m_pGridFieldComponent->SetPlaceCursor(m_pCurrentBlockComponent->GetBlockSet(), m_cursorPos, m_pCurrentBlock->GetTransform()->GetQuaternion());
 		}
-		if (InputManager::GetKeyDown(Input::KEY_2)) {
-			RemoveBlock({ 1, 0, 0 });
+		if (InputManager::GetKeyDown(Input::D)) {
+			m_cursorPos.x += 1.0f;
+			m_pGridFieldComponent->SetPlaceCursor(m_pCurrentBlockComponent->GetBlockSet(), m_cursorPos, m_pCurrentBlock->GetTransform()->GetQuaternion());
 		}
-		if (InputManager::GetKeyDown(Input::KEY_3)) {
-			RemoveBlock({ 0, 0, 1 });
+		if (InputManager::GetKeyDown(Input::Q)) {
+			m_cursorPos.y -= 1.0f;
+			m_pGridFieldComponent->SetPlaceCursor(m_pCurrentBlockComponent->GetBlockSet(), m_cursorPos, m_pCurrentBlock->GetTransform()->GetQuaternion());
 		}
-		if (InputManager::GetKeyDown(Input::KEY_4)) {
-			RemoveBlock({ 1, 0, 1 });
+		if (InputManager::GetKeyDown(Input::E)) {
+			m_cursorPos.y += 1.0f;
+			m_pGridFieldComponent->SetPlaceCursor(m_pCurrentBlockComponent->GetBlockSet(), m_cursorPos, m_pCurrentBlock->GetTransform()->GetQuaternion());
 		}
-		if (InputManager::GetKeyDown(Input::KEY_5)) {
-			RemoveBlock({ 0, 1, 0 });
+		if (InputManager::GetKeyDown(Input::S)) {
+			m_cursorPos.z -= 1.0f;
+			m_pGridFieldComponent->SetPlaceCursor(m_pCurrentBlockComponent->GetBlockSet(), m_cursorPos, m_pCurrentBlock->GetTransform()->GetQuaternion());
 		}
-		if (InputManager::GetKeyDown(Input::KEY_6)) {
-			RemoveBlock({ 1, 1, 0 });
+		if (InputManager::GetKeyDown(Input::W)) {
+			m_cursorPos.z += 1.0f;
+			m_pGridFieldComponent->SetPlaceCursor(m_pCurrentBlockComponent->GetBlockSet(), m_cursorPos, m_pCurrentBlock->GetTransform()->GetQuaternion());
 		}
-		if (InputManager::GetKeyDown(Input::KEY_7)) {
-			RemoveBlock({ 0, 1, 1 });
+
+		if (InputManager::GetKeyDown(Input::ENTER)) {
+			PlaceBlock();
 		}
-		if (InputManager::GetKeyDown(Input::KEY_8)) {
-			RemoveBlock({ 1, 1, 1 });
+	}
+	else if (m_isRemoving)
+	{
+		if (InputManager::GetKeyDown(Input::A)) {
+			m_cursorPos.x -= 1.0f;
+			m_pGridFieldComponent->SetRemoveCursor(m_cursorPos);
+		}
+		if (InputManager::GetKeyDown(Input::D)) {
+			m_cursorPos.x += 1.0f;
+			m_pGridFieldComponent->SetRemoveCursor(m_cursorPos);
+		}
+		if (InputManager::GetKeyDown(Input::Q)) {
+			m_cursorPos.y -= 1.0f;
+			m_pGridFieldComponent->SetRemoveCursor(m_cursorPos);
+		}
+		if (InputManager::GetKeyDown(Input::E)) {
+			m_cursorPos.y += 1.0f;
+			m_pGridFieldComponent->SetRemoveCursor(m_cursorPos);
+		}
+		if (InputManager::GetKeyDown(Input::S)) {
+			m_cursorPos.z -= 1.0f;
+			m_pGridFieldComponent->SetRemoveCursor(m_cursorPos);
+		}
+		if (InputManager::GetKeyDown(Input::W)) {
+			m_cursorPos.z += 1.0f;
+			m_pGridFieldComponent->SetRemoveCursor(m_cursorPos);
+		}
+
+		if (InputManager::GetKeyDown(Input::ENTER)) {
+			RemoveBlock();
 		}
 	}
 	else
@@ -209,44 +253,20 @@ void GridDebugSceneManager::Update()
 	}
 }
 
-void GridDebugSceneManager::PlaceBlock(Vec3Int position)
+void GridDebugSceneManager::PlaceBlock()
 {
-	auto blockId = m_gridData.PlaceBlock(m_pCurrentBlockComponent->GetBlockSet(), position, m_pCurrentBlock->GetTransform()->GetQuaternion());
-
-	if (!blockId) {
-		return;
+	if (m_pGridFieldComponent->PlaceBlock()) {
+		m_pCurrentBlockComponent->SetBlockSet(BlockSetData{});
+		m_pCurrentBlock->GetTransform()->SetEulerAngle(0.0f, 0.0f, 0.0f);
 	}
-
-	Vector3 pos = gridFieldPos;
-	pos.x += position.x;
-	pos.y += position.y;
-	pos.z += position.z;
-	
-	m_pCurrentBlock->GetTransform()->m_position = pos;
-
-	if (m_pPlacedBlocks.size() < blockId) {
-		m_pPlacedBlocks.resize(blockId);
-	}
-
-	m_pPlacedBlocks[blockId - 1] = m_pCurrentBlock;
-
-	m_pCurrentBlock = SceneManager::GetActiveScene()->CreateGameObject();
-	m_pCurrentBlockComponent = m_pCurrentBlock->AddComponent<BlockObject>();
-	m_pCurrentBlock->GetTransform()->m_position = currentBlockPos;
 }
 
-void GridDebugSceneManager::RemoveBlock(Vec3Int position)
+void GridDebugSceneManager::RemoveBlock()
 {
-	auto blockId = m_gridData.RemoveBlock(position);
+	auto data = m_pGridFieldComponent->RemoveBlock();
 
-	if (!blockId) {
-		return;
+	if (data) {
+		m_pCurrentBlockComponent->SetBlockSet(data->blockSet);
+		m_pCurrentBlock->GetTransform()->SetQuaternion(data->rotation);
 	}
-
-	m_pCurrentBlock->Destroy();
-	m_pCurrentBlock = m_pPlacedBlocks[blockId - 1];
-	m_pCurrentBlockComponent = m_pCurrentBlock->GetComponent<BlockObject>();
-	m_pPlacedBlocks[blockId - 1] = nullptr;
-
-	m_pCurrentBlock->GetTransform()->m_position = currentBlockPos;
 }

@@ -36,7 +36,7 @@ template <typename T> concept HasU = requires(T t) { t.u; };
 template <typename T> concept HasV = requires(T t) { t.v; };
 
 template <typename T>
-concept VectorOrColorLike = (HasX<T> || HasR<T> || HasU<T>);
+concept VectorLike = (HasX<T> || HasR<T> || HasU<T>);
 
 
 // Vec用ストレージ
@@ -114,7 +114,7 @@ struct Vec : public VectorStorage<T, N>
 
     // 外部クラスからの取り込みコンストラクタ
     template <typename Other>
-    requires VectorOrColorLike<Other> && (!std::is_same_v<Other, Vec>)
+    requires VectorLike<Other> && (!std::is_same_v<Other, Vec>)
     explicit constexpr Vec(const Other& other, T fillValue = static_cast<T>(0))
         : VectorStorage<T, N>{}
     {
@@ -143,6 +143,37 @@ struct Vec : public VectorStorage<T, N>
             else if constexpr (HasA<Other>) data[3] = static_cast<T>(other.a);
             else                            data[3] = fillValue;
         }
+    }
+
+    // 外部クラスへの変換
+    template <typename Other>
+        requires VectorLike<Other>
+    explicit constexpr operator Other() const {
+        Other result{};
+
+        if constexpr (N >= 1) {
+            if constexpr (HasX<Other>)      result.x = static_cast<decltype(Other::x)>(this->data[0]);
+            else if constexpr (HasR<Other>) result.r = static_cast<decltype(Other::r)>(this->data[0]);
+            else if constexpr (HasU<Other>) result.u = static_cast<decltype(Other::u)>(this->data[0]);
+        }
+
+        if constexpr (N >= 2) {
+            if constexpr (HasY<Other>)      result.y = static_cast<decltype(Other::y)>(this->data[1]);
+            else if constexpr (HasG<Other>) result.g = static_cast<decltype(Other::g)>(this->data[1]);
+            else if constexpr (HasV<Other>) result.v = static_cast<decltype(Other::v)>(this->data[1]);
+        }
+
+        if constexpr (N >= 3) {
+            if constexpr (HasZ<Other>)      result.z = static_cast<decltype(Other::z)>(this->data[2]);
+            else if constexpr (HasB<Other>) result.b = static_cast<decltype(Other::b)>(this->data[2]);
+        }
+
+        if constexpr (N >= 4) {
+            if constexpr (HasW<Other>)      result.w = static_cast<decltype(Other::w)>(this->data[3]);
+            else if constexpr (HasA<Other>) result.a = static_cast<decltype(Other::a)>(this->data[3]);
+        }
+
+        return result;
     }
 
     // --- アクセサ ---
@@ -383,6 +414,7 @@ struct Vec : public VectorStorage<T, N>
         return v;
     }
 };
+
 
 // エイリアス
 using Vec2 = Vec<float, 2>;

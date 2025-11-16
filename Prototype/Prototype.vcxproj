@@ -142,6 +142,8 @@
     <ClInclude Include="Source\BlockObject.h" />
     <ClInclude Include="Source\BlockData.h" />
     <ClInclude Include="Source\Config.h" />
+    <ClInclude Include="Source\GridField.h" />
+    <ClInclude Include="Source\PlaceCursor.h" />
     <ClInclude Include="Source\PlayerMove.h" />
     <ClInclude Include="Source\PlayerMoveDebugScene.h" />
     <ClInclude Include="Source\DynamicDimensionalArray.h" />
@@ -153,18 +155,22 @@
     <ClInclude Include="Source\SamplePlayer.h" />
     <ClInclude Include="Source\SampleScene.h" />
     <ClInclude Include="Source\Vec.h" />
+    <ClInclude Include="Source\VecUtil.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\BlockObject.cpp" />
     <ClCompile Include="Source\GridBlockData.cpp" />
     <ClCompile Include="Source\GridDebugScene.cpp" />
     <ClCompile Include="Source\GridDebugSceneManager.cpp" />
+    <ClCompile Include="Source\GridField.cpp" />
     <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\PlaceCursor.cpp" />
     <ClCompile Include="Source\PlayerMove.cpp" />
     <ClCompile Include="Source\PlayerMoveDebugScene.cpp" />
     <ClCompile Include="Source\SampleCamera.cpp" />
     <ClCompile Include="Source\SamplePlayer.cpp" />
     <ClCompile Include="Source\SampleScene.cpp" />
+    <ClCompile Include="Source\VecUtil.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
