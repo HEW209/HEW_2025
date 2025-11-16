@@ -212,7 +212,7 @@ bool GridField::IsOverlapBlockImpl(const Vec3& pos, const Vec3& start, const Vec
 bool GridField::IsInsideBlockImpl(const Vec3& pos, const Vec3& start, const Vec3& end)
 {
 	for (int i = 0; i < 3; ++i) {
-		if (pos[i] <= start[i] || end[i] < pos[i]) {
+		if (pos[i] < start[i] || end[i] <= pos[i]) {
 			return false;
 		}
 	}

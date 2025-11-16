@@ -45,14 +45,14 @@ void GridDebugSceneManager::Update()
 				m_pGridFieldComponent->ResetRemoveCursor();
 			}
 			m_isPlacing = true;
-			m_cursorPos = gridFieldPos + Vector3{0.0f, 1.0f, 0.0f};
+			m_cursorPos = gridFieldPos;
 			m_pGridFieldComponent->SetPlaceCursor(m_pCurrentBlockComponent->GetBlockSet(), m_cursorPos, m_pCurrentBlock->GetTransform()->GetQuaternion());
 		}
 	}
 	else if (InputManager::GetKeyDown(Input::SHIFT)) {
 		if (!m_isPlacing && !m_isRemoving) {
 			m_isRemoving = true;
-			m_cursorPos = gridFieldPos + Vector3{ 0.0f, 1.0f, 0.0f };
+			m_cursorPos = gridFieldPos;
 			m_pGridFieldComponent->SetRemoveCursor(m_cursorPos);
 		}
 	}
