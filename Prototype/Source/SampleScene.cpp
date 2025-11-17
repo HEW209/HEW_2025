@@ -29,9 +29,9 @@ void SampleScene::Init()
 	{
 		auto parent = CreateGameObject();
 		auto obj = CreateGameObject();
+		/*auto renderer = obj->AddComponent<MeshRenderer>();
+		renderer->LoadModel("Assets/Model/HEW/FBX/atama.fbx");*/
 		//auto renderer = obj->AddComponent<MeshRenderer>();
-		//renderer->LoadModel("Assets/Model/HEW/FBX/atama.fbx");
-		auto renderer = obj->AddComponent<MeshRenderer>();
 		//renderer->LoadModel("Assets/Model/karubi/‚Ü‚¯‚ñŽ®ÔŒ©‚©‚é‚Ñ•Pˆß‘•ver1.0.pmx");
 		obj->AddComponent<Collider>();
 		obj->AddComponent<SamplePlayer>();

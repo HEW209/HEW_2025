@@ -101,7 +101,26 @@ public:
 	// ローカル座標
 	Vector3 m_positionOffset;
 	Vector3 m_scale;
+
+	/**
+	 * @brief  当たり判定が接触したら呼ばれる関数
+	 *			
+	 *			コンストラクタではなくAwake()関数で定義する事!!!!!!!!!!!!!!!
+	 *			Awake()
+	 *			{
+	 *				GameObject* pObj = GetGameObject();
+	 *				GetGameObject()->GetComponent<Collider>()->OnCollisionEnter = [pObj](GameObject* other) {
+	 *					// やりたい処理 例えば↓
+	 *					pObj->GetComponent<SamplePlayer>()->m_velocity_y = 0.0f;
+	 *					// ↑みたいな感じで書きます
+	 *				};
+	 *			}
+	 * 
+	 */
 	std::function<void(GameObject* other)> OnCollisionEnter;
+
+	// trueの時衝突応答で動かさない
+	bool IsStatic;
 
 private:
 

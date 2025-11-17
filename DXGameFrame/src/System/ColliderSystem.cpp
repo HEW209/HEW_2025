@@ -2,62 +2,76 @@
 #include <Utility/Utility.h>
 #include <GameFrame/Transform.h>
 
+constexpr int ITER_NUM = 4;                 // 反復処理の回数(処理重かったらなくす)
+constexpr float PENETRATION_SLOP = 0.01f;   // 震えるのをふせぐめり込み許容値
+
 void ColliderSystem::Check()
 {
-	// colliderのデータ全部取り出す
-	std::vector<Collider::ObbData> obbData;
-	obbData.clear();
-	obbData.reserve(m_colliders.size());
+    for (int iter = 0; iter < ITER_NUM; ++iter)
+    {
+	    // colliderのデータ全部取り出す
+	    std::vector<Collider::ObbData> obbData;
+	    obbData.reserve(m_colliders.size());
 
-	std::vector<Collider*>::iterator colliderIt = m_colliders.begin();
-	for (; colliderIt != m_colliders.end(); ++colliderIt)
-	{
-		Collider::ObbData data;
-		Vector3 vector;
-		Quaternion colliderQuaternion = (*colliderIt)->GetQuaternion();
-		Quaternion objectQuaternion = (*colliderIt)->GetTransform()->GetQuaternion();
+	    std::vector<Collider*>::iterator colliderIt = m_colliders.begin();
+	    for (; colliderIt != m_colliders.end(); ++colliderIt)
+	    {
+	    	Collider::ObbData data;
+	    	Vector3 vector;
+	    	Quaternion colliderQuaternion = (*colliderIt)->GetQuaternion();
+	    	Quaternion objectQuaternion = (*colliderIt)->GetTransform()->GetQuaternion();
 
-		// ローカルのx,y,z軸をワールドベクトルにする
-		vector = { 1.0f,0.0f,0.0f };
-		data.axis.x = colliderQuaternion * objectQuaternion * vector;
-		vector = { 0.0f,1.0f,0.0f };
-		data.axis.y = colliderQuaternion * objectQuaternion * vector;
-		vector = { 0.0f,0.0f,1.0f };
-		data.axis.z = colliderQuaternion * objectQuaternion * vector;
+	    	// ローカルのx,y,z軸をワールドベクトルにする
+	    	vector = { 1.0f,0.0f,0.0f };
+	    	data.axis.x = (objectQuaternion * colliderQuaternion) * vector;
+	    	vector = { 0.0f,1.0f,0.0f };
+            data.axis.y = (objectQuaternion * colliderQuaternion) * vector;
+	    	vector = { 0.0f,0.0f,1.0f };
+            data.axis.z = (objectQuaternion * colliderQuaternion) * vector;
 
-		// ワールド座標に変える
-		data.pos = (*colliderIt)->GetTransform()->m_position + (*colliderIt)->GetPosition();
+	    	// ワールド座標に変える
+            data.pos = (*colliderIt)->GetTransform()->GetPosition() + (objectQuaternion * colliderQuaternion)* (*colliderIt)->GetPosition();
 
-		// スケールも移す
-		data.scale = (*colliderIt)->GetScale();
+	    	// スケールも移す
+	    	data.scale = (*colliderIt)->GetScale();
 
-		obbData.push_back(data);
-	}
+	    	obbData.push_back(data);
+	    }
 
-    Vector3 mtv;            // 移動させるためのベクトル
+        Vector3 mtv;                    // 移動させるためのベクトル
 
-    // 全ての組み合わせをチェックする
-	for (int i = 0; i < obbData.size(); ++i)
-	{
-		for (int j = i + 1; j < obbData.size(); ++j)
-		{
-			if (CheckCollisionOBB(obbData[i], obbData[j],&mtv))
-			{
-				if (m_colliders[i]->OnCollisionEnter)
-				{
-					m_colliders[i]->OnCollisionEnter(m_colliders[j]->GetGameObject());
-				}
-				if (m_colliders[j]->OnCollisionEnter)
-				{
-					m_colliders[j]->OnCollisionEnter(m_colliders[i]->GetGameObject());
-				}
+        // 全ての組み合わせをチェックする
+	    for (int i = 0; i < obbData.size(); ++i)
+	    {
+	    	for (int j = i + 1; j < obbData.size(); ++j)
+	    	{
+	    		if (CheckCollisionOBB(obbData[i], obbData[j],&mtv))
+	    		{
+	    			if (m_colliders[i]->OnCollisionEnter && iter == 0)
+	    			{
+	    				m_colliders[i]->OnCollisionEnter(m_colliders[j]->GetGameObject());
+	    			}
+	    			if (m_colliders[j]->OnCollisionEnter && iter == 0)
+	    			{
+	    				m_colliders[j]->OnCollisionEnter(m_colliders[i]->GetGameObject());
+	    			}
 
-                // 衝突したら動かす
-                m_colliders[i]->GetTransform()->TransLate(mtv);
-                obbData[i].pos += mtv;
-			}
-		}
-	}
+                    // 衝突したら動かす
+                    if (m_colliders[i]->IsStatic != m_colliders[j]->IsStatic)
+                    {
+                        int idx = (m_colliders[i]->IsStatic) ? j : i;   // 動かす方を選ぶ
+
+                        float dir = (idx == i) ? 1.0f : -1.0f;          // 向き調整
+
+                        mtv *= dir;
+
+                        m_colliders[idx]->GetTransform()->Translate(mtv);
+                        obbData[idx].pos += mtv;
+                    }
+	    		}
+	    	}
+	    }
+    }
 }
 
 void ColliderSystem::Register(Collider* pCollider)
@@ -105,7 +119,7 @@ bool ColliderSystem::CheckCollisionOBB(Collider::ObbData data, Collider::ObbData
         Vector3 L = axisList[i];
 
         // ゼロベクトルに近い軸はテストをスキップ (ほぼ平行な軸の外積)
-        if (L.Magnitude() < FLT_EPSILON) {
+        if (L.Magnitude() * L.Magnitude() < FLT_EPSILON) {
             continue;
         }
         L = L.Normalized(); // 軸を正規化
@@ -141,6 +155,7 @@ bool ColliderSystem::CheckCollisionOBB(Collider::ObbData data, Collider::ObbData
         for (int j = 0; j < 3; ++j)
         {
             axisList[idx] = Cross(axisList[i], axisList[j + 3]);
+            idx++;
         }
     }
 
@@ -149,7 +164,7 @@ bool ColliderSystem::CheckCollisionOBB(Collider::ObbData data, Collider::ObbData
         Vector3 L = axisList[i];
 
         // ゼロベクトルに近い軸はテストをスキップ (ほぼ平行な軸の外積)
-        if (L.Magnitude() < FLT_EPSILON) {
+        if (L.Magnitude() * L.Magnitude() < FLT_EPSILON) {
             continue;
         }
         L = L.Normalized(); // 軸を正規化
@@ -178,6 +193,9 @@ bool ColliderSystem::CheckCollisionOBB(Collider::ObbData data, Collider::ObbData
             mtvAxis = L;
         }
     }
+
+    // めり込み許容値を適用
+    minOverlap = max(0.0f, minOverlap - PENETRATION_SLOP);
 
     // (1) MTVの計算
     *pMtv = mtvAxis * minOverlap;
