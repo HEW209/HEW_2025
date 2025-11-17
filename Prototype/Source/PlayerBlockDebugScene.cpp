@@ -73,6 +73,11 @@ void PlayerBlockDebugScene::Init()
 
 	}
 	
+	{//ƒ‰ƒCƒg
+		auto obj = CreateGameObject();
+		obj->AddComponent<DirectionalLight>();
+		obj->GetTransform()->SetEulerAngle(50.0f, -30.0f, 0.0f);
+	}
 }
 
 

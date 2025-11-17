@@ -156,9 +156,28 @@ void PlayerBlockHandler::Update()
 	
 	Vector3 placeCursorPos = playerTransform->GetPosition() + playerTransform->GetQuaternion() * placeCursorOffset; 
 
-	PlayerBlockDebugSceneManager::GetInstance()->GetGridField()->
-		SetPlaceCursor(m_pBlockObject->GetBlockSet(), playerTransform->GetPosition(), blockTransform->GetQuaternion());
+	GridField* pGridField = PlayerBlockDebugSceneManager::GetInstance()->GetGridField();
 
+	pGridField->SetPlaceCursor(m_pBlockObject->GetBlockSet(), placeCursorPos, blockTransform->GetQuaternion());
+
+	if (InputManager::GetKeyDown(Input::Q)) {
+
+		//グリッド内かどうかの判定
+		if (pGridField->IsOverlap(m_pBlockObject->GetBlockSet(), placeCursorPos, blockTransform->GetQuaternion())) 
+		{
+			//ブロックを初期化してなくす
+			if (pGridField->PlaceBlock()) {
+
+				m_pBlockObject->SetBlockSet(BlockSetData{});
+
+			}
+		}
+		else {
+			//グリッド外の場合はワールドに配置する。
+
+		}
+		
+	}
 }
 
 void PlayerBlockHandler::TryPlaceBlock()
