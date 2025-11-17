@@ -34,7 +34,6 @@
     <ClInclude Include="include\DirectX\DirectXInclude.h" />
     <ClInclude Include="include\DirectX\Geometry.h" />
     <ClInclude Include="include\DirectX\Material.h" />
-    <ClInclude Include="include\DirectX\MatrixUtil.h" />
     <ClInclude Include="include\DirectX\Mesh.h" />
     <ClInclude Include="include\DirectX\MeshGroup.h" />
     <ClInclude Include="include\DirectX\Model.h" />
@@ -82,7 +81,6 @@
     <ClCompile Include="src\DirectX\Direct3D.cpp" />
     <ClCompile Include="src\DirectX\Geometry.cpp" />
     <ClCompile Include="src\DirectX\Material.cpp" />
-    <ClCompile Include="src\DirectX\MatrixUtil.cpp" />
     <ClCompile Include="src\DirectX\Mesh.cpp" />
     <ClCompile Include="src\DirectX\Model.cpp" />
     <ClCompile Include="src\DirectX\PipelineState.cpp" />

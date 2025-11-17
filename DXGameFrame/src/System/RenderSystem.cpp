@@ -2,7 +2,7 @@
 #include <System/RenderSystem.h>
 #include <GameFrame/GameObject.h>
 #include <DirectX/Direct3D.h>
-#include <DirectX/MatrixUtil.h>
+#include <Component/Camera.h>
 #include <DirectX/ConstantBuffer.h>
 #include <Component/DirectionalLight.h>
 #include <algorithm>
@@ -19,11 +19,11 @@ void RenderSystem::DrawAll()
 	Camera* pMainCamera = Camera::GetMain();
 
 	//ビュー行列設定
-	DirectX::XMFLOAT4X4 view = MatrixUtil::CreateViewMatrix(pMainCamera);
+	DirectX::XMFLOAT4X4 view = pMainCamera->GetViewMatrix();
 	ConstantBuffer::Instance().SetView(view);
 
 	//プロジェクション行列設定
-	DirectX::XMFLOAT4X4 projection = MatrixUtil::CreateProjectionMatrix(pMainCamera);
+	DirectX::XMFLOAT4X4 projection = pMainCamera->GetProjectionMatrix();
 	ConstantBuffer::Instance().SetProjection(projection);
 
 	// ライト設定
@@ -31,6 +31,14 @@ void RenderSystem::DrawAll()
 	if (pDirLight != nullptr)
 	{
 		ConstantBuffer::Light light = pDirLight->GetLightData();
+		ConstantBuffer::Instance().SetLight(light);
+	}
+	else
+	{
+		ConstantBuffer::Light light;
+		light.lightDir = { 0.0f, -1.0f, 0.0f };
+		light.lightColor = { 1.0f, 1.0f, 1.0f };
+		light.ambientColor = { 0.4f, 0.4f, 0.4f };
 		ConstantBuffer::Instance().SetLight(light);
 	}
 

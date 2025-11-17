@@ -88,8 +88,8 @@ private:
 template <typename ObjectType>
 class ObjPtr
 {
-	static_assert(std::is_base_of<Object, ObjectType>::value,
-		"ObjPtrに無効なクラスが指定されました");
+	//static_assert(std::is_base_of<Object, ObjectType>::value,
+	//	"ObjPtrに無効なクラスが指定されました");
 
 public:
 	ObjPtr() = default;

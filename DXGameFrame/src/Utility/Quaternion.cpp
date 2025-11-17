@@ -60,6 +60,11 @@ Vector3 Quaternion::ToEuler() const
     return euler;
 }
 
+DirectX::XMVECTOR Quaternion::ToXMVector()
+{
+    return DirectX::XMVectorSet(x, y, z, w);
+}
+
 Quaternion Quaternion::Euler(Vector3 euler)
 {
     return Quaternion::Euler(euler.x, euler.y, euler.z);
