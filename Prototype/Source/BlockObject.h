@@ -32,6 +32,20 @@ public:
 
 	void SetSelect(bool value);
 
+	/**
+	 * @brief ブロックが地面に設置した際の原点のY軸オフセットを取得する
+	 * @note 回転を考慮し、最も低いブロックの頂点がY=0になるようにするためのY軸オフセットを計算します。
+	 * @return 地面に設置するためのY軸オフセット
+	 */
+	float GetGroundYOffset();
+
+	/**
+	 * @brief ブロックが地面に設置した際の原点のオフセットを取得する
+	 * @note 回転を考慮し、最も低いブロックの頂点がY=0になるようにするためのオフセットを計算します。
+	 * @return 地面に設置するためのオフセット (Vector3(0.0f, offset, 0.0f))
+	 */
+	Vector3 GetGroundOffset();
+
 private:
 	BlockSetData m_blockSet;
 	std::vector<ObjPtr<GameObject>> m_pBlocks;

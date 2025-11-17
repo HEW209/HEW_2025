@@ -51,3 +51,51 @@ void BlockObject::SetSelect(bool value)
 		}
 	}
 }
+
+float BlockObject::GetGroundYOffset()
+{
+	if (m_blockSet.blocks.empty()) {
+		return 0.0f;
+	}
+
+	// ブロック（立方体）の中心から見た8つの頂点へのオフセット
+	const std::vector<Vector3> cornerOffsets = {
+		{ -0.5f, -0.5f, -0.5f },
+		{  0.5f, -0.5f, -0.5f },
+		{ -0.5f,  0.5f, -0.5f },
+		{  0.5f,  0.5f, -0.5f },
+		{ -0.5f, -0.5f,  0.5f },
+		{  0.5f, -0.5f,  0.5f },
+		{ -0.5f,  0.5f,  0.5f },
+		{  0.5f,  0.5f,  0.5f }
+	};
+
+	float minY = (std::numeric_limits<float>::max)();
+
+	const Quaternion rotation = GetTransform()->GetQuaternion();
+
+	for (const auto& blockPos : m_blockSet.blocks) {
+		// ブロックの中心座標
+		const Vector3 center(static_cast<float>(blockPos.x), static_cast<float>(blockPos.y), static_cast<float>(blockPos.z));
+
+		for (const auto& offset : cornerOffsets) {
+			// ブロックの頂点座標
+			Vector3 corner = center + offset;
+
+			Vector3 rotatedCorner = rotation * corner;
+
+			if (rotatedCorner.y < minY) {
+				minY = rotatedCorner.y;
+			}
+		}
+	}
+
+	return (minY == (std::numeric_limits<float>::max)()) ? 0.0f : -minY;
+}
+
+Vector3 BlockObject::GetGroundOffset()
+{
+	const float yOffset = GetGroundYOffset();
+
+	return Vector3(0.0f, yOffset, 0.0f);
+}
