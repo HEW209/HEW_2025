@@ -195,7 +195,7 @@ Vector3 GridField::GetGridOrigin()
 	tmp.y = 0.0f;
 	tmp *= -0.5f;
 
-	return GetTransform()->GetWorldPosition() + tmp;
+	return GetTransform()->GetPosition(Space::WORLD) + tmp;
 }
 
 bool GridField::IsOverlapBlockImpl(const Vec3& pos, const Vec3& start, const Vec3& end)
