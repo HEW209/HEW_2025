@@ -1,9 +1,9 @@
 /*********************************************************************
- * @file   BlockObject.h
- * @brief  ブロックのコンポーネント
+ * @file   PlaceCursor.h
+ * @brief  配置カーソルのコンポーネント
  *
  * @author 芝晃佑
- * @date   2025/11/15
+ * @date   2025/11/16
  *********************************************************************/
 
 
@@ -16,21 +16,21 @@
 #include "BlockData.h"
 
 
-/**
- * @brief ブロックのコンポーネント
- */
-class BlockObject : public Component
+ /**
+  * @brief 配置カーソルのコンポーネント
+  */
+class PlaceCursor : public Component
 {
 public:
-	BlockObject() = default;
-	~BlockObject() = default;
+	PlaceCursor() = default;
+	~PlaceCursor() = default;
 
 	void OnDestroy() override;
 
 	void SetBlockSet(const BlockSetData& blockSet);
 	const BlockSetData& GetBlockSet() const { return m_blockSet; }
 
-	void SetSelect(bool value);
+	void SetPlaceable(bool value);
 
 private:
 	BlockSetData m_blockSet;

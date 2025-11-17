@@ -11,8 +11,27 @@ GridBlockData::GridBlockData(size_t width, size_t height, size_t depth)
 	m_gridData.Resize(width, height, depth, BlockIdType());
 }
 
-bool GridBlockData::CanPlace(const BlockSetData& blockSetData, const Vec3Int& position, const Quaternion& rotation)
+auto GridBlockData::GetId(const Vec3Int& position) const -> BlockIdType
 {
+	// 境界チェック
+	for (int i = 0; i < 3; ++i) {
+		if (position[i] < 0 || m_size[i] <= position[i]) {
+			return BlockIdType();
+		}
+	}
+
+	// 配置されているブロックのIDを取得
+	BlockIdType blockId = m_gridData(position.x, position.y, position.z);
+
+	return blockId;
+}
+
+bool GridBlockData::CanPlace(const BlockSetData& blockSetData, const Vec3Int& position, const Quaternion& rotation) const
+{
+	if (blockSetData.blocks.empty()) {
+		return false;
+	}
+
 	for (auto&& blockPos : blockSetData.blocks) {
 		Vec3Int pos = static_cast<Vec3Int>(rotation * blockPos) + position;
 		// 境界チェック
@@ -62,17 +81,9 @@ auto GridBlockData::PlaceBlock(const BlockSetData& blockSetData, const Vec3Int& 
 
 auto GridBlockData::RemoveBlock(const Vec3Int position) -> BlockIdType
 {
-	// 境界チェック
-	for (int i = 0; i < 3; ++i) {
-		if (position[i] < 0 || m_size[i] <= position[i]) {
-			return BlockIdType();
-		}
-	}
-
 	// 配置されているブロックのIDを取得
-	BlockIdType blockId = m_gridData(position.x, position.y, position.z);
+	BlockIdType blockId = GetId(position);
 
-	// ブロックが無ければnulloptを返す
 	if (!blockId) {
 		return BlockIdType();
 	}
@@ -85,12 +96,43 @@ auto GridBlockData::RemoveBlock(const Vec3Int position) -> BlockIdType
 		m_gridData(pos.x, pos.y, pos.z) = 0u;
 	}
 
+	m_blocks[blockId - 1] = BlockData{};
+
 	m_blockIdGen.Release(blockId);
 
 	return blockId;
 }
 
-DynamicDimArray<bool, 2> GridBlockData::GetShape(int projectionAxis)
+std::optional<BlockSetAndRotationData> GridBlockData::RemoveBlock(BlockIdType blockId)
+{
+	if (blockId <= 0u || m_blocks.size() < blockId) {
+		return std::nullopt;
+	}
+
+	BlockData blockData = m_blocks[blockId - 1];
+
+	if (blockData.blockSet.blocks.empty()) {
+		return std::nullopt;
+	}
+
+	// 配置されているブロックの座標に無効値0uを記録
+	for (auto&& blockPos : blockData.blockSet.blocks) {
+		Vec3Int pos = static_cast<Vec3Int>(blockData.rotation * blockPos) + blockData.position;
+		m_gridData(pos.x, pos.y, pos.z) = 0u;
+	}
+
+	m_blocks[blockId - 1] = BlockData{};
+
+	m_blockIdGen.Release(blockId);
+
+	BlockSetAndRotationData data;
+	data.blockSet = blockData.blockSet;
+	data.rotation = blockData.rotation;
+
+	return data;
+}
+
+DynamicDimArray<bool, 2> GridBlockData::GetShape(int projectionAxis) const
 {
 	if (projectionAxis < 0 || projectionAxis > 2) {
 		assert(false && "Invalid projection axis");

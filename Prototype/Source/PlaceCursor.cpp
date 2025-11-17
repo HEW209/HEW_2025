@@ -1,8 +1,8 @@
-// BlockObject.cpp
+// PlaceCursor.cpp
 
-#include "BlockObject.h"
+#include "PlaceCursor.h"
 
-void BlockObject::OnDestroy()
+void PlaceCursor::OnDestroy()
 {
 	for (auto&& block : m_pBlocks) {
 		if (block) {
@@ -11,7 +11,7 @@ void BlockObject::OnDestroy()
 	}
 }
 
-void BlockObject::SetBlockSet(const BlockSetData& blockSet)
+void PlaceCursor::SetBlockSet(const BlockSetData& blockSet)
 {
 	m_blockSet = blockSet;
 
@@ -22,12 +22,13 @@ void BlockObject::SetBlockSet(const BlockSetData& blockSet)
 	}
 	m_pBlocks.clear();
 	m_pBlocks.reserve(m_blockSet.blocks.size());
-	
+
 	for (auto&& blockPos : blockSet.blocks) {
 		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
 		auto renderer = obj->AddComponent<MeshRenderer>();
 		auto transform = obj->GetTransform();
 		transform->SetParent(GetTransform());
+		transform->m_scale = Vector3{ 0.2f, 0.2f, 0.2f };
 		auto& pos = transform->m_position;
 		pos.x = blockPos.x;
 		pos.y = blockPos.y;
@@ -36,18 +37,18 @@ void BlockObject::SetBlockSet(const BlockSetData& blockSet)
 	}
 }
 
-void BlockObject::SetSelect(bool value)
+void PlaceCursor::SetPlaceable(bool value)
 {
 	if (value) {
-		for (auto && pBlock : m_pBlocks)
+		for (auto&& pBlock : m_pBlocks)
 		{
-			pBlock->GetTransform()->m_scale = Vector3{ 0.9f, 0.9f, 0.9f };
+			pBlock->GetTransform()->m_scale = Vector3{ 0.3f, 0.3f, 0.3f };
 		}
 	}
 	else {
 		for (auto&& pBlock : m_pBlocks)
 		{
-			pBlock->GetTransform()->m_scale = Vector3{ 1.0f, 1.0f, 1.0f };
+			pBlock->GetTransform()->m_scale = Vector3{ 0.2f, 0.2f, 0.2f };
 		}
 	}
 }

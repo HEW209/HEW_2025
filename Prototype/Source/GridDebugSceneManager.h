@@ -15,6 +15,7 @@
 #include "BlockData.h"
 #include "BlockObject.h"
 #include "GridBlockData.h"
+#include "GridField.h"
 #include "Vec.h"
 
 
@@ -31,14 +32,17 @@ public:
 	void Update() override;
 
 private:
-	void PlaceBlock(Vec3Int position);
-	void RemoveBlock(Vec3Int position);
+	void PlaceBlock();
+	void RemoveBlock();
 
 	const Vector3 currentBlockPos{ 5.0f, 0.0f, 0.0f };
-	const Vector3 gridFieldPos{ -5.0f, 0.0f, -1.0f };
+	const Vector3 gridFieldPos{ -5.0f, 0.0f, 0.0f };
 
 	ObjPtr<GameObject> m_pCurrentBlock;
 	ObjPtr<BlockObject> m_pCurrentBlockComponent;
-	std::vector<ObjPtr<GameObject>> m_pPlacedBlocks;
-	GridBlockData m_gridData;
+	ObjPtr<GameObject> m_pGridField;
+	ObjPtr<GridField> m_pGridFieldComponent;
+	Vec3Int m_cursorPos;;
+	bool m_isPlacing;
+	bool m_isRemoving;
 };

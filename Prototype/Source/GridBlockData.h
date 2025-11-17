@@ -28,9 +28,14 @@ private:
 
 public:
 	GridBlockData(size_t width, size_t height, size_t depth);
+	GridBlockData(Vec3Int size) : GridBlockData(size.x, size.y, size.z) {}
+	GridBlockData() : GridBlockData(0, 0, 0) {}
+
+	Vec3Int GetSize() const { return m_size; }
+	BlockIdType GetId(const Vec3Int& position) const;
 
 	// ブロックを置ける場合はtrueを返す
-	bool CanPlace(const BlockSetData& blockSetData, const Vec3Int& position, const Quaternion& rotation);
+	bool CanPlace(const BlockSetData& blockSetData, const Vec3Int& position, const Quaternion& rotation) const;
 
 	// ブロックを置く。戻り値は置いたブロックのId。置けない場合は0を返す
 	BlockIdType PlaceBlock(const BlockSetData& blockSetData, const Vec3Int& position, const Quaternion& rotation);
@@ -38,12 +43,14 @@ public:
 	// ブロックを取り除く。戻り値は取り除いたブロックのId。ブロックが存在しない場合は0を返す
 	BlockIdType RemoveBlock(const Vec3Int position);
 
+	std::optional<BlockSetAndRotationData> RemoveBlock(BlockIdType blockId);
+
 	// 二次元の形状（シルエット）を取得
 	// projectionAxis: 0=X, 1=Y, 2=Z
-	DynamicDimArray<bool, 2> GetShape(int projectionAxis);
-	DynamicDimArray<bool, 2> GetShapeX() { return GetShape(0); }
-	DynamicDimArray<bool, 2> GetShapeY() { return GetShape(1); }
-	DynamicDimArray<bool, 2> GetShapeZ() { return GetShape(2); }
+	DynamicDimArray<bool, 2> GetShape(int projectionAxis) const;
+	DynamicDimArray<bool, 2> GetShapeX() const { return GetShape(0); }
+	DynamicDimArray<bool, 2> GetShapeY() const { return GetShape(1); }
+	DynamicDimArray<bool, 2> GetShapeZ() const { return GetShape(2); }
 
 private:
 	struct BlockData

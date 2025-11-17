@@ -22,3 +22,12 @@ struct BlockSetData
 {
 	std::vector<Vec3Int> blocks;
 };
+
+/**
+ * @brief ブロックと回転のデータ
+ */
+struct BlockSetAndRotationData
+{
+	BlockSetData	blockSet;
+	Quaternion		rotation;
+};

@@ -36,7 +36,7 @@ template <typename T> concept HasU = requires(T t) { t.u; };
 template <typename T> concept HasV = requires(T t) { t.v; };
 
 template <typename T>
-concept VectorOrColorLike = (HasX<T> || HasR<T> || HasU<T>);
+concept VectorLike = (HasX<T> || HasR<T> || HasU<T>);
 
 
 // Vec用ストレージ
@@ -94,6 +94,11 @@ struct Vec : public VectorStorage<T, N>
     requires (sizeof...(Args) == N) && (std::convertible_to<Args, T> && ...)
     constexpr Vec(Args... args) : VectorStorage<T, N>{ {static_cast<T>(args)...} } {}
 
+    // すべての要素を scalar で埋めるコンストラクタ
+    explicit constexpr Vec(T scalar) : VectorStorage<T, N>{} {
+        for (std::size_t i = 0; i < N; ++i) data[i] = scalar;
+    }
+
     // 異なる型や次元数からの変換コンストラクタ
     template <typename U, std::size_t M>
     explicit constexpr Vec(const Vec<U, M>& other, T fillValue = static_cast<T>(0))
@@ -102,7 +107,13 @@ struct Vec : public VectorStorage<T, N>
         constexpr std::size_t copyCount = (N < M) ? N : M;
 
         for (std::size_t i = 0; i < copyCount; ++i) {
-            data[i] = static_cast<T>(other[i]);
+            if constexpr (std::is_integral_v<T> && std::is_floating_point_v<U>) {
+                U eps = (other[i] >= 0) ? Vec<U, M>::EpsilonScalar : -Vec<U, M>::EpsilonScalar;
+                data[i] = static_cast<T>(other[i] + eps);
+            }
+            else {
+                data[i] = static_cast<T>(other[i]);
+            }
         }
 
         if constexpr (N > M) {
@@ -114,7 +125,7 @@ struct Vec : public VectorStorage<T, N>
 
     // 外部クラスからの取り込みコンストラクタ
     template <typename Other>
-    requires VectorOrColorLike<Other> && (!std::is_same_v<Other, Vec>)
+    requires VectorLike<Other> && (!std::is_same_v<Other, Vec>)
     explicit constexpr Vec(const Other& other, T fillValue = static_cast<T>(0))
         : VectorStorage<T, N>{}
     {
@@ -143,6 +154,37 @@ struct Vec : public VectorStorage<T, N>
             else if constexpr (HasA<Other>) data[3] = static_cast<T>(other.a);
             else                            data[3] = fillValue;
         }
+    }
+
+    // 外部クラスへの変換
+    template <typename Other>
+        requires VectorLike<Other>
+    explicit constexpr operator Other() const {
+        Other result{};
+
+        if constexpr (N >= 1) {
+            if constexpr (HasX<Other>)      result.x = static_cast<decltype(Other::x)>(this->data[0]);
+            else if constexpr (HasR<Other>) result.r = static_cast<decltype(Other::r)>(this->data[0]);
+            else if constexpr (HasU<Other>) result.u = static_cast<decltype(Other::u)>(this->data[0]);
+        }
+
+        if constexpr (N >= 2) {
+            if constexpr (HasY<Other>)      result.y = static_cast<decltype(Other::y)>(this->data[1]);
+            else if constexpr (HasG<Other>) result.g = static_cast<decltype(Other::g)>(this->data[1]);
+            else if constexpr (HasV<Other>) result.v = static_cast<decltype(Other::v)>(this->data[1]);
+        }
+
+        if constexpr (N >= 3) {
+            if constexpr (HasZ<Other>)      result.z = static_cast<decltype(Other::z)>(this->data[2]);
+            else if constexpr (HasB<Other>) result.b = static_cast<decltype(Other::b)>(this->data[2]);
+        }
+
+        if constexpr (N >= 4) {
+            if constexpr (HasW<Other>)      result.w = static_cast<decltype(Other::w)>(this->data[3]);
+            else if constexpr (HasA<Other>) result.a = static_cast<decltype(Other::a)>(this->data[3]);
+        }
+
+        return result;
     }
 
     // --- アクセサ ---
@@ -179,8 +221,7 @@ struct Vec : public VectorStorage<T, N>
     }
 
     constexpr Vec& operator/=(T scalar) {
-        T inv = static_cast<T>(1) / scalar;
-        for (std::size_t i = 0; i < N; ++i) data[i] *= inv;
+        for (std::size_t i = 0; i < N; ++i) data[i] /= scalar;
         return *this;
     }
 
@@ -254,9 +295,23 @@ struct Vec : public VectorStorage<T, N>
     }
 
     // 近似比較
-    constexpr bool NearEqual(const Vec& other, T epsilon = static_cast<T>(1e-5)) const {
+    constexpr bool NearEqual(const Vec& other, T epsilon = EpsilonScalar) const {
+        if constexpr (!std::is_floating_point_v<T>) {
+            return *this == other;
+        }
+
         for (std::size_t i = 0; i < N; ++i) {
             if (std::abs(data[i] - other[i]) > epsilon) return false;
+        }
+        return true;
+    }
+
+    // ゼロベクトルか判定（浮動小数点誤差考慮）
+    constexpr bool IsZero(T epsilon = EpsilonScalar) const {
+        for (std::size_t i = 0; i < N; ++i) {
+            if (std::abs(data[i]) > epsilon) {
+                return false;
+            }
         }
         return true;
     }
@@ -329,16 +384,32 @@ struct Vec : public VectorStorage<T, N>
     }
 
 
+    // 極小の値のスカラー
+    static constexpr T EpsilonScalar = []() {
+        if constexpr (std::is_same_v<T, float>) {
+            return 1e-5f;
+        }
+        else if constexpr (std::is_same_v<T, double>) {
+            return 1e-9;
+        }
+        else {
+            return static_cast<T>(0);
+        }
+    }();
+
+    // 極小のベクトル
+    static constexpr Vec Epsilon() {
+        return Vec(EpsilonScalar);
+    }
+
     // ゼロベクトル (0, 0, 0, ...)
     static constexpr Vec Zero() {
-        return Vec(); // デフォルトコンストラクタがゼロ初期化を行う前提
+        return Vec();
     }
 
     // 全て1のベクトル (1, 1, 1, ...)
     static constexpr Vec One() {
-        Vec v;
-        for (std::size_t i = 0; i < N; ++i) v[i] = static_cast<T>(1);
-        return v;
+        return Vec(static_cast<T>(1));
     }
 
     // 右 (1, 0, 0)
@@ -383,6 +454,7 @@ struct Vec : public VectorStorage<T, N>
         return v;
     }
 };
+
 
 // エイリアス
 using Vec2 = Vec<float, 2>;
