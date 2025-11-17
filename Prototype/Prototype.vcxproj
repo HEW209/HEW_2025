@@ -144,6 +144,9 @@
     <ClInclude Include="Source\Config.h" />
     <ClInclude Include="Source\GridField.h" />
     <ClInclude Include="Source\PlaceCursor.h" />
+    <ClInclude Include="Source\PlayerBlockDebugScene.h" />
+    <ClInclude Include="Source\GameState.h" />
+    <ClInclude Include="Source\PlayerBlockHandler.h" />
     <ClInclude Include="Source\PlayerMove.h" />
     <ClInclude Include="Source\PlayerMoveDebugScene.h" />
     <ClInclude Include="Source\DynamicDimensionalArray.h" />
@@ -165,6 +168,9 @@
     <ClCompile Include="Source\GridField.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\PlaceCursor.cpp" />
+    <ClCompile Include="Source\PlayerBlockDebugScene.cpp" />
+    <ClCompile Include="Source\GameState.cpp" />
+    <ClCompile Include="Source\PlayerBlockHandler.cpp" />
     <ClCompile Include="Source\PlayerMove.cpp" />
     <ClCompile Include="Source\PlayerMoveDebugScene.cpp" />
     <ClCompile Include="Source\SampleCamera.cpp" />
