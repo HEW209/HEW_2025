@@ -174,6 +174,22 @@ bool GridField::IsClear()
 	return true;
 }
 
+bool GridField::IsInside(const Vector3& position)
+{
+	Vec3 start = static_cast<Vec3>(GetGridOrigin());
+	Vec3 end = start + static_cast<Vec3>(m_gridData.GetSize());
+
+	Vec3 pos = static_cast<Vec3>(position);
+
+	for (int i = 0; i < 3; ++i) {
+		if (pos[i] < start[i] || end[i] <= pos[i]) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
 bool GridField::IsInside(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation)
 {
 	Quaternion snappedRot = SnapRotationToNearest90(rotation);

@@ -61,6 +61,9 @@ public:
 	// クリア判定
 	bool IsClear();
 
+	//グリッド内判定
+	bool IsInside(const Vector3& position);
+
 private:
 	bool IsInside(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation);
 	bool CanPlace(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation);

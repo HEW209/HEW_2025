@@ -12,8 +12,7 @@ void PlayerBlockHandler::Update()
 	auto blockTransform = m_pBlockObject->GetTransform();
 	auto playerTransform = GetTransform();
 
-	Vector3 blockOffset{0.0f, 2.0f, 0.0f};
-	blockTransform->SetPosition(playerTransform->GetPosition() + blockOffset);
+
 
 	
 
@@ -151,42 +150,124 @@ void PlayerBlockHandler::Update()
 		data.blocks[7] = { 1, 1, 1 };
 		m_pBlockObject->SetBlockSet(data);
 	}
+
+
 	//プレイヤーからのブロックを置く相対座標
-	Vector3 placeCursorOffset{ 0.0f, 0.5f, -2.0f };
+	Vector3 placeCursorOffset{ 0.0f, 0.0f, -1.5f };
 	
 	Vector3 placeCursorPos = playerTransform->GetPosition() + playerTransform->GetQuaternion() * placeCursorOffset; 
+	placeCursorPos += m_pBlockObject->GetGroundOffset();
+
+	//プレイヤーからのブロックを取るための相対座標
+	Vector3 removeCursorOffset{ 0.0f, 0.5f, -1.5f };
+
+	Vector3 removeCursorPos = playerTransform->GetPosition() + playerTransform->GetQuaternion() * removeCursorOffset;
 
 	GridField* pGridField = GameState::GetInstance()->GetGridField();
+	//ブロックが存在しなかったら
+	if (m_pBlockObject->GetBlockSet().blocks.empty()) {
 
-	pGridField->SetPlaceCursor(m_pBlockObject->GetBlockSet(), placeCursorPos, blockTransform->GetQuaternion());
+		pGridField->ResetPlaceCursor();
 
-	if (InputManager::GetKeyDown(Input::Q)) {
+		
 
-		//グリッド内かどうかの判定
-		if (pGridField->IsOverlap(m_pBlockObject->GetBlockSet(), placeCursorPos, blockTransform->GetQuaternion())) 
-		{
-			//ブロックを初期化してなくす
-			if (pGridField->PlaceBlock()) {
+		pGridField->SetRemoveCursor(removeCursorPos);
 
-				m_pBlockObject->SetBlockSet(BlockSetData{});
+
+		auto pWorldBlocks = GameState::GetInstance()->GetWorldBlocks();
+
+		bool isYetSelect = true;
+
+		for (auto&& pBlock : pWorldBlocks) {
+
+			if (pBlock->IsInside(removeCursorPos)) {
+
+				pBlock->SetSelect(isYetSelect);
+				
+				isYetSelect = false;
+			}
+			else {
+
+				pBlock->SetSelect(false);
 
 			}
 		}
-		else {
-			//グリッド外の場合はワールドに配置する。
 
-			auto obj = SceneManager::GetActiveScene()->CreateGameObject();
-			auto component = obj->AddComponent<BlockObject>();
-			auto transform = obj->GetTransform();
-			transform->SetPosition(placeCursorPos);
-			transform->SetQuaternion(blockTransform->GetQuaternion());
-			component->SetBlockSet(m_pBlockObject->GetBlockSet());
-			GameState::GetInstance()->AppendWorldBlock(component);
-			//使ったブロックは初期化
-			m_pBlockObject->SetBlockSet(BlockSetData{});
+		if (InputManager::GetKeyDown(Input::E)) {
+
+			//trueが帰ってきたらグリッド内
+			if (pGridField->IsInside(removeCursorPos)) {
+
+
+				auto blockData = pGridField->RemoveBlock();
+				if (blockData.has_value()) {
+
+					m_pBlockObject->SetBlockSet(blockData->blockSet);
+					blockTransform->SetQuaternion(blockData->rotation);
+
+				}
+
+			}
+			else {//faleが帰ってきたら
+
+				auto pWorldBlocks = GameState::GetInstance()->GetWorldBlocks();
+
+				for (auto&& pBlock : pWorldBlocks) {
+					
+					if (pBlock->IsInside(removeCursorPos)) {
+						m_pBlockObject->SetBlockSet(pBlock->GetBlockSet());
+						blockTransform->SetQuaternion(pBlock->GetTransform()->GetQuaternion());
+
+						GameState::GetInstance()->RemoveWorldBlock(pBlock.Get());
+
+						pBlock->GetGameObject()->Destroy();
+						break;
+					}
+				}
+			}
 		}
-		
 	}
+	else {
+
+		pGridField->ResetRemoveCursor();
+		pGridField->SetPlaceCursor(m_pBlockObject->GetBlockSet(), placeCursorPos, blockTransform->GetQuaternion());
+
+		if (InputManager::GetKeyDown(Input::Q)) {
+
+			//グリッド内かどうかの判定
+			if (pGridField->IsOverlap(m_pBlockObject->GetBlockSet(), placeCursorPos, blockTransform->GetQuaternion()))
+			{
+				//ブロックを初期化してなくす
+				if (pGridField->PlaceBlock()) {
+
+					m_pBlockObject->SetBlockSet(BlockSetData{});
+
+				}
+			}
+			else {
+				//グリッド外の場合はワールドに配置する。
+
+				auto obj = SceneManager::GetActiveScene()->CreateGameObject();
+				auto component = obj->AddComponent<BlockObject>();
+				auto transform = obj->GetTransform();
+				transform->SetPosition(placeCursorPos);
+				transform->SetQuaternion(blockTransform->GetQuaternion());
+				component->SetBlockSet(m_pBlockObject->GetBlockSet());
+				GameState::GetInstance()->AppendWorldBlock(component);
+				//使ったブロックは初期化
+				m_pBlockObject->SetBlockSet(BlockSetData{});
+			}
+
+		}
+	}
+
+	Vector3 blockOffset{ 0.0f, 2.0f, 0.0f };
+	//
+	blockOffset += m_pBlockObject->GetGroundOffset();
+	blockTransform->SetPosition(playerTransform->GetPosition() + blockOffset);
+
+
+
 }
 
 void PlayerBlockHandler::TryPlaceBlock()
