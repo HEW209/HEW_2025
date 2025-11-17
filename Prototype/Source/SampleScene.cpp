@@ -4,24 +4,41 @@
 
 void SampleScene::Init()
 {
+	GameObject* playerObj = nullptr;
+	SampleCamera* sampleCamera = nullptr;
+
 	//ÉJÉÅÉâ
 	{
 		auto obj = CreateGameObject();
 		auto camera = obj->AddComponent<Camera>();
 		auto transform = obj->GetTransform();
 		transform->SetEulerAngle(20.0f, 45.0f, 0.0f);
-		obj->AddComponent<SampleCamera>();
+		sampleCamera = obj->AddComponent<SampleCamera>();
+		camera->SetMain();
 	}
 
 	//ÉvÉåÉCÉÑÅ[
 	{
-		auto obj = CreateGameObject();
+		/*auto obj = CreateGameObject();
 		auto renderer = obj->AddComponent<MeshRenderer>();
 		renderer->LoadModel("Assets/Model/karubi/Ç‹ÇØÇÒéÆê‘å©Ç©ÇÈÇ—ïPàﬂëïver1.0.pmx");
 		obj->AddComponent<SamplePlayer>();
 		auto transform = obj->GetTransform();
-		transform->m_scale = { 0.1f, 0.1f, 0.1f };
+		transform->m_scale = { 0.1f, 0.1f, 0.1f };*/
+
+		playerObj = CreateGameObject();
+		auto renderer = playerObj->AddComponent<MeshRenderer>();
+		renderer->LoadModel("Assets/Model/karubi/Ç‹ÇØÇÒéÆê‘å©Ç©ÇÈÇ—ïPàﬂëïver1.0.pmx");
+		playerObj->AddComponent<SamplePlayer>();
+		auto t = playerObj->GetTransform();
+		t->m_scale = { 0.1f, 0.1f, 0.1f };
 	}
+
+	if (sampleCamera && playerObj)
+	{
+		sampleCamera->SetTarget(playerObj->GetTransform());
+	}
+
 
 	//è∞
 	{
