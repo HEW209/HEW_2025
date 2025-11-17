@@ -55,7 +55,7 @@ void PlayerMove::Update()
 	
 
 	//ŽÀÛ‚ÌˆÚ“®
-	GetTransform()->TransLate(move);
+	GetTransform()->Translate(move);
 	if (GetTransform()->m_position.y < 0.0f)
 	{
 		GetTransform()->m_position.y = 0.0f;
