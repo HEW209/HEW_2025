@@ -168,6 +168,15 @@ public:
         return coords;
     }
 
+    // “™‰¿”äŠr
+    bool operator==(const DynamicDimArray<T, Dimensions>& other) const {
+        if (m_dims != other.m_dims) {
+            return false;
+        }
+
+        return m_data == other.m_data;
+    }
+
 private:
     Container m_data;
     std::array<size_t, Dimensions> m_dims;
