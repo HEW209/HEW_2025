@@ -98,12 +98,16 @@ public:
 		m_eulerOffset = m_rotateOffset.ToEuler();
 	}
 
+	// ローカル座標
 	Vector3 m_positionOffset;
 	Vector3 m_scale;
-	std::function<void(GameObject* other)> onCollision;
+	std::function<void(GameObject* other)> OnCollisionEnter;
 
 private:
-	
+
+	// ローカル回転
 	Vector3 m_eulerOffset;
+
+	// ローカル回転
 	Quaternion m_rotateOffset;
 };

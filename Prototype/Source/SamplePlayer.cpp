@@ -11,7 +11,7 @@ SamplePlayer::SamplePlayer() :
 void SamplePlayer::Awake()
 {
 	GameObject* pObj = GetGameObject();
-	GetGameObject()->GetComponent<Collider>()->onCollision = [pObj](GameObject* other) {
+	GetGameObject()->GetComponent<Collider>()->OnCollisionEnter = [pObj](GameObject* other) {
 		pObj->GetComponent<SamplePlayer>()->m_velocity_y = 0.0f;
 		};
 }

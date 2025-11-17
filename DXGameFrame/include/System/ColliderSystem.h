@@ -22,7 +22,7 @@ public:
 
 	/**
 	 * @brief 3D当たり判定コンポーネントを登録する
-	 * @param pCollider 登録する3D当たり判定画コンポーネント
+	 * @param pCollider 登録する3D当たり判定コンポーネント
 	 */
 	void Register(Collider* pCollider);
 

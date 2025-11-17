@@ -3,7 +3,7 @@
 #include <Component/Collider.h>
 #include <System/ColliderSystem.h>
 
-Collider::Collider():Component::Component(),onCollision(nullptr)
+Collider::Collider():Component::Component(), OnCollisionEnter(nullptr)
 {
 	// collider‚ð‚Ü‚Æ‚ß‚é”z—ñ‚É’Ç‰Á
 	ColliderSystem::Instance().Register(this);
