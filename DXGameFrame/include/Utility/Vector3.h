@@ -8,11 +8,12 @@
 #pragma once
 
 #include "MathUtil.h"
+#include <DirectX/DirectXInclude.h>
 #include <cassert>
 
- /**
-  * @brief 三次元ベクトルを扱う
-  */
+/**
+ * @brief 三次元ベクトルを扱う
+ */
 class Vector3
 {
 public:
@@ -93,6 +94,19 @@ public:
 	}
 
 	/**
+	 * @brief xyz成分をセットする
+	 * @param newX セットするx成分
+	 * @param newY セットするy成分
+	 * @param newZ セットするz成分
+	 */
+	void SetVector(float newX, float newY, float newZ)
+	{
+		x = newX;
+		y = newY;
+		z = newZ;
+	}
+
+	/**
 	 * @brief ベクトルの長さを取得する
 	 * @return ベクトルの長さ
 	 */
@@ -104,6 +118,12 @@ public:
 	 * ゼロベクトルを渡した場合はそのまま返す
 	 */
 	Vector3 Normalized() const;
+
+	/**
+	 * @brief XMVECTOR型に変換する
+	 * @return Vector3から変換されたXMVECTOR
+	 */
+	DirectX::XMVECTOR ToXMVector() const;
 
 public:
 	/// 大きさが0のベクトル

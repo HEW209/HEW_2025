@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="include\Component\Camera.h" />
     <ClInclude Include="include\Component\DefaultComponent.h" />
+    <ClInclude Include="include\Component\DirectionalLight.h" />
     <ClInclude Include="include\Component\MeshRenderer.h" />
     <ClInclude Include="include\Component\Renderer.h" />
     <ClInclude Include="include\Component\Renderer2D.h" />
@@ -33,7 +34,6 @@
     <ClInclude Include="include\DirectX\DirectXInclude.h" />
     <ClInclude Include="include\DirectX\Geometry.h" />
     <ClInclude Include="include\DirectX\Material.h" />
-    <ClInclude Include="include\DirectX\MatrixUtil.h" />
     <ClInclude Include="include\DirectX\Mesh.h" />
     <ClInclude Include="include\DirectX\MeshGroup.h" />
     <ClInclude Include="include\DirectX\Model.h" />
@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Component\Camera.cpp" />
+    <ClCompile Include="src\Component\DirectionalLight.cpp" />
     <ClCompile Include="src\Component\MeshRenderer.cpp" />
     <ClCompile Include="src\Component\Renderer.cpp" />
     <ClCompile Include="src\Component\Renderer2D.cpp" />
@@ -80,7 +81,6 @@
     <ClCompile Include="src\DirectX\Direct3D.cpp" />
     <ClCompile Include="src\DirectX\Geometry.cpp" />
     <ClCompile Include="src\DirectX\Material.cpp" />
-    <ClCompile Include="src\DirectX\MatrixUtil.cpp" />
     <ClCompile Include="src\DirectX\Mesh.cpp" />
     <ClCompile Include="src\DirectX\Model.cpp" />
     <ClCompile Include="src\DirectX\PipelineState.cpp" />

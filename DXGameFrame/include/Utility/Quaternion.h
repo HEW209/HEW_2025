@@ -8,6 +8,7 @@
 #pragma once
 
 #include "Vector3.h"
+#include <DirectX/DirectXInclude.h>
 
 /**
  * @brief クォータニオンを扱う
@@ -65,6 +66,21 @@ public:
 	}
 
 	/**
+	 * @brief 新しいクォータニオン成分をセットする
+	 * @param newX セットするx成分
+	 * @param newY セットするy成分
+	 * @param newZ セットするz成分
+	 * @param newW セットするw成分
+	 */
+	void SetQuaternion(float newX, float newY, float newZ, float newW)
+	{
+		x = newX;
+		y = newY;
+		z = newZ;
+		w = newW;
+	}
+
+	/**
 	 * @brief 正規化クォータニオンを取得する
 	 * @return 正規化されたクォータニオンを返す
 	 */
@@ -75,6 +91,12 @@ public:
 	 * @return 作成したオイラー角を返す
 	 */
 	Vector3 ToEuler() const;
+
+	/**
+	 * @brief XMVECTOR型に変換する
+	 * @return Quaternionから変換されたXMVECTOR
+	 */
+	DirectX::XMVECTOR ToXMVector();
 
 public:
 	/// 回転無しクォータニオン

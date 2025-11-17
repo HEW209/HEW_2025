@@ -82,10 +82,7 @@ public:
 	 * @brief ★このゲームオブジェクトを削除する
 	 * @details 実際の削除は全ての更新処理の終了時に安全に行われます
 	 */
-	void Destroy()
-	{
-		m_destroyed = true;
-	}
+	void Destroy();
 
 private:
 	/// このゲームオブジェクトが存在するシーンへのポインタ

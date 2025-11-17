@@ -1,6 +1,6 @@
-#include "SamplePlayer.h"
+#include "PlayerMove.h"
 
-SamplePlayer::SamplePlayer() :
+PlayerMove::PlayerMove() :
 	m_moveSpeed(0.2f),
 	m_jumpPower(0.5f),
 	m_gravity(0.05f),
@@ -8,27 +8,31 @@ SamplePlayer::SamplePlayer() :
 {
 }
 
-void SamplePlayer::Update()
+void PlayerMove::Update()
 {
 	Vector3 input;
-	float rotate = 0.0f;
 	Vector3 move;
+	static Vector3 euler{0.0f,0.0f ,0.0f };
 
 	//“ü—Í‚ðŽæ“¾
 	if (InputManager::GetKeyHold(Input::A))
+	{
 		input.x -= 1.0f;
+	}
 	if (InputManager::GetKeyHold(Input::D))
+	{
 		input.x += 1.0f;
+	}
 	if (InputManager::GetKeyHold(Input::S))
+	{
 		input.z -= 1.0f;
+	}
 	if (InputManager::GetKeyHold(Input::W))
+	{
 		input.z += 1.0f;
-
-	if (InputManager::GetKeyHold(Input::Q))
-		rotate -= 1.0f;
-	if (InputManager::GetKeyHold(Input::E))
-		rotate += 1.0f;
-
+	}
+		
+	
 	//ƒWƒƒƒ“ƒv
 	if (InputManager::GetKeyDown(Input::SPACE))
 		m_velocity_y = m_jumpPower;
@@ -43,20 +47,20 @@ void SamplePlayer::Update()
 	moveDir = moveDir.Normalized();
 	move = moveDir * m_moveSpeed;
 	move.y = m_velocity_y;
+	if (moveDir!=Vector3::zero)
+	{
+		float theta = std::atan2(moveDir.x, moveDir.z) * (180.0f / 3.14159f);
+		GetTransform()->SetEulerAngle(0.0f, theta+180.0f , 0.0f);
+	}
+	
 
 	//ŽÀÛ‚ÌˆÚ“®
-	Vector3 pos = GetTransform()->GetPosition();
-	Vector3 scale = GetTransform()->GetScale();
-	Quaternion qua = GetTransform()->GetQuaternion();
-	Vector3 rotatevec = qua.ToEuler();
 	GetTransform()->Translate(move);
 	if (GetTransform()->m_position.y < 0.0f)
 	{
 		GetTransform()->m_position.y = 0.0f;
 		m_velocity_y = 0.0f;
 	}
-	GetTransform()->Rotate(0.0f, rotate, 0.0f);
 
-	if (InputManager::GetKeyDown(Input::ENTER))
-		GetTransform()->GetParent()->GetGameObject()->Destroy();
+	
 }

@@ -8,11 +8,12 @@
 #pragma once
 
 #include "MathUtil.h"
+#include <DirectX/DirectXInclude.h>
 #include <cassert>
 
- /**
-  * @brief 二次元ベクトルを扱う
-  */
+/**
+ * @brief 二次元ベクトルを扱う
+ */
 class Vector2
 {
 public:
@@ -88,6 +89,17 @@ public:
 	}
 
 	/**
+	 * @brief 新しいベクター成分をセットする
+	 * @param newX セットするx成分
+	 * @param newY セットするy成分
+	 */
+	void SetVector(float newX, float newY)
+	{
+		x = newX;
+		y = newY;
+	}
+
+	/**
 	 * @brief ベクトルの長さを取得する
 	 * @return ベクトルの長さ
 	 */
@@ -104,7 +116,13 @@ public:
 	 * @brief ベクトルを角度に変換する
 	 * @return 0を真上とした時計回りの角度(0～360)
 	 */
-	float ToAngle();
+	float ToAngle() const;
+
+	/**
+	 * @brief XMVECTOR型に変換する
+	 * @return Vector2から変換されたXMVECTOR
+	 */
+	DirectX::XMVECTOR ToXMVector() const;
 
 public:
 	/// 大きさが0のベクトル

@@ -21,7 +21,7 @@ void SampleCamera::Update()
 	Vector3 cameraPos;
 	cameraPos = GetTransform()->GetQuaternion() * Vector3::back;
 	cameraPos *= m_cameraDistance;
-	cameraPos.y += 4;
+	cameraPos.y += 2;
 
 	GetTransform()->m_position = cameraPos;
 }
