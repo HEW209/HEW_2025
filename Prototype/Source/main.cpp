@@ -146,6 +146,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			//----------------------------------
 			InputManager::Update();
 			SceneManager::Execute();
+
 		}
 	}
 

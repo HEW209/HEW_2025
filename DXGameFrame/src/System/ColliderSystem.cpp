@@ -9,54 +9,55 @@ void ColliderSystem::Check()
 {
     for (int iter = 0; iter < ITER_NUM; ++iter)
     {
-	    // colliderのデータ全部取り出す
-	    std::vector<Collider::ObbData> obbData;
-	    obbData.reserve(m_colliders.size());
+	// colliderのデータ全部取り出す
+	std::vector<Collider::ObbData> obbData;
+	obbData.clear();
+	obbData.reserve(m_colliders.size());
 
-	    std::vector<Collider*>::iterator colliderIt = m_colliders.begin();
-	    for (; colliderIt != m_colliders.end(); ++colliderIt)
-	    {
-	    	Collider::ObbData data;
-	    	Vector3 vector;
-	    	Quaternion colliderQuaternion = (*colliderIt)->GetQuaternion();
-	    	Quaternion objectQuaternion = (*colliderIt)->GetTransform()->GetQuaternion();
+	std::vector<Collider*>::iterator colliderIt = m_colliders.begin();
+	for (; colliderIt != m_colliders.end(); ++colliderIt)
+	{
+		Collider::ObbData data;
+		Vector3 vector;
+		Quaternion colliderQuaternion = (*colliderIt)->GetQuaternion();
+		Quaternion objectQuaternion = (*colliderIt)->GetTransform()->GetQuaternion();
 
-	    	// ローカルのx,y,z軸をワールドベクトルにする
-	    	vector = { 1.0f,0.0f,0.0f };
+		// ローカルのx,y,z軸をワールドベクトルにする
+		vector = { 1.0f,0.0f,0.0f };
 	    	data.axis.x = (objectQuaternion * colliderQuaternion) * vector;
-	    	vector = { 0.0f,1.0f,0.0f };
+		vector = { 0.0f,1.0f,0.0f };
             data.axis.y = (objectQuaternion * colliderQuaternion) * vector;
-	    	vector = { 0.0f,0.0f,1.0f };
+		vector = { 0.0f,0.0f,1.0f };
             data.axis.z = (objectQuaternion * colliderQuaternion) * vector;
 
-	    	// ワールド座標に変える
+		// ワールド座標に変える
             data.pos = (*colliderIt)->GetTransform()->GetPosition() + (objectQuaternion * colliderQuaternion)* (*colliderIt)->GetPosition();
 
-	    	// スケールも移す
-	    	data.scale = (*colliderIt)->GetScale();
+		// スケールも移す
+		data.scale = (*colliderIt)->GetScale();
 
-	    	obbData.push_back(data);
-	    }
+		obbData.push_back(data);
+	}
 
         Vector3 mtv;                    // 移動させるためのベクトル
 
-        // 全ての組み合わせをチェックする
-	    for (int i = 0; i < obbData.size(); ++i)
-	    {
-	    	for (int j = i + 1; j < obbData.size(); ++j)
-	    	{
-	    		if (CheckCollisionOBB(obbData[i], obbData[j],&mtv))
-	    		{
+    // 全ての組み合わせをチェックする
+	for (int i = 0; i < obbData.size(); ++i)
+	{
+		for (int j = i + 1; j < obbData.size(); ++j)
+		{
+			if (CheckCollisionOBB(obbData[i], obbData[j],&mtv))
+			{
 	    			if (m_colliders[i]->OnCollisionEnter && iter == 0)
-	    			{
-	    				m_colliders[i]->OnCollisionEnter(m_colliders[j]->GetGameObject());
-	    			}
+				{
+					m_colliders[i]->OnCollisionEnter(m_colliders[j]->GetGameObject());
+				}
 	    			if (m_colliders[j]->OnCollisionEnter && iter == 0)
-	    			{
-	    				m_colliders[j]->OnCollisionEnter(m_colliders[i]->GetGameObject());
-	    			}
+				{
+					m_colliders[j]->OnCollisionEnter(m_colliders[i]->GetGameObject());
+				}
 
-                    // 衝突したら動かす
+                // 衝突したら動かす
                     if (m_colliders[i]->IsStatic != m_colliders[j]->IsStatic)
                     {
                         int idx = (m_colliders[i]->IsStatic) ? j : i;   // 動かす方を選ぶ
@@ -69,9 +70,9 @@ void ColliderSystem::Check()
                         obbData[idx].pos += mtv;
                     }
 	    		}
-	    	}
-	    }
-    }
+			}
+		}
+	}
 }
 
 void ColliderSystem::Register(Collider* pCollider)
