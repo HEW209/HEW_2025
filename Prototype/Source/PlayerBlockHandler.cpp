@@ -1,5 +1,5 @@
 #include "PlayerBlockHandler.h"
-#include "PlayerBlockDebugSceneManager.h"
+#include "GameState.h"
 
 
 void PlayerBlockHandler::Start()
@@ -156,7 +156,7 @@ void PlayerBlockHandler::Update()
 	
 	Vector3 placeCursorPos = playerTransform->GetPosition() + playerTransform->GetQuaternion() * placeCursorOffset; 
 
-	GridField* pGridField = PlayerBlockDebugSceneManager::GetInstance()->GetGridField();
+	GridField* pGridField = GameState::GetInstance()->GetGridField();
 
 	pGridField->SetPlaceCursor(m_pBlockObject->GetBlockSet(), placeCursorPos, blockTransform->GetQuaternion());
 
@@ -175,6 +175,15 @@ void PlayerBlockHandler::Update()
 		else {
 			//グリッド外の場合はワールドに配置する。
 
+			auto obj = SceneManager::GetActiveScene()->CreateGameObject();
+			auto component = obj->AddComponent<BlockObject>();
+			auto transform = obj->GetTransform();
+			transform->SetPosition(placeCursorPos);
+			transform->SetQuaternion(blockTransform->GetQuaternion());
+			component->SetBlockSet(m_pBlockObject->GetBlockSet());
+			GameState::GetInstance()->AppendWorldBlock(component);
+			//使ったブロックは初期化
+			m_pBlockObject->SetBlockSet(BlockSetData{});
 		}
 		
 	}

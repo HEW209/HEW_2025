@@ -5,7 +5,7 @@
 #include "SampleCamera.h"
 
 //グリッド
-#include "PlayerBlockDebugSceneManager.h"
+#include "GameState.h"
 
 #include "PlayerBlockHandler.h"
 
@@ -25,7 +25,7 @@ void PlayerBlockDebugScene::Init()
 	// シーンマネージャー
 	{
 		auto obj = CreateGameObject();
-		obj->AddComponent<PlayerBlockDebugSceneManager>();
+		obj->AddComponent<GameState>();
 	}
 	
 	{
@@ -57,7 +57,7 @@ void PlayerBlockDebugScene::Init()
 
 		auto obj = CreateGameObject();
 		auto component = obj->AddComponent<GridField>();
-		PlayerBlockDebugSceneManager::GetInstance()->SetGridField(component);
+		GameState::GetInstance()->SetGridField(component);
 		component->SetSize({ 4, 4, 4 });
 		obj->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
 

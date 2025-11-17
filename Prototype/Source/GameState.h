@@ -11,24 +11,27 @@
 #include "PlayerMove.h"
 
 #include "PlayerBlockHandler.h"
-class PlayerBlockDebugSceneManager : public Component
+class GameState : public Component
 {
 public:
-	PlayerBlockDebugSceneManager();
-	~PlayerBlockDebugSceneManager();
+	GameState();
+	~GameState();
 
 	void Start() override;
 	void Update() override;
 
-	//
+
 	void SetGridField(GridField* pGridField);
 	GridField* GetGridField() { return m_pGridField.Get(); }
-	static PlayerBlockDebugSceneManager* GetInstance() { return s_pInstance; }
-
+	void AppendWorldBlock(BlockObject* pBlockObject);
+	const std::vector<ObjPtr<BlockObject>>& GetWorldBlocks() { return m_pWorldBlocks; }
+	static GameState* GetInstance() { return s_pInstance; }
+	
 private:
-
-	static PlayerBlockDebugSceneManager* s_pInstance;
-
+	
+	static GameState* s_pInstance;
 	ObjPtr<GridField> m_pGridField;
-
+	//ワールド空間（グリッド外）に存在するすべてのブロック
+	std::vector<ObjPtr<BlockObject>> m_pWorldBlocks;
+	
 };
