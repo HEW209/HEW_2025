@@ -15,6 +15,8 @@
 #include <numeric>
 #include <concepts>
 #include <stdexcept>
+#include <span>
+#include <initializer_list>
 
 // N次元可変長配列クラス
 template <typename T, size_t Dimensions>
@@ -89,6 +91,22 @@ public:
     value_type operator()(Indices... indices) const {
         assert((checkBoundsDebug({ static_cast<size_t>(indices)... }), true));
         return m_data[getIndex({ static_cast<size_t>(indices)... })];
+    }
+
+
+    void SetData(std::span<const value_type> srcData) {
+        if (srcData.size() != m_data.size()) {
+            throw std::length_error(
+                "Data size mismatch. Array total elements: " + std::to_string(m_data.size()) +
+                ", Input data size: " + std::to_string(srcData.size())
+            );
+        }
+
+        std::copy(srcData.begin(), srcData.end(), m_data.begin());
+    }
+
+    void SetData(std::initializer_list<T> ilist) {
+        SetData(std::span<const value_type>(ilist));
     }
 
     // --- サイズ変更 ---
