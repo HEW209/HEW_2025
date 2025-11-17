@@ -108,6 +108,12 @@ bool GridField::PlaceBlock()
 
 	m_pPlaceCursorComponent->SetBlockSet(BlockSetData{});
 
+	if (IsClear())
+	{
+		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
+		obj->AddComponent<MeshRenderer>();
+	}
+
 	return true;
 }
 
@@ -146,6 +152,26 @@ std::optional<BlockSetAndRotationData> GridField::RemoveBlock()
 	}
 	m_removeCursorBlockId = 0u;
 	return data;
+}
+
+void GridField::SetClearShape(DynamicDimArray<bool, 2> shapeX, DynamicDimArray<bool, 2> shapeY, DynamicDimArray<bool, 2> shapeZ)
+{
+	m_clearShape[0] = shapeX;
+	m_clearShape[1] = shapeY;
+	m_clearShape[2] = shapeZ;
+}
+
+bool GridField::IsClear()
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		if (m_clearShape[i] != m_gridData.GetShape(i))
+		{
+			return false;
+		}
+	}
+
+	return true;
 }
 
 bool GridField::IsInside(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation)
