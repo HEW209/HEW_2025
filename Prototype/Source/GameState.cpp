@@ -39,6 +39,19 @@ void GameState::SetGridField(GridField* pGridField)
 
 void GameState::AppendWorldBlock(BlockObject* pBlockObject)
 {
+	auto it = std::find(m_pWorldBlocks.begin(), m_pWorldBlocks.end(), pBlockObject);
+
+	//‚·‚Å‚ÉƒuƒƒbƒN‚ª’Ç‰Á‚³‚ê‚Ä‚¢‚½ê‡ˆÈ~ˆ—‚µ‚È‚¢
+	if (it != m_pWorldBlocks.end()) return;
+
 	m_pWorldBlocks.push_back(pBlockObject);
+}
+
+void GameState::RemoveWorldBlock(BlockObject* pBlockObject)
+{
+	std::erase_if(m_pWorldBlocks, [pBlockObject](auto x) {
+		return x == pBlockObject;
+		});
+
 }
 

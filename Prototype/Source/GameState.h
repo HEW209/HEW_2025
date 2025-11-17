@@ -24,7 +24,10 @@ public:
 	void SetGridField(GridField* pGridField);
 	GridField* GetGridField() { return m_pGridField.Get(); }
 	void AppendWorldBlock(BlockObject* pBlockObject);
+	void RemoveWorldBlock(BlockObject* pBlockObject);
 	const std::vector<ObjPtr<BlockObject>>& GetWorldBlocks() { return m_pWorldBlocks; }
+
+	
 	static GameState* GetInstance() { return s_pInstance; }
 	
 private:
