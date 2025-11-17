@@ -99,3 +99,51 @@ Vector3 BlockObject::GetGroundOffset()
 
 	return Vector3(0.0f, yOffset, 0.0f);
 }
+
+bool BlockObject::IsInside(const Vector3& worldPosition)
+{
+	Transform* pTransform = GetTransform();
+	if (!pTransform)
+	{
+		return false;
+	}
+
+	// このBlockObjectの逆ワールド行列を取得する
+	DirectX::XMMATRIX worldMatrix = pTransform->GetWorldMatrix();
+	DirectX::XMMATRIX inverseWorldMatrix = DirectX::XMMatrixInverse(nullptr, worldMatrix);
+
+	DirectX::XMVECTOR worldPosVec = worldPosition.ToXMVector();
+
+	// 座標をローカル空間に変換する
+	DirectX::XMVECTOR localPosVec = DirectX::XMVector3TransformCoord(worldPosVec, inverseWorldMatrix);
+
+	DirectX::XMFLOAT3 localPosFloat3;
+	DirectX::XMStoreFloat3(&localPosFloat3, localPosVec);
+	Vector3 localPosition(localPosFloat3.x, localPosFloat3.y, localPosFloat3.z);
+
+	// ローカル座標で、各ブロックのAABBと当たり判定を行う
+	for (const auto& blockPos : m_blockSet.blocks)
+	{
+		const float centerX = static_cast<float>(blockPos.x);
+		const float centerY = static_cast<float>(blockPos.y);
+		const float centerZ = static_cast<float>(blockPos.z);
+
+		// AABB
+		const float minX = centerX - 0.5f;
+		const float maxX = centerX + 0.5f;
+		const float minY = centerY - 0.5f;
+		const float maxY = centerY + 0.5f;
+		const float minZ = centerZ - 0.5f;
+		const float maxZ = centerZ + 0.5f;
+
+		// ローカル座標がAABBの内側にあるかチェック
+		if (localPosition.x >= minX && localPosition.x <= maxX &&
+			localPosition.y >= minY && localPosition.y <= maxY &&
+			localPosition.z >= minZ && localPosition.z <= maxZ)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}

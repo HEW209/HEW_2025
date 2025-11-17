@@ -46,6 +46,13 @@ public:
 	 */
 	Vector3 GetGroundOffset();
 
+	/**
+	 * @brief 指定したワールド座標がブロックの内側にあるか判定する
+	 * @param worldPosition 判定したいワールド座標
+	 * @return いずれかのブロックの内側にあれば true
+	 */
+	bool IsInside(const Vector3& worldPosition);
+
 private:
 	BlockSetData m_blockSet;
 	std::vector<ObjPtr<GameObject>> m_pBlocks;
