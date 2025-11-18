@@ -62,7 +62,18 @@ Vector3 Transform::GetEulerAngle(Space space)
 		return m_euler;
 
 	if (space == Space::WORLD)
-		return GetQuaternion(Space::WORLD).ToEuler();
+	{
+		if (m_pParent != nullptr)
+		{
+			// ワールドクォータニオンから変換
+			return GetQuaternion(Space::WORLD).ToEuler();
+		}
+		else
+		{
+			// 親がなければ保持しているオイラー角を返す
+			return m_euler;
+		}
+	}
 
 	return Vector3();
 }
