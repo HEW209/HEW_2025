@@ -173,9 +173,10 @@ void PlayerBlockHandler::Update()
 	//ブロックが存在しなかったら
 	if (m_pBlockObject->GetBlockSet().blocks.empty()) {
 
-		//ブロックを初期化する。
+		//配置カーソルの位置を初期化する。
 		pGridField->ResetPlaceCursor();
 
+		//取得カーソルの位置を設定する。
 		pGridField->SetRemoveCursor(removeCursorPos);
 
 		//毎回書くと長くなるので格納してわかりやすくする。
@@ -260,7 +261,7 @@ void PlayerBlockHandler::Update()
 				transform->SetQuaternion(blockTransform->GetQuaternion());
 				component->SetBlockSet(m_pBlockObject->GetBlockSet());
 				GameState::GetInstance()->AppendWorldBlock(component);
-				//使ったブロックは初期化
+				//使った頭上のブロックは初期化
 				m_pBlockObject->SetBlockSet(BlockSetData{});
 			}
 
