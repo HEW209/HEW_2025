@@ -29,7 +29,7 @@ void PlayerBlockDebugScene::Init()
 	}
 	
 	{
-		//移動できるオブジェクト（プレイヤー）を作成
+		//移動できるオブジェクト（プレイヤー）を作成	
 		//移動できるプレイヤーオブジェクトを作る
 		auto playerObj = CreateGameObject();
 		////プレイヤーにメッシュレンダラーを入れる。
@@ -55,6 +55,7 @@ void PlayerBlockDebugScene::Init()
 
 		//ブロックオブジェクトを生成
 		auto blockObj= CreateGameObject();
+
 		//オフセットで位置を変える
 		blockObj->GetTransform()->SetPosition(0.0f , 2.0f , 0.0f);
 		auto blockComponent = blockObj->AddComponent<BlockObject>();

@@ -58,7 +58,7 @@ void PlayerModelDebugScene::Init()
 
 	{//ライト
 		auto obj = CreateGameObject();
-		obj->AddComponent<DirectionalLight>();
+	obj->AddComponent<DirectionalLight>();
 		obj->GetTransform()->SetEulerAngle(50.0f, -30.0f, 0.0f);
 	}
 
@@ -71,38 +71,78 @@ void PlayerModelDebugScene::Init()
 
 void PlayerModelDebugScene::CreatePlayer()
 {
-
 	{
 		//移動できるオブジェクト（プレイヤー）を作成
 		//移動できるプレイヤーオブジェクトを作る
-		auto playerObj = CreateGameObject();
-		////プレイヤーにメッシュレンダラーを入れる。
-		//auto renderer = playerObj->AddComponent<MeshRenderer>();
-		////モデルを追加する。
-		//renderer->LoadModel("Assets/Model/karubi/まけん式赤見かるび姫衣装ver1.0.pmx");
+		auto playerRoot = CreateGameObject();
 
-		// パーツごとにキャラクターモデル追加 (オブジェクトを分けたら移動しちゃってOK)
-		auto renderer1 = playerObj->AddComponent<MeshRenderer>();
-		renderer1->LoadModel("Assets/Model/HEW/FBX/jyoubu.fbx");
-		auto renderer2 = playerObj->AddComponent<MeshRenderer>();
+		//プレイヤールートにコンポーネントを追加
+		auto renderer2 = playerRoot->AddComponent<MeshRenderer>();
 		renderer2->LoadModel("Assets/Model/HEW/FBX/kabu.fbx");
-		auto renderer3 = playerObj->AddComponent<MeshRenderer>();
-		renderer3->LoadModel("Assets/Model/HEW/FBX/sityu.fbx");
 
-		//プレイヤーオブジェクトにコンポーネントを追加
-		playerObj->AddComponent<PlayerMove>();
-		auto transform = playerObj->GetTransform();
-		//大きさ
-		transform->m_scale = { 1.0f, 1.0f, 1.0f };
+		playerRoot->AddComponent<PlayerMove>();
+
+		// 頭作る
+		auto playerHead = CreateGameObject();
+
+		//頭にコンポーネントを追加
+		auto renderer1 = playerRoot->AddComponent<MeshRenderer>();
+		renderer1->LoadModel("Assets/Model/HEW/FBX/jyoubu.fbx");
+		playerHead->GetTransform()->SetParent(playerRoot->GetTransform());
+		playerHead->GetTransform()->SetScale(1.0f, 2.0f, 1.0f);
+
 		//ブロック操作コンポーネントの追加
-		auto blockHandler = playerObj->AddComponent<PlayerBlockHandler>();
+		auto blockHandler = playerHead->AddComponent<PlayerBlockHandler>();
+
+		// 支柱作る
+		auto playerPillar = CreateGameObject();
+
+		// 支柱にコンポーネントつける
+		auto renderer3 = playerPillar->AddComponent<MeshRenderer>();
+		renderer3->LoadModel("Assets/Model/HEW/FBX/sityu.fbx");
+		playerHead->GetTransform()->SetParent(playerRoot->GetTransform());
 
 		//ブロックオブジェクトを生成
 		auto blockObj = CreateGameObject();
+
 		//オフセットで位置を変える
 		blockObj->GetTransform()->SetPosition(0.0f, 2.0f, 0.0f);
 		auto blockComponent = blockObj->AddComponent<BlockObject>();
 		blockHandler->SetBlockObject(blockComponent);
 
+
+
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
