@@ -201,6 +201,11 @@ std::optional<BlockSetAndRotationData> GridField::RemoveBlock()
 		}
 	}
 	m_removeCursorBlockId = 0u;
+
+	for (int i = 0; i < 3; ++i) {
+		m_pShapeScreen[i]->SetCurrentShape(m_gridData.GetShape(i));
+	}
+
 	return data;
 }
 
