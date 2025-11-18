@@ -18,7 +18,7 @@ GridField::GridField()
 		auto transform = obj->GetTransform();
 		transform->SetParent(GetTransform());
 		transform->SetPosition(-sizeHalf.x - 2.0f, sizeHalf.y, 0.0f);
-		transform->SetEulerAngle(0.0f, 270.0f, 0.0f);
+		transform->SetEulerAngle(0.0f, 90.0f, 0.0f);
 		m_pShapeScreen[0] = obj->AddComponent<ShapeScreen>();
 	}
 
@@ -27,7 +27,7 @@ GridField::GridField()
 		auto transform = obj->GetTransform();
 		transform->SetParent(GetTransform());
 		transform->SetPosition(0.0f, -0.2f, 0.0f);
-		transform->SetEulerAngle(90.0f, 90.0f, 0.0f);
+		transform->SetEulerAngle(90.0f, 0.0f, 0.0f);
 		m_pShapeScreen[1] = obj->AddComponent<ShapeScreen>();
 	}
 
@@ -35,7 +35,7 @@ GridField::GridField()
 		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
 		auto transform = obj->GetTransform();
 		transform->SetParent(GetTransform());
-		transform->SetPosition(0.0f, sizeHalf.y, -sizeHalf.z + 2.0f);
+		transform->SetPosition(0.0f, sizeHalf.y, sizeHalf.z + 2.0f);
 		transform->SetEulerAngle(0.0f, 0.0f, 0.0f);
 		m_pShapeScreen[2] = obj->AddComponent<ShapeScreen>();
 	}
@@ -75,7 +75,7 @@ void GridField::SetSize(Vec3Int size)
 
 	m_pShapeScreen[0]->GetTransform()->SetPosition(-sizeHalf.x - 2.0f, sizeHalf.y, 0.0f);
 	m_pShapeScreen[1]->GetTransform()->SetPosition(0.0f, -0.2f, 0.0f);
-	m_pShapeScreen[2]->GetTransform()->SetPosition(0.0f, sizeHalf.y, -sizeHalf.z + 2.0f);
+	m_pShapeScreen[2]->GetTransform()->SetPosition(0.0f, sizeHalf.y, sizeHalf.z + 2.0f);
 }
 
 bool GridField::IsOverlap(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation)
