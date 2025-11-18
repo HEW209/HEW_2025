@@ -15,6 +15,4 @@ public:
 	void Init() final;
 
 private:
-
-	void CreatePlayer();
 };

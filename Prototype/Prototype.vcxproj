@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="Source\BlockObject.h" />
     <ClInclude Include="Source\BlockData.h" />
+    <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\ShapeScreen.h" />
     <ClInclude Include="Source\CollisionDebugScene.h" />
     <ClInclude Include="Source\Config.h" />
@@ -173,6 +174,7 @@
     <ClCompile Include="Source\GridField.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\PlaceCursor.cpp" />
+    <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\PlayerBlockDebugScene.cpp" />
     <ClCompile Include="Source\GameState.cpp" />
     <ClCompile Include="Source\PlayerBlockHandler.cpp" />
