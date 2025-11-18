@@ -132,11 +132,11 @@ std::optional<BlockSetAndRotationData> GridBlockData::RemoveBlock(BlockIdType bl
 	return data;
 }
 
-DynamicDimArray<bool, 2> GridBlockData::GetShape(int projectionAxis) const
+ShapeType GridBlockData::GetShape(int projectionAxis) const
 {
 	if (projectionAxis < 0 || projectionAxis > 2) {
 		assert(false && "Invalid projection axis");
-		return DynamicDimArray<bool, 2>();
+		return ShapeType();
 	}
 
 	// ŽË‰e–Ê‚ðŒvŽZ
@@ -148,7 +148,7 @@ DynamicDimArray<bool, 2> GridBlockData::GetShape(int projectionAxis) const
 	size_t sizeV = static_cast<size_t>(m_size[axisV]);
 	size_t sizeProjected = static_cast<size_t>(m_size[projectionAxis]);
 
-	DynamicDimArray<bool, 2> shape(sizeU, sizeV);
+	ShapeType shape(sizeU, sizeV);
 
 	size_t coords[3];
 

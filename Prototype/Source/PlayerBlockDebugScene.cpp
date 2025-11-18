@@ -69,17 +69,30 @@ void PlayerBlockDebugScene::Init()
 		auto component = obj->AddComponent<GridField>();
 		GameState::GetInstance()->SetGridField(component);
 		component->SetSize({ 4, 4, 4 });
+		ShapeType clearShapeX({ 4, 4 });
+		ShapeType clearShapeY({ 4, 4 });
+		ShapeType clearShapeZ({ 4, 4 });
+		clearShapeX.SetData({
+			1, 0, 0, 0,
+			1, 0, 0, 0,
+			0, 0, 0, 0,
+			0, 0, 0, 0
+			});
+		clearShapeY.SetData({
+			1, 1, 1, 0,
+			1, 1, 1, 0,
+			0, 0, 0, 0,
+			0, 0, 0, 0
+			});
+		clearShapeZ.SetData({
+			1, 1, 1, 0,
+			0, 0, 0, 0,
+			0, 0, 0, 0,
+			0, 0, 0, 0
+			});
+		component->SetClearShape(clearShapeX, clearShapeY, clearShapeZ);
+
 		obj->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
-
-	}
-
-	{
-		auto obj = CreateGameObject();
-		auto renderer = obj->AddComponent<MeshRenderer>();
-		auto transform = obj->GetTransform();
-		transform->SetScale(4.0f, 0.4f, 4.0f);
-		//グリッドフィールドの下
-		transform->SetPosition(0.0f, -0.2f, 0.0f);
 
 	}
 	

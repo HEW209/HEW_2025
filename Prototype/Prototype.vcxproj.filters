@@ -78,6 +78,9 @@
     <ClInclude Include="Source\CollisionDebugScene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Source\ShapeScreen.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
     <ClInclude Include="Source\PlayerDebugScene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -133,6 +136,12 @@
     </ClCompile>
     <ClCompile Include="Source\CollisionDebugScene.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ShapeScreen.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameTypes.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Source\PlayerDebugScene.cpp">
       <Filter>ソース ファイル</Filter>

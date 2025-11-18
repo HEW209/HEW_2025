@@ -15,8 +15,11 @@
 #include <numeric>
 #include <concepts>
 #include <stdexcept>
+#include <string>
 #include <span>
 #include <initializer_list>
+
+#include "Vec.h"
 
 // N次元可変長配列クラス
 template <typename T, size_t Dimensions>
@@ -30,11 +33,20 @@ public:
     using const_iterator = typename Container::const_iterator;
 
     // コンストラクタ（各次元のサイズを可変長引数で受け取る）
-    template <typename... Dims>
+    template <std::integral... Dims>
         requires (sizeof...(Dims) == Dimensions)
     DynamicDimArray(Dims... dims) {
         // 引数を配列に格納
         m_dims = { static_cast<size_t>(dims)... };
+        allocate(T());
+    }
+
+    template <std::integral Dim>
+    DynamicDimArray(const Vec<Dim, Dimensions> dims) {
+        // 引数を配列に格納
+        for (int i = 0; i < Dimensions; ++i) {
+			m_dims[i] = static_cast<size_t>(dims[i]);
+        }
         allocate(T());
     }
 
@@ -64,7 +76,7 @@ public:
     template <typename... Indices>
         requires (sizeof...(Indices) == Dimensions)
     reference at(Indices... indices) {
-        std::array<size_t, Dimensions> idxs = { static_cast<size_t>(indices)... };
+        Vec<size_t, Dimensions> idxs = { static_cast<size_t>(indices)... };
         checkBounds(idxs);
         return m_data[getIndex(idxs)];
     }
@@ -72,7 +84,7 @@ public:
     template <typename... Indices>
         requires (sizeof...(Indices) == Dimensions)
     value_type at(Indices... indices) const {
-        std::array<size_t, Dimensions> idxs = { static_cast<size_t>(indices)... };
+        Vec<size_t, Dimensions> idxs = { static_cast<size_t>(indices)... };
         checkBounds(idxs);
         return m_data[getIndex(idxs)];
     }
@@ -93,6 +105,11 @@ public:
         return m_data[getIndex({ static_cast<size_t>(indices)... })];
     }
 
+    template <std::integral Dim>
+    reference operator()(const Vec<Dim, Dimensions> indices) {
+        assert((checkBoundsDebug(indices), true));
+        return m_data[getIndex(indices)];
+    }
 
     void SetData(std::span<const value_type> srcData) {
         if (srcData.size() != m_data.size()) {
@@ -121,7 +138,7 @@ public:
 
         if constexpr (ArgCount == Dimensions) {
             // デフォルト値の指定なし
-            std::array<size_t, Dimensions> dims = { static_cast<size_t>(args)... };
+            Vec<size_t, Dimensions> dims = { static_cast<size_t>(args)... };
             ResizeImpl(dims, T());
         }
         else if constexpr (ArgCount == Dimensions + 1) {
@@ -132,7 +149,7 @@ public:
             T val = static_cast<T>(std::get<Dimensions>(argsTuple));
 
             // 最初のDimensions個の引数をサイズとして取得
-            std::array<size_t, Dimensions> dims;
+            Vec<size_t, Dimensions> dims;
 
             // タプルから配列へ展開
             auto unpack = [&]<size_t... Is>(std::index_sequence<Is...>) {
@@ -149,7 +166,7 @@ public:
     void Expand(size_t dimensionIndex, size_t addAmount, const T& val = T()) {
         if (dimensionIndex >= Dimensions) throw std::out_of_range("Dimension index out of range");
 
-        std::array<size_t, Dimensions> newDims = m_dims;
+        Vec<size_t, Dimensions> newDims = m_dims;
         newDims[dimensionIndex] += addAmount;
 
         // 配列を引数パック展開してResizeに渡す
@@ -158,6 +175,10 @@ public:
     }
 
     // --- 情報取得 ---
+
+	Vec<size_t, Dimensions> GetSize() const {
+		return m_dims;
+	}
 
     size_t GetSize(size_t dimensionIndex) const {
         if (dimensionIndex >= Dimensions) return 0;
@@ -174,9 +195,9 @@ public:
     const_iterator end() const { return m_data.end(); }
 
     // イテレータから座標を逆算
-    std::array<size_t, Dimensions> GetCoordinates(const_iterator it) const {
+    Vec<size_t, Dimensions> GetCoordinates(const_iterator it) const {
         size_t index = std::distance(m_data.cbegin(), it);
-        std::array<size_t, Dimensions> coords;
+        Vec<size_t, Dimensions> coords;
 
         size_t tempIdx = index;
         for (size_t i = 0; i < Dimensions; ++i) {
@@ -197,7 +218,7 @@ public:
 
 private:
     Container m_data;
-    std::array<size_t, Dimensions> m_dims;
+    Vec<size_t, Dimensions> m_dims;
 
     void allocate(const T& val) {
         size_t total = 1;
@@ -206,7 +227,7 @@ private:
     }
 
     // 座標からインデックスに変換
-    size_t getIndex(const std::array<size_t, Dimensions>& indices) const {
+    size_t getIndex(const Vec<size_t, Dimensions>& indices) const {
         size_t index = 0;
         size_t stride = 1;
 
@@ -219,7 +240,7 @@ private:
     }
 
     // 境界チェック
-    void checkBounds(const std::array<size_t, Dimensions>& indices) const {
+    void checkBounds(const Vec<size_t, Dimensions>& indices) const {
         for (size_t i = 0; i < Dimensions; ++i) {
             if (indices[i] >= m_dims[i]) {
                 throw std::out_of_range("coordinates out of range");
@@ -227,14 +248,14 @@ private:
         }
     }
 
-    void checkBoundsDebug(const std::array<size_t, Dimensions>& indices) const {
+    void checkBoundsDebug(const Vec<size_t, Dimensions>& indices) const {
         for (size_t i = 0; i < Dimensions; ++i) {
             assert(indices[i] < m_dims[i] && "Index out of bounds");
         }
     }
 
     // リサイズ処理
-    void ResizeImpl(const std::array<size_t, Dimensions>& newDims, const T& val) {
+    void ResizeImpl(const Vec<size_t, Dimensions>& newDims, const T& val) {
         // サイズが変わっていなければ何もしない
         if (newDims == m_dims) return;
 
@@ -263,8 +284,8 @@ private:
     // 再帰的コピー関数
     // currentDim: 現在処理している次元
     void recursiveCopy(
-        const Container& srcData, const std::array<size_t, Dimensions>& srcDims,
-        Container& dstData, const std::array<size_t, Dimensions>& dstDims,
+        const Container& srcData, const Vec<size_t, Dimensions>& srcDims,
+        Container& dstData, const Vec<size_t, Dimensions>& dstDims,
         size_t currentDim,
         size_t srcBaseIndex, size_t dstBaseIndex
     ) {

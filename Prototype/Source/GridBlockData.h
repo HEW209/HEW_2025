@@ -14,6 +14,7 @@
 
 #include "BlockData.h"
 #include "DynamicDimensionalArray.h"
+#include "GameTypes.h"
 #include "IDGenerator.h"
 #include "Vec.h"
 
@@ -23,9 +24,6 @@
  */
 class GridBlockData
 {
-private:
-	using BlockIdType = uint8_t;
-
 public:
 	GridBlockData(size_t width, size_t height, size_t depth);
 	GridBlockData(Vec3Int size) : GridBlockData(size.x, size.y, size.z) {}
@@ -47,10 +45,10 @@ public:
 
 	// 二次元の形状（シルエット）を取得
 	// projectionAxis: 0=X, 1=Y, 2=Z
-	DynamicDimArray<bool, 2> GetShape(int projectionAxis) const;
-	DynamicDimArray<bool, 2> GetShapeX() const { return GetShape(0); }
-	DynamicDimArray<bool, 2> GetShapeY() const { return GetShape(1); }
-	DynamicDimArray<bool, 2> GetShapeZ() const { return GetShape(2); }
+	ShapeType GetShape(int projectionAxis) const;
+	ShapeType GetShapeX() const { return GetShape(0); }
+	ShapeType GetShapeY() const { return GetShape(1); }
+	ShapeType GetShapeZ() const { return GetShape(2); }
 
 private:
 	struct BlockData

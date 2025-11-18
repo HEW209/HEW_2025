@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="Source\BlockObject.h" />
     <ClInclude Include="Source\BlockData.h" />
+    <ClInclude Include="Source\ShapeScreen.h" />
     <ClInclude Include="Source\CollisionDebugScene.h" />
     <ClInclude Include="Source\Config.h" />
     <ClInclude Include="Source\GridField.h" />
@@ -165,6 +166,7 @@
   <ItemGroup>
     <ClCompile Include="Source\BlockObject.cpp" />
     <ClCompile Include="Source\CollisionDebugScene.cpp" />
+    <ClCompile Include="Source\GameTypes.h" />
     <ClCompile Include="Source\GridBlockData.cpp" />
     <ClCompile Include="Source\GridDebugScene.cpp" />
     <ClCompile Include="Source\GridDebugSceneManager.cpp" />
@@ -180,6 +182,7 @@
     <ClCompile Include="Source\SampleCamera.cpp" />
     <ClCompile Include="Source\SamplePlayer.cpp" />
     <ClCompile Include="Source\SampleScene.cpp" />
+    <ClCompile Include="Source\ShapeScreen.cpp" />
     <ClCompile Include="Source\VecUtil.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
