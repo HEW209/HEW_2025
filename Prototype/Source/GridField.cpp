@@ -140,6 +140,7 @@ bool GridField::PlaceBlock()
 
 	auto obj = SceneManager::GetActiveScene()->CreateGameObject();
 	auto component = obj->AddComponent<BlockObject>();
+	component->SetUseCollider(true);
 	component->SetBlockSet(blockSet);
 	auto transform = obj->GetTransform();
 	transform->m_position = pos;

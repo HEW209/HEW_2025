@@ -141,6 +141,8 @@
   <ItemGroup>
     <ClInclude Include="Source\BlockObject.h" />
     <ClInclude Include="Source\BlockData.h" />
+    <ClInclude Include="Source\Player.h" />
+    <ClInclude Include="Source\PlayerStretch.h" />
     <ClInclude Include="Source\ShapeScreen.h" />
     <ClInclude Include="Source\CollisionDebugScene.h" />
     <ClInclude Include="Source\Config.h" />
@@ -149,6 +151,7 @@
     <ClInclude Include="Source\PlayerBlockDebugScene.h" />
     <ClInclude Include="Source\GameState.h" />
     <ClInclude Include="Source\PlayerBlockHandler.h" />
+    <ClInclude Include="Source\PlayerDebugScene.h" />
     <ClInclude Include="Source\PlayerMove.h" />
     <ClInclude Include="Source\PlayerMoveDebugScene.h" />
     <ClInclude Include="Source\DynamicDimensionalArray.h" />
@@ -172,11 +175,14 @@
     <ClCompile Include="Source\GridField.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\PlaceCursor.cpp" />
+    <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\PlayerBlockDebugScene.cpp" />
     <ClCompile Include="Source\GameState.cpp" />
     <ClCompile Include="Source\PlayerBlockHandler.cpp" />
+    <ClCompile Include="Source\PlayerDebugScene.cpp" />
     <ClCompile Include="Source\PlayerMove.cpp" />
     <ClCompile Include="Source\PlayerMoveDebugScene.cpp" />
+    <ClCompile Include="Source\PlayerStretch.cpp" />
     <ClCompile Include="Source\SampleCamera.cpp" />
     <ClCompile Include="Source\SamplePlayer.cpp" />
     <ClCompile Include="Source\SampleScene.cpp" />

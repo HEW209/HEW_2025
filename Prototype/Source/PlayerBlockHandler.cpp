@@ -239,7 +239,7 @@ void PlayerBlockHandler::Update()
 		pGridField->ResetRemoveCursor();
 		pGridField->SetPlaceCursor(m_pBlockObject->GetBlockSet(), placeCursorPos, blockTransform->GetQuaternion());
 
-		if (InputManager::GetKeyDown(Input::Q)) {
+		if (InputManager::GetKeyDown(Input::E)) {
 
 			//グリッド内かどうかの判定
 			if (pGridField->IsOverlap(m_pBlockObject->GetBlockSet(), placeCursorPos, blockTransform->GetQuaternion()))
@@ -259,6 +259,7 @@ void PlayerBlockHandler::Update()
 				auto transform = obj->GetTransform();
 				transform->SetPosition(placeCursorPos);
 				transform->SetQuaternion(blockTransform->GetQuaternion());
+				component->SetUseCollider(true);
 				component->SetBlockSet(m_pBlockObject->GetBlockSet());
 				GameState::GetInstance()->AppendWorldBlock(component);
 				//使った頭上のブロックは初期化
