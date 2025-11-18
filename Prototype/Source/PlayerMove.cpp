@@ -1,11 +1,11 @@
 #include "PlayerMove.h"
 
 PlayerMove::PlayerMove() :
-	m_moveSpeed(0.11f),
+	m_moveSpeed(0.10f),
 	m_jumpPower(0.5f),
 	m_gravity(0.05f),
 	m_velocity_y(0.0f),
-	m_rotateSpeed (1000.0f)
+	m_rotateSpeed (500.0f)
 
 {
 }
@@ -66,10 +66,7 @@ void PlayerMove::Update()
 		input.z += 1.0f;
 	}
 		
-	if (InputManager::GetKeyHold(Input::O))
-	{
-		GetTransform()->SetEulerAngle(0.0f, 270.0f, 0.0f);
-	}
+
 	/*
 	//ƒWƒƒƒ“ƒv
 	if (InputManager::GetKeyDown(Input::SPACE))
@@ -87,7 +84,7 @@ void PlayerMove::Update()
 	move = moveDir * m_moveSpeed;
 	move.y = m_velocity_y;
 	Vector3 e = GetTransform()->GetEulerAngle();
-	float currentY = GetTransform()->GetEulerAngle(Space::LOCAL).y;
+	float currentY = GetTransform()->GetEulerAngle().y;
 	if (moveDir != Vector3::zero)
 	{
 		float dt = 1.0f / 60.0f;
