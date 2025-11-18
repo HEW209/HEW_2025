@@ -152,10 +152,14 @@ void PlayerBlockHandler::Update()
 	}
 
 
-	//プレイヤーからのブロックを置く相対座標
+	//プレイヤーからブロックを置く位置を決めるための相対オフセット（プレイヤー前方1.5m）
 	Vector3 placeCursorOffset{ 0.0f, 0.0f, -1.5f };
-	
+
+	//プレイヤーのクォータニオンを、相対オフセット方向に適用
+	//「プレイヤーの向いている方向に応じて、前方1.5mの位置」を求める。
 	Vector3 placeCursorPos = playerTransform->GetPosition() + playerTransform->GetQuaternion() * placeCursorOffset; 
+
+	//ブロックの底面分だけ位置を補正（地面に接地させるためのオフセット）
 	placeCursorPos += m_pBlockObject->GetGroundOffset();
 
 	//プレイヤーからのブロックを取るための相対座標
@@ -163,19 +167,21 @@ void PlayerBlockHandler::Update()
 
 	Vector3 removeCursorPos = playerTransform->GetPosition() + playerTransform->GetQuaternion() * removeCursorOffset;
 
+	//毎回書くと長くなるので格納してわかりやすくする。
 	GridField* pGridField = GameState::GetInstance()->GetGridField();
+
 	//ブロックが存在しなかったら
 	if (m_pBlockObject->GetBlockSet().blocks.empty()) {
 
+		//ブロックを初期化する。
 		pGridField->ResetPlaceCursor();
-
-		
 
 		pGridField->SetRemoveCursor(removeCursorPos);
 
-
+		//毎回書くと長くなるので格納してわかりやすくする。
 		auto pWorldBlocks = GameState::GetInstance()->GetWorldBlocks();
 
+		
 		bool isYetSelect = true;
 
 		for (auto&& pBlock : pWorldBlocks) {
@@ -261,9 +267,11 @@ void PlayerBlockHandler::Update()
 		}
 	}
 
+	
 	Vector3 blockOffset{ 0.0f, 2.0f, 0.0f };
-	//
+	//地面に設置させるために計算
 	blockOffset += m_pBlockObject->GetGroundOffset();
+	
 	blockTransform->SetPosition(playerTransform->GetPosition() + blockOffset);
 
 
