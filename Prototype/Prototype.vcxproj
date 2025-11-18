@@ -142,6 +142,7 @@
     <ClInclude Include="Source\BlockObject.h" />
     <ClInclude Include="Source\BlockData.h" />
     <ClInclude Include="Source\Player.h" />
+    <ClInclude Include="Source\PlayerStretch.h" />
     <ClInclude Include="Source\ShapeScreen.h" />
     <ClInclude Include="Source\CollisionDebugScene.h" />
     <ClInclude Include="Source\Config.h" />
@@ -181,6 +182,7 @@
     <ClCompile Include="Source\PlayerDebugScene.cpp" />
     <ClCompile Include="Source\PlayerMove.cpp" />
     <ClCompile Include="Source\PlayerMoveDebugScene.cpp" />
+    <ClCompile Include="Source\PlayerStretch.cpp" />
     <ClCompile Include="Source\SampleCamera.cpp" />
     <ClCompile Include="Source\SamplePlayer.cpp" />
     <ClCompile Include="Source\SampleScene.cpp" />

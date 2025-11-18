@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "PlayerMove.h"
 #include "PlayerBlockHandler.h"
+#include "PlayerStretch.h"
 
 void Player::Awake()
 {
@@ -20,6 +21,7 @@ void Player::Awake()
 	auto renderer1 = playerHead->AddComponent<MeshRenderer>();
 	renderer1->LoadModel("Assets/Model/HEW/FBX/jyoubu.fbx");
 	playerHead->GetTransform()->SetParent(pObj->GetTransform());
+	playerHead->AddComponent<PlayerStretch>();
 
 	//ブロック操作コンポーネントの追加
 	auto blockHandler = playerHead->AddComponent<PlayerBlockHandler>();

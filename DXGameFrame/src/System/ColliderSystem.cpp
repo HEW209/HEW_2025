@@ -48,11 +48,11 @@ void ColliderSystem::Check()
 		{
 			if (CheckCollisionOBB(obbData[i], obbData[j],&mtv))
 			{
-	    			if (m_colliders[i]->OnCollisionEnter && iter == 0)
+	    		if (m_colliders[i]->OnCollisionEnter && iter == 0)
 				{
 					m_colliders[i]->OnCollisionEnter(m_colliders[j]->GetGameObject());
 				}
-	    			if (m_colliders[j]->OnCollisionEnter && iter == 0)
+	    		if (m_colliders[j]->OnCollisionEnter && iter == 0)
 				{
 					m_colliders[j]->OnCollisionEnter(m_colliders[i]->GetGameObject());
 				}
