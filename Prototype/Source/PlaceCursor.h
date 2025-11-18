@@ -34,5 +34,13 @@ public:
 
 private:
 	BlockSetData m_blockSet;
-	std::vector<ObjPtr<GameObject>> m_pBlocks;
+
+	/// ブロック情報
+	struct BlockObj
+	{
+		ObjPtr<GameObject> pObj;
+		ObjPtr<MeshRenderer> pRenderer;		// レンダラーもキャッシュ
+	};
+
+	std::vector<BlockObj> m_pBlocks;
 };
