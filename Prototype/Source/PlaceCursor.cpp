@@ -6,8 +6,8 @@
 void PlaceCursor::OnDestroy()
 {
 	for (auto&& block : m_pBlocks) {
-		if (block) {
-			block->Destroy();
+		if (block.pObj) {
+			block.pObj->Destroy();
 		}
 	}
 }
@@ -20,8 +20,8 @@ void PlaceCursor::SetBlockSet(const BlockSetData& blockSet)
 	m_blockSet = blockSet;
 
 	for (auto&& block : m_pBlocks) {
-		if (block) {
-			block->Destroy();
+		if (block.pObj) {
+			block.pObj->Destroy();
 		}
 	}
 	m_pBlocks.clear();
@@ -38,7 +38,11 @@ void PlaceCursor::SetBlockSet(const BlockSetData& blockSet)
 		pos.x = blockPos.x;
 		pos.y = blockPos.y;
 		pos.z = blockPos.z;
-		m_pBlocks.push_back(obj);
+
+		BlockObj blockObj;
+		blockObj.pObj = obj;
+		blockObj.pRenderer = renderer;
+		m_pBlocks.push_back(blockObj);
 	}
 }
 
@@ -47,15 +51,13 @@ void PlaceCursor::SetPlaceable(bool value)
 	if (value) {
 		for (auto&& pBlock : m_pBlocks)
 		{
-			auto renderer = pBlock->GetComponent<MeshRenderer>();
-			renderer->GetMaterial(0)->SetTexture("Assets/Model/SelectGrid/Texture.png");
+			pBlock.pRenderer->GetMaterial(0)->SetTexture("Assets/Model/SelectGrid/Texture.png");
 		}
 	}
 	else {
 		for (auto&& pBlock : m_pBlocks)
 		{
-			auto renderer = pBlock->GetComponent<MeshRenderer>();
-			renderer->GetMaterial(0)->SetTexture("Assets/Model/SelectGrid/Texture_Out.png");
+			pBlock.pRenderer->GetMaterial(0)->SetTexture("Assets/Model/SelectGrid/Texture_Out.png");
 		}
 	}
 }
