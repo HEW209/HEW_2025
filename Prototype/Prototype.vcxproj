@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="Source\BlockObject.h" />
     <ClInclude Include="Source\BlockData.h" />
+    <ClInclude Include="Source\ShapeScreen.h" />
     <ClInclude Include="Source\CollisionDebugScene.h" />
     <ClInclude Include="Source\Config.h" />
     <ClInclude Include="Source\GridField.h" />
