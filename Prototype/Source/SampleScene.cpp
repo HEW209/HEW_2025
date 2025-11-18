@@ -29,16 +29,10 @@ void SampleScene::Init()
 	{
 		auto parent = CreateGameObject();
 		auto obj = CreateGameObject();
-		/*auto renderer = obj->AddComponent<MeshRenderer>();
-		renderer->LoadModel("Assets/Model/HEW/FBX/atama.fbx");*/
 		//auto renderer = obj->AddComponent<MeshRenderer>();
-		//renderer->LoadModel("Assets/Model/karubi/‚Ü‚¯‚ñŽ®ÔŒ©‚©‚é‚Ñ•Pˆß‘•ver1.0.pmx");
-		obj->AddComponent<Collider>();
+		//renderer->LoadModel("Assets/Model/HEW/FBX/atama.fbx");
 		obj->AddComponent<SamplePlayer>();
 		auto transform = obj->GetTransform();
-		transform->m_scale = { 1.0f, 1.0f, 1.0f };
-		transform->m_position = { 2.0f, 10.0f, 0.0f };
-		//transform->m_scale = { 0.1f, 0.1f, 0.1f };
 		transform->m_scale = { 1.0f, 1.0f, 1.0f };
 		transform->m_position = { 0.0f, 5.0f, 0.0f };
 		transform->SetParent(parent->GetTransform());
@@ -71,12 +65,7 @@ void SampleScene::Init()
 		auto renderer = obj->AddComponent<MeshRenderer>();
 		auto transform = obj->GetTransform();
 		transform->m_position.y = -0.5f;
-		transform->m_scale = { 1.0f, 1.0f, 1.0f };
-		obj->AddComponent<Collider>();
 		transform->m_scale = { 10.0f, 1.0f, 10.0f };
-		transform->m_scale = { 10.0f, 1.0f, 10.0f };
-		transform->SetEulerAngle(0.0f, 0.0f, 30.0f);
-		auto collider = obj->AddComponent<Collider>();
-		collider->m_scale = { 10.0f, 1.0f, 10.0f };
 	}
+
 }

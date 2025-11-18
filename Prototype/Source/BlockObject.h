@@ -32,27 +32,6 @@ public:
 
 	void SetSelect(bool value);
 
-	/**
-	 * @brief ブロックが地面に設置した際の原点のY軸オフセットを取得する
-	 * @note 回転を考慮し、最も低いブロックの頂点がY=0になるようにするためのY軸オフセットを計算します。
-	 * @return 地面に設置するためのY軸オフセット
-	 */
-	float GetGroundYOffset();
-
-	/**
-	 * @brief ブロックが地面に設置した際の原点のオフセットを取得する
-	 * @note 回転を考慮し、最も低いブロックの頂点がY=0になるようにするためのオフセットを計算します。
-	 * @return 地面に設置するためのオフセット (Vector3(0.0f, offset, 0.0f))
-	 */
-	Vector3 GetGroundOffset();
-
-	/**
-	 * @brief 指定したワールド座標がブロックの内側にあるか判定する
-	 * @param worldPosition 判定したいワールド座標
-	 * @return いずれかのブロックの内側にあれば true
-	 */
-	bool IsInside(const Vector3& worldPosition);
-
 private:
 	BlockSetData m_blockSet;
 	std::vector<ObjPtr<GameObject>> m_pBlocks;

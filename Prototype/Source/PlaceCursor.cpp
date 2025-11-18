@@ -2,7 +2,6 @@
 
 #include "PlaceCursor.h"
 
-
 void PlaceCursor::OnDestroy()
 {
 	for (auto&& block : m_pBlocks) {
@@ -14,9 +13,6 @@ void PlaceCursor::OnDestroy()
 
 void PlaceCursor::SetBlockSet(const BlockSetData& blockSet)
 {
-	if (m_blockSet.blocks == blockSet.blocks) {
-		return;
-	}
 	m_blockSet = blockSet;
 
 	for (auto&& block : m_pBlocks) {

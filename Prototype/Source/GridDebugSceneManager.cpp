@@ -19,15 +19,6 @@ void GridDebugSceneManager::Start()
 	m_pGridField->GetTransform()->m_position = gridFieldPos;
 	m_pGridFieldComponent = m_pGridField->AddComponent<GridField>();
 	m_pGridFieldComponent->SetSize({ 4, 4, 4 });
-
-	DynamicDimArray<bool, 2> clearShape(4, 4);
-	clearShape.SetData({
-		1,0,0,0,
-		0,0,0,0,
-		0,0,0,0,
-		0,0,0,0,
-		});
-	m_pGridFieldComponent->SetClearShape(clearShape, clearShape, clearShape);
 }
 
 void GridDebugSceneManager::Update()

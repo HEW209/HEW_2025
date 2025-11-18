@@ -55,15 +55,6 @@ public:
 	// ブロックが存在しない場合はnulloptを返す
 	std::optional<BlockSetAndRotationData> RemoveBlock();
 
-	// クリア判定の形状を登録する関数
-	void SetClearShape(DynamicDimArray<bool, 2> shapeX , DynamicDimArray<bool, 2> shapeY , DynamicDimArray<bool, 2> shapeZ);
-
-	// クリア判定
-	bool IsClear();
-
-	//グリッド内判定
-	bool IsInside(const Vector3& position);
-
 private:
 	bool IsInside(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation);
 	bool CanPlace(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation);
@@ -78,5 +69,4 @@ private:
 	ObjPtr<GameObject> m_pPlaceCursor;
 	ObjPtr<PlaceCursor> m_pPlaceCursorComponent;
 	uint8_t m_removeCursorBlockId;
-	DynamicDimArray<bool, 2> m_clearShape[3];
 };
