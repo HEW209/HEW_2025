@@ -9,6 +9,7 @@ public:
 	~SamplePlayer() = default;
 
 	void Update() override;
+	void Awake() override;
 
 private:
 	float m_moveSpeed;

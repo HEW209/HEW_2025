@@ -21,4 +21,5 @@ void GridDebugScene::Init()
 		auto obj = CreateGameObject();
 		obj->AddComponent<GridDebugSceneManager>();
 	}
+
 }
