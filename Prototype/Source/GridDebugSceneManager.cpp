@@ -20,7 +20,7 @@ void GridDebugSceneManager::Start()
 	m_pGridFieldComponent = m_pGridField->AddComponent<GridField>();
 	m_pGridFieldComponent->SetSize({ 4, 4, 4 });
 
-	DynamicDimArray<bool, 2> clearShape(4, 4);
+	ShapeType clearShape(4, 4);
 	clearShape.SetData({
 		1,0,0,0,
 		0,0,0,0,

@@ -13,6 +13,8 @@
 
 #include <DXGameFrame.h>
 
+#include "GameTypes.h"
+
 
  /**
   * @brief ブロックのコンポーネント
@@ -25,16 +27,21 @@ public:
 
 	void OnDestroy() override;
 
-	void SetClearShape();
-	void SetCurrentShape();
+	/// @brief クリア形状を設定
+	void SetClearShape(const ShapeType& shape);
 
-	/**
-	 * @brief 指定したワールド座標がブロックの内側にあるか判定する
-	 * @param worldPosition 判定したいワールド座標
-	 * @return いずれかのブロックの内側にあれば true
-	 */
-	bool IsClear(const Vector3& worldPosition);
+	/// @brief 現在の形状を設定
+	void SetCurrentShape(const ShapeType& shape);
+
+	/// @brief クリアしているか
+	bool IsClear();
 
 private:
-	std::vector<ObjPtr<GameObject>> m_pBlocks;
+	void UpdateClearShapeBlocks();
+	void UpdateCurrentShapeBlocks();
+
+	std::vector<ObjPtr<GameObject>> m_pCurrentShapeBlocks;
+	std::vector<ObjPtr<GameObject>> m_pClearShapeBlocks;
+	ShapeType m_clearShape;
+	ShapeType m_currentShape;
 };

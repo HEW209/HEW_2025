@@ -86,6 +86,23 @@ struct Vec : public VectorStorage<T, N>
 {
     using VectorStorage<T, N>::data;
 
+    // --- STL互換のためのエイリアス ---
+
+    using value_type = T;
+    using size_type = std::size_t;
+    using difference_type = std::ptrdiff_t;
+
+    using reference = T&;
+    using const_reference = const T&;
+
+    using pointer = T*;
+    using const_pointer = const T*;
+
+    using iterator = typename std::array<T, N>::iterator;
+    using const_iterator = typename std::array<T, N>::const_iterator;
+    using reverse_iterator = typename std::array<T, N>::reverse_iterator;
+    using const_reverse_iterator = typename std::array<T, N>::const_reverse_iterator;
+
     // --- コンストラクタ ---
 
     constexpr Vec() : VectorStorage<T, N>{ {0} } {}
@@ -187,9 +204,34 @@ struct Vec : public VectorStorage<T, N>
         return result;
     }
 
+    // --- イテレータ ---
+
+    constexpr auto begin() noexcept { return data.begin(); }
+    constexpr auto end() noexcept { return data.end(); }
+
+    constexpr auto begin() const noexcept { return data.begin(); }
+    constexpr auto end() const noexcept { return data.end(); }
+    constexpr auto cbegin() const noexcept { return data.cbegin(); }
+    constexpr auto cend() const noexcept { return data.cend(); }
+
+    constexpr auto rbegin() noexcept { return data.rbegin(); }
+    constexpr auto rend() noexcept { return data.rend(); }
+
+    constexpr auto rbegin() const noexcept { return data.rbegin(); }
+    constexpr auto rend() const noexcept { return data.rend(); }
+    constexpr auto crbegin() const noexcept { return data.crbegin(); }
+    constexpr auto crend() const noexcept { return data.crend(); }
+
     // --- アクセサ ---
+
     constexpr T& operator[](std::size_t i) { return data[i]; }
     constexpr const T& operator[](std::size_t i) const { return data[i]; }
+
+    // --- ユーティリティ ---
+
+    constexpr void fill(const T& value) {
+        data.fill(value);
+    }
 
     // --- 演算 ---
     

@@ -62,16 +62,6 @@ void PlayerBlockDebugScene::Init()
 		obj->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
 
 	}
-
-	{
-		auto obj = CreateGameObject();
-		auto renderer = obj->AddComponent<MeshRenderer>();
-		auto transform = obj->GetTransform();
-		transform->SetScale(4.0f, 0.4f, 4.0f);
-		//グリッドフィールドの下
-		transform->SetPosition(0.0f, -0.2f, 0.0f);
-
-	}
 	
 	{//ライト
 		auto obj = CreateGameObject();

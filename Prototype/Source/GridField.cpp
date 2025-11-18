@@ -9,6 +9,36 @@
 GridField::GridField()
 	: m_removeCursorBlockId(0u)
 {
+	auto size = GetSize();
+	Vector3 sizeFloat = static_cast<Vector3>(size);
+	Vector3 sizeHalf = sizeFloat * 0.5f;
+
+	{
+		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
+		auto transform = obj->GetTransform();
+		transform->SetParent(GetTransform());
+		transform->SetPosition(-sizeHalf.x - 2.0f, sizeHalf.y, 0.0f);
+		transform->SetEulerAngle(0.0f, 270.0f, 0.0f);
+		m_pShapeScreen[0] = obj->AddComponent<ShapeScreen>();
+	}
+
+	{
+		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
+		auto transform = obj->GetTransform();
+		transform->SetParent(GetTransform());
+		transform->SetPosition(0.0f, -0.2f, 0.0f);
+		transform->SetEulerAngle(90.0f, 90.0f, 0.0f);
+		m_pShapeScreen[1] = obj->AddComponent<ShapeScreen>();
+	}
+
+	{
+		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
+		auto transform = obj->GetTransform();
+		transform->SetParent(GetTransform());
+		transform->SetPosition(0.0f, sizeHalf.y, -sizeHalf.z + 2.0f);
+		transform->SetEulerAngle(0.0f, 0.0f, 0.0f);
+		m_pShapeScreen[2] = obj->AddComponent<ShapeScreen>();
+	}
 }
 
 void GridField::Start()
@@ -28,11 +58,24 @@ void GridField::OnDestroy()
 	if (m_pPlaceCursor) {
 		m_pPlaceCursor->Destroy();
 	}
+
+	for (int i = 0; i < 3; ++i) {
+		if (m_pShapeScreen[i]) {
+			m_pShapeScreen[i]->GetGameObject()->Destroy();
+		}
+	}
 }
 
 void GridField::SetSize(Vec3Int size)
 {
 	m_gridData = GridBlockData{ size };
+
+	Vector3 sizeFloat = static_cast<Vector3>(size);
+	Vector3 sizeHalf = sizeFloat * 0.5f;
+
+	m_pShapeScreen[0]->GetTransform()->SetPosition(-sizeHalf.x - 2.0f, sizeHalf.y, 0.0f);
+	m_pShapeScreen[1]->GetTransform()->SetPosition(0.0f, -0.2f, 0.0f);
+	m_pShapeScreen[2]->GetTransform()->SetPosition(0.0f, sizeHalf.y, -sizeHalf.z + 2.0f);
 }
 
 bool GridField::IsOverlap(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation)
@@ -111,7 +154,14 @@ bool GridField::PlaceBlock()
 	if (IsClear())
 	{
 		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
-		obj->AddComponent<MeshRenderer>();
+		auto renderer = obj->AddComponent<MeshRenderer>();
+		renderer->GetMaterial(0)->SetTexture("Assets/Textures/Yellow.png");
+		obj->GetTransform()->SetPosition(0.0f, GetSize().y + 2.0f, 0.0f);
+		obj->GetTransform()->SetParent(GetTransform());
+	}
+
+	for (int i = 0; i < 3; ++i) {
+		m_pShapeScreen[i]->SetCurrentShape(m_gridData.GetShape(i));
 	}
 
 	return true;
@@ -154,11 +204,15 @@ std::optional<BlockSetAndRotationData> GridField::RemoveBlock()
 	return data;
 }
 
-void GridField::SetClearShape(DynamicDimArray<bool, 2> shapeX, DynamicDimArray<bool, 2> shapeY, DynamicDimArray<bool, 2> shapeZ)
+void GridField::SetClearShape(ShapeType shapeX, ShapeType shapeY, ShapeType shapeZ)
 {
 	m_clearShape[0] = shapeX;
 	m_clearShape[1] = shapeY;
 	m_clearShape[2] = shapeZ;
+
+	for (int i = 0; i < 3; ++i) {
+		m_pShapeScreen[i]->SetClearShape(m_clearShape[i]);
+	}
 }
 
 bool GridField::IsClear()
