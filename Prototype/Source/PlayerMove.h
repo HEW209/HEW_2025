@@ -1,6 +1,8 @@
 #pragma once
 
 #include <DXGameFrame.h>
+#include <cmath>
+#include <algorithm>
 
 class PlayerMove : public Component
 {
@@ -15,4 +17,6 @@ private:
 	float m_jumpPower;
 	float m_gravity;
 	float m_velocity_y;
+	float m_rotateSpeed ; 
+
 };

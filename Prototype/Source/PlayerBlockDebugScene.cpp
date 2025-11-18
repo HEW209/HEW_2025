@@ -17,7 +17,7 @@ void PlayerBlockDebugScene::Init()
 		auto obj = CreateGameObject();
 		auto camera = obj->AddComponent<Camera>();
 		auto transform = obj->GetTransform();
-		transform->SetEulerAngle(20.0f, 45.0f, 0.0f);
+		transform->SetEulerAngle(20.0f, 0.0f, 0.0f);
 		obj->AddComponent<SampleCamera>();
 	}
 
