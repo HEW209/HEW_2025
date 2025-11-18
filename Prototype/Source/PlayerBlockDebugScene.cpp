@@ -68,6 +68,66 @@ void PlayerBlockDebugScene::Init()
 		obj->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
 
 	}
+
+	//ワールドに配置するブロック
+	{
+		BlockSetData blockSet;
+		blockSet.blocks.resize(1);
+		blockSet.blocks[0] = { 0, 0, 0 };
+
+		auto obj = CreateGameObject();
+		auto component = obj->AddComponent<BlockObject>();
+		component->SetBlockSet(blockSet);
+		auto transform = obj->GetTransform();
+		transform->SetPosition(Vector3{5.0f, 0.0f, 3.0f} + component->GetGroundOffset());
+		
+		GameState::GetInstance()->AppendWorldBlock(component);
+	}
+	{
+		BlockSetData blockSet;
+		blockSet.blocks.resize(2);
+		blockSet.blocks[0] = { 0, 0, 0 };
+		blockSet.blocks[1] = { 1, 0, 0 };
+
+		auto obj = CreateGameObject();
+		auto component = obj->AddComponent<BlockObject>();
+		component->SetBlockSet(blockSet);
+		auto transform = obj->GetTransform();
+		transform->SetPosition(Vector3{ 5.0f, 0.0f, 1.0f } + component->GetGroundOffset());
+
+		GameState::GetInstance()->AppendWorldBlock(component);
+	}
+	{
+		BlockSetData blockSet;
+		blockSet.blocks.resize(3);
+		blockSet.blocks[0] = { 0, 0, 0 };
+		blockSet.blocks[1] = { 1, 0, 0 };
+		blockSet.blocks[2] = { 0, 1, 0 };
+
+		auto obj = CreateGameObject();
+		auto component = obj->AddComponent<BlockObject>();
+		component->SetBlockSet(blockSet);
+		auto transform = obj->GetTransform();
+		transform->SetPosition(Vector3{ 5.0f, 0.0f, -1.0f } + component->GetGroundOffset());
+
+		GameState::GetInstance()->AppendWorldBlock(component);
+	}
+	{
+		BlockSetData blockSet;
+		blockSet.blocks.resize(4);
+		blockSet.blocks[0] = { 0, 0, 0 };
+		blockSet.blocks[1] = { 1, 0, 0 };
+		blockSet.blocks[2] = { 0, 1, 0 };
+		blockSet.blocks[3] = { 0, 0, -1 };
+
+		auto obj = CreateGameObject();
+		auto component = obj->AddComponent<BlockObject>();
+		component->SetBlockSet(blockSet);
+		auto transform = obj->GetTransform();
+		transform->SetPosition(Vector3{ 5.0f, 0.0f, -3.0f } + component->GetGroundOffset());
+
+		GameState::GetInstance()->AppendWorldBlock(component);
+	}
 	
 	{//ライト
 		auto obj = CreateGameObject();
