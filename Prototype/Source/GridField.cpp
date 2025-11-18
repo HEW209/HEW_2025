@@ -103,9 +103,14 @@ void GridField::SetPlaceCursor(const BlockSetData& blockSet, const Vector3& posi
 		return;
 	}
 
+	Vec3Int coord = CalcGridCoord(position);
+	Vector3 origin = GetGridOrigin();
+
+	Vector3 pos = origin + static_cast<Vector3>(coord) + Vector3{0.5f, 0.5f, 0.5f};
+
 	m_pPlaceCursorComponent->SetBlockSet(blockSet);
 	m_pPlaceCursorComponent->SetPlaceable(CanPlace(blockSet, position, snappedRot));
-	m_pPlaceCursor->GetTransform()->m_position = SnapGrid(position) + Vector3{0.5f, 0.5f, 0.5f};
+	m_pPlaceCursor->GetTransform()->m_position = pos;
 	m_pPlaceCursor->GetTransform()->SetQuaternion(snappedRot);
 }
 
