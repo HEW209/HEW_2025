@@ -22,7 +22,7 @@
 class BlockObject : public Component
 {
 public:
-	BlockObject() = default;
+	BlockObject() :m_shouldUseCollider(false) {}
 	~BlockObject() = default;
 
 	void OnDestroy() override;
@@ -53,7 +53,10 @@ public:
 	 */
 	bool IsInside(const Vector3& worldPosition);
 
+	void SetUseCollider(bool value) { m_shouldUseCollider = value; }
+
 private:
 	BlockSetData m_blockSet;
 	std::vector<ObjPtr<GameObject>> m_pBlocks;
+	bool m_shouldUseCollider;
 };

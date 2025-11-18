@@ -9,7 +9,7 @@
 
 #include <DXGameFrame.h>
 
-class PlayerModelDebugScene : public Scene
+class PlayerDebugScene : public Scene
 {
 public:
 	void Init() final;

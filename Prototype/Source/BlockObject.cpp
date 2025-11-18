@@ -26,6 +26,11 @@ void BlockObject::SetBlockSet(const BlockSetData& blockSet)
 	for (auto&& blockPos : blockSet.blocks) {
 		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
 		auto renderer = obj->AddComponent<MeshRenderer>();
+		if (m_shouldUseCollider)
+		{
+			obj->AddComponent<Collider>();
+		}
+
 		auto transform = obj->GetTransform();
 		transform->SetParent(GetTransform());
 		auto& pos = transform->m_position;
