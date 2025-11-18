@@ -32,11 +32,11 @@ void PlayerMove::Update()
 		input.z += 1.0f;
 	}
 		
-	
+	/*
 	//ƒWƒƒƒ“ƒv
 	if (InputManager::GetKeyDown(Input::SPACE))
 		m_velocity_y = m_jumpPower;
-
+	*/
 	//d—Í‚ğ‰ÁZ
 	m_velocity_y -= m_gravity;
 
