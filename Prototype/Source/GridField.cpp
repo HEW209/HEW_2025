@@ -18,7 +18,7 @@ GridField::GridField()
 		auto transform = obj->GetTransform();
 		transform->SetParent(GetTransform());
 		transform->SetPosition(-sizeHalf.x - 2.0f, sizeHalf.y, 0.0f);
-		transform->SetEulerAngle(0.0f, 90.0f, 0.0f);
+		transform->SetEulerAngle(90.0f, 0.0f, 90.0f);
 		m_pShapeScreen[0] = obj->AddComponent<ShapeScreen>();
 	}
 
@@ -155,7 +155,7 @@ bool GridField::PlaceBlock()
 	{
 		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
 		auto renderer = obj->AddComponent<MeshRenderer>();
-		renderer->GetMaterial(0)->SetTexture("Assets/Textures/Yellow.png");
+		renderer->GetMaterial(0)->SetTexture("Assets/Default/Yellow.png");
 		obj->GetTransform()->SetPosition(0.0f, GetSize().y + 2.0f, 0.0f);
 		obj->GetTransform()->SetParent(GetTransform());
 	}
