@@ -14,4 +14,4 @@
 #include "Vector3.h"
 #include "Quaternion.h"
 #include "Color.h"
-#include "InputManager.h"
+#include "Input.h"

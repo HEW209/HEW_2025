@@ -16,25 +16,25 @@ void PlayerBlockHandler::Update()
 
 	
 
-	if (InputManager::GetKeyDown(Input::RIGHT)) {
+	if (Input::GetKeyDown(KeyCode::RIGHT)) {
 		blockTransform->SetQuaternion(Quaternion::Euler(0.0f, 0.0f, -90.0f) * blockTransform->GetQuaternion());
 
 	}
-	if (InputManager::GetKeyDown(Input::LEFT)) {
+	if (Input::GetKeyDown(KeyCode::LEFT)) {
 		blockTransform->SetQuaternion(Quaternion::Euler(0.0f, 0.0f, 90.0f) * blockTransform->GetQuaternion());
 
 	}
-	if (InputManager::GetKeyDown(Input::UP)) {
+	if (Input::GetKeyDown(KeyCode::UP)) {
 		blockTransform->SetQuaternion(Quaternion::Euler(90.0f, 0.0f, 0.0f) * blockTransform->GetQuaternion());
 
 	}
-	if (InputManager::GetKeyDown(Input::DOWN)) {
+	if (Input::GetKeyDown(KeyCode::DOWN)) {
 		blockTransform->SetQuaternion(Quaternion::Euler(-90.0f, 0.0f, 0.0f) * blockTransform->GetQuaternion());
 
 	}
 
 
-	if (InputManager::GetKeyDown(Input::KEY_1)) {
+	if (Input::GetKeyDown(KeyCode::KEY_1)) {
 		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
 
 		BlockSetData data;
@@ -42,7 +42,7 @@ void PlayerBlockHandler::Update()
 		data.blocks[0] = { 0, 0, 0 };
 		m_pBlockObject->SetBlockSet(data);
 	}
-	if (InputManager::GetKeyDown(Input::KEY_2)) {
+	if (Input::GetKeyDown(KeyCode::KEY_2)) {
 		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
 
 		BlockSetData data;
@@ -51,7 +51,7 @@ void PlayerBlockHandler::Update()
 		data.blocks[1] = { 1, 0, 0 };
 		m_pBlockObject->SetBlockSet(data);
 	}
-	if (InputManager::GetKeyDown(Input::KEY_3)) {
+	if (Input::GetKeyDown(KeyCode::KEY_3)) {
 		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
 
 		BlockSetData data;
@@ -61,7 +61,7 @@ void PlayerBlockHandler::Update()
 		data.blocks[2] = { 0, 1, 0 };
 		m_pBlockObject->SetBlockSet(data);
 	}
-	if (InputManager::GetKeyDown(Input::KEY_4)) {
+	if (Input::GetKeyDown(KeyCode::KEY_4)) {
 		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
 
 		BlockSetData data;
@@ -72,7 +72,7 @@ void PlayerBlockHandler::Update()
 		data.blocks[3] = { 1, 1, 0 };
 		m_pBlockObject->SetBlockSet(data);
 	}
-	if (InputManager::GetKeyDown(Input::KEY_5)) {
+	if (Input::GetKeyDown(KeyCode::KEY_5)) {
 		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
 
 		BlockSetData data;
@@ -83,7 +83,7 @@ void PlayerBlockHandler::Update()
 		data.blocks[3] = { 0, 0, 1 };
 		m_pBlockObject->SetBlockSet(data);
 	}
-	if (InputManager::GetKeyDown(Input::KEY_6)) {
+	if (Input::GetKeyDown(KeyCode::KEY_6)) {
 		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
 
 		BlockSetData data;
@@ -95,7 +95,7 @@ void PlayerBlockHandler::Update()
 		data.blocks[4] = { 0, 0, 1 };
 		m_pBlockObject->SetBlockSet(data);
 	}
-	if (InputManager::GetKeyDown(Input::KEY_7)) {
+	if (Input::GetKeyDown(KeyCode::KEY_7)) {
 		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
 
 		BlockSetData data;
@@ -108,7 +108,7 @@ void PlayerBlockHandler::Update()
 		data.blocks[5] = { 1, 0, 1 };
 		m_pBlockObject->SetBlockSet(data);
 	}
-	if (InputManager::GetKeyDown(Input::KEY_8)) {
+	if (Input::GetKeyDown(KeyCode::KEY_8)) {
 		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
 
 		BlockSetData data;
@@ -121,7 +121,7 @@ void PlayerBlockHandler::Update()
 		data.blocks[5] = { 1, 1, 1 };
 		m_pBlockObject->SetBlockSet(data);
 	}
-	if (InputManager::GetKeyDown(Input::KEY_9)) {
+	if (Input::GetKeyDown(KeyCode::KEY_9)) {
 		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
 
 		BlockSetData data;
@@ -135,7 +135,7 @@ void PlayerBlockHandler::Update()
 		data.blocks[6] = { 0, 1, 1 };
 		m_pBlockObject->SetBlockSet(data);
 	}
-	if (InputManager::GetKeyDown(Input::KEY_0)) {
+	if (Input::GetKeyDown(KeyCode::KEY_0)) {
 		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
 
 		BlockSetData data;
@@ -200,7 +200,7 @@ void PlayerBlockHandler::Update()
 			}
 		}
 
-		if (InputManager::GetKeyDown(Input::E)) {
+		if (Input::GetKeyDown(KeyCode::E)) {
 
 			//trueが帰ってきたらグリッド内
 			if (pGridField->IsInside(removeCursorPos)) {
@@ -239,7 +239,7 @@ void PlayerBlockHandler::Update()
 		pGridField->ResetRemoveCursor();
 		pGridField->SetPlaceCursor(m_pBlockObject->GetBlockSet(), placeCursorPos, blockTransform->GetQuaternion());
 
-		if (InputManager::GetKeyDown(Input::E)) {
+		if (Input::GetKeyDown(KeyCode::E)) {
 
 			//グリッド内かどうかの判定
 			if (pGridField->IsOverlap(m_pBlockObject->GetBlockSet(), placeCursorPos, blockTransform->GetQuaternion()))

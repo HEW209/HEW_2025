@@ -49,19 +49,19 @@ void PlayerMove::Update()
 	static Vector3 euler{0.0f,0.0f ,0.0f };
 
 	//“ü—Í‚ðŽæ“¾
-	if (InputManager::GetKeyHold(Input::A))
+	if (Input::GetKeyHold(KeyCode::A))
 	{
 		input.x -= 1.0f;
 	}
-	if (InputManager::GetKeyHold(Input::D))
+	if (Input::GetKeyHold(KeyCode::D))
 	{
 		input.x += 1.0f;
 	}
-	if (InputManager::GetKeyHold(Input::S))
+	if (Input::GetKeyHold(KeyCode::S))
 	{
 		input.z -= 1.0f;
 	}
-	if (InputManager::GetKeyHold(Input::W))
+	if (Input::GetKeyHold(KeyCode::W))
 	{
 		input.z += 1.0f;
 	}
@@ -69,7 +69,7 @@ void PlayerMove::Update()
 
 	/*
 	//ƒWƒƒƒ“ƒv
-	if (InputManager::GetKeyDown(Input::SPACE))
+	if (Input::GetKeyDown(KeyCode::SPACE))
 		m_velocity_y = m_jumpPower;
 	*/
 
@@ -112,5 +112,5 @@ void PlayerMove::Update()
 		m_velocity_y = 0.0f;
 	}
 
-	
+
 }
