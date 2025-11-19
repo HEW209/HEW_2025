@@ -28,6 +28,7 @@ public:
 	GridField();
 	~GridField() = default;
 
+	void Awake() override;
 	void Start() override;
 	void OnDestroy() override;
 

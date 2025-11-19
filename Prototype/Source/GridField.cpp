@@ -9,6 +9,11 @@
 GridField::GridField()
 	: m_removeCursorBlockId(0u)
 {
+
+}
+
+void GridField::Awake()
+{
 	auto size = GetSize();
 	Vector3 sizeFloat = static_cast<Vector3>(size);
 	Vector3 sizeHalf = sizeFloat * 0.5f;
@@ -18,7 +23,7 @@ GridField::GridField()
 		auto transform = obj->GetTransform();
 		transform->SetParent(GetTransform());
 		transform->SetPosition(-sizeHalf.x - 2.0f, sizeHalf.y, 0.0f);
-		transform->SetEulerAngle(90.0f, 0.0f, 90.0f);
+		transform->SetEulerAngle(0.0f, 90.0f, 90.0f);
 		m_pShapeScreen[0] = obj->AddComponent<ShapeScreen>();
 	}
 
