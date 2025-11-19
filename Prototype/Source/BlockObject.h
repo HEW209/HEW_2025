@@ -22,7 +22,7 @@
 class BlockObject : public Component
 {
 public:
-	BlockObject() :m_shouldUseCollider(false) {}
+	BlockObject() :m_shouldUseCollider(true) {}
 	~BlockObject() = default;
 
 	void OnDestroy() override;
