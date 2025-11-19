@@ -23,7 +23,7 @@ Camera::~Camera()
 DirectX::XMFLOAT4X4 Camera::GetViewMatrix()
 {
 	DirectX::XMMATRIX world;	// カメラのワールド列
-	world = Camera::GetMain()->GetTransform()->GetWorldMatrix();
+	world = GetTransform()->GetWorldMatrix();
 
 	// 変換行列の合成・転置
 	DirectX::XMFLOAT4X4 result;

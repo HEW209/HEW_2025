@@ -123,6 +123,12 @@ public:
 	Transform* GetParent();
 
 	/**
+	 * @brief ルートTransformを取得する
+	 * @return 最上位のTransformへのポインタ
+	 */
+	Transform* GetRoot();
+
+	/**
 	 * @brief このTransformの子Transformを取得する
 	 * @return 子Transformへのポインタ配列
 	 */
@@ -161,7 +167,7 @@ public:
 	void Rotate(Vector3 euler)
 	{
 		m_euler += euler;
-		m_quaternion = Quaternion::Euler(m_euler);
+		m_quaternion *= Quaternion::Euler(euler);
 	}
 
 	/**
