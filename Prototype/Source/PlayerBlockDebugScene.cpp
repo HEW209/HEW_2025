@@ -15,11 +15,19 @@ void PlayerBlockDebugScene::Init()
 	
 	//ƒJƒƒ‰
 	{
+		auto rootObj = CreateGameObject();
+		rootObj->AddComponent<SampleCamera>();
+		rootObj->GetTransform()->SetEulerAngle(0.0f, 45.0f, 0.0f);
+
 		auto obj = CreateGameObject();
 		auto camera = obj->AddComponent<Camera>();
+		Camera::Config cameraConfig;
+		cameraConfig.fovAngle = 30.0f;
+		camera->SetConfig(cameraConfig);
 		auto transform = obj->GetTransform();
-		transform->SetEulerAngle(15.0f, 45.0f, 0.0f);
-		obj->AddComponent<SampleCamera>();
+		transform->SetPosition(0.0f, 8.0f, -18.0f);
+		transform->SetEulerAngle(20.0f, 0.0f, 0.0f);
+		transform->SetParent(rootObj->GetTransform());
 	}
 
 

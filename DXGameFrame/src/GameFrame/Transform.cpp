@@ -154,6 +154,15 @@ Transform* Transform::GetParent()
 	return m_pParent;
 }
 
+Transform* Transform::GetRoot()
+{
+	if (m_pParent == nullptr)
+		return this;
+
+	// 再帰的にルートを取得する
+	return m_pParent->GetRoot();
+}
+
 std::vector<Transform*> Transform::GetChildren()
 {
 	return m_pChildren;
