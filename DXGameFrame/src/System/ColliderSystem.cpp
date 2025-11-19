@@ -196,7 +196,7 @@ bool ColliderSystem::CheckCollisionOBB(Collider::ObbData data, Collider::ObbData
     }
 
     // めり込み許容値を適用
-    minOverlap = max(0.0f, minOverlap - PENETRATION_SLOP);
+    minOverlap = std::max(0.0f, minOverlap - PENETRATION_SLOP);
 
     // (1) MTVの計算
     *pMtv = mtvAxis * minOverlap;

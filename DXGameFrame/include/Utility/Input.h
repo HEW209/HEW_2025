@@ -234,6 +234,18 @@ public:
 	static bool GetButtonUp(PadCode padCode);
 
 	/**
+	 * @brief 右スティックの入力を取得する
+	 * @return 右スティックの入力情報
+	 */
+	static Vector2 GetRightStick();
+
+	/**
+	 * @brief 左スティックの入力を取得する
+	 * @return 左スティックの入力情報
+	 */
+	static Vector2 GetLeftStick();
+
+	/**
 	 * @brief マウス座標を取得
 	 * @return マウス座標
 	 */

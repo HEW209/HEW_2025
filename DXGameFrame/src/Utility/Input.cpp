@@ -3,6 +3,11 @@
 
 static const BYTE g_triggerDeadzone = 1000;		//コントローラーのトリガーデッドゾーン
 
+uint8_t Input::s_oldKeyTable[MAX_KEY_TYPE];
+uint8_t Input::s_keyTable[MAX_KEY_TYPE];
+XINPUT_STATE Input::s_oldPadState;
+XINPUT_STATE Input::s_padState;
+
 void Input::Init()
 {
 	// キー入力初期化
@@ -119,6 +124,18 @@ bool Input::GetButtonUp(PadCode padCode)
 		}
 	}
 	return ((s_padState.Gamepad.wButtons) ^ (s_oldPadState.Gamepad.wButtons)) & (s_oldPadState.Gamepad.wButtons) & (WORD)padCode;
+}
+
+Vector2 Input::GetRightStick()
+{
+	Vector2 input(s_padState.Gamepad.sThumbRX, s_padState.Gamepad.sThumbRY);
+	return input.Normalized();
+}
+
+Vector2 Input::GetLeftStick()
+{
+	Vector2 input(s_padState.Gamepad.sThumbLX, s_padState.Gamepad.sThumbLY);
+	return input.Normalized();
 }
 
 Vector2 Input::GetMousePos()

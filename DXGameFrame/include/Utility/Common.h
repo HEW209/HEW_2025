@@ -14,7 +14,7 @@
 #include <memory>
 
 //クランプマクロ
-#define CLAMP(v, min, max)   ((v)<(min)?(min):((v)>(max)?(max):(v)))
+#define CLAMP(v, minV, maxV)   ((v)<(minV)?(minV):((v)>(maxV)?(maxV):(v)))
 
 //メモリ解放マクロ
 #define SAFE_DELETE(p)			do{if(p){delete p; p = nullptr;}}while(0)

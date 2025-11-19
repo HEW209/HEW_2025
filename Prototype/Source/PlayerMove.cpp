@@ -112,5 +112,5 @@ void PlayerMove::Update()
 		m_velocity_y = 0.0f;
 	}
 
-	
+
 }
