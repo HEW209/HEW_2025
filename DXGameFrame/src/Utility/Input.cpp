@@ -138,6 +138,19 @@ Vector2 Input::GetLeftStick()
 	return input.Normalized();
 }
 
+Vector2 Input::GetStick(StickCode stickCode)
+{
+	switch (stickCode)
+	{
+	case StickCode::LEFT:
+		return GetLeftStick();
+	case StickCode::RIGHT:
+		return GetRightStick();
+	default:
+		return Vector2::zero;
+	}
+}
+
 Vector2 Input::GetMousePos()
 {
 	POINT mousePos;

@@ -1,5 +1,7 @@
 #include "PlayerStretch.h"
 
+#include "InputSystem.h"
+
 constexpr float BLOCK_SIZE = 1.0f;
 constexpr int LENGTH_MAX = 4;
 constexpr int INPUT_DELAY = 20;
@@ -15,12 +17,12 @@ void PlayerStretch::Update()
 	Vector3 pos = GetTransform()->GetPosition(Space::LOCAL);
 
 	//“ü—Í‚ðŽæ“¾
-	if (Input::GetKeyHold(KeyCode::SPACE))
+	if (InputSystem::GetButtonDown("Up"))
 	{
 		if(m_targetY < LENGTH_MAX)
 			m_targetY = round(floor(pos.y) + BLOCK_SIZE);
 	}
-	else if (Input::GetKeyHold(KeyCode::CTRL))
+	else if (InputSystem::GetButtonDown("Down"))
 	{
 		if(0.0f < m_targetY)
 			m_targetY = round(ceil(pos.y) - BLOCK_SIZE);

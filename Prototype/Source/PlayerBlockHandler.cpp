@@ -1,5 +1,6 @@
 #include "PlayerBlockHandler.h"
 #include "GameState.h"
+#include "InputSystem.h"
 
 
 void PlayerBlockHandler::Start()
@@ -16,19 +17,19 @@ void PlayerBlockHandler::Update()
 
 	
 
-	if (Input::GetKeyDown(KeyCode::RIGHT)) {
+	if (InputSystem::GetButtonDown("RotateBlockRight")) {
 		blockTransform->SetQuaternion(Quaternion::Euler(0.0f, 0.0f, -90.0f) * blockTransform->GetQuaternion());
 
 	}
-	if (Input::GetKeyDown(KeyCode::LEFT)) {
+	if (InputSystem::GetButtonDown("RotateBlockLeft")) {
 		blockTransform->SetQuaternion(Quaternion::Euler(0.0f, 0.0f, 90.0f) * blockTransform->GetQuaternion());
 
 	}
-	if (Input::GetKeyDown(KeyCode::UP)) {
+	if (InputSystem::GetButtonDown("RotateBlockUp")) {
 		blockTransform->SetQuaternion(Quaternion::Euler(90.0f, 0.0f, 0.0f) * blockTransform->GetQuaternion());
 
 	}
-	if (Input::GetKeyDown(KeyCode::DOWN)) {
+	if (InputSystem::GetButtonDown("RotateBlockDown")) {
 		blockTransform->SetQuaternion(Quaternion::Euler(-90.0f, 0.0f, 0.0f) * blockTransform->GetQuaternion());
 
 	}
@@ -200,7 +201,7 @@ void PlayerBlockHandler::Update()
 			}
 		}
 
-		if (Input::GetKeyDown(KeyCode::E)) {
+		if (InputSystem::GetButtonDown("PlaceAndRemove")) {
 
 			//trueが帰ってきたらグリッド内
 			if (pGridField->IsInside(removeCursorPos)) {
@@ -239,7 +240,7 @@ void PlayerBlockHandler::Update()
 		pGridField->ResetRemoveCursor();
 		pGridField->SetPlaceCursor(m_pBlockObject->GetBlockSet(), placeCursorPos, blockTransform->GetQuaternion());
 
-		if (Input::GetKeyDown(KeyCode::E)) {
+		if (InputSystem::GetButtonDown("PlaceAndRemove")) {
 
 			//グリッド内かどうかの判定
 			if (pGridField->IsOverlap(m_pBlockObject->GetBlockSet(), placeCursorPos, blockTransform->GetQuaternion()))

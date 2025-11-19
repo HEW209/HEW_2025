@@ -174,6 +174,15 @@ enum class PadCode : WORD
 };
 
 /**
+ * @brief コントローラースティック入力コード
+ */
+enum class StickCode : uint8_t
+{
+	LEFT = 0x00,
+	RIGHT = 0x01,
+};
+
+/**
  * @brief 入力の取得を行う
  */
 class Input
@@ -244,6 +253,13 @@ public:
 	 * @return 左スティックの入力情報
 	 */
 	static Vector2 GetLeftStick();
+
+	/**
+	 * @brief スティックの入力を取得する
+	 * @param stickCode スティックの種類
+	 * @return スティックの入力情報
+	 */
+	static Vector2 GetStick(StickCode stickCode);
 
 	/**
 	 * @brief マウス座標を取得
