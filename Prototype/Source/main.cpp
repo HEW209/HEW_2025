@@ -10,6 +10,7 @@
 
 
 #include"PlayerMoveDebugScene.h"
+#include"PlayerDebugScene.h"
 
 #include "CollisionDebugScene.h"
 
@@ -95,7 +96,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//		ƒV[ƒ“‚Ìì¬
 	//-----------------------
 	//SceneManager::Init(std::make_unique<SampleScene>());
-	SceneManager::Init(std::make_unique<PlayerBlockDebugScene>());
+	SceneManager::Init(std::make_unique<PlayerDebugScene>());
 
 	//------------------------
 	//		FPSŒÅ’è‚Ì€”õ

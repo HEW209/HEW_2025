@@ -152,10 +152,14 @@ void PlayerBlockHandler::Update()
 	}
 
 
-	//プレイヤーからのブロックを置く相対座標
+	//プレイヤーからブロックを置く位置を決めるための相対オフセット（プレイヤー前方1.5m）
 	Vector3 placeCursorOffset{ 0.0f, 0.0f, -1.5f };
-	
+
+	//プレイヤーのクォータニオンを、相対オフセット方向に適用
+	//「プレイヤーの向いている方向に応じて、前方1.5mの位置」を求める。
 	Vector3 placeCursorPos = playerTransform->GetPosition() + playerTransform->GetQuaternion() * placeCursorOffset; 
+
+	//ブロックの底面分だけ位置を補正（地面に接地させるためのオフセット）
 	placeCursorPos += m_pBlockObject->GetGroundOffset();
 
 	//プレイヤーからのブロックを取るための相対座標
@@ -163,19 +167,22 @@ void PlayerBlockHandler::Update()
 
 	Vector3 removeCursorPos = playerTransform->GetPosition() + playerTransform->GetQuaternion() * removeCursorOffset;
 
+	//毎回書くと長くなるので格納してわかりやすくする。
 	GridField* pGridField = GameState::GetInstance()->GetGridField();
+
 	//ブロックが存在しなかったら
 	if (m_pBlockObject->GetBlockSet().blocks.empty()) {
 
+		//配置カーソルの位置を初期化する。
 		pGridField->ResetPlaceCursor();
 
-		
-
+		//取得カーソルの位置を設定する。
 		pGridField->SetRemoveCursor(removeCursorPos);
 
-
+		//毎回書くと長くなるので格納してわかりやすくする。
 		auto pWorldBlocks = GameState::GetInstance()->GetWorldBlocks();
 
+		
 		bool isYetSelect = true;
 
 		for (auto&& pBlock : pWorldBlocks) {
@@ -232,7 +239,7 @@ void PlayerBlockHandler::Update()
 		pGridField->ResetRemoveCursor();
 		pGridField->SetPlaceCursor(m_pBlockObject->GetBlockSet(), placeCursorPos, blockTransform->GetQuaternion());
 
-		if (InputManager::GetKeyDown(Input::Q)) {
+		if (InputManager::GetKeyDown(Input::E)) {
 
 			//グリッド内かどうかの判定
 			if (pGridField->IsOverlap(m_pBlockObject->GetBlockSet(), placeCursorPos, blockTransform->GetQuaternion()))
@@ -252,18 +259,21 @@ void PlayerBlockHandler::Update()
 				auto transform = obj->GetTransform();
 				transform->SetPosition(placeCursorPos);
 				transform->SetQuaternion(blockTransform->GetQuaternion());
+				component->SetUseCollider(true);
 				component->SetBlockSet(m_pBlockObject->GetBlockSet());
 				GameState::GetInstance()->AppendWorldBlock(component);
-				//使ったブロックは初期化
+				//使った頭上のブロックは初期化
 				m_pBlockObject->SetBlockSet(BlockSetData{});
 			}
 
 		}
 	}
 
+	
 	Vector3 blockOffset{ 0.0f, 2.0f, 0.0f };
-	//
+	//地面に設置させるために計算
 	blockOffset += m_pBlockObject->GetGroundOffset();
+	
 	blockTransform->SetPosition(playerTransform->GetPosition() + blockOffset);
 
 

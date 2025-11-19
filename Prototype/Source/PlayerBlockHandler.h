@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
  * @file   PlayerBlockHandler.h
- * @brief  プレイヤーブロックを操作するための
+ * @brief  プレイヤーブロックを操作するためのコンポーネントクラス
  *
  * @author 長尾潤弥
  * @date   2025/11/17
@@ -21,6 +21,7 @@ public:
 	void Update() override;
 
 	void TryPlaceBlock();
+	//ブロックを置くための関数
 	void SetBlockObject(BlockObject* pBlockObject);
 
 private:

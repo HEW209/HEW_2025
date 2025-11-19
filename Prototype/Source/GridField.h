@@ -16,6 +16,7 @@
 
 #include "GridBlockData.h"
 #include "PlaceCursor.h"
+#include "ShapeScreen.h"
 
 
  /**
@@ -56,7 +57,7 @@ public:
 	std::optional<BlockSetAndRotationData> RemoveBlock();
 
 	// クリア判定の形状を登録する関数
-	void SetClearShape(DynamicDimArray<bool, 2> shapeX , DynamicDimArray<bool, 2> shapeY , DynamicDimArray<bool, 2> shapeZ);
+	void SetClearShape(ShapeType shapeX , ShapeType shapeY , ShapeType shapeZ);
 
 	// クリア判定
 	bool IsClear();
@@ -78,5 +79,6 @@ private:
 	ObjPtr<GameObject> m_pPlaceCursor;
 	ObjPtr<PlaceCursor> m_pPlaceCursorComponent;
 	uint8_t m_removeCursorBlockId;
-	DynamicDimArray<bool, 2> m_clearShape[3];
+	ShapeType m_clearShape[3];
+	ObjPtr<ShapeScreen> m_pShapeScreen[3];
 };
