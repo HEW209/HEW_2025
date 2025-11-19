@@ -11,9 +11,9 @@ void SampleCamera::Update()
 {
 	float input = 0.0f;
 
-	if (InputManager::GetKeyHold(Input::MOUSE_LEFT))
+	if (Input::GetKeyHold(KeyCode::MOUSE_LEFT))
 		input -= 1.0f;
-	if (InputManager::GetKeyHold(Input::MOUSE_RIGHT))
+	if (Input::GetKeyHold(KeyCode::MOUSE_RIGHT))
 		input += 1.0f;
 
 	GetTransform()->Rotate(0.0f, input * m_rotateSpeed, 0.0f);

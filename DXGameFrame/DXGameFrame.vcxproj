@@ -63,7 +63,7 @@
     <ClInclude Include="include\System\System.h" />
     <ClInclude Include="include\Utility\Color.h" />
     <ClInclude Include="include\Utility\Common.h" />
-    <ClInclude Include="include\Utility\InputManager.h" />
+    <ClInclude Include="include\Utility\Input.h" />
     <ClInclude Include="include\Utility\MathUtil.h" />
     <ClInclude Include="include\Utility\Quaternion.h" />
     <ClInclude Include="include\Utility\Utility.h" />
@@ -106,7 +106,7 @@
     <ClCompile Include="src\System\ColliderSystem.cpp" />
     <ClCompile Include="src\System\RenderSystem.cpp" />
     <ClCompile Include="src\Utility\Color.cpp" />
-    <ClCompile Include="src\Utility\InputManager.cpp" />
+    <ClCompile Include="src\Utility\Input.cpp" />
     <ClCompile Include="src\Utility\MathUtil.cpp" />
     <ClCompile Include="src\Utility\Quaternion.cpp" />
     <ClCompile Include="src\Utility\Vector2.cpp" />

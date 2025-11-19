@@ -114,9 +114,6 @@
     <ClInclude Include="include\Utility\Common.h">
       <Filter>ヘッダー ファイル\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="include\Utility\InputManager.h">
-      <Filter>ヘッダー ファイル\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="include\Utility\MathUtil.h">
       <Filter>ヘッダー ファイル\Utility</Filter>
     </ClInclude>
@@ -213,12 +210,12 @@
     <ClInclude Include="include\Component\DirectionalLight.h">
       <Filter>ヘッダー ファイル\Component</Filter>
     </ClInclude>
+    <ClInclude Include="include\Utility\Input.h">
+      <Filter>ヘッダー ファイル\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Utility\Color.cpp">
-      <Filter>ソース ファイル\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Utility\InputManager.cpp">
       <Filter>ソース ファイル\Utility</Filter>
     </ClCompile>
     <ClCompile Include="src\Utility\MathUtil.cpp">
@@ -334,6 +331,9 @@
     </ClCompile>
     <ClCompile Include="src\Component\DirectionalLight.cpp">
       <Filter>ソース ファイル\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utility\Input.cpp">
+      <Filter>ソース ファイル\Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

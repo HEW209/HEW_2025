@@ -15,12 +15,12 @@ void PlayerStretch::Update()
 	Vector3 pos = GetTransform()->GetPosition(Space::LOCAL);
 
 	//“ü—Í‚ðŽæ“¾
-	if (InputManager::GetKeyHold(Input::SPACE))
+	if (Input::GetKeyHold(KeyCode::SPACE))
 	{
 		if(m_targetY < LENGTH_MAX)
 			m_targetY = round(floor(pos.y) + BLOCK_SIZE);
 	}
-	else if (InputManager::GetKeyHold(Input::CTRL))
+	else if (Input::GetKeyHold(KeyCode::CTRL))
 	{
 		if(0.0f < m_targetY)
 			m_targetY = round(ceil(pos.y) - BLOCK_SIZE);
