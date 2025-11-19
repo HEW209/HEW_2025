@@ -6,6 +6,7 @@
 
 //グリッド
 #include "GameState.h"
+#include "Player.h"
 
 #include "PlayerBlockHandler.h"
 
@@ -31,36 +32,8 @@ void PlayerBlockDebugScene::Init()
 	{
 		//移動できるオブジェクト（プレイヤー）を作成	
 		//移動できるプレイヤーオブジェクトを作る
-		auto playerObj = CreateGameObject();
-		////プレイヤーにメッシュレンダラーを入れる。
-		//auto renderer = playerObj->AddComponent<MeshRenderer>();
-		////モデルを追加する。
-		//renderer->LoadModel("Assets/Model/karubi/まけん式赤見かるび姫衣装ver1.0.pmx");
-		 
-		// パーツごとにキャラクターモデル追加 (オブジェクトを分けたら移動しちゃってOK)
-		auto renderer1 = playerObj->AddComponent<MeshRenderer>();
-		renderer1->LoadModel("Assets/Model/HEW/FBX/jyoubu.fbx");
-		auto renderer2 = playerObj->AddComponent<MeshRenderer>();
-		renderer2->LoadModel("Assets/Model/HEW/FBX/kabu.fbx");
-		auto renderer3 = playerObj->AddComponent<MeshRenderer>();
-		renderer3->LoadModel("Assets/Model/HEW/FBX/sityu.fbx");
-
-		//プレイヤーオブジェクトにコンポーネントを追加
-		playerObj->AddComponent<PlayerMove>();
-		auto transform = playerObj->GetTransform();
-		//大きさ
-		transform->m_scale = { 1.0f, 1.0f, 1.0f };
-		//ブロック操作コンポーネントの追加
-		auto blockHandler = playerObj->AddComponent<PlayerBlockHandler>();
-
-		//ブロックオブジェクトを生成
-		auto blockObj= CreateGameObject();
-
-		//オフセットで位置を変える
-		blockObj->GetTransform()->SetPosition(0.0f , 2.0f , 0.0f);
-		auto blockComponent = blockObj->AddComponent<BlockObject>();
-		blockHandler->SetBlockObject(blockComponent);
-
+		auto obj = CreateGameObject();
+		obj->AddComponent<Player>();
 	}
 
 	{//グリッドフィールドの作成
@@ -74,26 +47,86 @@ void PlayerBlockDebugScene::Init()
 		ShapeType clearShapeZ({ 4, 4 });
 		clearShapeX.SetData({
 			1, 0, 0, 0,
-			1, 0, 0, 0,
-			0, 0, 0, 0,
+			1, 1, 0, 0,
+			0, 1, 1, 0,
 			0, 0, 0, 0
 			});
 		clearShapeY.SetData({
 			1, 1, 1, 0,
 			1, 1, 1, 0,
-			0, 0, 0, 0,
+			0, 0, 1, 1,
 			0, 0, 0, 0
 			});
 		clearShapeZ.SetData({
 			1, 1, 1, 0,
-			0, 0, 0, 0,
-			0, 0, 0, 0,
+			0, 0, 1, 0,
+			0, 0, 1, 1,
 			0, 0, 0, 0
 			});
 		component->SetClearShape(clearShapeX, clearShapeY, clearShapeZ);
 
 		obj->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
 
+	}
+
+	//ワールドに配置するブロック
+	{
+		BlockSetData blockSet;
+		blockSet.blocks.resize(1);
+		blockSet.blocks[0] = { 0, 0, 0 };
+
+		auto obj = CreateGameObject();
+		auto component = obj->AddComponent<BlockObject>();
+		component->SetBlockSet(blockSet);
+		auto transform = obj->GetTransform();
+		transform->SetPosition(Vector3{5.0f, 0.0f, 3.0f} + component->GetGroundOffset());
+		
+		GameState::GetInstance()->AppendWorldBlock(component);
+	}
+	{
+		BlockSetData blockSet;
+		blockSet.blocks.resize(2);
+		blockSet.blocks[0] = { 0, 0, 0 };
+		blockSet.blocks[1] = { 1, 0, 0 };
+
+		auto obj = CreateGameObject();
+		auto component = obj->AddComponent<BlockObject>();
+		component->SetBlockSet(blockSet);
+		auto transform = obj->GetTransform();
+		transform->SetPosition(Vector3{ 5.0f, 0.0f, 1.0f } + component->GetGroundOffset());
+
+		GameState::GetInstance()->AppendWorldBlock(component);
+	}
+	{
+		BlockSetData blockSet;
+		blockSet.blocks.resize(3);
+		blockSet.blocks[0] = { 0, 0, 0 };
+		blockSet.blocks[1] = { 1, 0, 0 };
+		blockSet.blocks[2] = { 0, 1, 0 };
+
+		auto obj = CreateGameObject();
+		auto component = obj->AddComponent<BlockObject>();
+		component->SetBlockSet(blockSet);
+		auto transform = obj->GetTransform();
+		transform->SetPosition(Vector3{ 5.0f, 0.0f, -1.0f } + component->GetGroundOffset());
+
+		GameState::GetInstance()->AppendWorldBlock(component);
+	}
+	{
+		BlockSetData blockSet;
+		blockSet.blocks.resize(4);
+		blockSet.blocks[0] = { 0, 0, 0 };
+		blockSet.blocks[1] = { 1, 0, 0 };
+		blockSet.blocks[2] = { 0, 1, 0 };
+		blockSet.blocks[3] = { 0, 0, -1 };
+
+		auto obj = CreateGameObject();
+		auto component = obj->AddComponent<BlockObject>();
+		component->SetBlockSet(blockSet);
+		auto transform = obj->GetTransform();
+		transform->SetPosition(Vector3{ 5.0f, 0.0f, -3.0f } + component->GetGroundOffset());
+
+		GameState::GetInstance()->AppendWorldBlock(component);
 	}
 	
 	{//ライト
