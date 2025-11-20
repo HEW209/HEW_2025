@@ -98,7 +98,7 @@ public:
     static void BindPadButton(const std::string& actionName, PadCode button);
 
     // コントローラーのスティックをアクションに割り当て (Axisアクション用)
-    static void BindPadStick(const std::string& actionName, StickCode stick, float deadzone = 0.1f);
+    static void BindPadStick(const std::string& actionName, StickCode stick, std::optional<float> deadzone = std::nullopt);
 
     // キーをVector2アクションに指定した値で割り当て
     static void BindVectorKey(const std::string& actionName, KeyCode key, const Vector2& value);
@@ -153,28 +153,9 @@ struct PadButtonBinding : public IInputBinding
 struct PadStickBinding : public IInputBinding
 {
     StickCode stick;
-    float deadzone;
-    PadStickBinding(StickCode s, float dz)
-        : stick(s), deadzone(dz) {
-    
-    }
-    Vector2 GetVector2Value() const override
-    {
-        Vector2 raw = Input::GetStick(stick);
-
-        float magnitude = raw.Magnitude();
-
-        if (magnitude < deadzone)
-        {
-            return Vector2::zero;
-        }
-
-        float percent = (magnitude - deadzone) / (1.0f - deadzone);
-
-        percent = std::clamp(percent, 0.0f, 1.0f);
-
-        return raw.Normalized() * percent;
-    }
+    std::optional<float> deadzone;
+    PadStickBinding(StickCode s, std::optional<float> dz) : stick(s), deadzone(dz) {}
+    Vector2 GetVector2Value() const override { return Input::GetStick(stick, deadzone); }
 };
 
 // キー単体 -> Vector2

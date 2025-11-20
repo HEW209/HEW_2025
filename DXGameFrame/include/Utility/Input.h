@@ -13,12 +13,15 @@
 #undef max
 #undef min
 #include <cstdint>
+#include <optional>
 #include "Xinput.h"
 
 #pragma comment(lib,"Xinput.lib")
 #pragma comment(lib,"Xinput9_1_0.lib")
 
 #define MAX_KEY_TYPE (256)			//キーの種類数
+
+constexpr int XINPUT_STICK_MAX = 32767;
 
  /**
   * @brief キーボード入力コード
@@ -246,20 +249,20 @@ public:
 	 * @brief 右スティックの入力を取得する
 	 * @return 右スティックの入力情報
 	 */
-	static Vector2 GetRightStick();
+	static Vector2 GetRightStick(float deadzone = (float)XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE / XINPUT_STICK_MAX);
 
 	/**
 	 * @brief 左スティックの入力を取得する
 	 * @return 左スティックの入力情報
 	 */
-	static Vector2 GetLeftStick();
+	static Vector2 GetLeftStick(float deadzone = (float)XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE / XINPUT_STICK_MAX);
 
 	/**
 	 * @brief スティックの入力を取得する
 	 * @param stickCode スティックの種類
 	 * @return スティックの入力情報
 	 */
-	static Vector2 GetStick(StickCode stickCode);
+	static Vector2 GetStick(StickCode stickCode, std::optional<float> deadzone = std::nullopt);
 
 	/**
 	 * @brief マウス座標を取得

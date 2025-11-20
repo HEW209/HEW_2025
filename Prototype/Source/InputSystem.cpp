@@ -82,7 +82,7 @@ void InputSystem::BindPadButton(const std::string& actionName, PadCode button)
     }
 }
 
-void InputSystem::BindPadStick(const std::string& actionName, StickCode stick, float deadzone)
+void InputSystem::BindPadStick(const std::string& actionName, StickCode stick, std::optional<float> deadzone)
 {
     if (auto* action = FindAction(actionName))
     {
