@@ -71,7 +71,7 @@ void PlayerMove::Update()
 	Vector3 moveDir = cameraRotation * input;
 	moveDir.y = 0.0f;
 	moveDir = moveDir.Normalized();
-	move = moveDir * m_moveSpeed;
+	move = moveDir * inputVec2.Magnitude() * m_moveSpeed;
 	move.y = m_velocity_y;
 	Vector3 e = GetTransform()->GetEulerAngle();
 	float currentY = GetTransform()->GetEulerAngle().y;

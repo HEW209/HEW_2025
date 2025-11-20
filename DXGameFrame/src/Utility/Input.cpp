@@ -1,7 +1,10 @@
 // Input.cpp
 #include <Utility/Input.h>
 
+#include <algorithm>
+
 static const BYTE g_triggerDeadzone = 1000;		//コントローラーのトリガーデッドゾーン
+constexpr int STICK_MAX = 32767;
 
 uint8_t Input::s_oldKeyTable[MAX_KEY_TYPE];
 uint8_t Input::s_keyTable[MAX_KEY_TYPE];
@@ -129,13 +132,17 @@ bool Input::GetButtonUp(PadCode padCode)
 Vector2 Input::GetRightStick()
 {
 	Vector2 input(s_padState.Gamepad.sThumbRX, s_padState.Gamepad.sThumbRY);
-	return input.Normalized();
+	input /= STICK_MAX;
+	float magnitude = input.Magnitude();
+	return input / magnitude * std::min(magnitude, 1.0f);
 }
 
 Vector2 Input::GetLeftStick()
 {
 	Vector2 input(s_padState.Gamepad.sThumbLX, s_padState.Gamepad.sThumbLY);
-	return input.Normalized();
+	input /= STICK_MAX;
+	float magnitude = input.Magnitude();
+	return input / magnitude * std::min(magnitude, 1.0f);
 }
 
 Vector2 Input::GetStick(StickCode stickCode)
