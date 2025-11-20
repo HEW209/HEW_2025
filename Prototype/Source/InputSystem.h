@@ -109,10 +109,13 @@ public:
     // --- 入力取得 ---
 
     // ボタンアクションの状態を取得
-    static bool GetButton(const std::string& name);
+    static bool GetButtonHold(const std::string& name);
 
     // ボタンアクションが押された瞬間を取得
     static bool GetButtonDown(const std::string& name);
+
+    // ボタンアクションが離された瞬間を取得
+    static bool GetButtonUp(const std::string& name);
 
     // Axisアクションの値を取得
     static Vector2 GetAxis(const std::string& name);

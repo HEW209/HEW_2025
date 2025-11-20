@@ -17,12 +17,12 @@ void PlayerStretch::Update()
 	Vector3 pos = GetTransform()->GetPosition(Space::LOCAL);
 
 	//“ü—Í‚ðŽæ“¾
-	if (InputSystem::GetButtonDown("Up"))
+	if (InputSystem::GetButtonHold("Up"))
 	{
 		if(m_targetY < LENGTH_MAX)
 			m_targetY = round(floor(pos.y) + BLOCK_SIZE);
 	}
-	else if (InputSystem::GetButtonDown("Down"))
+	else if (InputSystem::GetButtonHold("Down"))
 	{
 		if(0.0f < m_targetY)
 			m_targetY = round(ceil(pos.y) - BLOCK_SIZE);

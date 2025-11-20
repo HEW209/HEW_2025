@@ -106,7 +106,7 @@ void InputSystem::BindVectorKeys(const std::string& actionName, KeyCode up, KeyC
     }
 }
 
-bool InputSystem::GetButton(const std::string& name)
+bool InputSystem::GetButtonHold(const std::string& name)
 {
     if (const auto* action = FindAction(name))
     {
@@ -117,12 +117,22 @@ bool InputSystem::GetButton(const std::string& name)
 
 bool InputSystem::GetButtonDown(const std::string& name)
 {
-    bool current = GetButton(name);
+    bool current = GetButtonHold(name);
 
     auto it = m_prevButtonStates.find(name);
     bool prev = (it != m_prevButtonStates.end()) ? it->second : false;
 
     return current && !prev;
+}
+
+bool InputSystem::GetButtonUp(const std::string& name)
+{
+    bool current = GetButtonHold(name);
+
+    auto it = m_prevButtonStates.find(name);
+    bool prev = (it != m_prevButtonStates.end()) ? it->second : false;
+
+    return !current && prev;
 }
 
 Vector2 InputSystem::GetAxis(const std::string& name)
