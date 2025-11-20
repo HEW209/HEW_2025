@@ -53,7 +53,7 @@ Vector3 Transform::GetPosition(Space space)
 
 Vector3 Transform::GetScale()
 {
-	return m_position;
+	return m_scale;
 }
 
 Vector3 Transform::GetEulerAngle(Space space)
@@ -192,6 +192,25 @@ DirectX::XMMATRIX Transform::GetWorldMatrix()
 		// êeÇ™Ç»ÇØÇÍÇŒèIóπ
 		return localMatrix;
 	}
+}
+
+void Transform::Rotate(Vector3 euler, Space space)
+{
+	if (space == Space::WORLD)
+	{
+		m_quaternion = Quaternion::Euler(euler) * m_quaternion;
+	}
+	if (space == Space::LOCAL)
+	{
+		m_quaternion = m_quaternion * Quaternion::Euler(euler);
+	}
+
+	m_euler = m_quaternion.ToEuler();
+}
+
+void Transform::Rotate(float x, float y, float z, Space space)
+{
+	Rotate(Vector3(x, y, z), space);
 }
 
 void Transform::DeleteChild(Transform* child)

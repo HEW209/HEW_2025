@@ -164,11 +164,7 @@ public:
 	 * @brief ★オブジェクトを回転させる
 	 * @param euler 回転量 (オイラー)
 	 */
-	void Rotate(Vector3 euler)
-	{
-		m_euler += euler;
-		m_quaternion *= Quaternion::Euler(euler);
-	}
+	void Rotate(Vector3 euler, Space space = Space::WORLD);
 
 	/**
 	 * @brief ★オブジェクトを回転させる
@@ -176,10 +172,7 @@ public:
 	 * @param y y軸回転
 	 * @param z z軸回転
 	 */
-	void Rotate(float x, float y, float z)
-	{
-		Rotate(Vector3(x, y, z));
-	}
+	void Rotate(float x, float y, float z, Space space = Space::WORLD);
 
 private:
 	// Transformクラスでは隠す
