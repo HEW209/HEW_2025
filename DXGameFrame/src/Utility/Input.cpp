@@ -133,7 +133,7 @@ Vector2 Input::GetRightStick()
 	Vector2 input(s_padState.Gamepad.sThumbRX, s_padState.Gamepad.sThumbRY);
 
 	// デッドゾーン処理
-	if (input.Magnitude() > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
+	if (input.Magnitude() < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
 		return Vector2::zero;
 
 	input *= g_invMaxThumb;
@@ -145,7 +145,7 @@ Vector2 Input::GetLeftStick()
 	Vector2 input(s_padState.Gamepad.sThumbLX, s_padState.Gamepad.sThumbLY);
 
 	// デッドゾーン処理
-	if (input.Magnitude() > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+	if (input.Magnitude() < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
 		return Vector2::zero;
 
 	input *= g_invMaxThumb;
