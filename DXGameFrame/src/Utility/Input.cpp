@@ -1,4 +1,4 @@
-// Input.cpp
+﻿// Input.cpp
 #include <Utility/Input.h>
 #include <algorithm>
 
