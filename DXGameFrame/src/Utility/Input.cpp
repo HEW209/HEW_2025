@@ -1,7 +1,9 @@
 // Input.cpp
 #include <Utility/Input.h>
 
-static const BYTE g_triggerDeadzone = 1000;		//コントローラーのトリガーデッドゾーン
+static const BYTE g_triggerDeadzone = 1000;				// コントローラーのトリガーデッドゾーン
+static const float g_maxThumb = 32767.0f;				// スティック入力の最大値
+static const float g_invMaxThumb = 1.0f / g_maxThumb;	// スティック入力の最大値の逆数
 
 uint8_t Input::s_oldKeyTable[MAX_KEY_TYPE];
 uint8_t Input::s_keyTable[MAX_KEY_TYPE];
@@ -129,13 +131,25 @@ bool Input::GetButtonUp(PadCode padCode)
 Vector2 Input::GetRightStick()
 {
 	Vector2 input(s_padState.Gamepad.sThumbRX, s_padState.Gamepad.sThumbRY);
-	return input.Normalized();
+
+	// デッドゾーン処理
+	if (input.Magnitude() > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
+		return Vector2::zero;
+
+	input *= g_invMaxThumb;
+	return input;
 }
 
 Vector2 Input::GetLeftStick()
 {
 	Vector2 input(s_padState.Gamepad.sThumbLX, s_padState.Gamepad.sThumbLY);
-	return input.Normalized();
+
+	// デッドゾーン処理
+	if (input.Magnitude() > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+		return Vector2::zero;
+
+	input *= g_invMaxThumb;
+	return input;
 }
 
 Vector2 Input::GetMousePos()
