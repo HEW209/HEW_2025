@@ -52,7 +52,7 @@ void PlayerMove::Update()
 
 	//“ü—Í‚ðŽæ“¾
 	
-	Vector2 inputVec2 = InputSystem::GetAxis("Move");
+	Vector2 inputVec2 = InputSystem::GetAxis("Move"_hash);
 	input.x = inputVec2.x;
 	input.z = inputVec2.y;
 		

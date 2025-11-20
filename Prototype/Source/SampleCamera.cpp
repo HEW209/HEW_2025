@@ -13,9 +13,9 @@ void SampleCamera::Update()
 {
 	float input = 0.0f;
 
-	if (InputSystem::GetButtonHold("CameraRight"))
+	if (InputSystem::GetButtonHold("CameraRight"_hash))
 		input -= 1.0f;
-	if (InputSystem::GetButtonHold("CameraLeft"))
+	if (InputSystem::GetButtonHold("CameraLeft"_hash))
 		input += 1.0f;
 
 	GetTransform()->Rotate(0.0f, input * m_rotateSpeed, 0.0f);

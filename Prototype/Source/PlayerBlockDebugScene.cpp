@@ -13,38 +13,38 @@
 
 void PlayerBlockDebugScene::Init()
 {
-	InputSystem::CreateButtonAction("RotateBlockUp");
-	InputSystem::CreateButtonAction("RotateBlockDown");
-	InputSystem::CreateButtonAction("RotateBlockLeft");
-	InputSystem::CreateButtonAction("RotateBlockRight");
-	InputSystem::CreateButtonAction("PlaceAndRemove");
-	InputSystem::CreateButtonAction("Up");
-	InputSystem::CreateButtonAction("Down");
-	InputSystem::CreateButtonAction("CameraLeft");
-	InputSystem::CreateButtonAction("CameraRight");
-	InputSystem::CreateAxisAction("Move");
+	InputSystem::CreateButtonAction("RotateBlockUp"_hash);
+	InputSystem::CreateButtonAction("RotateBlockDown"_hash);
+	InputSystem::CreateButtonAction("RotateBlockLeft"_hash);
+	InputSystem::CreateButtonAction("RotateBlockRight"_hash);
+	InputSystem::CreateButtonAction("PlaceAndRemove"_hash);
+	InputSystem::CreateButtonAction("Up"_hash);
+	InputSystem::CreateButtonAction("Down"_hash);
+	InputSystem::CreateButtonAction("CameraLeft"_hash);
+	InputSystem::CreateButtonAction("CameraRight"_hash);
+	InputSystem::CreateAxisAction("Move"_hash);
 
-	InputSystem::BindKey("RotateBlockUp", KeyCode::UP);
-	InputSystem::BindKey("RotateBlockDown", KeyCode::DOWN);
-	InputSystem::BindKey("RotateBlockLeft", KeyCode::LEFT);
-	InputSystem::BindKey("RotateBlockRight", KeyCode::RIGHT);
-	InputSystem::BindKey("PlaceAndRemove", KeyCode::SPACE);
-	InputSystem::BindKey("Up", KeyCode::E);
-	InputSystem::BindKey("Down", KeyCode::Q);
-	InputSystem::BindKey("CameraLeft", KeyCode::MOUSE_LEFT);
-	InputSystem::BindKey("CameraRight", KeyCode::MOUSE_RIGHT);
-	InputSystem::BindVectorKeys("Move", KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
+	InputSystem::BindKey("RotateBlockUp"_hash, KeyCode::UP);
+	InputSystem::BindKey("RotateBlockDown"_hash, KeyCode::DOWN);
+	InputSystem::BindKey("RotateBlockLeft"_hash, KeyCode::LEFT);
+	InputSystem::BindKey("RotateBlockRight"_hash, KeyCode::RIGHT);
+	InputSystem::BindKey("PlaceAndRemove"_hash, KeyCode::SPACE);
+	InputSystem::BindKey("Up"_hash, KeyCode::E);
+	InputSystem::BindKey("Down"_hash, KeyCode::Q);
+	InputSystem::BindKey("CameraLeft"_hash, KeyCode::MOUSE_LEFT);
+	InputSystem::BindKey("CameraRight"_hash, KeyCode::MOUSE_RIGHT);
+	InputSystem::BindVectorKeys("Move"_hash, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
 
-	InputSystem::BindPadButton("RotateBlockUp", PadCode::UP);
-	InputSystem::BindPadButton("RotateBlockDown", PadCode::DOWN);
-	InputSystem::BindPadButton("RotateBlockLeft", PadCode::LEFT);
-	InputSystem::BindPadButton("RotateBlockRight", PadCode::RIGHT);
-	InputSystem::BindPadButton("PlaceAndRemove", PadCode::B);
-	InputSystem::BindPadButton("Up", PadCode::Y);
-	InputSystem::BindPadButton("Down", PadCode::A);
-	InputSystem::BindPadButton("CameraLeft", PadCode::LEFT_SHOULDER);
-	InputSystem::BindPadButton("CameraRight", PadCode::RIGHT_SHOULDER);
-	InputSystem::BindPadStick("Move", StickCode::LEFT);
+	InputSystem::BindPadButton("RotateBlockUp"_hash, PadCode::UP);
+	InputSystem::BindPadButton("RotateBlockDown"_hash, PadCode::DOWN);
+	InputSystem::BindPadButton("RotateBlockLeft"_hash, PadCode::LEFT);
+	InputSystem::BindPadButton("RotateBlockRight"_hash, PadCode::RIGHT);
+	InputSystem::BindPadButton("PlaceAndRemove"_hash, PadCode::B);
+	InputSystem::BindPadButton("Up"_hash, PadCode::Y);
+	InputSystem::BindPadButton("Down"_hash, PadCode::A);
+	InputSystem::BindPadButton("CameraLeft"_hash, PadCode::LEFT_SHOULDER);
+	InputSystem::BindPadButton("CameraRight"_hash, PadCode::RIGHT_SHOULDER);
+	InputSystem::BindPadStick("Move"_hash, StickCode::LEFT);
 	
 	//ÉJÉÅÉâ
 	{

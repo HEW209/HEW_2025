@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="Source\BlockObject.h" />
     <ClInclude Include="Source\BlockData.h" />
+    <ClInclude Include="Source\HashUtil.h" />
     <ClInclude Include="Source\InputSystem.h" />
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\PlayerStretch.h" />
