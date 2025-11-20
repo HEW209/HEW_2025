@@ -6,6 +6,7 @@
 constexpr uint64_t FNV_OFFSET_BASIS = 14695981039346656037ULL;
 constexpr uint64_t FNV_PRIME = 1099511628211ULL;
 
+// 文字列をFNV-1aハッシュアルゴリズムでハッシュ化する関数
 constexpr uint64_t StringHash(std::string_view str)
 {
     uint64_t hash = FNV_OFFSET_BASIS;
