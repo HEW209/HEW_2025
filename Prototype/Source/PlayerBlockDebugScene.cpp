@@ -1,5 +1,6 @@
 #include "PlayerBlockDebugScene.h"
 
+#include  "InputSystem.h"
 
 //ÉJÉÅÉâóp
 #include "SampleCamera.h"
@@ -12,6 +13,38 @@
 
 void PlayerBlockDebugScene::Init()
 {
+	InputSystem::CreateButtonAction("RotateBlockUp");
+	InputSystem::CreateButtonAction("RotateBlockDown");
+	InputSystem::CreateButtonAction("RotateBlockLeft");
+	InputSystem::CreateButtonAction("RotateBlockRight");
+	InputSystem::CreateButtonAction("PlaceAndRemove");
+	InputSystem::CreateButtonAction("Up");
+	InputSystem::CreateButtonAction("Down");
+	InputSystem::CreateButtonAction("CameraLeft");
+	InputSystem::CreateButtonAction("CameraRight");
+	InputSystem::CreateAxisAction("Move");
+
+	InputSystem::BindKey("RotateBlockUp", KeyCode::UP);
+	InputSystem::BindKey("RotateBlockDown", KeyCode::DOWN);
+	InputSystem::BindKey("RotateBlockLeft", KeyCode::LEFT);
+	InputSystem::BindKey("RotateBlockRight", KeyCode::RIGHT);
+	InputSystem::BindKey("PlaceAndRemove", KeyCode::SPACE);
+	InputSystem::BindKey("Up", KeyCode::E);
+	InputSystem::BindKey("Down", KeyCode::Q);
+	InputSystem::BindKey("CameraLeft", KeyCode::MOUSE_LEFT);
+	InputSystem::BindKey("CameraRight", KeyCode::MOUSE_RIGHT);
+	InputSystem::BindVectorKeys("Move", KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
+
+	InputSystem::BindPadButton("RotateBlockUp", PadCode::UP);
+	InputSystem::BindPadButton("RotateBlockDown", PadCode::DOWN);
+	InputSystem::BindPadButton("RotateBlockLeft", PadCode::LEFT);
+	InputSystem::BindPadButton("RotateBlockRight", PadCode::RIGHT);
+	InputSystem::BindPadButton("PlaceAndRemove", PadCode::B);
+	InputSystem::BindPadButton("Up", PadCode::Y);
+	InputSystem::BindPadButton("Down", PadCode::A);
+	InputSystem::BindPadButton("CameraLeft", PadCode::LEFT_SHOULDER);
+	InputSystem::BindPadButton("CameraRight", PadCode::RIGHT_SHOULDER);
+	InputSystem::BindPadStick("Move", StickCode::LEFT);
 	
 	//ÉJÉÅÉâ
 	{

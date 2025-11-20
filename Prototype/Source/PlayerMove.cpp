@@ -1,5 +1,7 @@
 #include "PlayerMove.h"
 
+#include "InputSystem.h"
+
 PlayerMove::PlayerMove() :
 	m_moveSpeed(0.10f),
 	m_jumpPower(0.5f),
@@ -49,22 +51,10 @@ void PlayerMove::Update()
 	static Vector3 euler{0.0f,0.0f ,0.0f };
 
 	//“ü—Í‚ðŽæ“¾
-	if (Input::GetKeyHold(KeyCode::A))
-	{
-		input.x -= 1.0f;
-	}
-	if (Input::GetKeyHold(KeyCode::D))
-	{
-		input.x += 1.0f;
-	}
-	if (Input::GetKeyHold(KeyCode::S))
-	{
-		input.z -= 1.0f;
-	}
-	if (Input::GetKeyHold(KeyCode::W))
-	{
-		input.z += 1.0f;
-	}
+	
+	Vector2 inputVec2 = InputSystem::GetAxis("Move");
+	input.x = inputVec2.x;
+	input.z = inputVec2.y;
 		
 
 	/*
@@ -81,7 +71,7 @@ void PlayerMove::Update()
 	Vector3 moveDir = cameraRotation * input;
 	moveDir.y = 0.0f;
 	moveDir = moveDir.Normalized();
-	move = moveDir * m_moveSpeed;
+	move = moveDir * inputVec2.Magnitude() * m_moveSpeed;
 	move.y = m_velocity_y;
 	Vector3 e = GetTransform()->GetEulerAngle();
 	float currentY = GetTransform()->GetEulerAngle().y;

@@ -5,6 +5,7 @@
 
 #include "Config.h"
 #include <DXGameFrame.h>
+#include "InputSystem.h"
 #include "SampleScene.h"
 #include "GridDebugScene.h"
 
@@ -148,7 +149,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			//----------------------------------
 			Input::Update();
 			SceneManager::Execute();
-
+			InputSystem::Update();
 		}
 	}
 
