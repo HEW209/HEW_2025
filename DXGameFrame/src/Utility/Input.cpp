@@ -130,9 +130,19 @@ bool Input::GetButtonUp(PadCode padCode)
 
 Vector2 Input::GetRightStick(float deadzone)
 {
+	if (deadzone >= 1.0f)
+	{
+		return Vector2::zero;
+	}
+
 	Vector2 input(s_padState.Gamepad.sThumbRX, s_padState.Gamepad.sThumbRY);
 	input /= XINPUT_STICK_MAX;
 	float magnitude = input.Magnitude();
+
+	if (magnitude <= 1e-5f)
+	{
+		return Vector2::zero;
+	}
 
 	if (magnitude < deadzone)
 	{
@@ -148,10 +158,30 @@ Vector2 Input::GetRightStick(float deadzone)
 
 Vector2 Input::GetLeftStick(float deadzone)
 {
+	if (deadzone >= 1.0f)
+	{
+		return Vector2::zero;
+	}
+
 	Vector2 input(s_padState.Gamepad.sThumbLX, s_padState.Gamepad.sThumbLY);
 	input /= XINPUT_STICK_MAX;
 	float magnitude = input.Magnitude();
-	return input / magnitude * std::min(magnitude, 1.0f);
+
+	if (magnitude <= 1e-5f)
+	{
+		return Vector2::zero;
+	}
+
+	if (magnitude < deadzone)
+	{
+		return Vector2::zero;
+	}
+
+	float percent = (magnitude - deadzone) / (1.0f - deadzone);
+
+	percent = std::clamp(percent, 0.0f, 1.0f);
+
+	return input.Normalized() * percent;
 }
 
 Vector2 Input::GetStick(StickCode stickCode, std::optional<float> deadzone)
