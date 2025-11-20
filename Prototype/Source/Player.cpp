@@ -21,7 +21,7 @@ void Player::Awake()
 	auto renderer1 = playerHead->AddComponent<MeshRenderer>();
 	renderer1->LoadModel("Assets/Model/HEW/FBX/jyoubu.fbx");
 	playerHead->GetTransform()->SetParent(pObj->GetTransform());
-	playerHead->AddComponent<PlayerStretch>();
+	auto playerStretch = playerHead->AddComponent<PlayerStretch>();
 
 	//ブロック操作コンポーネントの追加
 	auto blockHandler = playerHead->AddComponent<PlayerBlockHandler>();
@@ -34,6 +34,9 @@ void Player::Awake()
 	renderer3->LoadModel("Assets/Model/HEW/FBX/sityu.fbx");
 	playerPillar->GetTransform()->SetParent(pObj->GetTransform());
 	playerPillar->GetTransform()->SetScale(1.0f, 1.0f, 1.0f);
+
+	// 支柱を登録
+	playerStretch->SetPillarObject(playerPillar);
 
 	//ブロックオブジェクトを生成
 	auto blockObj = SceneManager::GetActiveScene()->CreateGameObject();
