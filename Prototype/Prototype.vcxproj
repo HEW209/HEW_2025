@@ -139,16 +139,58 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\BlockObject.h" />
+    <ClInclude Include="Source\BlockData.h" />
+    <ClInclude Include="Source\HashUtil.h" />
+    <ClInclude Include="Source\InputSystem.h" />
+    <ClInclude Include="Source\Player.h" />
+    <ClInclude Include="Source\PlayerStretch.h" />
+    <ClInclude Include="Source\ShapeScreen.h" />
+    <ClInclude Include="Source\CollisionDebugScene.h" />
     <ClInclude Include="Source\Config.h" />
+    <ClInclude Include="Source\GridField.h" />
+    <ClInclude Include="Source\PlaceCursor.h" />
+    <ClInclude Include="Source\PlayerBlockDebugScene.h" />
+    <ClInclude Include="Source\GameState.h" />
+    <ClInclude Include="Source\PlayerBlockHandler.h" />
+    <ClInclude Include="Source\PlayerDebugScene.h" />
+    <ClInclude Include="Source\PlayerMove.h" />
+    <ClInclude Include="Source\PlayerMoveDebugScene.h" />
+    <ClInclude Include="Source\DynamicDimensionalArray.h" />
+    <ClInclude Include="Source\GridBlockData.h" />
+    <ClInclude Include="Source\GridDebugScene.h" />
+    <ClInclude Include="Source\GridDebugSceneManager.h" />
+    <ClInclude Include="Source\IDGenerator.h" />
     <ClInclude Include="Source\SampleCamera.h" />
     <ClInclude Include="Source\SamplePlayer.h" />
     <ClInclude Include="Source\SampleScene.h" />
+    <ClInclude Include="Source\Vec.h" />
+    <ClInclude Include="Source\VecUtil.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\BlockObject.cpp" />
+    <ClCompile Include="Source\CollisionDebugScene.cpp" />
+    <ClCompile Include="Source\GameTypes.h" />
+    <ClCompile Include="Source\GridBlockData.cpp" />
+    <ClCompile Include="Source\GridDebugScene.cpp" />
+    <ClCompile Include="Source\GridDebugSceneManager.cpp" />
+    <ClCompile Include="Source\GridField.cpp" />
+    <ClCompile Include="Source\InputSystem.cpp" />
     <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\PlaceCursor.cpp" />
+    <ClCompile Include="Source\Player.cpp" />
+    <ClCompile Include="Source\PlayerBlockDebugScene.cpp" />
+    <ClCompile Include="Source\GameState.cpp" />
+    <ClCompile Include="Source\PlayerBlockHandler.cpp" />
+    <ClCompile Include="Source\PlayerDebugScene.cpp" />
+    <ClCompile Include="Source\PlayerMove.cpp" />
+    <ClCompile Include="Source\PlayerMoveDebugScene.cpp" />
+    <ClCompile Include="Source\PlayerStretch.cpp" />
     <ClCompile Include="Source\SampleCamera.cpp" />
     <ClCompile Include="Source\SamplePlayer.cpp" />
     <ClCompile Include="Source\SampleScene.cpp" />
+    <ClCompile Include="Source\ShapeScreen.cpp" />
+    <ClCompile Include="Source\VecUtil.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,22 +1,32 @@
 /******************************************************************//**
- * @file   InputManager.h
+ * @file   Input.h
  * @brief  入力の取得を行う
  * 
  * @author 石田怜
- * @date   2025/09/24
+ * @author 三品怜 - コントローラー入力部分
+ * @date   2025/11/19
  *********************************************************************/
 #pragma once
 
 #include <Utility/Vector2.h>
 #include <Windows.h>
+#undef max
+#undef min
 #include <cstdint>
+#include <optional>
+#include "Xinput.h"
+
+#pragma comment(lib,"Xinput.lib")
+#pragma comment(lib,"Xinput9_1_0.lib")
 
 #define MAX_KEY_TYPE (256)			//キーの種類数
 
-/**
- * @brief キーボード入力コード
- */
-enum class Input : uint8_t
+constexpr int XINPUT_STICK_MAX = 32767;
+
+ /**
+  * @brief キーボード入力コード
+  */
+enum class KeyCode : uint8_t
 {
 	//マウスコード
 	MOUSE_LEFT = VK_LBUTTON,		//0x01		マウスの左ボタン
@@ -144,9 +154,41 @@ enum class Input : uint8_t
 };
 
 /**
+ * @brief コントローラー入力コード
+ */
+enum class PadCode : WORD
+{
+	UP = 0x0001,
+	DOWN = 0x0002,
+	LEFT = 0x0004,
+	RIGHT = 0x0008,
+	START = 0x0010,
+	BACK = 0x0020,
+	LEFT_THUMB = 0x0040,
+	RIGHT_THUMB = 0x0080,
+	LEFT_SHOULDER = 0x0100,
+	RIGHT_SHOULDER = 0x0200,
+	A = 0x1000,
+	B = 0x2000,
+	X = 0x4000,
+	Y = 0x8000,
+	LEFT_TRIGGER = 0x0003,
+	RIGHT_TRIGGER = 0x0005,
+};
+
+/**
+ * @brief コントローラースティック入力コード
+ */
+enum class StickCode : uint8_t
+{
+	LEFT = 0x00,
+	RIGHT = 0x01,
+};
+
+/**
  * @brief 入力の取得を行う
  */
-class InputManager
+class Input
 {
 public:
 	/**
@@ -163,35 +205,64 @@ public:
 public:
 	/**
 	 * @brief キーが押されているかを判定する
-	 * @param keyType キーの種類
+	 * @param keyCode キーの種類
 	 * @return キーが押されているかの判定
 	 */
-	static bool GetKeyHold(Input keyType)
-	{
-		return s_keyTable[(uint8_t)keyType] & 0x80;
-	}
+	static bool GetKeyHold(KeyCode keyCode);
 
 	/**
 	 * @brief キーが押された瞬間を判定する
-	 * @param keyType キーの種類
+	 * @param keyCode キーの種類
 	 * @return キーが押された瞬間の判定
 	 */
-	static bool GetKeyDown(Input keyType)
-	{
-		uint8_t key = (uint8_t)keyType;
-		return (s_keyTable[key] ^ s_oldKeyTable[key]) & s_keyTable[key] & 0x80;
-	}
+	static bool GetKeyDown(KeyCode keyCode);
 
 	/**
 	 * @brief キーが離された瞬間を判定する
-	 * @param keyType キーの種類
+	 * @param keyCode キーの種類
 	 * @return キーが離された瞬間の判定
 	 */
-	static bool GetKeyUp(Input keyType)
-	{
-		uint8_t key = (uint8_t)keyType;
-		return (s_keyTable[key] ^ s_oldKeyTable[key]) & s_oldKeyTable[key] & 0x80;
-	}
+	static bool GetKeyUp(KeyCode keyCode);
+
+	/**
+	 * @brief ボタンが押されているかを判定する
+	 * @param padCode ボタンの種類
+	 * @return ボタンが押されているかの判定
+	 */
+	static bool GetButtonHold(PadCode padCode);
+
+	/**
+	 * @brief ボタンが押された瞬間を判定する
+	 * @param padCode ボタンの種類
+	 * @return ボタンが押された瞬間の判定
+	 */
+	static bool GetButtonDown(PadCode padCode);
+
+	/**
+	 * @brief ボタンが離された瞬間を判定する
+	 * @param padCode ボタンの種類
+	 * @return ボタンが離された瞬間の判定
+	 */
+	static bool GetButtonUp(PadCode padCode);
+
+	/**
+	 * @brief 右スティックの入力を取得する
+	 * @return 右スティックの入力情報
+	 */
+	static Vector2 GetRightStick(float deadzone = (float)XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE / XINPUT_STICK_MAX);
+
+	/**
+	 * @brief 左スティックの入力を取得する
+	 * @return 左スティックの入力情報
+	 */
+	static Vector2 GetLeftStick(float deadzone = (float)XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE / XINPUT_STICK_MAX);
+
+	/**
+	 * @brief スティックの入力を取得する
+	 * @param stickCode スティックの種類
+	 * @return スティックの入力情報
+	 */
+	static Vector2 GetStick(StickCode stickCode, std::optional<float> deadzone = std::nullopt);
 
 	/**
 	 * @brief マウス座標を取得
@@ -200,11 +271,17 @@ public:
 	static Vector2 GetMousePos();
 
 private:
-	InputManager() = delete;
+	Input() = delete;
 
-	/// 前のフレームの入力情報
+	/// 前のフレームのキー入力情報
 	static uint8_t s_oldKeyTable[MAX_KEY_TYPE];
 
-	/// 現在フレームの入力情報
+	/// 現在フレームのキー入力情報
 	static uint8_t s_keyTable[MAX_KEY_TYPE];
+	
+	/// 前フレームのコントローラー入力情報
+	static XINPUT_STATE s_oldPadState;
+
+	/// 現在フレームのコントローラー入力情報
+	static XINPUT_STATE s_padState;
 };

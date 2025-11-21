@@ -31,33 +31,35 @@ Vector3 Quaternion::ToEuler() const
 {
     Vector3 euler;
 
-    //x軸回転(pitch)を求める
-    float sinZ_cosX = 2.0f * (w * x + y * z);
-    float cosZ_cosX = 1.0f - 2.0f * (x * x + y * y);
-    euler.x = atan2f(sinZ_cosX, cosZ_cosX);
+    // roll(Z)
+    float sinr_cosp = 2.0f * (w * z + x * y);
+    float cosr_cosp = 1.0f - 2.0f * (y * y + z * z);
+    float roll = atan2f(sinr_cosp, cosr_cosp);
 
-    //y軸回転(yaw)を求める
-    float sinX = 2.0f * (w * y - z * x);
-    if (fabsf(sinX) >= 1.0f)
-    {
-        euler.y = copysignf(Math::PI / 2.0f, sinX);
-    }
+    // pitch(X)
+    float sinp = 2.0f * (w * x - y * z);
+    float pitch;
+    if (fabs(sinp) >= 1)
+        pitch = copysignf(DirectX::XM_PIDIV2, sinp); // 90度クランプ
     else
-    {
-        euler.y = asinf(sinX);
-    }
+        pitch = asinf(sinp);
 
-    //z軸回転(roll)を求める
-    float siny_cosp = 2.0f * (w * z + x * y);
-    float cosy_cosp = 1.0f - 2.0f * (y * y + z * z);
-    euler.z = atan2f(siny_cosp, cosy_cosp);
+    // yaw(Y)
+    float siny_cosp = 2.0f * (w * y + z * x);
+    float cosy_cosp = 1.0f - 2.0f * (x * x + y * y);
+    float yaw = atan2f(siny_cosp, cosy_cosp);
 
     //デグリーに変換
-    euler.x = MathUtil::RadToDeg(euler.x);
-    euler.y = MathUtil::RadToDeg(euler.y);
-    euler.z = MathUtil::RadToDeg(euler.z);
+    euler.x = MathUtil::RadToDeg(pitch);
+    euler.y = MathUtil::RadToDeg(yaw);
+    euler.z = MathUtil::RadToDeg(roll);
 
     return euler;
+}
+
+DirectX::XMVECTOR Quaternion::ToXMVector()
+{
+    return DirectX::XMVectorSet(x, y, z, w);
 }
 
 Quaternion Quaternion::Euler(Vector3 euler)
@@ -83,9 +85,9 @@ Quaternion Quaternion::Euler(float x, float y, float z)
     //クォータニオンを求める
     //式は (qz * qx * qy) をまとめて展開したものです
     Quaternion q;
-    q.w = cx * cy * cz + sx * sy * sz;
-    q.x = sx * cy * cz - cx * sy * sz;
-    q.y = cx * sy * cz + sx * cy * sz;
+    q.x = sx * cy * cz + cx * sy * sz;
+    q.y = cx * sy * cz - sx * cy * sz;
     q.z = cx * cy * sz - sx * sy * cz;
+    q.w = cx * cy * cz + sx * sy * sz;
     return q.Normalized();
 }

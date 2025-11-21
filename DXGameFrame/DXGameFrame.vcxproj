@@ -20,7 +20,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Component\Camera.h" />
+    <ClInclude Include="include\Component\Collider.h" />
     <ClInclude Include="include\Component\DefaultComponent.h" />
+    <ClInclude Include="include\Component\DirectionalLight.h" />
     <ClInclude Include="include\Component\MeshRenderer.h" />
     <ClInclude Include="include\Component\Renderer.h" />
     <ClInclude Include="include\Component\Renderer2D.h" />
@@ -33,7 +35,6 @@
     <ClInclude Include="include\DirectX\DirectXInclude.h" />
     <ClInclude Include="include\DirectX\Geometry.h" />
     <ClInclude Include="include\DirectX\Material.h" />
-    <ClInclude Include="include\DirectX\MatrixUtil.h" />
     <ClInclude Include="include\DirectX\Mesh.h" />
     <ClInclude Include="include\DirectX\MeshGroup.h" />
     <ClInclude Include="include\DirectX\Model.h" />
@@ -57,11 +58,12 @@
     <ClInclude Include="include\GameFrame\Scene.h" />
     <ClInclude Include="include\GameFrame\SceneManager.h" />
     <ClInclude Include="include\GameFrame\Transform.h" />
+    <ClInclude Include="include\System\ColliderSystem.h" />
     <ClInclude Include="include\System\RenderSystem.h" />
     <ClInclude Include="include\System\System.h" />
     <ClInclude Include="include\Utility\Color.h" />
     <ClInclude Include="include\Utility\Common.h" />
-    <ClInclude Include="include\Utility\InputManager.h" />
+    <ClInclude Include="include\Utility\Input.h" />
     <ClInclude Include="include\Utility\MathUtil.h" />
     <ClInclude Include="include\Utility\Quaternion.h" />
     <ClInclude Include="include\Utility\Utility.h" />
@@ -70,6 +72,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Component\Camera.cpp" />
+    <ClCompile Include="src\Component\DirectionalLight.cpp" />
+    <ClCompile Include="src\Component\Collider.cpp" />
     <ClCompile Include="src\Component\MeshRenderer.cpp" />
     <ClCompile Include="src\Component\Renderer.cpp" />
     <ClCompile Include="src\Component\Renderer2D.cpp" />
@@ -80,7 +84,6 @@
     <ClCompile Include="src\DirectX\Direct3D.cpp" />
     <ClCompile Include="src\DirectX\Geometry.cpp" />
     <ClCompile Include="src\DirectX\Material.cpp" />
-    <ClCompile Include="src\DirectX\MatrixUtil.cpp" />
     <ClCompile Include="src\DirectX\Mesh.cpp" />
     <ClCompile Include="src\DirectX\Model.cpp" />
     <ClCompile Include="src\DirectX\PipelineState.cpp" />
@@ -100,9 +103,10 @@
     <ClCompile Include="src\GameFrame\Transform.cpp" />
     <ClCompile Include="src\MeshGroup.cpp" />
     <ClCompile Include="src\ModelManager.cpp" />
+    <ClCompile Include="src\System\ColliderSystem.cpp" />
     <ClCompile Include="src\System\RenderSystem.cpp" />
     <ClCompile Include="src\Utility\Color.cpp" />
-    <ClCompile Include="src\Utility\InputManager.cpp" />
+    <ClCompile Include="src\Utility\Input.cpp" />
     <ClCompile Include="src\Utility\MathUtil.cpp" />
     <ClCompile Include="src\Utility\Quaternion.cpp" />
     <ClCompile Include="src\Utility\Vector2.cpp" />

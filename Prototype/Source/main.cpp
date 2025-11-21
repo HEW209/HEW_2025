@@ -5,7 +5,17 @@
 
 #include "Config.h"
 #include <DXGameFrame.h>
+#include "InputSystem.h"
 #include "SampleScene.h"
+#include "GridDebugScene.h"
+
+
+#include"PlayerMoveDebugScene.h"
+#include"PlayerDebugScene.h"
+
+#include "CollisionDebugScene.h"
+
+#include"PlayerBlockDebugScene.h"
 
 //ウィンドウプロシージャ
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPalam);
@@ -86,7 +96,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//-----------------------
 	//		シーンの作成
 	//-----------------------
-	SceneManager::Init(std::make_unique<SampleScene>());
+	//SceneManager::Init(std::make_unique<SampleScene>());
+	SceneManager::Init(std::make_unique<PlayerBlockDebugScene>());
 
 	//------------------------
 	//		FPS固定の準備
@@ -136,8 +147,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			//----------------------------------
 			//			ゲームの処理
 			//----------------------------------
-			InputManager::Update();
+			Input::Update();
 			SceneManager::Execute();
+			InputSystem::Update();
 		}
 	}
 

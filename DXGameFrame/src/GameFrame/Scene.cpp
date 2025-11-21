@@ -1,6 +1,7 @@
 //Scene.cpp
 #include <GameFrame/Scene.h>
 #include <System/RenderSystem.h>
+#include <System/ColliderSystem.h>
 
 Scene::~Scene()
 {
@@ -53,6 +54,9 @@ void Scene::Update()
 
 	//オブジェクトの削除を適用
 	ApplyDestroyGameObject();
+
+	// 当たり判定チェック
+	ColliderSystem::Instance().Check();
 
 	//描画処理
 	RenderSystem::Instance().DrawAll();

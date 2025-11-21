@@ -40,11 +40,16 @@ Vector2 Vector2::Normalized() const
 	}
 }
 
-float Vector2::ToAngle()
+float Vector2::ToAngle() const
 {
 	//x‚Æy‚ğ“ü‚ê‘Ö‚¦‚ÄŒv‰ñ‚è‚Å‹‚ß‚é
 	float rad = atan2f(x, y);
 	float angle = MathUtil::RadToDeg(rad);
 	angle = MathUtil::NormalizeAngle(angle);
 	return angle;
+}
+
+DirectX::XMVECTOR Vector2::ToXMVector() const
+{
+	return DirectX::XMVectorSet(x, y, 0.0f, 1.0f);
 }
