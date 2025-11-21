@@ -34,30 +34,45 @@ Vector2 InputAction::GetVector2() const
 }
 
 
-std::unordered_map<std::string, InputAction> InputSystem::m_actions;
-std::unordered_map<std::string, bool> InputSystem::m_prevButtonStates;
+std::unordered_map<uint64_t, InputAction> InputSystem::m_actions;
+std::unordered_map<uint64_t, bool> InputSystem::m_prevButtonStates;
 
-void InputSystem::CreateButtonAction(const std::string& name)
+void InputSystem::CreateButtonAction(std::string_view name)
 {
-    if (m_actions.find(name) == m_actions.end())
+	CreateButtonAction(StringHash(name));
+}
+
+void InputSystem::CreateButtonAction(uint64_t nameHash)
+{
+    if (m_actions.find(nameHash) == m_actions.end())
     {
-        m_actions.emplace(name, InputAction(name, ActionType::Button));
-        m_prevButtonStates[name] = false;
+        m_actions.emplace(nameHash, InputAction(ActionType::Button));
+        m_prevButtonStates[nameHash] = false;
     }
 }
 
-void InputSystem::CreateAxisAction(const std::string& name)
+void InputSystem::CreateAxisAction(std::string_view name)
 {
-    if (m_actions.find(name) == m_actions.end())
+	CreateAxisAction(StringHash(name));
+}
+
+void InputSystem::CreateAxisAction(uint64_t nameHash)
+{
+    if (m_actions.find(nameHash) == m_actions.end())
     {
-        m_actions.emplace(name, InputAction(name, ActionType::Axis));
+        m_actions.emplace(nameHash, InputAction(ActionType::Axis));
     }
 }
 
-void InputSystem::RemoveAction(const std::string& name)
+void InputSystem::RemoveAction(std::string_view name)
 {
-    m_actions.erase(name);
-    m_prevButtonStates.erase(name);
+	RemoveAction(StringHash(name));
+}
+
+void InputSystem::RemoveAction(uint64_t nameHash)
+{
+    m_actions.erase(nameHash);
+    m_prevButtonStates.erase(nameHash);
 }
 
 void InputSystem::Clear()
@@ -66,78 +81,123 @@ void InputSystem::Clear()
     m_prevButtonStates.clear();
 }
 
-void InputSystem::BindKey(const std::string& actionName, KeyCode key)
+void InputSystem::BindKey(std::string_view actionName, KeyCode key)
 {
-    if (auto* action = FindAction(actionName))
+	BindKey(StringHash(actionName), key);
+}
+
+void InputSystem::BindKey(uint64_t actionNameHash, KeyCode key)
+{
+    if (auto* action = FindAction(actionNameHash))
     {
         action->AddBinding(std::make_unique<KeyBinding>(key));
     }
 }
 
-void InputSystem::BindPadButton(const std::string& actionName, PadCode button)
+void InputSystem::BindPadButton(std::string_view actionName, PadCode button)
 {
-    if (auto* action = FindAction(actionName))
+	BindPadButton(StringHash(actionName), button);
+}
+
+void InputSystem::BindPadButton(uint64_t actionNameHash, PadCode button)
+{
+    if (auto* action = FindAction(actionNameHash))
     {
         action->AddBinding(std::make_unique<PadButtonBinding>(button));
     }
 }
 
-void InputSystem::BindPadStick(const std::string& actionName, StickCode stick, std::optional<float> deadzone)
+void InputSystem::BindPadStick(std::string_view actionName, StickCode stick, std::optional<float> deadzone)
 {
-    if (auto* action = FindAction(actionName))
+	BindPadStick(StringHash(actionName), stick, deadzone);
+}
+
+void InputSystem::BindPadStick(uint64_t actionNameHash, StickCode stick, std::optional<float> deadzone)
+{
+    if (auto* action = FindAction(actionNameHash))
     {
         action->AddBinding(std::make_unique<PadStickBinding>(stick, deadzone));
     }
 }
 
-void InputSystem::BindVectorKey(const std::string& actionName, KeyCode key, const Vector2& value)
+void InputSystem::BindVectorKey(std::string_view actionName, KeyCode key, const Vector2& value)
 {
-    if (auto* action = FindAction(actionName))
+	BindVectorKey(StringHash(actionName), key, value);
+}
+
+void InputSystem::BindVectorKey(uint64_t actionNameHash, KeyCode key, const Vector2& value)
+{
+    if (auto* action = FindAction(actionNameHash))
     {
         action->AddBinding(std::make_unique<VectorKeyBinding>(key, value));
     }
 }
 
-void InputSystem::BindVectorKeys(const std::string& actionName, KeyCode up, KeyCode down, KeyCode left, KeyCode right)
+void InputSystem::BindVectorKeys(std::string_view actionName, KeyCode up, KeyCode down, KeyCode left, KeyCode right)
 {
-    if (auto* action = FindAction(actionName))
+	BindVectorKeys(StringHash(actionName), up, down, left, right);
+}
+
+void InputSystem::BindVectorKeys(uint64_t actionNameHash, KeyCode up, KeyCode down, KeyCode left, KeyCode right)
+{
+    if (auto* action = FindAction(actionNameHash))
     {
         action->AddBinding(std::make_unique<DirectionalKeyBinding>(up, down, left, right));
     }
 }
 
-bool InputSystem::GetButtonHold(const std::string& name)
+bool InputSystem::GetButtonHold(std::string_view name)
 {
-    if (const auto* action = FindAction(name))
+	return GetButtonHold(StringHash(name));
+}
+
+bool InputSystem::GetButtonHold(uint64_t nameHash)
+{
+    if (const auto* action = FindAction(nameHash))
     {
         return action->GetBool();
     }
     return false;
 }
 
-bool InputSystem::GetButtonDown(const std::string& name)
+bool InputSystem::GetButtonDown(std::string_view name)
 {
-    bool current = GetButtonHold(name);
+	return GetButtonDown(StringHash(name));
+}
 
-    auto it = m_prevButtonStates.find(name);
+bool InputSystem::GetButtonDown(uint64_t nameHash)
+{
+    bool current = GetButtonHold(nameHash);
+
+    auto it = m_prevButtonStates.find(nameHash);
     bool prev = (it != m_prevButtonStates.end()) ? it->second : false;
 
     return current && !prev;
 }
 
-bool InputSystem::GetButtonUp(const std::string& name)
+bool InputSystem::GetButtonUp(std::string_view name)
 {
-    bool current = GetButtonHold(name);
+	return GetButtonUp(StringHash(name));
+}
 
-    auto it = m_prevButtonStates.find(name);
+bool InputSystem::GetButtonUp(uint64_t nameHash)
+{
+    bool current = GetButtonHold(nameHash);
+
+    auto it = m_prevButtonStates.find(nameHash);
     bool prev = (it != m_prevButtonStates.end()) ? it->second : false;
 
     return !current && prev;
 }
 
-Vector2 InputSystem::GetAxis(const std::string& name)
+Vector2 InputSystem::GetAxis(std::string_view name)
 {
-    if (const auto* action = FindAction(name))
+	return GetAxis(StringHash(name));
+}
+
+Vector2 InputSystem::GetAxis(uint64_t nameHash)
+{
+    if (const auto* action = FindAction(nameHash))
     {
         return action->GetVector2();
     }
@@ -155,9 +215,9 @@ void InputSystem::Update()
     }
 }
 
-InputAction* InputSystem::FindAction(const std::string& name)
+InputAction* InputSystem::FindAction(uint64_t nameHash)
 {
-    auto it = m_actions.find(name);
+    auto it = m_actions.find(nameHash);
     if (it != m_actions.end())
     {
         return &it->second;

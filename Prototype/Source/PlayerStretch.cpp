@@ -21,12 +21,12 @@ void PlayerStretch::Update()
 	Vector3 pillarPos = m_pillar->GetTransform()->GetPosition(Space::LOCAL);
 
 	//“ü—Í‚ðŽæ“¾
-	if (InputSystem::GetButtonHold("Up"))
+	if (InputSystem::GetButtonHold("Up"_hash))
 	{
 		if(m_targetY < LENGTH_MAX)
 			m_targetY = round(floor(pos.y) + BLOCK_SIZE);
 	}
-	else if (InputSystem::GetButtonHold("Down"))
+	else if (InputSystem::GetButtonHold("Down"_hash))
 	{
 		if(0.0f < m_targetY)
 			m_targetY = round(ceil(pos.y) - BLOCK_SIZE);
