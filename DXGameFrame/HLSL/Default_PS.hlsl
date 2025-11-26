@@ -30,9 +30,6 @@ float4 main(PS_IN pin) : SV_TARGET
     float3 L = normalize(-lightDir); // Œõ‚Ì‹t•ûŒü
     float NdotL = saturate(dot(N, L));
     
-    //float levels = 4.0; // ’iŠK”i—áF4ŠK’²j
-    //NdotL = floor(NdotL * levels) / (levels - 1);
-    
     // ŠÂ‹«Œõ + ŠgU”½Ë
     float3 color = ambientColor + lightColor * NdotL;
     

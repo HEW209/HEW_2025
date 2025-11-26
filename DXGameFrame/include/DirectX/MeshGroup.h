@@ -3,7 +3,7 @@
  * @brief  モデル単位のメッシュの組み合わせ
  * 
  * @author 石田怜
- * @date   2025/11/09
+ * @date   2025/11/23
  *********************************************************************/
 #pragma once
 
@@ -43,10 +43,10 @@ private:
 	/// ボーン情報
 	struct Bone
 	{
-		std::string name;							// ボーン名
-		unsigned int parentID;						// 親ボーンID
-		std::vector<unsigned int> childrenIDs;		// 子ボーンID配列
-		DirectX::XMMATRIX matrix;					// 変換行列
+		std::string name;				// ボーン名
+		UINT parentID;					// 親ボーンID
+		std::vector<UINT> childrenIDs;	// 子ボーンID配列
+		DirectX::XMMATRIX matrix;		// 変換行列
 	};
 
 	/// メッシュ配列

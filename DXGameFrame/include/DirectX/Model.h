@@ -3,11 +3,10 @@
  * @brief  モデルデータを扱う
  * 
  * @author 石田怜
- * @date   2025/10/30
+ * @date   2025/11/23
  *********************************************************************/
 #pragma once
 
-#include <Utility/Common.h>
 #include "MeshGroup.h"
 #include "Material.h"
 
@@ -17,13 +16,13 @@
 class Model
 {
 public:
-	Model();
+	Model() = default;
 	~Model() = default;
 
 	/**
 	 * @brief モデルデータを読み込む
 	 * @param filePath モデルデータへのファイルパス
-	 * @return 読み込み結果
+	 * @return 実行結果
 	 */
 	bool Load(const std::string& filePath);
 
@@ -44,10 +43,7 @@ public:
 	 * @brief マテリアル配列を取得する
 	 * @return マテリアル配列への参照
 	 */
-	const std::vector<Material>& GetMaterials()
-	{
-		return m_materials;
-	}
+	const std::vector<Material>& GetMaterials();
 
 private:
 	/// メッシュグループ

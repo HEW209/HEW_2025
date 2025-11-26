@@ -24,15 +24,11 @@
 #endif
 #endif
 
-Model::Model()
-{
-}
-
 bool Model::Load(const std::string& filePath)
 {
 	// モデル読み込み設定
 	Assimp::Importer importer;
-	int flag = 0;
+	UINT flag = 0;
 	flag |= aiProcess_Triangulate;
 	flag |= aiProcess_FlipUVs;
 	flag |= aiProcess_MakeLeftHanded;
@@ -78,10 +74,15 @@ void Model::Draw(const std::vector<Material>& materials)
 	m_meshGroup.Draw(materials);
 }
 
+const std::vector<Material>& Model::GetMaterials()
+{
+	return m_materials;
+}
+
 void Model::CreateMaterials(const aiScene* pScene, const std::string& directory)
 {
 	// マテリアル数取得
-	unsigned int materialCount;
+	UINT materialCount;
 	materialCount = pScene->mNumMaterials;
 
 	// マテリアル配列の初期化
@@ -89,15 +90,14 @@ void Model::CreateMaterials(const aiScene* pScene, const std::string& directory)
 	m_materials.resize(materialCount);
 
 	// マテリアルパラメータの設定
-	for (unsigned int i = 0; i < materialCount; ++i)
+	for (UINT i = 0; i < materialCount; ++i)
 	{
 		// テクスチャ読み込み処理
 		aiString path;
 
 		// テクスチャのパス情報を読み込み
-		if (pScene->mMaterials[i]->Get(AI_MATKEY_TEXTURE_DIFFUSE(0), path) != AI_SUCCESS) {
+		if (pScene->mMaterials[i]->Get(AI_MATKEY_TEXTURE_DIFFUSE(0), path) != AI_SUCCESS)
 			continue;
-		}
 
 		// テクスチャの読み込み
 		m_materials[i].SetTexture(directory + path.C_Str());

@@ -1,11 +1,11 @@
 /*****************************************************************//**
  * @file   Object.h
  * @brief  オブジェクトの基底クラスと専用のポインタ
- * 
+ *
  * ポインタ先の有効性チェックを自動で行う
- * 
+ *
  * @author 石田怜
- * @date   2025/09/09
+ * @date   2025/11/23
  *********************************************************************/
 #pragma once
 
@@ -27,11 +27,11 @@ public:
 	Object() = default;
 	virtual ~Object()
 	{
-		//自身を指すポインタを全て無効にする
+		// 自身を指すポインタを全て無効にする
 		InvalidateThisPtr();
 	}
 
-	//コピー禁止
+	// コピー禁止
 	Object(const Object&) = delete;
 	Object& operator=(const Object&) = delete;
 
@@ -56,8 +56,8 @@ private:
 		auto it = std::find(m_thisPtrs.begin(), m_thisPtrs.end(), ppObject);
 		if (it != m_thisPtrs.end())
 		{
-			//末尾と入れ替えて削除
-			*it = m_thisPtrs.back(); 
+			// 末尾と入れ替えて削除
+			*it = m_thisPtrs.back();
 			m_thisPtrs.pop_back();
 		}
 	}
@@ -67,7 +67,7 @@ private:
 	 */
 	void InvalidateThisPtr()
 	{
-		//自身を指す全てのポインタにnullptrをセット
+		// 自身を指す全てのポインタにnullptrをセット
 		for (auto thisPtr : m_thisPtrs)
 		{
 			*thisPtr = nullptr;
@@ -88,8 +88,8 @@ private:
 template <typename ObjectType>
 class ObjPtr
 {
-	//static_assert(std::is_base_of<Object, ObjectType>::value,
-	//	"ObjPtrに無効なクラスが指定されました");
+	static_assert(std::is_base_of<Object, ObjectType>::value,
+		"ObjPtrに無効なクラスが指定されました");
 
 public:
 	ObjPtr() = default;
@@ -112,7 +112,7 @@ public:
 		Reset();
 	}
 
-	//ポインタ先アクセス系演算子
+	// ポインタ先アクセス系演算子
 	ObjectType& operator*()
 	{
 		return *m_pObject;
@@ -130,7 +130,7 @@ public:
 		return m_pObject;
 	}
 
-	//代入演算子
+	// 代入演算子
 	ObjPtr& operator=(const ObjPtr& ObjPtr)
 	{
 		SetPtr(ObjPtr.m_pObject);
@@ -147,7 +147,7 @@ public:
 		return *this;
 	}
 
-	//比較演算子
+	// 比較演算子
 	bool operator==(const ObjPtr& ObjPtr) const
 	{
 		return m_pObject == ObjPtr.m_pObject;
@@ -170,7 +170,7 @@ public:
 	}
 
 	/**
-	 * @brief ★ポインタの有効性を確認する
+	 * @brief ポインタの有効性を確認する
 	 * @return ポインタがnullptrならtrueを返す
 	 */
 	bool IsNull() const
@@ -179,7 +179,7 @@ public:
 	}
 
 	/**
-	 * @brief ★オブジェクトへの実際のポインタを取得する
+	 * @brief オブジェクトへの実際のポインタを取得する
 	 * @return オブジェクトへの生ポインタ
 	 */
 	ObjectType* Get() const
@@ -188,20 +188,20 @@ public:
 	}
 
 	/**
-	 * @brief ★ポインタを無効化する
+	 * @brief ポインタを無効化する
 	 */
 	void Reset()
 	{
 		if (m_pObject != nullptr)
 		{
-			//このポインタの登録を解除
+			// このポインタの登録を解除
 			m_pObject->RemoveThisPtr(reinterpret_cast<Object**>(&m_pObject));
 			m_pObject = nullptr;
 		}
 	}
 
 	/**
-	 * @brief ★ポインタをセットする
+	 * @brief ポインタをセットする
 	 * @param pObject セットするオブジェクトのポインタ
 	 */
 	void SetPtr(ObjectType* pObject)
@@ -214,7 +214,7 @@ public:
 
 		if (m_pObject != nullptr)
 		{
-			//このポインタを登録
+			// このポインタを登録
 			m_pObject->AddThisPtr(reinterpret_cast<Object**>(&m_pObject));
 		}
 	}

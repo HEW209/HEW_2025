@@ -1,7 +1,7 @@
 /******************************************************************//**
  * @file   Input.h
  * @brief  入力の取得を行う
- * 
+ *
  * @author 石田怜
  * @author 三品怜 - コントローラー入力部分
  * @date   2025/11/19
@@ -23,9 +23,9 @@
 
 constexpr int XINPUT_STICK_MAX = 32767;
 
- /**
-  * @brief キーボード入力コード
-  */
+/**
+ * @brief キーボード入力コード
+ */
 enum class KeyCode : uint8_t
 {
 	//マウスコード
@@ -278,7 +278,7 @@ private:
 
 	/// 現在フレームのキー入力情報
 	static uint8_t s_keyTable[MAX_KEY_TYPE];
-	
+
 	/// 前フレームのコントローラー入力情報
 	static XINPUT_STATE s_oldPadState;
 
