@@ -1,6 +1,7 @@
 // Scene.cpp
 #include <GameFrame/Scene.h>
 #include <GameFrame/RenderSystem.h>
+#include <GameFrame/ColliderSystem.h>
 
 Scene::~Scene()
 {
@@ -24,6 +25,8 @@ void Scene::Update()
 
 	// オブジェクトの削除を適用
 	ApplyDestroyGameObject();
+
+	ColliderSystem::Instance().Check();
 
 	RenderSystem::Instance().DrawAll();
 }

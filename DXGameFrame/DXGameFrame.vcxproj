@@ -29,6 +29,7 @@
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="include\Component\Camera.h" />
+    <ClInclude Include="include\Component\Collider.h" />
     <ClInclude Include="include\Component\DefaultComponent.h" />
     <ClInclude Include="include\Component\DirectionalLight.h" />
     <ClInclude Include="include\Component\MeshRenderer.h" />
@@ -61,6 +62,7 @@
     <ClInclude Include="include\DirectX\TextureManager.h" />
     <ClInclude Include="include\DirectX\VertexShader.h" />
     <ClInclude Include="include\DXGameFrame.h" />
+    <ClInclude Include="include\GameFrame\ColliderSystem.h" />
     <ClInclude Include="include\GameFrame\Component.h" />
     <ClInclude Include="include\GameFrame\GameFrame.h" />
     <ClInclude Include="include\GameFrame\GameObject.h" />
@@ -86,6 +88,7 @@
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\Component\Camera.cpp" />
+    <ClCompile Include="src\Component\Collider.cpp" />
     <ClCompile Include="src\Component\DirectionalLight.cpp" />
     <ClCompile Include="src\Component\MeshRenderer.cpp" />
     <ClCompile Include="src\Component\Renderer.cpp" />
@@ -113,6 +116,7 @@
     <ClCompile Include="src\DirectX\Texture.cpp" />
     <ClCompile Include="src\DirectX\TextureManager.cpp" />
     <ClCompile Include="src\DirectX\VertexShader.cpp" />
+    <ClCompile Include="src\GameFrame\ColliderSystem.cpp" />
     <ClCompile Include="src\GameFrame\Component.cpp" />
     <ClCompile Include="src\GameFrame\GameObject.cpp" />
     <ClCompile Include="src\GameFrame\RenderSystem.cpp" />

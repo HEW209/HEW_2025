@@ -258,6 +258,12 @@
     <ClInclude Include="include\DirectX\SpriteDrawer.h">
       <Filter>ヘッダー ファイル\DirectX\RenderUtility</Filter>
     </ClInclude>
+    <ClInclude Include="include\Component\Collider.h">
+      <Filter>ヘッダー ファイル\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GameFrame\ColliderSystem.h">
+      <Filter>ヘッダー ファイル\GameFrame</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\DirectX\Direct3D.cpp">
@@ -400,6 +406,12 @@
     </ClCompile>
     <ClCompile Include="src\DirectX\SpriteDrawer.cpp">
       <Filter>ソース ファイル\DirectX\RenderUtility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Component\Collider.cpp">
+      <Filter>ソース ファイル\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameFrame\ColliderSystem.cpp">
+      <Filter>ソース ファイル\GameFrame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
