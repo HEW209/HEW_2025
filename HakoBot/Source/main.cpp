@@ -5,7 +5,6 @@
 
 #include "Config.h"
 #include <DXGameFrame.h>
-#include "TestScene.h"
 
 // ウィンドウプロシージャ
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -100,7 +99,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		hWnd, Direct3D::Instance().GetDevice(), Direct3D::Instance().GetContext());
 
 	// シーンの作成
-	SceneManager::Init(std::make_unique<TestScene>());
+	//SceneManager::Init(std::make_unique<"シーンクラス">());
 
 
 	//-------------------------

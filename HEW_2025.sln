@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36623.8 d17.14
+VisualStudioVersion = 17.14.36623.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXGameFrame", "DXGameFrame\DXGameFrame.vcxproj", "{F555F2F1-D15B-42E9-97BA-DB9E00A7E68E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestProject", "TestProject\TestProject.vcxproj", "{C19A05DB-2212-42C7-9CA0-4BC6D873BD03}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HakoBot", "HakoBot\HakoBot.vcxproj", "{05903726-63A8-488D-87C7-8E8923BE75F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,14 +23,14 @@ Global
 		{F555F2F1-D15B-42E9-97BA-DB9E00A7E68E}.Release|x64.Build.0 = Release|x64
 		{F555F2F1-D15B-42E9-97BA-DB9E00A7E68E}.Release|x86.ActiveCfg = Release|Win32
 		{F555F2F1-D15B-42E9-97BA-DB9E00A7E68E}.Release|x86.Build.0 = Release|Win32
-		{C19A05DB-2212-42C7-9CA0-4BC6D873BD03}.Debug|x64.ActiveCfg = Debug|x64
-		{C19A05DB-2212-42C7-9CA0-4BC6D873BD03}.Debug|x64.Build.0 = Debug|x64
-		{C19A05DB-2212-42C7-9CA0-4BC6D873BD03}.Debug|x86.ActiveCfg = Debug|Win32
-		{C19A05DB-2212-42C7-9CA0-4BC6D873BD03}.Debug|x86.Build.0 = Debug|Win32
-		{C19A05DB-2212-42C7-9CA0-4BC6D873BD03}.Release|x64.ActiveCfg = Release|x64
-		{C19A05DB-2212-42C7-9CA0-4BC6D873BD03}.Release|x64.Build.0 = Release|x64
-		{C19A05DB-2212-42C7-9CA0-4BC6D873BD03}.Release|x86.ActiveCfg = Release|Win32
-		{C19A05DB-2212-42C7-9CA0-4BC6D873BD03}.Release|x86.Build.0 = Release|Win32
+		{05903726-63A8-488D-87C7-8E8923BE75F7}.Debug|x64.ActiveCfg = Debug|x64
+		{05903726-63A8-488D-87C7-8E8923BE75F7}.Debug|x64.Build.0 = Debug|x64
+		{05903726-63A8-488D-87C7-8E8923BE75F7}.Debug|x86.ActiveCfg = Debug|Win32
+		{05903726-63A8-488D-87C7-8E8923BE75F7}.Debug|x86.Build.0 = Debug|Win32
+		{05903726-63A8-488D-87C7-8E8923BE75F7}.Release|x64.ActiveCfg = Release|x64
+		{05903726-63A8-488D-87C7-8E8923BE75F7}.Release|x64.Build.0 = Release|x64
+		{05903726-63A8-488D-87C7-8E8923BE75F7}.Release|x86.ActiveCfg = Release|Win32
+		{05903726-63A8-488D-87C7-8E8923BE75F7}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
