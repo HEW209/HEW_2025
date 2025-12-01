@@ -1,17 +1,18 @@
-/*****************************************************************//**
+/******************************************************************//**
  * @file   Material.h
  * @brief  マテリアルクラス
  * 
  * @author 石田怜
- * @date   2025/09/21
+ * @date   2025/11/23
  *********************************************************************/
 #pragma once
 
 #include "Texture.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
-#include "PipelineState.h"
+#include "PipelineStateManager.h"
 #include <vector>
+#include <array>
 #include <memory>
 
 /**
@@ -26,7 +27,7 @@ public:
 	/**
 	 * @brief マテリアルをセットする
 	 */
- 	void Bind() const;
+	void Bind() const;
 
 	/**
 	 * @brief 頂点シェーダーを設定する
@@ -45,59 +46,51 @@ public:
 	 * @param filePath テクスチャ画像へのファイルパス
 	 * @param slot 設定するスロット番号
 	 */
-	void SetTexture(const std::string& filePath, UINT slot = 0);
+	void SetTexture(const std::string& filePath, UINT slot = TextureSlot::Main);
 
 	/**
 	 * @brief マテリアルのパラメータを設定する
 	 * @param data 設定するデータへのポインタ (256バイト以下)
 	 * @param size 設定するデータのメモリサイズ
 	 */
-	void SetParameter(const void* data, UINT size);
+	void SetParameter(const void* pData, UINT size);
 
 	/**
-	 * @brief パイプラインステートモードを設定する
-	 * @param pipelineMode パイプラインステートごとのモード設定
+	 * @brief パイプラインステートを設定する
+	 * @param pipelineState パイプラインステート
 	 */
-	void SetPipelineMode(PipelineState::ModeSet pipelineMode)
-	{
-		m_pipelineMode = pipelineMode;
-	}
+	void SetPipelineState(PipelineState pipelineState);
 
 	/**
-	 * @brief ラスタライズモードを設定する
-	 * @param rasterizeMode ラスタライズモード設定
+	 * @brief ラスタライザーステートを設定する
+	 * @param rasterizerState ラスタライザーステート
 	 */
-	void SetRasterizeMode(RasterizerState::Mode rasterizeMode)
-	{
-		m_pipelineMode.rasterizeMode = rasterizeMode;
-	}
+	void SetRasterizerState(RasterizerState rasterizerState);
 
 	/**
-	 * @brief 深度ステンシルモードを設定する
-	 * @param depthStencilMode 深度ステンシルモード設定
+	 * @brief 深度ステンシルステートを設定する
+	 * @param depthStencilState 深度ステンシルステート
 	 */
-	void SetDepthStencilMode(DepthStencilState::Mode depthStencilMode)
-	{
-		m_pipelineMode.depthStencilMode = depthStencilMode;
-	}
+	void SetDepthStencilState(DepthStencilState depthStencilState);
 
 	/**
-	 * @brief ブレンドモードを設定する
-	 * @param blendMode ブレンドモード設定
+	 * @brief サンプラーステートを設定する
+	 * @param samplerState サンプラーステート
 	 */
-	void SetBlendMode(BlendState::Mode blendMode)
-	{
-		m_pipelineMode.blendMode = blendMode;
-	}
+	void SetSamplerState(SamplerState samplerState);
 
 	/**
-	 * @brief サンプラーモードを設定する
-	 * @param samplerMode サンプラーモード設定
+	 * @brief ブレンドステートを設定する
+	 * @param blendState ブレンドステート
 	 */
-	void SetSamplerMode(SamplerState::Mode samplerMode)
-	{
-		m_pipelineMode.samplerMode = samplerMode;
-	}
+	void SetBlendState(BlendState blendState);
+
+	/**
+	 * @brief テクスチャを取得する
+	 * @param slot テクスチャスロット番号
+	 * @return テクスチャへのポインタ
+	 */
+	Texture* GetTexture(UINT slot = TextureSlot::Main);
 
 private:
 	/// 頂点シェーダーへのポインタ
@@ -107,11 +100,11 @@ private:
 	std::shared_ptr<PixelShader> m_pPS;
 
 	/// テクスチャ配列
-	std::shared_ptr<Texture> m_pTextures[TextureSlot::Count];
-	
+	std::array<std::shared_ptr<Texture>, TextureSlot::Count> m_pTextures;
+
 	/// マテリアルごとのパラメータ
 	std::vector<BYTE> m_customParameter;
 
-	/// パイプラインステートのモード
-	PipelineState::ModeSet m_pipelineMode;
+	/// パイプラインステート
+	PipelineState m_pipelineState;
 };

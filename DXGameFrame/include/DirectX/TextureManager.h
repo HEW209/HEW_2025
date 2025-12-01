@@ -1,13 +1,13 @@
-/*****************************************************************//**
+/******************************************************************//**
  * @file   TextureManager.h
  * @brief  テクスチャを管理する
  * 
  * @author 石田怜
- * @date   2025/10/11
+ * @date   2025/11/23
  *********************************************************************/
 #pragma once
 
-#include <DirectX/Texture.h>
+#include "Texture.h"
 #include <unordered_map>
 #include <memory>
 #include <vector>
@@ -46,9 +46,5 @@ public:
 	 * @brief 唯一のインスタンスを取得する
 	 * @return TextureManagerインスタンスへの参照
 	 */
-	static TextureManager& Instance()
-	{
-		static TextureManager s_instance;
-		return s_instance;
-	}
+	static TextureManager& Instance();
 };

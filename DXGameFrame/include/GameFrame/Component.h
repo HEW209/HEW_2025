@@ -3,7 +3,7 @@
  * @brief  コンポーネントの基底クラス
  *
  * @author 石田怜
- * @date   2025/09/10
+ * @date   2025/11/23
  *********************************************************************/
 #pragma once
 
@@ -24,58 +24,65 @@ public:
 	virtual ~Component() = default;
 
 	/**
-	 * @brief ★親ゲームオブジェクトを取得する
-	 * @return 親ゲームオブジェクトへのポインタ
+	 * @brief 生成時に呼び出される処理
 	 */
-	GameObject* GetGameObject() const
-	{
-		return m_pGameObject;
-	}
+	virtual void Awake() {}
 
 	/**
-	 * @brief ★親ゲームオブジェクトが持つTransformコンポーネントを取得する
+	 * @brief 更新処理の前に一度だけ呼ばれる処理
+	 */
+	virtual void Start() {}
+
+	/**
+	 * @brief 毎フレーム呼ばれる更新処理
+	 */
+	virtual void Update() {}
+
+	/**
+	 * @brief Updateの後に呼ばれる更新処理
+	 */
+	virtual void LateUpdate() {}
+
+	/**
+	 * @brief 削除時に呼び出される処理
+	 */
+	virtual void OnDestroy() {}
+
+	/**
+	 * @brief 親ゲームオブジェクトを取得する
+	 * @return 親ゲームオブジェクトへのポインタ
+	 */
+	GameObject* GetGameObject() const;
+
+	/**
+	 * @brief 親ゲームオブジェクトが持つTransformコンポーネントを取得する
 	 * @return 親ゲームオブジェクトが持つTransformコンポーネントへのポインタ
 	 */
-	Transform* GetTransform() const
-	{
-		return m_pTransform;
-	}
+	Transform* GetTransform() const;
 
 	/**
 	 * @brief このコンポーネントの有効状態を設定する
 	 * @param enabled 設定する有効状態
 	 */
-	void SetEnabled(bool enabled)
-	{
-		m_enabled = enabled;
-	}
+	void SetEnabled(bool enabled);
 
 	/**
 	 * @brief このコンポーネントの有効状態を取得する
 	 * @return このコンポーネントの有効状態
 	 */
-	bool IsEnabled() const
-	{
-		return m_enabled;
-	}
+	bool IsEnabled() const;
 
 	/**
 	* @brief 開始処理呼び出し状態を取得する
 	* @return 開始処理がすでに呼ばれていればtrueを返す
 	*/
-	bool IsStarted() const
-	{
-		return m_started;
-	}
+	bool IsStarted() const;
 
 	/**
-	 * @brief ★このコンポーネントを削除する
+	 * @brief このコンポーネントを削除する
 	 * @details 実際の削除は全ての更新処理の終了時に安全に行われます
 	 */
-	void Destroy() override
-	{
-		m_destroyed = true;
-	}
+	void Destroy() override;
 
 private:
 	/// 親ゲームオブジェクトへのポインタ
@@ -94,31 +101,6 @@ private:
 	bool m_started;
 
 	/**
-	 * @brief 生成時に呼び出される処理
-	 */
-	virtual void Awake() {}
-
-	/**
-	 * @brief ★更新処理の前に一度だけ呼ばれる処理
-	 */
-	virtual void Start() {}
-
-	/**
-	 * @brief ★毎フレーム呼ばれる更新処理
-	 */
-	virtual void Update() {}
-
-	/**
-	 * @brief Updateの後に呼ばれる更新処理
-	 */
-	virtual void LateUpdate() {}
-
-	/**
-	 * @brief 削除時に呼び出される処理
-	 */
-	virtual void OnDestroy() {}
-
-	/**
 	 * @brief 親ゲームオブジェクトを設定する
 	 * @param pGameObject 親ゲームオブジェクトへのポインタ
 	 */
@@ -127,17 +109,11 @@ private:
 	/**
 	 * @brief 開始処理呼び出しフラグをオンにする
 	 */
-	void SetStarted()
-	{
-		m_started = true;
-	}
+	void SetStarted();
 
 	/**
 	 * @brief このコンポーネントの削除フラグを取得する
 	 * @return このコンポーネントの削除フラグ
 	 */
-	bool IsDestroyed() const
-	{
-		return m_destroyed;
-	}
+	bool IsDestroyed() const;
 };

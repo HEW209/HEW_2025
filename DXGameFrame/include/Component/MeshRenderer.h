@@ -1,9 +1,9 @@
 /*****************************************************************//**
  * @file   MeshRenderer.h
  * @brief  メッシュの描画を行う
- * 
+ *
  * @author 石田怜
- * @date   2025/10/25
+ * @date   2025/11/24
  *********************************************************************/
 #pragma once
 
@@ -32,30 +32,25 @@ public:
 	 */
 	void LoadModel(const std::string& filePath);
 
-	//void SetGeometry()
-
 	/**
 	 * @brief マテリアル数を取得する
 	 * @return 現在のマテリアル数
 	 */
-	int GetMaterialNum()
-	{
-		return m_materials.size();
-	}
-	
+	UINT GetMaterialNum();
+
 	/**
 	 * @brief マテリアルを取得する
 	 * @param slot マテリアルスロット番号
-	 * @return マテリアルへのポインタ
+	 * @return マテリアルのコピー
 	 */
-	Material* GetMaterial(UINT slot);
+	Material GetMaterial(UINT slot);
 
 	/**
 	 * @brief マテリアルを設定する
-	 * @param pMaterial マテリアルへのポインタ
+	 * @param pMaterial 設定するマテリアル
 	 * @param slot マテリアルスロット番号
 	 */
-	void SetMaterial(Material* pMaterial, UINT slot);
+	void SetMaterial(Material pMaterial, UINT slot);
 
 private:
 	/// モデルへのポインタ

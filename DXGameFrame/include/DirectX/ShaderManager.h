@@ -1,9 +1,9 @@
-/*****************************************************************//**
+/******************************************************************//**
  * @file   ShaderManager.h
  * @brief  シェーダーを管理する
  * 
  * @author 石田怜
- * @date   2025/10/10
+ * @date   2025/11/22
  *********************************************************************/
 #pragma once
 
@@ -44,7 +44,7 @@ public:
 	 * @param pPixelShader 実際のピクセルシェーダーへのポインタ
 	 */
 	void SetPixelShader(ID3D11PixelShader* pPS);
-	
+
 	/**
 	 * @brief 全てのシェーダーを解放する
 	 */
@@ -54,10 +54,10 @@ private:
 	ShaderManager();
 
 	/// 頂点シェーダーとファイルパスのマップ
-	std::unordered_map<std::string, std::shared_ptr<VertexShader>> m_vertexShaders;
+	std::unordered_map<std::string, std::shared_ptr<VertexShader>> m_pVertexShaders;
 
 	/// ピクセルシェーダーとファイルパスのマップ
-	std::unordered_map<std::string, std::shared_ptr<PixelShader>> m_pixelShaders;
+	std::unordered_map<std::string, std::shared_ptr<PixelShader>> m_pPixelShaders;
 
 	/// 現在セットされている頂点シェーダー
 	ID3D11VertexShader* m_pCurrentVS;
@@ -70,9 +70,5 @@ public:
 	 * @brief 唯一のインスタンスを取得する
 	 * @return ShaderManagerインスタンスへの参照
 	 */
-	static ShaderManager& Instance()
-	{
-		static ShaderManager s_instance;
-		return s_instance;
-	}
+	static ShaderManager& Instance();
 };
