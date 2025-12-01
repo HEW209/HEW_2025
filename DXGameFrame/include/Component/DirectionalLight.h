@@ -11,9 +11,9 @@
 #include <Utility/Color.h>
 #include <DirectX/ConstantBufferManager.h>
 
-/**
- * @brief 指向性ライト情報を扱う
- */
+ /**
+  * @brief 指向性ライト情報を扱う
+  */
 class DirectionalLight : public Component
 {
 public:
@@ -43,12 +43,21 @@ public:
 	 */
 	void SetAmbientColor(Color color);
 
+	/**
+	 * @brief ライトの強さを設定する
+	 * @param intensity ライト強度 (デフォルト1)
+	 */
+	void SetLightIntensity(float intensity);
+
 private:
 	/// 光源カラー
 	Color m_lightColor;
 
 	/// 環境光
 	Color m_ambientColor;
+
+	/// ライトの強さ
+	float m_lightIntensity;
 
 public:
 	/**

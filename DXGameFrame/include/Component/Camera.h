@@ -11,9 +11,9 @@
 #include <DirectX/DirectXInclude.h>
 #include <Utility/Vector2.h>
 
-/**
- * @brief カメラ情報を扱う
- */
+ /**
+  * @brief カメラ情報を扱う
+  */
 class Camera : public Component
 {
 public:
@@ -27,6 +27,7 @@ public:
 		Vector2 screenSize = { 1280.0f, 720.0f };	// 画面サイズ
 		float nearZ = 0.1f;							// 最近距離
 		float farZ = 1000.0f;						// 最遠距離
+		float cameraScale = 1.0f;					// カメラスケール (平行投影で使用)
 	};
 
 	/**
@@ -48,21 +49,21 @@ public:
 
 	/**
 	 * @brief このカメラからビュー行列を作成する
-	 * @return 転置されたビュー行列
+	 * @return ビュー行列
 	 */
-	DirectX::XMFLOAT4X4 GetViewMatrix();
+	DirectX::XMMATRIX GetViewMatrix();
 
 	/**
 	 * @brief このカメラからプロジェクション行列を作成する
-	 * @return 転置されたプロジェクション行列
+	 * @return プロジェクション行列
 	 */
-	DirectX::XMFLOAT4X4 GetProjectionMatrix();
+	DirectX::XMMATRIX GetProjectionMatrix();
 
 	/**
 	 * @brief このカメラから平行投影プロジェクション行列を作成する
-	 * @return 転置されたプロジェクション行列
+	 * @return プロジェクション行列
 	 */
-	DirectX::XMFLOAT4X4 GetOrthographicProjectionMatrix();
+	DirectX::XMMATRIX GetOrthographicProjectionMatrix();
 
 private:
 	/// カメラ設定
@@ -79,7 +80,7 @@ public:
 	 * @brief デフォルトビュー行列を取得する
 	 * @return デフォルトビュー行列
 	 */
-	static DirectX::XMFLOAT4X4 GetDefaultViewMatrix();
+	static DirectX::XMMATRIX GetDefaultViewMatrix();
 
 private:
 	/// メインカメラへのポインタ

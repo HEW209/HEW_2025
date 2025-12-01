@@ -17,9 +17,8 @@ void MeshRenderer::Draw()
 		return;
 
 	// Transformからワールド行列をセット
-	DirectX::XMFLOAT4X4 matrix;
-	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixTranspose(
-		GetTransform()->GetWorldMatrix()));
+	DirectX::XMMATRIX matrix;
+	matrix = GetTransform()->GetWorldMatrix();
 	ConstantBufferManager::Instance().SetWorld(matrix);
 
 	// モデル描画処理

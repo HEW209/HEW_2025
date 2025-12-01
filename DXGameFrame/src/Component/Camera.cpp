@@ -31,59 +31,45 @@ Camera::Config Camera::GetConfig()
 	return m_config;
 }
 
-DirectX::XMFLOAT4X4 Camera::GetViewMatrix()
+DirectX::XMMATRIX Camera::GetViewMatrix()
 {
-	DirectX::XMMATRIX world;	// カメラのワールド行列
-	world = GetTransform()->GetWorldMatrix();
+	DirectX::XMMATRIX view;		// 計算用ビュー行列
 
-	// 変換行列の合成・転置
-	DirectX::XMFLOAT4X4 result;
-	DirectX::XMStoreFloat4x4(
-		&result, DirectX::XMMatrixTranspose(
-			DirectX::XMMatrixInverse(nullptr, world)
-		)
-	);
-
-	return result;
+	// ビュー行列を求める
+	view = GetTransform()->GetWorldMatrix();
+	view = DirectX::XMMatrixInverse(nullptr, view);
+	return view;
 }
 
-DirectX::XMFLOAT4X4 Camera::GetProjectionMatrix()
+DirectX::XMMATRIX Camera::GetProjectionMatrix()
 {
+	DirectX::XMMATRIX projection;	// 計算用プロジェクション行列
+
 	// プロジェクション行列を求める
-	DirectX::XMMATRIX matrix;
-	matrix = DirectX::XMMatrixPerspectiveFovLH(
+	projection = DirectX::XMMatrixPerspectiveFovLH(
 		DirectX::XMConvertToRadians(m_config.fovAngle),
 		m_config.screenSize.x / m_config.screenSize.y, m_config.nearZ, m_config.farZ
 	);
-
-	// 変換行列の転置
-	DirectX::XMFLOAT4X4 result;
-	DirectX::XMStoreFloat4x4(
-		&result, DirectX::XMMatrixTranspose(matrix)
-	);
-
-	return result;
+	return projection;
 }
 
-DirectX::XMFLOAT4X4 Camera::GetOrthographicProjectionMatrix()
+DirectX::XMMATRIX Camera::GetOrthographicProjectionMatrix()
 {
-	// プロジェクション行列を求める
-	DirectX::XMMATRIX matrix;
+	DirectX::XMMATRIX projection;	// 計算用プロジェクション行列
 	int pixelPerUnit = ConfigManager::Instance().GetInt(ConfigKey::PixelPerUnit);
-	float halfWidth = m_config.screenSize.x * 0.5f / (float)pixelPerUnit;
-	float halfHeight = m_config.screenSize.y * 0.5f / (float)pixelPerUnit;
-	matrix = DirectX::XMMatrixOrthographicOffCenterLH(
+
+	// 投影サイズを求める
+	float halfWidth = m_config.screenSize.x / (float)pixelPerUnit;
+	float halfHeight = m_config.screenSize.y / (float)pixelPerUnit;
+	halfWidth *= m_config.cameraScale * 0.5f;
+	halfHeight *= m_config.cameraScale * 0.5f;
+
+	// プロジェクション行列を求める
+	projection = DirectX::XMMatrixOrthographicOffCenterLH(
 		-halfWidth, halfWidth, -halfHeight, halfHeight,
 		0.0f, m_config.farZ
 	);
-
-	// 変換行列の転置
-	DirectX::XMFLOAT4X4 result;
-	DirectX::XMStoreFloat4x4(
-		&result, DirectX::XMMatrixTranspose(matrix)
-	);
-
-	return result;
+	return projection;
 }
 
 Camera* Camera::GetMain()
@@ -91,18 +77,12 @@ Camera* Camera::GetMain()
 	return s_pMainCamera;
 }
 
-DirectX::XMFLOAT4X4 Camera::GetDefaultViewMatrix()
+DirectX::XMMATRIX Camera::GetDefaultViewMatrix()
 {
-	DirectX::XMMATRIX world;	// カメラのワールド行列
-	world = DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f);
+	DirectX::XMMATRIX view;		// 計算用ビュー行列
 
-	// 変換行列の合成・転置
-	DirectX::XMFLOAT4X4 result;
-	DirectX::XMStoreFloat4x4(
-		&result, DirectX::XMMatrixTranspose(
-			DirectX::XMMatrixInverse(nullptr, world)
-		)
-	);
-
-	return result;
+	// ビュー行列を求める
+	view = DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f);
+	view = DirectX::XMMatrixInverse(nullptr, view);
+	return view;
 }

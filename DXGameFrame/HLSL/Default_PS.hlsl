@@ -1,3 +1,5 @@
+#include "DXGameFrameShader.hlsli"
+
 struct PS_IN
 {
     float4 pos : SV_POSITION;
@@ -6,16 +8,6 @@ struct PS_IN
     float4 color : COLOR0;
     float4 wPos : POSITION0;
 };
-
-cbuffer Light : register(b1)
-{
-    float3 lightDir;
-    float pad1;
-    float3 lightColor;
-    float pad2;
-    float3 ambientColor;
-    float pad3;
-}
 
 Texture2D tex : register(t0);
 SamplerState samp : register(s0);
