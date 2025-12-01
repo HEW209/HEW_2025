@@ -12,9 +12,9 @@
 #include <Component/Renderer2D.h>
 #include <Utility/Color.h>
 
-/**
- * @brief 全ての描画処理を管理するシステム
- */
+ /**
+  * @brief 全ての描画処理を管理するシステム
+  */
 class RenderSystem
 {
 public:
@@ -46,6 +46,12 @@ public:
 	 * @param pRenderer2D 登録削除する2D描画コンポーネント
 	 */
 	void Unregister2D(Renderer2D* pRenderer2D);
+
+	/**
+	 * @brief 画面クリア色を設定する
+	 * @param color 画面クリア色
+	 */
+	void SetClearColor(Color color);
 
 private:
 	RenderSystem();

@@ -30,9 +30,8 @@ SpriteRenderer::SpriteRenderer()
 void SpriteRenderer::Draw()
 {
 	// Transformからワールド行列をセット
-	DirectX::XMFLOAT4X4 matrix;
-	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixTranspose(
-		GetTransform()->GetWorldMatrix()));
+	DirectX::XMMATRIX matrix;
+	matrix = GetTransform()->GetWorldMatrix();
 	ConstantBufferManager::Instance().SetWorld(matrix);
 
 	m_material.SetParameter(&m_parameter, sizeof(m_parameter));

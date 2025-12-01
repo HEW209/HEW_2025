@@ -20,6 +20,22 @@ void RenderSystem::DrawAll()
 	float clearColor[4] = { m_clearColor.r, m_clearColor.g, m_clearColor.b, m_clearColor.a };
 	Direct3D::Instance().BeginDraw(clearColor);
 
+	// ライト設定
+	DirectionalLight* pDirLight = DirectionalLight::GetMain();
+	LightConstantBuffer lightCB = {};
+	if (pDirLight != nullptr)
+	{
+		lightCB = pDirLight->GetLightCB();
+	}
+	else
+	{
+		lightCB.lightDir = { 0.0f, -1.0f, 0.0f };
+		lightCB.lightColor = { 1.0f, 1.0f, 1.0f };
+		lightCB.ambientColor = { 0.4f, 0.4f, 0.4f };
+		lightCB.lightIntensity = 1.0f;
+	}
+	ConstantBufferManager::Instance().SetLight(lightCB);
+
 	DrawAll3D();
 	DrawAll2D();
 	DrawDebugUI();
@@ -54,34 +70,28 @@ void RenderSystem::Unregister2D(Renderer2D* pRenderer2D)
 	m_pRenderer2DComponents.erase(it, m_pRenderer2DComponents.end());
 }
 
+void RenderSystem::SetClearColor(Color color)
+{
+	m_clearColor = color;
+}
+
 void RenderSystem::DrawAll3D()
 {
+	// カメラ設定
 	Camera* pMainCamera = Camera::GetMain();
-	if (pMainCamera == nullptr)
-		return;
-
-	// ビュー行列設定
-	DirectX::XMFLOAT4X4 view = pMainCamera->GetViewMatrix();
-	ConstantBufferManager::Instance().SetView(view);
-
-	// プロジェクション行列設定
-	DirectX::XMFLOAT4X4 projection = pMainCamera->GetProjectionMatrix();
-	ConstantBufferManager::Instance().SetProjection(projection);
-
-	// ライト設定
-	DirectionalLight* pDirLight = DirectionalLight::GetMain();
-	LightConstantBuffer lightCB = {};
-	if (pDirLight != nullptr)
+	if (pMainCamera != nullptr)
 	{
-		lightCB = pDirLight->GetLightCB();
+		// ビュー行列設定
+		DirectX::XMMATRIX view = pMainCamera->GetViewMatrix();
+		ConstantBufferManager::Instance().SetView(view);
+
+		// プロジェクション行列設定
+		DirectX::XMMATRIX projection = pMainCamera->GetProjectionMatrix();
+		ConstantBufferManager::Instance().SetProjection(projection);
 	}
-	else
-	{
-		lightCB.lightDir = { 0.0f, -1.0f, 0.0f };
-		lightCB.lightColor = { 1.0f, 1.0f, 1.0f };
-		lightCB.ambientColor = { 0.4f, 0.4f, 0.4f };
-	}
-	ConstantBufferManager::Instance().SetLight(lightCB);
+
+	// フレーム定数バッファを更新
+	ConstantBufferManager::Instance().UpdateFrameConstantBuffer();
 
 	// 3D描画処理
 	for (auto* renderer : m_pRendererComponents)
@@ -110,17 +120,21 @@ void RenderSystem::DrawAll3D()
 
 void RenderSystem::DrawAll2D()
 {
+	// カメラ設定
 	Camera* pMainCamera = Camera::GetMain();
-	if (pMainCamera == nullptr)
-		return;
+	if (pMainCamera != nullptr)
+	{
+		// ビュー行列設定
+		DirectX::XMMATRIX view = pMainCamera->GetViewMatrix();
+		ConstantBufferManager::Instance().SetView(view);
 
-	// ビュー行列設定
-	DirectX::XMFLOAT4X4 view = pMainCamera->GetViewMatrix();
-	ConstantBufferManager::Instance().SetView(view);
+		// 2Dカメラプロジェクション行列設定
+		DirectX::XMMATRIX projection = pMainCamera->GetOrthographicProjectionMatrix();
+		ConstantBufferManager::Instance().SetProjection(projection);
+	}
 
-	// 2Dカメラプロジェクション行列設定
-	DirectX::XMFLOAT4X4 projection = pMainCamera->GetOrthographicProjectionMatrix();
-	ConstantBufferManager::Instance().SetProjection(projection);
+	// フレーム定数バッファを更新
+	ConstantBufferManager::Instance().UpdateFrameConstantBuffer();
 
 	// 2D描画順ソート
 	std::stable_sort(m_pRenderer2DComponents.begin(), m_pRenderer2DComponents.end(),
@@ -140,9 +154,15 @@ void RenderSystem::DrawAll2D()
 		}
 	}
 
-	// UI用カメラのビュー行列を設定
-	view = Camera::GetDefaultViewMatrix();
-	ConstantBufferManager::Instance().SetView(view);
+	if (pMainCamera != nullptr)
+	{
+		// UI用カメラのビュー行列を設定
+		DirectX::XMMATRIX view = Camera::GetDefaultViewMatrix();
+		ConstantBufferManager::Instance().SetView(view);
+	}
+
+	// フレーム定数バッファを更新
+	ConstantBufferManager::Instance().UpdateFrameConstantBuffer();
 
 	// UI描画処理
 	for (auto* renderer : m_pRenderer2DComponents)

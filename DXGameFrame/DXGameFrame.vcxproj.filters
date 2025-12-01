@@ -428,4 +428,9 @@
       <Filter>HLSL</Filter>
     </FxCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="HLSL\DXGameFrameShader.hlsli">
+      <Filter>HLSL</Filter>
+    </None>
+  </ItemGroup>
 </Project>
