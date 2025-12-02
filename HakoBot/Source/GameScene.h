@@ -9,4 +9,5 @@ public:
 	~GameScene() = default;
 
 	void Init() override;
+	void Update();
 };
