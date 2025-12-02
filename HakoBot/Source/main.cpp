@@ -4,6 +4,7 @@
 #pragma comment(lib, "winmm.lib")
 
 #include "Config.h"
+#include "SampleStageSelectScene.h"
 #include <DXGameFrame.h>
 
 // ウィンドウプロシージャ
@@ -99,7 +100,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		hWnd, Direct3D::Instance().GetDevice(), Direct3D::Instance().GetContext());
 
 	// シーンの作成
-	//SceneManager::Init(std::make_unique<"シーンクラス">());
+	SceneManager::Init(std::make_unique<StageSelectScene>());
 
 
 	//-------------------------
