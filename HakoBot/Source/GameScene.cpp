@@ -43,6 +43,7 @@ void GameScene::Init()
 		renderer->SetSize(450.0f, 450.0f);
 		Renderer1 = renderer;
 	}
+	
 }
 
 void GameScene::Update()
