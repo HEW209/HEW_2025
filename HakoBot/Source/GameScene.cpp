@@ -1,7 +1,9 @@
 #include "GameScene.h"
 #include "Easing.h"
+#include "GameFrame/Component.h"
 
 SpriteRenderer* Renderer1 = nullptr;
+Component* compornent;
 
 void GameScene::Init()
 {
