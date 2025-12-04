@@ -7,6 +7,7 @@
 #include "GameState.h"
 #include "Player.h"
 #include "PlayerBlockHandler.h"
+#include "PlayerCamera.h"
 
 void GameScene::Init()
 {
@@ -20,6 +21,7 @@ void GameScene::Init()
 	InputSystem::CreateButtonAction("CameraLeft"_hash);
 	InputSystem::CreateButtonAction("CameraRight"_hash);
 	InputSystem::CreateAxisAction("Move"_hash);
+	InputSystem::CreateAxisAction("CameraMove"_hash);
 
 	InputSystem::BindKey("RotateBlockUp"_hash, KeyCode::UP);
 	InputSystem::BindKey("RotateBlockDown"_hash, KeyCode::DOWN);
@@ -31,6 +33,7 @@ void GameScene::Init()
 	InputSystem::BindKey("CameraLeft"_hash, KeyCode::MOUSE_LEFT);
 	InputSystem::BindKey("CameraRight"_hash, KeyCode::MOUSE_RIGHT);
 	InputSystem::BindVectorKeys("Move"_hash, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
+	InputSystem::BindVectorKeys("CameraMove"_hash, KeyCode::I, KeyCode::K, KeyCode::MOUSE_LEFT, KeyCode::MOUSE_RIGHT);
 
 	InputSystem::BindPadButton("RotateBlockUp"_hash, PadCode::UP);
 	InputSystem::BindPadButton("RotateBlockDown"_hash, PadCode::DOWN);
@@ -42,22 +45,18 @@ void GameScene::Init()
 	InputSystem::BindPadButton("CameraLeft"_hash, PadCode::LEFT_SHOULDER);
 	InputSystem::BindPadButton("CameraRight"_hash, PadCode::RIGHT_SHOULDER);
 	InputSystem::BindPadStick("Move"_hash, StickCode::LEFT);
+	InputSystem::BindPadStick("CameraMove"_hash, StickCode::RIGHT);
+
+	//移動できるオブジェクト（プレイヤー）を作成	
+	//移動できるプレイヤーオブジェクトを作る
+	auto player = CreateGameObject();
+	player->AddComponent<Player>();
 
 	//カメラ
 	{
-		auto rootObj = CreateGameObject();
-		rootObj->AddComponent<SampleCamera>();
-		rootObj->GetTransform()->SetEulerAngle(0.0f, 45.0f, 0.0f);
-
-		auto obj = CreateGameObject();
-		auto camera = obj->AddComponent<Camera>();
-		Camera::Config cameraConfig;
-		cameraConfig.fovAngle = 30.0f;
-		camera->SetConfig(cameraConfig);
-		auto transform = obj->GetTransform();
-		transform->SetPosition(0.0f, 8.0f, -18.0f);
-		transform->SetEulerAngle(20.0f, 0.0f, 0.0f);
-		transform->SetParent(rootObj->GetTransform());
+		auto Obj = CreateGameObject();
+		auto playerCamera = Obj->AddComponent<PlayerCamera>();
+		playerCamera->SetPlayer(player->GetTransform());
 	}
 
 
@@ -65,13 +64,6 @@ void GameScene::Init()
 	{
 		auto obj = CreateGameObject();
 		obj->AddComponent<GameState>();
-	}
-
-	{
-		//移動できるオブジェクト（プレイヤー）を作成	
-		//移動できるプレイヤーオブジェクトを作る
-		auto obj = CreateGameObject();
-		obj->AddComponent<Player>();
 	}
 
 	{//グリッドフィールドの作成
