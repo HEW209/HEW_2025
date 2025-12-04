@@ -141,12 +141,14 @@
   <ItemGroup>
     <ClCompile Include="Source\Easing.cpp" />
     <ClCompile Include="Source\GameScene.cpp" />
+    <ClCompile Include="Source\GuideUIController.cpp" />
     <ClCompile Include="Source\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Config.h" />
     <ClInclude Include="Source\Easing.h" />
     <ClInclude Include="Source\GameScene.h" />
+    <ClInclude Include="Source\GuideUIController.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

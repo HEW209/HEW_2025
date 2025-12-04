@@ -1,9 +1,10 @@
 #include "GameScene.h"
 #include "Easing.h"
 #include "GameFrame/Component.h"
+#include "GuideUIController.h"
 
-SpriteRenderer* Renderer1 = nullptr;
-Component* compornent;
+
+
 
 void GameScene::Init()
 {
@@ -40,19 +41,15 @@ void GameScene::Init()
 		auto obj = CreateGameObject();
 		auto renderer = obj->AddComponent<SpriteRenderer>();
 		renderer->SetUI(true);
-		renderer->LoadTexture("Assets/Textures/sprite09.png");
-		renderer->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
-		renderer->SetSize(450.0f, 450.0f);
-		Renderer1 = renderer;
+		renderer->LoadTexture("Assets/Textures/oku.png");
+		renderer->GetTransform()->SetPosition(5.6f, -1.9f, 0.0f);
+		renderer->SetSize(MOZI_SIZE, MOZI_SIZE);
+		obj->AddComponent<GuideUIController>();
 	}
 	
 }
 
-void GameScene::Update()
-{
+
 	
-	Renderer1->GetTransform()->SetPosition(Easing::InSine(0.0f, 100.0f, 1.0f, 2.0f), 1.5f, 0.0f);
 	
 
-	Renderer1->SetSize(450.0f, 450.0f);
-}
