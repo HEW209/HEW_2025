@@ -46,7 +46,16 @@ void GameScene::Init()
 		renderer->SetSize(MOZI_SIZE, MOZI_SIZE);
 		obj->AddComponent<GuideUIController>();
 	}
-	
+
+	{
+		auto obj = CreateGameObject();
+		auto renderer = obj->AddComponent<SpriteRenderer>();
+		renderer->SetUI(true);
+		renderer->LoadTexture("Assets/Textures/oku.png");
+		renderer->GetTransform()->SetPosition(5.6f, -1.9f, 0.0f);
+		renderer->SetSize(MOZI_SIZE, MOZI_SIZE);
+		obj->AddComponent<GuideUIController>();
+	}
 }
 
 

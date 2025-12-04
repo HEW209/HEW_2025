@@ -1,7 +1,8 @@
 #include "GuideUIController.h"
 #include "Easing.h"
 
-
+//イージング関数台に引数用
+#define EASING_MAX (5.0f)
 
 
 void GuideUIController::Start()
