@@ -5,7 +5,10 @@
 
 #include "Config.h"
 #include <DXGameFrame.h>
+
+// 最初のシーン
 #include "GameScene.h"
+#include "InputSystem.h"
 
 // ウィンドウプロシージャ
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -102,7 +105,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// シーンの作成
 	SceneManager::Init(std::make_unique<GameScene>());
 
-
 	//-------------------------
 	//		その他の準備
 	//-------------------------
@@ -144,6 +146,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 			// ゲームの処理
 			SceneManager::Execute(deltaTime);
+			InputSystem::Update();
 		}
 	}
 
