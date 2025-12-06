@@ -3,6 +3,10 @@
 #include "InputSystem.h"
 
 
+PlayerBlockHandler::PlayerBlockHandler()
+{
+}
+
 void PlayerBlockHandler::Start()
 {
 	
@@ -14,28 +18,16 @@ void PlayerBlockHandler::Update()
 	auto playerTransform = GetTransform();
 
 
-
-	
-
 	if (InputSystem::GetButtonDown("RotateBlockRight"_hash)) {
-		blockTransform->SetQuaternion(Quaternion::Euler(0.0f, 0.0f, -90.0f) * blockTransform->GetQuaternion());
+		blockTransform->SetQuaternion(Quaternion::Euler(0.0f, -90.0f, 0.0f) * blockTransform->GetQuaternion());
 
 	}
 	if (InputSystem::GetButtonDown("RotateBlockLeft"_hash)) {
-		blockTransform->SetQuaternion(Quaternion::Euler(0.0f, 0.0f, 90.0f) * blockTransform->GetQuaternion());
-
-	}
-	if (InputSystem::GetButtonDown("RotateBlockUp"_hash)) {
-		blockTransform->SetQuaternion(Quaternion::Euler(90.0f, 0.0f, 0.0f) * blockTransform->GetQuaternion());
-
-	}
-	if (InputSystem::GetButtonDown("RotateBlockDown"_hash)) {
-		blockTransform->SetQuaternion(Quaternion::Euler(-90.0f, 0.0f, 0.0f) * blockTransform->GetQuaternion());
+		blockTransform->SetQuaternion(Quaternion::Euler(0.0f, 90.0f, 0.0f) * blockTransform->GetQuaternion());
 
 	}
 
-
-	if (Input::GetKeyDown(KeyCode::KEY_1)) {
+	/*if (Input::GetKeyDown(KeyCode::KEY_1)) {
 		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
 
 		BlockSetData data;
@@ -150,7 +142,7 @@ void PlayerBlockHandler::Update()
 		data.blocks[6] = { 0, 1, 1 };
 		data.blocks[7] = { 1, 1, 1 };
 		m_pBlockObject->SetBlockSet(data);
-	}
+	}*/
 
 
 	//プレイヤーからブロックを置く位置を決めるための相対オフセット（プレイヤー前方1.5m）
@@ -164,7 +156,7 @@ void PlayerBlockHandler::Update()
 	placeCursorPos += m_pBlockObject->GetGroundOffset();
 
 	//プレイヤーからのブロックを取るための相対座標
-	Vector3 removeCursorOffset{ 0.0f, 0.5f, -1.5f };
+	Vector3 removeCursorOffset{ 0.0f, 0.5f, -1.2f };
 
 	Vector3 removeCursorPos = playerTransform->GetPosition() + playerTransform->GetQuaternion() * removeCursorOffset;
 

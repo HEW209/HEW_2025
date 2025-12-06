@@ -15,7 +15,7 @@
 class PlayerBlockHandler : public Component
 {
 public:
-
+	PlayerBlockHandler();
 	
 	void Start() override;
 	void Update() override;
@@ -31,5 +31,4 @@ private:
 
 	//持ってるブロックオブジェクト
 	ObjPtr<BlockObject> m_pBlockObject;
-	
 };

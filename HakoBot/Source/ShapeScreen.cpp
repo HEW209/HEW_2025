@@ -3,20 +3,14 @@
 
 void ShapeScreen::OnDestroy()
 {
-	for (auto&& block : m_pClearShapeBlocks) {
-		if (block) {
-			block->Destroy();
-		}
-	}
-
-	for (auto&& block : m_pCurrentShapeBlocks) {
-		if (block) {
-			block->Destroy();
+	for (auto&& block : m_pShapeBlocks) {
+		if (block.pObj) {
+			block.pObj->Destroy();
 		}
 	}
 }
 
-void ShapeScreen::SetClearShape(const ShapeType& shape)
+void ShapeScreen::SetClearShape(const ShapeType& shape, bool isHorogram)
 {
 	if (shape == m_clearShape) {
 		return;
@@ -24,7 +18,7 @@ void ShapeScreen::SetClearShape(const ShapeType& shape)
 
 	m_clearShape = shape;
 
-	UpdateClearShapeBlocks();
+	UpdateClearShapeBlocks(isHorogram);
 
 	if (m_clearShape.GetSize() != m_currentShape.GetSize()) {
 		m_currentShape = ShapeType(m_clearShape.GetSize());
@@ -52,20 +46,20 @@ bool ShapeScreen::IsClear()
 	return m_clearShape == m_currentShape;
 }
 
-void ShapeScreen::UpdateClearShapeBlocks()
+void ShapeScreen::UpdateClearShapeBlocks(bool isHorogram)
 {
 	auto size = m_clearShape.GetSize();
 	Vector3 sizeFloat = static_cast<Vector3>(size);
 	Vector3 sizeHalf = sizeFloat * 0.5f;
 	sizeHalf.z = 0.0f;
 
-	for (auto&& block : m_pClearShapeBlocks) {
-		if (block) {
-			block->Destroy();
+	for (auto&& block : m_pShapeBlocks) {
+		if (block.pObj) {
+			block.pObj->Destroy();
 		}
 	}
-	m_pClearShapeBlocks.clear();
-	m_pClearShapeBlocks.reserve(m_clearShape.GetTotalElements());
+	m_pShapeBlocks.clear();
+	m_pShapeBlocks.reserve(m_clearShape.GetTotalElements());
 
 	for (auto it = m_clearShape.begin(); it != m_clearShape.end(); ++it) {
 		auto coord = m_clearShape.GetCoordinates(it);
@@ -75,21 +69,34 @@ void ShapeScreen::UpdateClearShapeBlocks()
 
 		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
 		auto renderer = obj->AddComponent<MeshRenderer>();
+		renderer->SetTransparent(true);
+
+		Material* mat = renderer->GetMaterial(0);
+		mat->SetPixelShader("Assets/Shader/Hologram_PS.cso");
+		mat->SetDepthStencilState(DepthStencilState::READ_ONLY);
+		mat->SetBlendState(BlendState::ALPHA);
+		mat->SetRasterizerState(RasterizerState::NONE);
 
 		auto transform = obj->GetTransform();
 		transform->SetParent(GetTransform());
-		transform->SetScale(1.0f, 1.0f, 0.1f);
+		transform->SetScale(1.0f, 1.0f, 0.2f);
 		transform->SetPosition(pos,Space::LOCAL);
 
 		Material* material = renderer->GetMaterial(0);
+		Color currentColor;
 		if (*it) {
-			material->SetTexture("Assets/Textures/White.png");
+			currentColor = Color(0.0f, 0.6f, 3.0f, 0.6f);
 		}
 		else {
-			material->SetTexture("Assets/Textures/Gray.png");
+			currentColor = Color(0.0f, 0.2f, 1.0f, 0.6f);
 		}
+		mat->SetParameter(&currentColor, sizeof(currentColor));
 
-		m_pClearShapeBlocks.push_back(obj);
+		ShapeBlock shapeBlock;
+		shapeBlock.pObj = obj;
+		shapeBlock.pRenderer = renderer;
+
+		m_pShapeBlocks.push_back(shapeBlock);
 	}
 }
 
@@ -99,47 +106,35 @@ void ShapeScreen::UpdateCurrentShapeBlocks()
 	Vector3 sizeFloat = static_cast<Vector3>(size);
 	Vector3 sizeHalf = sizeFloat * 0.5f;
 	sizeHalf.z = 0.0f;
-	
-	bool isClear = IsClear();
 
-	for (auto&& block : m_pCurrentShapeBlocks) {
-		if (block) {
-			block->Destroy();
-		}
-	}
-	m_pCurrentShapeBlocks.clear();
-	m_pCurrentShapeBlocks.reserve(m_currentShape.GetTotalElements());
+	for (auto it = m_currentShape.begin(); it != m_currentShape.end(); ++it)
+	{
+		auto coord = m_currentShape.GetCoordinates(it);
+		bool isInside = m_clearShape(coord);
 
-	for (auto it = m_currentShape.begin(); it != m_currentShape.end(); ++it) {
-		if (*it) {
-			auto coord = m_currentShape.GetCoordinates(it);
-			Vector3 pos = static_cast<Vector3>(coord) - sizeHalf + Vector3{ 0.5f, 0.5f, 0.0f };
+		auto renderer = m_pShapeBlocks[coord.x + coord.y * size.x].pRenderer;
+		Material* material = renderer->GetMaterial(0);
+		Color currentColor;
 
-			bool isInside = m_clearShape(coord);
-			
-			auto obj = SceneManager::GetActiveScene()->CreateGameObject();
-			auto renderer = obj->AddComponent<MeshRenderer>();
-
-			Material* material = renderer->GetMaterial(0);
-
-			if (isClear) {
-				material->SetTexture("Assets/Textures/Green.png");
+		if (*it)
+		{
+			if (isInside) {
+				currentColor = Color(0.0f, 2.0f, 0.0f, 0.6f);
 			}
 			else {
-				if (isInside) {
-					material->SetTexture("Assets/Textures/Cyan.png");
-				}
-				else {
-					material->SetTexture("Assets/Textures/Red.png");
-				}
+				currentColor = Color(2.0f, 0.0f, 0.0f, 0.6f);
 			}
-
-			auto transform = obj->GetTransform();
-			transform->SetParent(GetTransform());
-			transform->SetScale(0.8f, 0.8f, 0.2f);
-			transform->SetPosition(pos,Space::LOCAL);
-
-			m_pCurrentShapeBlocks.push_back(obj);
 		}
+		else
+		{
+			if (isInside) {
+				currentColor = Color(0.0f, 0.6f, 3.0f, 0.6f);
+			}
+			else {
+				currentColor = Color(0.0f, 0.2f, 1.0f, 0.6f);
+			}
+		}
+
+		material->SetParameter(&currentColor, sizeof(currentColor));
 	}
 }
