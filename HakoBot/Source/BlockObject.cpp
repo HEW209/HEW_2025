@@ -40,9 +40,9 @@ void BlockObject::SetBlockSet(const BlockSetData& blockSet)
 		min.z = std::min(min.z, (float)blockPos.z);
 
 		// ブロックの最大位置を記録
-		max.x = std::max(min.x, (float)blockPos.x);
-		max.y = std::max(min.y, (float)blockPos.y);
-		max.z = std::max(min.z, (float)blockPos.z);
+		max.x = std::max(max.x, (float)blockPos.x);
+		max.y = std::max(max.y, (float)blockPos.y);
+		max.z = std::max(max.z, (float)blockPos.z);
 
 		auto transform = obj->GetTransform();
 		transform->SetParent(GetTransform());
@@ -50,6 +50,16 @@ void BlockObject::SetBlockSet(const BlockSetData& blockSet)
 		m_size = max - min + Vector3(1.0f, 1.0f, 1.0f);
 		m_pBlocks.push_back(obj);
 	}
+
+	//サイズからオフセット座標を設定
+	for (auto& block : m_pBlocks)
+	{
+		//意図しない結果になる
+		//Vector3 offset = m_size * -0.5f + Vector3(0.5f, 0.5f, 0.5f);
+		//offset.y = 0;
+		//block->GetTransform()->Translate(offset);
+	}
+
 }
 
 void BlockObject::SetSelect(bool value)
