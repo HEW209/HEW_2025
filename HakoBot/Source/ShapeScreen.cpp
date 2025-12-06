@@ -81,16 +81,13 @@ void ShapeScreen::UpdateClearShapeBlocks()
 		transform->SetScale(1.0f, 1.0f, 0.1f);
 		transform->SetPosition(pos,Space::LOCAL);
 
-		Material material = renderer->GetMaterial(0);
-
+		Material* material = renderer->GetMaterial(0);
 		if (*it) {
-			material.SetTexture("Assets/Textures/White.png");
+			material->SetTexture("Assets/Textures/White.png");
 		}
 		else {
-			material.SetTexture("Assets/Textures/Gray.png");
+			material->SetTexture("Assets/Textures/Gray.png");
 		}
-
-		renderer->SetMaterial(material, 0);
 
 		m_pClearShapeBlocks.push_back(obj);
 	}
@@ -123,20 +120,19 @@ void ShapeScreen::UpdateCurrentShapeBlocks()
 			auto obj = SceneManager::GetActiveScene()->CreateGameObject();
 			auto renderer = obj->AddComponent<MeshRenderer>();
 
-			Material material = renderer->GetMaterial(0);
+			Material* material = renderer->GetMaterial(0);
 
 			if (isClear) {
-				material.SetTexture("Assets/Textures/Green.png");
+				material->SetTexture("Assets/Textures/Green.png");
 			}
 			else {
 				if (isInside) {
-					material.SetTexture("Assets/Textures/Cyan.png");
+					material->SetTexture("Assets/Textures/Cyan.png");
 				}
 				else {
-					material.SetTexture("Assets/Textures/Red.png");
+					material->SetTexture("Assets/Textures/Red.png");
 				}
 			}
-			renderer->SetMaterial(material, 0);
 
 			auto transform = obj->GetTransform();
 			transform->SetParent(GetTransform());

@@ -5,6 +5,7 @@
 #include <DirectX/ConstantBufferManager.h>
 #include <Component/Camera.h>
 #include <Component/DirectionalLight.h>
+#include <GameFrame/Time.h>
 #include <DirectX/PipelineStateManager.h>
 #include <../imgui/ImguiManager.h>
 #include <algorithm>
@@ -35,6 +36,9 @@ void RenderSystem::DrawAll()
 		lightCB.lightIntensity = 1.0f;
 	}
 	ConstantBufferManager::Instance().SetLight(lightCB);
+
+	// éûä‘ê›íË
+	ConstantBufferManager::Instance().SetTime(Time::GetSceneTime());
 
 	DrawAll3D();
 	DrawAll2D();

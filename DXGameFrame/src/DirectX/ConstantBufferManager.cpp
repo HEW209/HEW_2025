@@ -63,6 +63,7 @@ void ConstantBufferManager::SetWorld(const DirectX::XMMATRIX& world)
 	// 定数バッファを更新
 	m_pContext->UpdateSubresource(m_pWorldBuffer.Get(), 0, nullptr, &worldCB, 0, 0);
 	m_pContext->VSSetConstantBuffers((UINT)SlotNum::WORLD, 1, m_pWorldBuffer.GetAddressOf());
+	m_pContext->PSSetConstantBuffers((UINT)SlotNum::WORLD, 1, m_pWorldBuffer.GetAddressOf());
 }
 
 void ConstantBufferManager::SetView(const DirectX::XMMATRIX& view)

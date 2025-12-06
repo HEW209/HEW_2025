@@ -167,9 +167,7 @@ bool GridField::PlaceBlock()
 		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
 		auto renderer = obj->AddComponent<MeshRenderer>();
 
-		Material material = renderer->GetMaterial(0);
-		material.SetTexture("Assets/Model/SelectGrid/Texture.png");
-		renderer->SetMaterial(material, 0);
+		renderer->GetMaterial(0)->SetTexture("Assets/Model/SelectGrid/Texture.png");
 		obj->GetTransform()->SetPosition(0.0f, GetSize().y + 2.0f, 0.0f);
 		obj->GetTransform()->SetParent(GetTransform());
 	}

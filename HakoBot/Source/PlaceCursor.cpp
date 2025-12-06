@@ -49,17 +49,13 @@ void PlaceCursor::SetPlaceable(bool value)
 	if (value) {
 		for (auto&& pBlock : m_pBlocks)
 		{
-			material = pBlock.pRenderer->GetMaterial(0);
-			material.SetTexture("Assets/Model/SelectGrid/Texture.png");
-			pBlock.pRenderer->SetMaterial(material,0);
+			pBlock.pRenderer->GetMaterial(0)->SetTexture("Assets/Model/SelectGrid/Texture.png");
 		}
 	}
 	else {
 		for (auto&& pBlock : m_pBlocks)
 		{
-			material = pBlock.pRenderer->GetMaterial(0);
-			material.SetTexture("Assets/Model/SelectGrid/Texture_Out.png");
-			pBlock.pRenderer->SetMaterial(material, 0);
+			pBlock.pRenderer->GetMaterial(0)->SetTexture("Assets/Model/SelectGrid/Texture_Out.png");
 		}
 	}
 }
