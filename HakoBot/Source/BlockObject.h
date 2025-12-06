@@ -55,8 +55,11 @@ public:
 
 	void SetUseCollider(bool value) { m_shouldUseCollider = value; }
 
+	Vector3 GetSize();
+
 private:
 	BlockSetData m_blockSet;
 	std::vector<ObjPtr<GameObject>> m_pBlocks;
+	Vector3 m_size;
 	bool m_shouldUseCollider;
 };

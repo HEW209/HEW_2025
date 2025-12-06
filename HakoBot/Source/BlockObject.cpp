@@ -23,7 +23,9 @@ void BlockObject::SetBlockSet(const BlockSetData& blockSet)
 	}
 	m_pBlocks.clear();
 	m_pBlocks.reserve(m_blockSet.blocks.size());
-	
+
+	Vector3 min(100.0f, 100.0f, 100.0f);
+	Vector3 max(-100.0f, -100.0f, -100.0f);
 	for (auto&& blockPos : blockSet.blocks) {
 		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
 		auto renderer = obj->AddComponent<MeshRenderer>();
@@ -32,9 +34,20 @@ void BlockObject::SetBlockSet(const BlockSetData& blockSet)
 			obj->AddComponent<Collider>();
 		}
 
+		// ブロックの最小位置を記録
+		min.x = std::min(min.x, (float)blockPos.x);
+		min.y = std::min(min.y, (float)blockPos.y);
+		min.z = std::min(min.z, (float)blockPos.z);
+
+		// ブロックの最大位置を記録
+		max.x = std::max(min.x, (float)blockPos.x);
+		max.y = std::max(min.y, (float)blockPos.y);
+		max.z = std::max(min.z, (float)blockPos.z);
+
 		auto transform = obj->GetTransform();
 		transform->SetParent(GetTransform());
 		transform->SetPosition(blockPos.x, blockPos.y, blockPos.z, Space::LOCAL);
+		m_size = max - min + Vector3(1.0f, 1.0f, 1.0f);
 		m_pBlocks.push_back(obj);
 	}
 }
@@ -149,4 +162,9 @@ bool BlockObject::IsInside(const Vector3& worldPosition)
 	}
 
 	return false;
+}
+
+Vector3 BlockObject::GetSize()
+{
+	return m_size;
 }

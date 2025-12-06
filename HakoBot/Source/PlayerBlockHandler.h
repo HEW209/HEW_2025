@@ -17,17 +17,15 @@ class PlayerBlockHandler : public Component
 public:
 	PlayerBlockHandler();
 	
-	void Start() override;
+	void Awake() override;
 	void Update() override;
 
-	void TryPlaceBlock();
 	//ブロックを置くための関数
 	void SetBlockObject(BlockObject* pBlockObject);
 
 private:
-
-	//ブロックが置けるか判定する関数
-	bool CheckPlaceBlock();
+	//回転軸オブジェクト
+	ObjPtr<GameObject> m_rotateRoot;
 
 	//持ってるブロックオブジェクト
 	ObjPtr<BlockObject> m_pBlockObject;

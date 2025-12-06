@@ -7,9 +7,9 @@ PlayerBlockHandler::PlayerBlockHandler()
 {
 }
 
-void PlayerBlockHandler::Start()
+void PlayerBlockHandler::Awake()
 {
-	
+	m_rotateRoot = SceneManager::GetActiveScene()->CreateGameObject();
 }
 
 void PlayerBlockHandler::Update()
@@ -19,11 +19,11 @@ void PlayerBlockHandler::Update()
 
 
 	if (InputSystem::GetButtonDown("RotateBlockRight"_hash)) {
-		blockTransform->SetQuaternion(Quaternion::Euler(0.0f, -90.0f, 0.0f) * blockTransform->GetQuaternion());
+		blockTransform->Rotate(0.0f, -90.0f, 0.0f);
 
 	}
 	if (InputSystem::GetButtonDown("RotateBlockLeft"_hash)) {
-		blockTransform->SetQuaternion(Quaternion::Euler(0.0f, 90.0f, 0.0f) * blockTransform->GetQuaternion());
+		blockTransform->Rotate(0.0f, 90.0f, 0.0f);
 
 	}
 
@@ -146,7 +146,8 @@ void PlayerBlockHandler::Update()
 
 
 	//プレイヤーからブロックを置く位置を決めるための相対オフセット（プレイヤー前方1.5m）
-	Vector3 placeCursorOffset{ 0.0f, 0.0f, -1.5f };
+	Vector3 blockSize = playerTransform->GetQuaternion() * m_pBlockObject->GetSize();
+	Vector3 placeCursorOffset{ 0.0f, 0.0f, -std::abs(blockSize.z) * 0.5f - 1.0f };
 
 	//プレイヤーのクォータニオンを、相対オフセット方向に適用
 	//「プレイヤーの向いている方向に応じて、前方1.5mの位置」を求める。
@@ -273,19 +274,7 @@ void PlayerBlockHandler::Update()
 
 }
 
-void PlayerBlockHandler::TryPlaceBlock()
-{
-
-	CheckPlaceBlock();
-}
-
 void PlayerBlockHandler::SetBlockObject(BlockObject* pBlockObject)
 {
 	m_pBlockObject = pBlockObject;
-}
-
-bool PlayerBlockHandler::CheckPlaceBlock()
-{
-	
-	return false;
 }

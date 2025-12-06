@@ -45,7 +45,7 @@ void GameScene::Init()
 		auto component = obj->AddComponent<BlockObject>();
 		component->SetBlockSet(blockSet);
 		auto transform = obj->GetTransform();
-		transform->SetPosition(Vector3{ 10.0f, 0.0f, 3.0f } + component->GetGroundOffset());
+		transform->SetPosition(Vector3{ 8.0f, 0.0f, 5.0f } + component->GetGroundOffset());
 
 		GameState::GetInstance()->AppendWorldBlock(component);
 	}
@@ -59,7 +59,7 @@ void GameScene::Init()
 		auto component = obj->AddComponent<BlockObject>();
 		component->SetBlockSet(blockSet);
 		auto transform = obj->GetTransform();
-		transform->SetPosition(Vector3{ 10.0f, 0.0f, 1.0f } + component->GetGroundOffset());
+		transform->SetPosition(Vector3{ 8.0f, 0.0f, 2.0f } + component->GetGroundOffset());
 
 		GameState::GetInstance()->AppendWorldBlock(component);
 	}
@@ -68,13 +68,13 @@ void GameScene::Init()
 		blockSet.blocks.resize(3);
 		blockSet.blocks[0] = { 0, 0, 0 };
 		blockSet.blocks[1] = { 1, 0, 0 };
-		blockSet.blocks[2] = { 0, 1, 0 };
+		blockSet.blocks[2] = { 0, 0, 1 };
 
 		auto obj = CreateGameObject();
 		auto component = obj->AddComponent<BlockObject>();
 		component->SetBlockSet(blockSet);
 		auto transform = obj->GetTransform();
-		transform->SetPosition(Vector3{ 10.0f, 0.0f, -1.0f } + component->GetGroundOffset());
+		transform->SetPosition(Vector3{ 8.0f, 0.0f, -2.0f } + component->GetGroundOffset());
 
 		GameState::GetInstance()->AppendWorldBlock(component);
 	}
@@ -90,7 +90,7 @@ void GameScene::Init()
 		auto component = obj->AddComponent<BlockObject>();
 		component->SetBlockSet(blockSet);
 		auto transform = obj->GetTransform();
-		transform->SetPosition(Vector3{ 10.0f, 0.0f, -3.0f } + component->GetGroundOffset());
+		transform->SetPosition(Vector3{ 8.0f, 0.0f, -5.0f } + component->GetGroundOffset());
 
 		GameState::GetInstance()->AppendWorldBlock(component);
 	}
