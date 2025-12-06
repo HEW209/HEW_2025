@@ -6,11 +6,12 @@ constexpr float X_ANGLE_MAX = 80.0f;
 constexpr float X_ANGLE_MIN = -0.0f;
 
 PlayerCamera::PlayerCamera() :
-	m_cameraDistance(19.0f),
+	m_cameraDistance(10.0f),
 	m_rotateSpeed(2.0f),
 	m_pPlayerTranform(nullptr),
 	m_currentAngleY(0.0f),
-	m_currentAngleX(20.0f)
+	m_currentAngleX(20.0f),
+	m_posOffset(0.0f, 1.0f, 0.0f)
 {
 }
 
@@ -27,7 +28,7 @@ void PlayerCamera::Start()
 	GetTransform()->SetEulerAngle(m_currentAngleX, m_currentAngleY, 0.0f);
 }
 
-void PlayerCamera::Update()
+void PlayerCamera::LateUpdate()
 {
 	Vector2 input = InputSystem::GetAxis("CameraMove"_hash);
 
@@ -50,5 +51,13 @@ void PlayerCamera::Update()
 	
 	// プレイヤーに付随させる
 	if (m_pPlayerTranform)
-		GetTransform()->SetPosition(m_pPlayerTranform->GetPosition());
+		GetTransform()->SetPosition(m_pPlayerTranform->GetPosition() + m_posOffset);
+}
+
+void PlayerCamera::SetCameraDistance(float distance)
+{
+	const float distanceToOffsetY = 0.05f;
+
+	m_cameraDistance = distance;
+	m_posOffset.y = distance * distanceToOffsetY;
 }
