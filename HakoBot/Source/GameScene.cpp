@@ -49,8 +49,9 @@ void GameScene::Init()
 		renderer->SetSize(MOZI_SIZE, MOZI_SIZE);
 		obj->AddComponent<GuideUIController>();
 	}
+
+	//Š®¬
 	{
-		//Š®¬
 		auto obj = CreateGameObject();
 		auto renderer = obj->AddComponent<SpriteRenderer>();
 		renderer->SetUI(true);
@@ -59,6 +60,37 @@ void GameScene::Init()
 		renderer->SetSize(MOZI_SIZE + 50.0f, MOZI_SIZE);
 		obj->AddComponent<GuideUIController2>();
 	}
+
+	//ŽžŒv
+	{
+		auto obj = CreateGameObject();
+		auto renderer = obj->AddComponent<SpriteRenderer>();
+		renderer->SetUI(true);
+		renderer->LoadTexture("Assets/Textures/tokei.png");
+		renderer->GetTransform()->SetPosition(2.9f, 3.3f, 0.0f);
+		renderer->SetSize(MOZI_SIZE / 1.7f, MOZI_SIZE / 1.7f);
+	}
+
+	//“_1
+	{
+		auto obj = CreateGameObject();
+		auto renderer = obj->AddComponent<SpriteRenderer>();
+		renderer->SetUI(true);
+		renderer->LoadTexture("Assets/Textures/ten.png");
+		renderer->GetTransform()->SetPosition(4.3f, 3.25f, 0.0f);
+		renderer->SetSize(MOZI_SIZE * 0.6f, MOZI_SIZE * 0.6f);
+	}
+
+	//“_2
+	{
+		auto obj = CreateGameObject();
+		auto renderer = obj->AddComponent<SpriteRenderer>();
+		renderer->SetUI(true);
+		renderer->LoadTexture("Assets/Textures/ten.png");
+		renderer->GetTransform()->SetPosition(5.3f, 3.25f, 0.0f);
+		renderer->SetSize(MOZI_SIZE * 0.6f, MOZI_SIZE * 0.6f);
+	}
+
 }
 
 
