@@ -39,19 +39,15 @@ UINT MeshRenderer::GetMaterialNum()
 	return (UINT)m_materials.size();
 }
 
-Material MeshRenderer::GetMaterial(UINT slot)
+Material* MeshRenderer::GetMaterial(UINT slot)
 {
 	if (slot < 0 || slot >= m_materials.size())
-		return Material();
+		return nullptr;
 
-	return m_materials[slot];
+	return &m_materials[slot];
 }
 
-void MeshRenderer::SetMaterial(Material pMaterial, UINT slot)
+std::vector<Material>* MeshRenderer::GetMaterials()
 {
-	if (slot < 0 || slot >= m_materials.size())
-		return;
-
-	// マテリアルをコピー
-	m_materials[slot] = pMaterial;
+	return &m_materials;
 }
