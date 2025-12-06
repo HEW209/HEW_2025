@@ -1,6 +1,7 @@
 // SceneManager.cpp
 #include <GameFrame/SceneManager.h>
 #include <Utility/Input.h>
+#include <GameFrame/Time.h>
 #include <../imgui/ImguiManager.h>
 
 std::unique_ptr<Scene> SceneManager::s_activeScene = nullptr;
@@ -13,6 +14,7 @@ void SceneManager::Init(std::unique_ptr<Scene> startScene)
 	s_activeScene->Init();
 
 	Input::Init();
+	Time::Init();
 }
 
 void SceneManager::Uninit()
@@ -22,10 +24,13 @@ void SceneManager::Uninit()
 	s_nextScene = nullptr;
 }
 
-void SceneManager::Execute()
+void SceneManager::Execute(float delta)
 {
 	// 入力更新
 	Input::Update();
+
+	// 時間更新
+	Time::Update(delta);
 
 	// ImGuiフレーム開始処理
 	ImGuiManager::Instance().BeginFrame();
@@ -64,4 +69,7 @@ void SceneManager::ApplyChangeScene()
 	s_activeScene = std::move(s_nextScene);
 	s_nextScene = nullptr;
 	s_activeScene->Init();
+
+	// シーン内経過時間をリセット
+	Time::ResetSceneTime();
 }

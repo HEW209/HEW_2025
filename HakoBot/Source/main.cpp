@@ -135,14 +135,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		{
 			// FPSŒÅ’è
 			nCrrentTime = timeGetTime();
-			if (nCrrentTime - nExecLastTime < 1000.0f / FPS)
+			float deltaTime = (nCrrentTime - nExecLastTime) * 0.001f;
+			if (deltaTime < 1.0f / FPS)
 			{
 				continue;
 			}
 			nExecLastTime = nCrrentTime;
 
 			// ƒQ[ƒ€‚Ìˆ—
-			SceneManager::Execute();
+			SceneManager::Execute(deltaTime);
 		}
 	}
 

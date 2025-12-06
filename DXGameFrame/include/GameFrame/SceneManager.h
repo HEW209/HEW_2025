@@ -28,8 +28,9 @@ public:
 
 	/**
 	 * @brief アクティブなシーンの時間を進める
+	 * @param delta 前のフレームからの経過時間
 	 */
-	static void Execute();
+	static void Execute(float delta);
 
 	/**
 	 * @brief シーンを変更する
