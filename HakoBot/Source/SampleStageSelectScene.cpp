@@ -10,6 +10,9 @@ void StageSelectScene::Init()
 		auto obj = CreateGameObject();
 		auto rendere = obj->AddComponent<SpriteRenderer>();
 		rendere->SetUI(true);
-
+		rendere->SetOffsetPos(0, 0);
+		auto key = obj->AddComponent<StegeSelectKeyEnter>();
+		
 	}
 }
+
