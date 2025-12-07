@@ -1,6 +1,10 @@
 #pragma once
 //Easing.h
 
+//イージング関数台に引数用
+#define EASING_MAX (5.0f)	//イージング関数第二引数用
+#define EASING (0.1f)		//毎フレームプラスする値
+
 // イージング関数
 struct Easing
 {

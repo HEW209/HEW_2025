@@ -76,7 +76,7 @@ void GameScene::Init()
 
 	{
 		auto obj = CreateGameObject();
-		auto renderer = obj->AddComponent<SpriteRenderer>();
+		//auto renderer = obj->AddComponent<SpriteRenderer>();
 		obj->AddComponent<GuideUITimeController>();
 	}
 

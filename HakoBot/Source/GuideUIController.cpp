@@ -1,8 +1,7 @@
 #include "GuideUIController.h"
 #include "Easing.h"
 
-//イージング関数台に引数用
-#define EASING_MAX (5.0f)
+
 
 
 void GuideUIController::Start()
@@ -47,16 +46,16 @@ void GuideUIController::Update()
 	
 	if (Input::GetKeyHold(KeyCode::D))
 	{
-		m_value += 0.1f;
+		m_value += EASING;
 
-		if (m_value > 5.0f)
+		if (m_value > EASING_MAX)
 		{
-			m_value = 5.0f;
+			m_value = EASING_MAX;
 		}
 	}
 	else
 	{
-		m_value -= 0.1f;
+		m_value -= EASING;
 		if (m_value < 0.0f)
 		{
 			m_value = 0.0f;
