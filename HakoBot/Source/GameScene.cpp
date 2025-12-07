@@ -45,34 +45,51 @@ void GameScene::Init()
 		auto obj = CreateGameObject();
 		auto renderer = obj->AddComponent<SpriteRenderer>();
 		renderer->SetUI(true);
-		renderer->LoadTexture("Assets/Textures/oku.png");
-		renderer->GetTransform()->SetPosition(5.6f, -1.9f, 0.0f);
-		renderer->SetSize(MOZI_SIZE, MOZI_SIZE);
+		renderer->LoadTexture("Assets/Textures/okuB.png");
+		renderer->GetTransform()->SetPosition(5.6f, -1.6f, 0.0f);
+		renderer->SetSize(MOZI_SIZE + 70.0f, MOZI_SIZE + 20.0f);
 		obj->AddComponent<GuideUIController>();
 	}
 
 	//Š®¬
 	{
+		K = true;
 		auto obj = CreateGameObject();
 		auto renderer = obj->AddComponent<SpriteRenderer>();
 		renderer->SetUI(true);
-		renderer->LoadTexture("Assets/Textures/kansei!.png");
-		renderer->GetTransform()->SetPosition(7.6f, -2.9f, 0.0f);
-		renderer->SetSize(MOZI_SIZE + 150.0f, MOZI_SIZE + 20.0f);
-		obj->AddComponent<GuideUIController2>();
+		if (!K)
+		{
+			renderer->LoadTexture("Assets/Textures/kansei!.png");
+			renderer->GetTransform()->SetPosition(7.6f, -2.9f, 0.0f);
+			renderer->SetSize(MOZI_SIZE + 150.0f, MOZI_SIZE + 20.0f);
+			obj->AddComponent<GuideUIController2>();
+		}
+		else
+		{
+			renderer->LoadTexture("Assets/Textures/kanbansei.png");
+			renderer->GetTransform()->SetPosition(4.3f, -4.5f, 0.0f);
+			renderer->SetSize(MOZI_SIZE + 150.0f, MOZI_SIZE + 100.0f);
+			obj->AddComponent<GuideUIController2>();
+		}
+		
 	}
 
-
-	//ŽžŒv
 	{
 		auto obj = CreateGameObject();
 		auto renderer = obj->AddComponent<SpriteRenderer>();
-		renderer->SetUI(true);
-		renderer->LoadTexture("Assets/Textures/sprite.png");
-		renderer->GetTransform()->SetPosition(6.6f, 2.9f, 0.0f);
-		renderer->SetSize(MOZI_SIZE, MOZI_SIZE);
 		obj->AddComponent<GuideUITimeController>();
 	}
+
+	////ŽžŒv
+	//{
+	//	auto obj = CreateGameObject();
+	//	auto renderer = obj->AddComponent<SpriteRenderer>();
+	//	renderer->SetUI(true);
+	//	renderer->LoadTexture("Assets/Textures/sprire.png");
+	//	renderer->GetTransform()->SetPosition(4.6f, 2.5f, 0.0f);
+	//	renderer->SetSize(MOZI_SIZE + 200.0f, MOZI_SIZE + 200.0f);
+	//	obj->AddComponent<GuideUITimeController>();
+	//}
 
 	////ŽžŒv
 	//{
@@ -107,6 +124,9 @@ void GameScene::Init()
 }
 
 
-	
+bool GameScene::GetK()
+{
+	return K;
+}
 	
 

@@ -20,4 +20,5 @@ private:
 	SpriteRenderer* m_renderer;
 	float m_value;
 	Vector3 m_defaultPosition;
+	bool motu;
 };
