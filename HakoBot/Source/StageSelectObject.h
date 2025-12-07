@@ -1,24 +1,22 @@
-/*****************************************************************//**
- * @file   StageSelectObject.h
- * @brief  ボタンが押されたらboolで返事する
- *
- * @author 石原颯也
- * @date   2025/12/02	a
- *********************************************************************/
 #pragma once
+#include <DXGameFrame.h>
+#include"StageSelectKeyEnter.h"
 
-#include <GameFrame/Component.h>
-#include <DirectX/DirectXInclude.h>
-#include <Utility/Vector2.h>
-
- /**
-  * @brief ボタンについてのあれこれ
-  */
-
-class  : public Component
+class StageSelectObject : public Component
 {
 public:
+	StageSelectObject() = default;
+	~StageSelectObject() = default;
 
+	void Start() override;
+	void Update()override;
+
+	void LoadGame(int StageID);
+	
 private:
+
+
+	ObjPtr<StegeSelectKeyEnter> StageKeyEnter;
+	int m_StageID;
 
 };
