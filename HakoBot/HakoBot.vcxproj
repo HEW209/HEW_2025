@@ -139,20 +139,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="GuideUITimeController.cpp" />
     <ClCompile Include="Source\Easing.cpp" />
     <ClCompile Include="Source\GameScene.cpp" />
     <ClCompile Include="Source\GuideUIController.cpp" />
     <ClCompile Include="Source\GuideUIController2.cpp" />
+    <ClCompile Include="Source\GuideUITimeController.cpp" />
     <ClCompile Include="Source\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GuideUITimeController.h" />
     <ClInclude Include="Source\Config.h" />
     <ClInclude Include="Source\Easing.h" />
     <ClInclude Include="Source\GameScene.h" />
     <ClInclude Include="Source\GuideUIController.h" />
     <ClInclude Include="Source\GuideUIController2.h" />
+    <ClInclude Include="Source\GuideUITimeController.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

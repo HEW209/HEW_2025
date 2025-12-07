@@ -3,6 +3,7 @@
 #include "GameFrame/Component.h"
 #include "GuideUIController.h"
 #include "GuideUIController2.h"
+#include "GuideUITimeController.h"
 
 
 
@@ -57,39 +58,51 @@ void GameScene::Init()
 		renderer->SetUI(true);
 		renderer->LoadTexture("Assets/Textures/kansei!.png");
 		renderer->GetTransform()->SetPosition(7.6f, -2.9f, 0.0f);
-		renderer->SetSize(MOZI_SIZE + 50.0f, MOZI_SIZE);
+		renderer->SetSize(MOZI_SIZE + 150.0f, MOZI_SIZE + 20.0f);
 		obj->AddComponent<GuideUIController2>();
 	}
+
 
 	//時計
 	{
 		auto obj = CreateGameObject();
 		auto renderer = obj->AddComponent<SpriteRenderer>();
 		renderer->SetUI(true);
-		renderer->LoadTexture("Assets/Textures/tokei.png");
-		renderer->GetTransform()->SetPosition(2.9f, 3.3f, 0.0f);
-		renderer->SetSize(MOZI_SIZE / 1.7f, MOZI_SIZE / 1.7f);
+		renderer->LoadTexture("Assets/Textures/sprite.png");
+		renderer->GetTransform()->SetPosition(6.6f, 2.9f, 0.0f);
+		renderer->SetSize(MOZI_SIZE, MOZI_SIZE);
+		obj->AddComponent<GuideUITimeController>();
 	}
 
-	//点1
-	{
-		auto obj = CreateGameObject();
-		auto renderer = obj->AddComponent<SpriteRenderer>();
-		renderer->SetUI(true);
-		renderer->LoadTexture("Assets/Textures/ten.png");
-		renderer->GetTransform()->SetPosition(4.3f, 3.25f, 0.0f);
-		renderer->SetSize(MOZI_SIZE * 0.6f, MOZI_SIZE * 0.6f);
-	}
+	////時計
+	//{
+	//	auto obj = CreateGameObject();
+	//	auto renderer = obj->AddComponent<SpriteRenderer>();
+	//	renderer->SetUI(true);
+	//	renderer->LoadTexture("Assets/Textures/tokei.png");
+	//	renderer->GetTransform()->SetPosition(2.9f, 3.3f, 0.0f);
+	//	renderer->SetSize(MOZI_SIZE / 1.7f, MOZI_SIZE / 1.7f);
+	//}
 
-	//点2
-	{
-		auto obj = CreateGameObject();
-		auto renderer = obj->AddComponent<SpriteRenderer>();
-		renderer->SetUI(true);
-		renderer->LoadTexture("Assets/Textures/ten.png");
-		renderer->GetTransform()->SetPosition(5.3f, 3.25f, 0.0f);
-		renderer->SetSize(MOZI_SIZE * 0.6f, MOZI_SIZE * 0.6f);
-	}
+	////点1
+	//{
+	//	auto obj = CreateGameObject();
+	//	auto renderer = obj->AddComponent<SpriteRenderer>();
+	//	renderer->SetUI(true);
+	//	renderer->LoadTexture("Assets/Textures/ten.png");
+	//	renderer->GetTransform()->SetPosition(4.3f, 3.25f, 0.0f);
+	//	renderer->SetSize(MOZI_SIZE * 0.6f, MOZI_SIZE * 0.6f);
+	//}
+
+	////点2
+	//{
+	//	auto obj = CreateGameObject();
+	//	auto renderer = obj->AddComponent<SpriteRenderer>();
+	//	renderer->SetUI(true);
+	//	renderer->LoadTexture("Assets/Textures/ten.png");
+	//	renderer->GetTransform()->SetPosition(5.3f, 3.25f, 0.0f);
+	//	renderer->SetSize(MOZI_SIZE * 0.6f, MOZI_SIZE * 0.6f);
+	//}
 
 }
 
