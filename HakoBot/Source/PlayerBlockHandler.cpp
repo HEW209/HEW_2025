@@ -108,7 +108,7 @@ void PlayerBlockHandler::Update()
 				if (blockData.has_value()) {
 
 					SetBlockSet(blockData->blockSet);
-					blockTransform->SetQuaternion(blockData->rotation);
+					holderTransform->SetQuaternion(blockData->rotation);
 
 				}
 
@@ -121,7 +121,7 @@ void PlayerBlockHandler::Update()
 					
 					if (pBlock->IsInside(removeCursorPos)) {
 						SetBlockSet(pBlock->GetBlockSet());
-						blockTransform->SetQuaternion(pBlock->GetTransform()->GetQuaternion());
+						holderTransform->SetQuaternion(pBlock->GetTransform()->GetQuaternion());
 
 						GameState::GetInstance()->RemoveWorldBlock(pBlock.Get());
 
@@ -145,7 +145,7 @@ void PlayerBlockHandler::Update()
 				//ブロックを初期化してなくす
 				if (pGridField->PlaceBlock()) {
 
-					m_pBlockObject->SetBlockSet(BlockSetData{});
+					SetBlockSet(BlockSetData{});
 
 				}
 			}
@@ -161,7 +161,7 @@ void PlayerBlockHandler::Update()
 				component->SetBlockSet(m_pBlockObject->GetBlockSet());
 				GameState::GetInstance()->AppendWorldBlock(component);
 				//使った頭上のブロックは初期化
-				m_pBlockObject->SetBlockSet(BlockSetData{});
+				SetBlockSet(BlockSetData{});
 			}
 
 		}
@@ -172,7 +172,7 @@ void PlayerBlockHandler::Update()
 void PlayerBlockHandler::SetBlockSet(const BlockSetData& blockSet)
 {
 	m_pBlockObject->SetBlockSet(blockSet);
-	m_pBlockObject->GetTransform()->SetPosition(m_pBlockObject->GetCenterOffset(), Space::LOCAL);
+	m_pBlockObject->GetTransform()->SetPosition(m_pBlockObject->GetCenterGroundOffset(), Space::LOCAL);
 }
 
 

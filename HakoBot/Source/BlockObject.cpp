@@ -24,8 +24,8 @@ void BlockObject::SetBlockSet(const BlockSetData& blockSet)
 	m_pBlocks.clear();
 	m_pBlocks.reserve(m_blockSet.blocks.size());
 
-	Vector3 min(100.0f, 100.0f, 100.0f);
-	Vector3 max(-100.0f, -100.0f, -100.0f);
+	Vector3 min{ std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max() };
+	Vector3 max{ std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest() };
 	for (auto&& blockPos : blockSet.blocks) {
 		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
 		auto renderer = obj->AddComponent<MeshRenderer>();
@@ -47,9 +47,11 @@ void BlockObject::SetBlockSet(const BlockSetData& blockSet)
 		auto transform = obj->GetTransform();
 		transform->SetParent(GetTransform());
 		transform->SetPosition(blockPos.x, blockPos.y, blockPos.z, Space::LOCAL);
-		m_size = max - min + Vector3(1.0f, 1.0f, 1.0f);
+	
 		m_pBlocks.push_back(obj);
 	}
+	m_size = max - min + Vector3(1.0f, 1.0f, 1.0f);
+	m_center = (min + max) * 0.5f;
 }
 
 void BlockObject::SetSelect(bool value)
@@ -162,17 +164,4 @@ bool BlockObject::IsInside(const Vector3& worldPosition)
 	}
 
 	return false;
-}
-
-Vector3 BlockObject::GetSize()
-{
-	return m_size;
-}
-
-Vector3 BlockObject::GetCenterOffset()
-{
-	Vector3 offset = m_size * -0.5f + Vector3(0.5f, 0.5f, 0.5f);
-	offset.y = GetGroundYOffset();
-
-	return offset;
 }
