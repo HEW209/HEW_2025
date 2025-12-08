@@ -8,7 +8,7 @@ void GuideUITimeController::Start()
 	auto renderer = GetGameObject()->AddComponent<SpriteRenderer>();
 	renderer->SetUI(true);
 	renderer->LoadTexture("Assets/Textures/result2.png");
-	renderer->GetTransform()->SetPosition(0.0f, 6.0f, 0.0f);
+	renderer->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
 	GetTransform()->SetScale(0.1f, 0.1f, 0.0f);
 
 	m_defaultPosition = GetTransform()->GetPosition();
@@ -42,13 +42,13 @@ void GuideUITimeController::Update()
 	//スケール変更
 	Vector3 offset = Vector3::zero;
 	offset.x = Easing::InSine(m_value,EASING_MAX,0.2f,0.0f);
-	offset.y = Easing::InSine(m_value, EASING_MAX, 0.2f, 0.0f);
+	offset.y = Easing::InSine(m_value,EASING_MAX, 0.2f, 0.0f);
 	GetTransform()->SetScale(m_defaultScale + offset);//0.3,0.3
 
-	//ポジション変更
-	Vector3 offset2 = Vector3::zero;
-	offset2.y = Easing::InSine(m_value, EASING_MAX, -6.0f, 0.0f);
-	GetTransform()->SetPosition(m_defaultPosition + offset2);
+	////ポジション変更
+	//Vector3 offset2 = Vector3::zero;
+	//offset2.y = Easing::InSine(m_value, EASING_MAX, -6.0f, 0.0f);
+	//GetTransform()->SetPosition(m_defaultPosition + offset2);
 
 }
 
