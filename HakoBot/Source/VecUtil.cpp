@@ -13,7 +13,7 @@ void GetBasisFromQuaternion(const Quaternion& q, Vec3& right, Vec3& up, Vec3& fo
     forward = { xz + wy, yz - wx, 1.0f - (xx + yy) };
 }
 
-Quaternion BasisToQuaternion(const Vec3& r, const Vec3& u, const Vec3& f) {
+[[nodiscard]] Quaternion BasisToQuaternion(const Vec3& r, const Vec3& u, const Vec3& f) {
     Quaternion q;
     float trace = r.x + u.y + f.z;
 
@@ -50,7 +50,7 @@ Quaternion BasisToQuaternion(const Vec3& r, const Vec3& u, const Vec3& f) {
     return q;
 }
 
-Vec3 SnapToCardinalAxis(const Vec3& v) {
+[[nodiscard]] Vec3 SnapToCardinalAxis(const Vec3& v) {
     float absX = std::abs(v.x);
     float absY = std::abs(v.y);
     float absZ = std::abs(v.z);
@@ -67,7 +67,7 @@ Vec3 SnapToCardinalAxis(const Vec3& v) {
     }
 }
 
-Quaternion SnapRotationToNearest90(const Quaternion& rotation) {
+[[nodiscard]] Quaternion SnapRotationToNearest90(const Quaternion& rotation) {
     Quaternion normalizedRotation = rotation.Normalized();
 
     Vec3 right, up, forward;
@@ -100,4 +100,19 @@ Quaternion SnapRotationToNearest90(const Quaternion& rotation) {
 
     // 直交基底からクォータニオンを作成
     return BasisToQuaternion(finalRight, finalUp, snappedForward);
+}
+
+[[nodiscard]] Vec2 GetFlattenedDirection(const Quaternion& rotation)
+{
+    static const Vec3 localForward = { 0.0f, 0.0f, 1.0f };
+
+    Vec3 worldForward = rotation * localForward;
+
+    Vec2 flatDir = { worldForward.x, worldForward.z };
+
+    if (flatDir.LengthSq() < flatDir.EpsilonScalar) {
+        return { 0.0f, 1.0f };
+    }
+
+    return flatDir.Normalized();
 }

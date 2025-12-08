@@ -1,6 +1,11 @@
 #include "PlayerBlockHandler.h"
+
 #include "GameState.h"
 #include "InputSystem.h"
+#include "VecUtil.h"
+
+
+Vec2 CalcSpacedRectPos(const Vec2& rectSize, float distance, const Vec2& direction);
 
 
 PlayerBlockHandler::PlayerBlockHandler()
@@ -9,13 +14,14 @@ PlayerBlockHandler::PlayerBlockHandler()
 
 void PlayerBlockHandler::Awake()
 {
+	m_pBlockHolder = SceneManager::GetActiveScene()->CreateGameObject();
+
 	{
 		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
+		obj->GetComponent<Transform>()->SetParent(m_pBlockHolder->GetTransform());
 		m_pBlockObject = obj->AddComponent<BlockObject>();
 		m_pBlockObject->SetUseCollider(false);
 	}
-
-	m_pBlockHolder = SceneManager::GetActiveScene()->CreateGameObject();
 }
 
 void PlayerBlockHandler::Update()
@@ -42,28 +48,20 @@ void PlayerBlockHandler::Update()
 	}
 
 
-	//プレイヤーからブロックを置く位置を決めるための相対オフセット（プレイヤー前方1.5m）
-	//Vector3 blockSize = playerTransform->GetQuaternion() * m_pBlockObject->GetSize();
-	//Vector3 placeCursorOffset{ 0.0f, 0.0f, -std::abs(blockSize.z) * 0.5f - 1.0f };
-	Vector3 placeCursorOffset{ 0.0f, 0.0f, -1.5f };
+	Vec2 dir = GetFlattenedDirection(playerTransform->GetQuaternion());
+	Vector3 blockSize = m_pBlockObject->GetSize();
+	Vec2 placeCursorOffsetXZ = -CalcSpacedRectPos(Vec2{ blockSize.x, blockSize.z }, 1.0f, dir);
 
-	placeCursorOffset -= blockOffset;
+	Vector3 placeCursorOffset{ placeCursorOffsetXZ.x, 0.0f, placeCursorOffsetXZ.y };
+	placeCursorOffset -= blockOffset + Vector3{ 0.0f, 0.5f, 0.0f };
 
-	placeCursorOffset += blockTransform->GetPosition();
-
-	playerTransform->GetQuaternion() * Vec3 { 0.0f, 0.0f, 1.0f };
-
-	placeCursorOffset += m_pBlockObject->GetSize();
-
-	//プレイヤーのクォータニオンを、相対オフセット方向に適用
-	//「プレイヤーの向いている方向に応じて、前方1.5mの位置」を求める。
-	Vector3 placeCursorPos = playerTransform->GetPosition() + playerTransform->GetQuaternion() * placeCursorOffset; 
+	Vector3 placeCursorPos = blockTransform->GetPosition() + placeCursorOffset;
 
 	//ブロックの底面分だけ位置を補正（地面に接地させるためのオフセット）
 	placeCursorPos += m_pBlockObject->GetGroundOffset();
 
 	//プレイヤーからのブロックを取るための相対座標
-	Vector3 removeCursorOffset{ 0.0f, 0.5f, -1.2f };
+	Vector3 removeCursorOffset{ 0.0f, 0.5f, -1.35f };
 
 	Vector3 removeCursorPos = playerTransform->GetPosition() + playerTransform->GetQuaternion() * removeCursorOffset;
 
@@ -109,7 +107,7 @@ void PlayerBlockHandler::Update()
 				auto blockData = pGridField->RemoveBlock();
 				if (blockData.has_value()) {
 
-					m_pBlockObject->SetBlockSet(blockData->blockSet);
+					SetBlockSet(blockData->blockSet);
 					blockTransform->SetQuaternion(blockData->rotation);
 
 				}
@@ -122,7 +120,7 @@ void PlayerBlockHandler::Update()
 				for (auto&& pBlock : pWorldBlocks) {
 					
 					if (pBlock->IsInside(removeCursorPos)) {
-						m_pBlockObject->SetBlockSet(pBlock->GetBlockSet());
+						SetBlockSet(pBlock->GetBlockSet());
 						blockTransform->SetQuaternion(pBlock->GetTransform()->GetQuaternion());
 
 						GameState::GetInstance()->RemoveWorldBlock(pBlock.Get());
@@ -168,4 +166,27 @@ void PlayerBlockHandler::Update()
 
 		}
 	}
+}
+
+
+void PlayerBlockHandler::SetBlockSet(const BlockSetData& blockSet)
+{
+	m_pBlockObject->SetBlockSet(blockSet);
+	m_pBlockObject->GetTransform()->SetPosition(m_pBlockObject->GetCenterOffset(), Space::LOCAL);
+}
+
+
+Vec2 CalcSpacedRectPos(const Vec2& rectSize, float distance, const Vec2& direction)
+{
+	float halfW = rectSize.x * 0.5f;
+	float halfH = rectSize.y * 0.5f;
+
+	float distX = (std::abs(direction.x) > direction.EpsilonScalar) ? (halfW / std::abs(direction.x)) : std::numeric_limits<float>::max();
+	float distY = (std::abs(direction.y) > direction.EpsilonScalar) ? (halfH / std::abs(direction.y)) : std::numeric_limits<float>::max();
+
+	float distToRectEdge = std::min(distX, distY);
+
+	float totalDist = distance + distToRectEdge;
+
+	return direction * totalDist;
 }

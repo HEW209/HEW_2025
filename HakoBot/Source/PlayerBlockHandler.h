@@ -21,6 +21,9 @@ public:
 	void Update() override;
 
 private:
+	void SetBlockSet(const BlockSetData& blockSet);
+
+
 	//持ってるブロックオブジェクト
 	ObjPtr<BlockObject> m_pBlockObject;
 
