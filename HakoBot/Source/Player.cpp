@@ -38,13 +38,4 @@ void Player::Awake()
 
 	// 支柱を登録
 	playerStretch->SetPillarObject(playerPillar);
-
-	//ブロックオブジェクトを生成
-	auto blockObj = SceneManager::GetActiveScene()->CreateGameObject();
-
-	//オフセットで位置を変える
-	blockObj->GetTransform()->SetPosition(0.0f, 2.0f, 0.0f);
-	auto blockComponent = blockObj->AddComponent<BlockObject>();
-	blockComponent->SetUseCollider(false);
-	blockHandler->SetBlockObject(blockComponent);
 }
