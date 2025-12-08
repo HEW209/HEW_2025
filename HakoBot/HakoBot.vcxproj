@@ -143,7 +143,9 @@
     <ClCompile Include="Source\GameScene.cpp" />
     <ClCompile Include="Source\GuideUIController.cpp" />
     <ClCompile Include="Source\GuideUIController2.cpp" />
+    <ClCompile Include="Source\GuideUIResultController.cpp" />
     <ClCompile Include="Source\GuideUITimeController.cpp" />
+    <ClCompile Include="Source\GuideUITimeController2.cpp" />
     <ClCompile Include="Source\main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -152,7 +154,9 @@
     <ClInclude Include="Source\GameScene.h" />
     <ClInclude Include="Source\GuideUIController.h" />
     <ClInclude Include="Source\GuideUIController2.h" />
+    <ClInclude Include="Source\GuideUIResultController.h" />
     <ClInclude Include="Source\GuideUITimeController.h" />
+    <ClInclude Include="Source\GuideUITimeController2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

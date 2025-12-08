@@ -10,7 +10,7 @@ void GuideUIController2::Start()
 	m_defaultPosition = GetTransform()->GetPosition();
 	m_defaultScale = GetTransform()->GetScale();
 	Complete = false;
-	
+	m_value = 0;
 }
 
 void GuideUIController2::Update()

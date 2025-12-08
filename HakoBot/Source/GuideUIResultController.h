@@ -1,20 +1,16 @@
 #pragma once
-//GuideUIController.h
+//GuideUIResultController.h
 
 #include <DXGameFrame.h>
 
-
-class GuideUIController2 : public Component
+class GuideUIResultController : public Component
 {
-public:
-
 	void Start() override;
 	void Update() override;
 
-	bool Complete;
-private:
-	float m_value;
 	Vector3 m_defaultPosition;
 	Vector3 m_defaultScale;
+private:
+	float m_value = 0;
 };
 

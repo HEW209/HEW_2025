@@ -4,13 +4,14 @@
 #include "GuideUIController.h"
 #include "GuideUIController2.h"
 #include "GuideUITimeController.h"
+#include "GuideUITimeController2.h"
+#include "GuideUIResultController.h"
 
 
 
 
 void GameScene::Init()
 {
-	
 
 	//カメラ
 	{
@@ -23,14 +24,14 @@ void GameScene::Init()
 		auto obj = CreateGameObject();
 		auto renderer = obj->AddComponent<SpriteRenderer>();
 		renderer->SetUI(true);
-		renderer->LoadTexture("Assets/Textures/menuplus.png");
-		renderer->GetTransform()->SetPosition(-4.2f, 1.7f, 0.0f);
-		renderer->SetSize(400.0f, 400.0f);
+		renderer->LoadTexture("Assets/Textures/menu!.png");
+		renderer->GetTransform()->SetPosition(-5.6f, 3.1f, 0.0f);
+		renderer->SetSize(110.0f, 110.0f);
 	
 	}
 
 	//メニュー文字
-	{
+	/*{
 		auto obj = CreateGameObject();
 		auto renderer = obj->AddComponent<SpriteRenderer>();
 		renderer->SetUI(true);
@@ -38,7 +39,7 @@ void GameScene::Init()
 		renderer->GetTransform()->SetPosition(-3.9f, 1.5f, 0.0f);
 		renderer->SetSize(450.0f, 450.0f);
 	
-	}
+	}*/
 
 	//おく
 	{
@@ -51,7 +52,7 @@ void GameScene::Init()
 		obj->AddComponent<GuideUIController>();
 	}
 
-	//完成
+	//完成 Kがtrueなら看板、falseなら初期案 falseうごかなくした
 	{
 		K = true;
 		auto obj = CreateGameObject();
@@ -67,18 +68,39 @@ void GameScene::Init()
 		else
 		{
 			renderer->LoadTexture("Assets/Textures/kanbansei.png");
-			renderer->GetTransform()->SetPosition(4.3f, -4.5f, 0.0f);
+			renderer->GetTransform()->SetPosition(4.3f, -4.6f, 0.0f);
 			renderer->SetSize(MOZI_SIZE + 150.0f, MOZI_SIZE + 100.0f);
 			obj->AddComponent<GuideUIController2>();
 		}
 		
 	}
 
+	//リザルト
 	{
 		auto obj = CreateGameObject();
-		//auto renderer = obj->AddComponent<SpriteRenderer>();
+		obj->AddComponent<GuideUIResultController>();
+	}
+
+	//タイマー1
+	{
+		auto obj = CreateGameObject();
+		
+		obj->GetTransform()->SetPosition(4.1f, 3.2f, 0.0f);
+		
 		obj->AddComponent<GuideUITimeController>();
 	}
+
+	////タイマー2
+	//{
+	//	auto obj = CreateGameObject();
+	//	auto renderer = obj->AddComponent<SpriteRenderer>();
+	//	renderer->SetUI(true);
+	//	renderer->LoadTexture("Assets/Textures/sprite.png");
+	//	renderer->GetTransform()->SetPosition(4.0f, 3.2f, 0.0f);
+	//	renderer->SetUVScale(1.0f / 6.0f, 1.0f / 2.0f);
+	//	renderer->SetSize(MOZI_SIZE + 50.0f, MOZI_SIZE + 50.0f);
+	//	obj->AddComponent<GuideUITimeController2>();
+	//}
 
 }
 

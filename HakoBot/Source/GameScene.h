@@ -10,7 +10,7 @@ public:
 
 	void Init() override;
 	bool GetK();
-
+	
 private:
 	bool K;
 };

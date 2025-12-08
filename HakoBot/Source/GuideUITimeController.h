@@ -3,16 +3,25 @@
 #include <DXGameFrame.h>
 #include <Vector>
 #include "Easing.h"
+#include "GuideUIController.h"
+
+
 
 class GuideUITimeController : public Component
 {
+public:
 	void Start() override;
 	void Update() override;
+	void SetDigitUV();
+	void SetTimer();
 
-	SpriteRenderer* m_pRenderer1;
-	Vector3 m_defaultPosition;
-	Vector3 m_defaultScale;
+
+	int m_totalTime;
+	int m_digit[6];
+
 private:
-	float m_value = 0;
+	Vector2 m_defaultOffPos;
+	SpriteRenderer* sprite[6];
+  
 };
 
