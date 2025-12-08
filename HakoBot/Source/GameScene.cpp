@@ -75,7 +75,7 @@ void GameScene::Init()
 		
 	}
 
-	//リザルト
+	//メニュー
 	{
 		auto obj = CreateGameObject();
 		obj->AddComponent<GuideUIResultController>();
@@ -101,6 +101,19 @@ void GameScene::Init()
 	//	renderer->SetSize(MOZI_SIZE + 50.0f, MOZI_SIZE + 50.0f);
 	//	obj->AddComponent<GuideUITimeController2>();
 	//}
+
+
+	//リザルト
+	{
+		auto obj = CreateGameObject();
+		auto renderer = obj->AddComponent<SpriteRenderer>();
+		renderer->SetUI(true);
+		renderer->LoadTexture("Assets/Textures/result3.png");
+		renderer->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
+		obj->GetTransform()->SetScale(0.0f,0.0f,0.0f);
+		//renderer->SetSize(MOZI_SIZE + 70.0f, MOZI_SIZE + 70.0f);
+		obj->AddComponent<GuideUITimeController2>();
+	}
 
 }
 

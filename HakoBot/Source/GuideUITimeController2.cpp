@@ -4,10 +4,13 @@
 
 void GuideUITimeController2::Start()
 {
-	//guide-
+	
 }
 
 void GuideUITimeController2::Update()
 {
-	//guide->SetDigitUV(guide->GetH2());
+	if (Input::GetKeyDown(KeyCode::A))
+	{
+		GetTransform()->SetScale(0.2f, 0.2f, 0.0f);
+	}
 }

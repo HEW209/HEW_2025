@@ -43,6 +43,7 @@ void GuideUITimeController::Start()
 	renderer1->SetUVScale(1.0f / 6.0f, 1.0f / 2.0f);
 	renderer1->SetUVOffsetPos(5.0f / 6.0f, 1.0f / 2.0f);
 	renderer1->SetSize(MOZI_SIZE + 40.0f, MOZI_SIZE + 40.0f);
+	sprite1[0] = renderer1;
 
 	//“_‚P
 	auto renderer2 = GetGameObject()->AddComponent<SpriteRenderer>();
@@ -52,6 +53,7 @@ void GuideUITimeController::Start()
 	renderer2->SetUVScale(1.0f / 6.0f, 1.0f / 2.0f);
 	renderer2->SetUVOffsetPos(4.0f / 6.0f, 1.0f / 2.0f);
 	renderer2->SetSize(MOZI_SIZE + 40.0f, MOZI_SIZE + 40.0f);
+	sprite1[1] = renderer2;
 
 	//“_‚Q
 	auto renderer3 = GetGameObject()->AddComponent<SpriteRenderer>();
@@ -61,16 +63,30 @@ void GuideUITimeController::Start()
 	renderer3->SetUVScale(1.0f / 6.0f, 1.0f / 2.0f);
 	renderer3->SetUVOffsetPos(4.0f / 6.0f, 1.0f / 2.0f);
 	renderer3->SetSize(MOZI_SIZE + 40.0f, MOZI_SIZE + 40.0f);
-
+	sprite1[2] = renderer3;
 
 	m_totalTime = 0;
+	m_b = true;
 }
 
 void GuideUITimeController::Update()
 {
-	m_totalTime++;
-	SetTimer();
-	SetDigitUV();
+	if (m_b == true)
+	{
+		m_totalTime++;
+		SetTimer();
+		SetDigitUV();
+	}
+
+	if (Input::GetKeyDown(KeyCode::A))
+	{
+		m_b = false;
+		for (int x = 0; x < 6; ++x)
+		{
+			sprite[x]->GetTransform()->SetPosition(-1.35f + x * 0.1f,-0.15f,0.0f);
+			sprite[x]->GetTransform()->SetScale(1.5f, 1.5f, 0.0f);
+		}
+	}
 }
 
 
@@ -108,3 +124,9 @@ void GuideUITimeController::SetTimer()
 	m_digit[5] = s % 10;
 
 }
+
+SpriteRenderer* GuideUITimeController::GetSprite()
+{
+	return sprite[6];
+}
+

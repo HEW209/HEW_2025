@@ -14,14 +14,16 @@ public:
 	void Update() override;
 	void SetDigitUV();
 	void SetTimer();
-
+	SpriteRenderer* GetSprite();
 
 	int m_totalTime;
 	int m_digit[6];
-
+	bool m_b;
+	SpriteRenderer* sprite[6];
+	SpriteRenderer* sprite1[3];
 private:
 	Vector2 m_defaultOffPos;
-	SpriteRenderer* sprite[6];
+	
   
 };
 
