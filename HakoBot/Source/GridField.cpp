@@ -91,6 +91,12 @@ bool GridField::IsOverlap(const BlockSetData& blockSet, const Vector3& position,
 	Vec3 start = static_cast<Vec3>(GetGridOrigin());
 	Vec3 end = start + static_cast<Vec3>(m_gridData.GetSize());
 
+	// “y‘ä‚ÌŽü‚è‚É‚à’u‚¯‚È‚­‚·‚é
+	start.x -= 1.0f;
+	start.z -= 1.0f;
+	end.x += 1.0f;
+	end.z += 1.0f;
+
 	for (auto&& blockPos : blockSet.blocks) {
 		Vec3 pos = static_cast<Vec3>(position) + snappedRot * blockPos;
 		if (IsOverlapBlockImpl(pos, start, end)) {

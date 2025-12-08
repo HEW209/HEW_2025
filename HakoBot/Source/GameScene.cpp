@@ -275,8 +275,8 @@ void GameScene::CreateStageSet()
 	// ギミック以外のステージオブジェクト
 
 	//床
-	int stageSize_x = 24;
-	int stageSize_z = 24;
+	int stageSize_x = 25;
+	int stageSize_z = 25;
 	float blockScale = 1.0f;
 	for (int z = 0; z < stageSize_z; ++z)
 	{
@@ -290,6 +290,47 @@ void GameScene::CreateStageSet()
 			renderer->LoadModel("Assets/Model/Stage/fbx/yuka.fbx");
 			obj->GetTransform()->SetPosition(pos);
 			obj->GetTransform()->SetScale(0.25f, 0.25f, 0.25f);
+		}
+	}
+
+	//柵
+	for (int z = 0; z < stageSize_z; ++z)
+	{
+		for (int x = 0; x < stageSize_x; ++x)
+		{
+			Vector3 rotateAngle = Vector3::zero;
+			if (x == 0)
+			{
+				rotateAngle.y = 180.0f;
+			}
+			else if (x == stageSize_x - 1)
+			{
+				rotateAngle.y = 0.0f;
+			}
+			else if (z == 0)
+			{
+				rotateAngle.y = 90.0f;
+			}
+			else if (z == stageSize_z - 1)
+			{
+				rotateAngle.y = 270.0f;
+			}
+			else
+			{
+				continue;
+			}
+
+			if (x % 2 == 0 && z % 2 == 0)
+				continue;
+
+			Vector3 pos(x - stageSize_x * 0.5f + 0.5f, 0.0f, z - stageSize_z * 0.5f + 0.5f);
+			pos *= blockScale;
+
+			auto obj = CreateGameObject();
+			auto renderer = obj->AddComponent<MeshRenderer>();
+			renderer->LoadModel("Assets/Model/Stage/fbx/saku.fbx");
+			obj->GetTransform()->SetPosition(pos);
+			obj->GetTransform()->SetEulerAngle(rotateAngle);
 		}
 	}
 

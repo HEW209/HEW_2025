@@ -146,8 +146,9 @@ void PlayerBlockHandler::Update()
 
 
 	//プレイヤーからブロックを置く位置を決めるための相対オフセット（プレイヤー前方1.5m）
-	Vector3 blockSize = playerTransform->GetQuaternion() * m_pBlockObject->GetSize();
-	Vector3 placeCursorOffset{ 0.0f, 0.0f, -std::abs(blockSize.z) * 0.5f - 1.0f };
+	//Vector3 blockSize = playerTransform->GetQuaternion() * m_pBlockObject->GetSize();
+	//Vector3 placeCursorOffset{ 0.0f, 0.0f, -std::abs(blockSize.z) * 0.5f - 1.0f };
+	Vector3 placeCursorOffset{ 0.0f, 0.0f, -1.5f };
 
 	//プレイヤーのクォータニオンを、相対オフセット方向に適用
 	//「プレイヤーの向いている方向に応じて、前方1.5mの位置」を求める。
