@@ -159,6 +159,9 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="SoundData.cpp" />
+    <ClCompile Include="SoundMaster.cpp" />
+    <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="Source\BlockObject.cpp" />
     <ClCompile Include="Source\GameScene.cpp" />
     <ClCompile Include="Source\GameState.cpp" />
@@ -178,6 +181,9 @@
     <ClCompile Include="Source\VecUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="SoundData.h" />
+    <ClInclude Include="SoundMaster.h" />
+    <ClInclude Include="SoundPlayer.h" />
     <ClInclude Include="Source\BlockData.h" />
     <ClInclude Include="Source\BlockObject.h" />
     <ClInclude Include="Source\Config.h" />

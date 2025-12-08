@@ -87,6 +87,15 @@
     <ClCompile Include="Source\PlayerStretch.cpp">
       <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
+    <ClCompile Include="SoundMaster.cpp">
+      <Filter>ソース ファイル\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundData.cpp">
+      <Filter>ソース ファイル\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundPlayer.cpp">
+      <Filter>ソース ファイル\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Config.h">
@@ -156,6 +165,15 @@
       <Filter>ヘッダー ファイル\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Source\ShapeScreen.h">
+      <Filter>ヘッダー ファイル\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundMaster.h">
+      <Filter>ヘッダー ファイル\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundData.h">
+      <Filter>ヘッダー ファイル\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundPlayer.h">
       <Filter>ヘッダー ファイル\Component</Filter>
     </ClInclude>
   </ItemGroup>
