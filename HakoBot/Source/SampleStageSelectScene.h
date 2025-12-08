@@ -2,7 +2,7 @@
 
 #include <DXGameFrame.h>
 #include"StageSelectKeyEnter.h"
-#include "StageSelectManager.h"
+
 class StageSelectScene : public Scene
 {
 public:

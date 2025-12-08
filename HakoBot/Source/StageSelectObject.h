@@ -1,6 +1,7 @@
 #pragma once
 #include <DXGameFrame.h>
-#include"StageSelectKeyEnter.h"
+
+class StegeSelectKeyEnter;
 
 class StageSelectObject : public Component
 {
@@ -12,11 +13,12 @@ public:
 	void Update()override;
 
 	void LoadGame(int StageID);
-	
+	Vector2 SetPosID(int StageID);
+
 private:
 
 
-	ObjPtr<StegeSelectKeyEnter> StageKeyEnter;
+	StegeSelectKeyEnter* StageKeyEnter;
 	int m_StageID;
 
 };
