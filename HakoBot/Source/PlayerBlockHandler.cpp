@@ -1,6 +1,11 @@
 #include "PlayerBlockHandler.h"
+
 #include "GameState.h"
 #include "InputSystem.h"
+#include "VecUtil.h"
+
+
+Vec2 CalcSpacedRectPos(const Vec2& rectSize, float distance, const Vec2& direction);
 
 
 PlayerBlockHandler::PlayerBlockHandler()
@@ -9,156 +14,54 @@ PlayerBlockHandler::PlayerBlockHandler()
 
 void PlayerBlockHandler::Awake()
 {
-	m_rotateRoot = SceneManager::GetActiveScene()->CreateGameObject();
+	m_pBlockHolder = SceneManager::GetActiveScene()->CreateGameObject();
+
+	{
+		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
+		obj->GetComponent<Transform>()->SetParent(m_pBlockHolder->GetTransform());
+		m_pBlockObject = obj->AddComponent<BlockObject>();
+		m_pBlockObject->SetUseCollider(false);
+	}
 }
 
 void PlayerBlockHandler::Update()
 {
 	auto blockTransform = m_pBlockObject->GetTransform();
 	auto playerTransform = GetTransform();
+	auto holderTransform = m_pBlockHolder->GetTransform();
+
+
+	Vector3 blockOffset{ 0.0f, 2.0f, 0.0f };
+	//地面に設置させるために計算
+	blockOffset += m_pBlockObject->GetGroundOffset();
+
+	holderTransform->SetPosition(playerTransform->GetPosition() + blockOffset);
 
 
 	if (InputSystem::GetButtonDown("RotateBlockRight"_hash)) {
-		blockTransform->Rotate(0.0f, -90.0f, 0.0f);
+		holderTransform->Rotate(0.0f, -90.0f, 0.0f);
 
 	}
 	if (InputSystem::GetButtonDown("RotateBlockLeft"_hash)) {
-		blockTransform->Rotate(0.0f, 90.0f, 0.0f);
+		holderTransform->Rotate(0.0f, 90.0f, 0.0f);
 
 	}
 
-	/*if (Input::GetKeyDown(KeyCode::KEY_1)) {
-		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
 
-		BlockSetData data;
-		data.blocks.resize(1);
-		data.blocks[0] = { 0, 0, 0 };
-		m_pBlockObject->SetBlockSet(data);
-	}
-	if (Input::GetKeyDown(KeyCode::KEY_2)) {
-		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
+	Vec2 dir = GetFlattenedDirection(playerTransform->GetQuaternion());
+	Vector3 blockSize = m_pBlockObject->GetSize();
+	Vec2 placeCursorOffsetXZ = -CalcSpacedRectPos(Vec2{ blockSize.x, blockSize.z }, 1.0f, dir);
 
-		BlockSetData data;
-		data.blocks.resize(2);
-		data.blocks[0] = { 0, 0, 0 };
-		data.blocks[1] = { 1, 0, 0 };
-		m_pBlockObject->SetBlockSet(data);
-	}
-	if (Input::GetKeyDown(KeyCode::KEY_3)) {
-		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
+	Vector3 placeCursorOffset{ placeCursorOffsetXZ.x, 0.0f, placeCursorOffsetXZ.y };
+	placeCursorOffset -= blockOffset + Vector3{ 0.0f, 0.5f, 0.0f };
 
-		BlockSetData data;
-		data.blocks.resize(3);
-		data.blocks[0] = { 0, 0, 0 };
-		data.blocks[1] = { 1, 0, 0 };
-		data.blocks[2] = { 0, 1, 0 };
-		m_pBlockObject->SetBlockSet(data);
-	}
-	if (Input::GetKeyDown(KeyCode::KEY_4)) {
-		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
-
-		BlockSetData data;
-		data.blocks.resize(4);
-		data.blocks[0] = { 0, 0, 0 };
-		data.blocks[1] = { 1, 0, 0 };
-		data.blocks[2] = { 0, 1, 0 };
-		data.blocks[3] = { 1, 1, 0 };
-		m_pBlockObject->SetBlockSet(data);
-	}
-	if (Input::GetKeyDown(KeyCode::KEY_5)) {
-		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
-
-		BlockSetData data;
-		data.blocks.resize(4);
-		data.blocks[0] = { 0, 0, 0 };
-		data.blocks[1] = { 1, 0, 0 };
-		data.blocks[2] = { 0, 1, 0 };
-		data.blocks[3] = { 0, 0, 1 };
-		m_pBlockObject->SetBlockSet(data);
-	}
-	if (Input::GetKeyDown(KeyCode::KEY_6)) {
-		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
-
-		BlockSetData data;
-		data.blocks.resize(5);
-		data.blocks[0] = { 0, 0, 0 };
-		data.blocks[1] = { 1, 0, 0 };
-		data.blocks[2] = { 0, 1, 0 };
-		data.blocks[3] = { 1, 1, 0 };
-		data.blocks[4] = { 0, 0, 1 };
-		m_pBlockObject->SetBlockSet(data);
-	}
-	if (Input::GetKeyDown(KeyCode::KEY_7)) {
-		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
-
-		BlockSetData data;
-		data.blocks.resize(6);
-		data.blocks[0] = { 0, 0, 0 };
-		data.blocks[1] = { 1, 0, 0 };
-		data.blocks[2] = { 0, 1, 0 };
-		data.blocks[3] = { 1, 1, 0 };
-		data.blocks[4] = { 0, 0, 1 };
-		data.blocks[5] = { 1, 0, 1 };
-		m_pBlockObject->SetBlockSet(data);
-	}
-	if (Input::GetKeyDown(KeyCode::KEY_8)) {
-		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
-
-		BlockSetData data;
-		data.blocks.resize(6);
-		data.blocks[0] = { 0, 0, 0 };
-		data.blocks[1] = { 1, 0, 0 };
-		data.blocks[2] = { 0, 1, 0 };
-		data.blocks[3] = { 1, 1, 0 };
-		data.blocks[4] = { 0, 0, 1 };
-		data.blocks[5] = { 1, 1, 1 };
-		m_pBlockObject->SetBlockSet(data);
-	}
-	if (Input::GetKeyDown(KeyCode::KEY_9)) {
-		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
-
-		BlockSetData data;
-		data.blocks.resize(7);
-		data.blocks[0] = { 0, 0, 0 };
-		data.blocks[1] = { 1, 0, 0 };
-		data.blocks[2] = { 0, 1, 0 };
-		data.blocks[3] = { 1, 1, 0 };
-		data.blocks[4] = { 0, 0, 1 };
-		data.blocks[5] = { 1, 0, 1 };
-		data.blocks[6] = { 0, 1, 1 };
-		m_pBlockObject->SetBlockSet(data);
-	}
-	if (Input::GetKeyDown(KeyCode::KEY_0)) {
-		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
-
-		BlockSetData data;
-		data.blocks.resize(8);
-		data.blocks[0] = { 0, 0, 0 };
-		data.blocks[1] = { 1, 0, 0 };
-		data.blocks[2] = { 0, 1, 0 };
-		data.blocks[3] = { 1, 1, 0 };
-		data.blocks[4] = { 0, 0, 1 };
-		data.blocks[5] = { 1, 0, 1 };
-		data.blocks[6] = { 0, 1, 1 };
-		data.blocks[7] = { 1, 1, 1 };
-		m_pBlockObject->SetBlockSet(data);
-	}*/
-
-
-	//プレイヤーからブロックを置く位置を決めるための相対オフセット（プレイヤー前方1.5m）
-	//Vector3 blockSize = playerTransform->GetQuaternion() * m_pBlockObject->GetSize();
-	//Vector3 placeCursorOffset{ 0.0f, 0.0f, -std::abs(blockSize.z) * 0.5f - 1.0f };
-	Vector3 placeCursorOffset{ 0.0f, 0.0f, -1.5f };
-
-	//プレイヤーのクォータニオンを、相対オフセット方向に適用
-	//「プレイヤーの向いている方向に応じて、前方1.5mの位置」を求める。
-	Vector3 placeCursorPos = playerTransform->GetPosition() + playerTransform->GetQuaternion() * placeCursorOffset; 
+	Vector3 placeCursorPos = blockTransform->GetPosition() + placeCursorOffset;
 
 	//ブロックの底面分だけ位置を補正（地面に接地させるためのオフセット）
 	placeCursorPos += m_pBlockObject->GetGroundOffset();
 
 	//プレイヤーからのブロックを取るための相対座標
-	Vector3 removeCursorOffset{ 0.0f, 0.5f, -1.2f };
+	Vector3 removeCursorOffset{ 0.0f, 0.5f, -1.35f };
 
 	Vector3 removeCursorPos = playerTransform->GetPosition() + playerTransform->GetQuaternion() * removeCursorOffset;
 
@@ -204,7 +107,7 @@ void PlayerBlockHandler::Update()
 				auto blockData = pGridField->RemoveBlock();
 				if (blockData.has_value()) {
 
-					m_pBlockObject->SetBlockSet(blockData->blockSet);
+					SetBlockSet(blockData->blockSet);
 					blockTransform->SetQuaternion(blockData->rotation);
 
 				}
@@ -217,7 +120,7 @@ void PlayerBlockHandler::Update()
 				for (auto&& pBlock : pWorldBlocks) {
 					
 					if (pBlock->IsInside(removeCursorPos)) {
-						m_pBlockObject->SetBlockSet(pBlock->GetBlockSet());
+						SetBlockSet(pBlock->GetBlockSet());
 						blockTransform->SetQuaternion(pBlock->GetTransform()->GetQuaternion());
 
 						GameState::GetInstance()->RemoveWorldBlock(pBlock.Get());
@@ -263,19 +166,27 @@ void PlayerBlockHandler::Update()
 
 		}
 	}
-
-	
-	Vector3 blockOffset{ 0.0f, 2.0f, 0.0f };
-	//地面に設置させるために計算
-	blockOffset += m_pBlockObject->GetGroundOffset();
-	
-	blockTransform->SetPosition(playerTransform->GetPosition() + blockOffset);
-
-
-
 }
 
-void PlayerBlockHandler::SetBlockObject(BlockObject* pBlockObject)
+
+void PlayerBlockHandler::SetBlockSet(const BlockSetData& blockSet)
 {
-	m_pBlockObject = pBlockObject;
+	m_pBlockObject->SetBlockSet(blockSet);
+	m_pBlockObject->GetTransform()->SetPosition(m_pBlockObject->GetCenterOffset(), Space::LOCAL);
+}
+
+
+Vec2 CalcSpacedRectPos(const Vec2& rectSize, float distance, const Vec2& direction)
+{
+	float halfW = rectSize.x * 0.5f;
+	float halfH = rectSize.y * 0.5f;
+
+	float distX = (std::abs(direction.x) > direction.EpsilonScalar) ? (halfW / std::abs(direction.x)) : std::numeric_limits<float>::max();
+	float distY = (std::abs(direction.y) > direction.EpsilonScalar) ? (halfH / std::abs(direction.y)) : std::numeric_limits<float>::max();
+
+	float distToRectEdge = std::min(distX, distY);
+
+	float totalDist = distance + distToRectEdge;
+
+	return direction * totalDist;
 }

@@ -57,6 +57,8 @@ public:
 
 	Vector3 GetSize();
 
+	Vector3 GetCenterOffset();
+
 private:
 	BlockSetData m_blockSet;
 	std::vector<ObjPtr<GameObject>> m_pBlocks;

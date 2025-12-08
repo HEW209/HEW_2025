@@ -50,16 +50,6 @@ void BlockObject::SetBlockSet(const BlockSetData& blockSet)
 		m_size = max - min + Vector3(1.0f, 1.0f, 1.0f);
 		m_pBlocks.push_back(obj);
 	}
-
-	//サイズからオフセット座標を設定
-	for (auto& block : m_pBlocks)
-	{
-		//意図しない結果になる
-		//Vector3 offset = m_size * -0.5f + Vector3(0.5f, 0.5f, 0.5f);
-		//offset.y = 0;
-		//block->GetTransform()->Translate(offset);
-	}
-
 }
 
 void BlockObject::SetSelect(bool value)
@@ -177,4 +167,12 @@ bool BlockObject::IsInside(const Vector3& worldPosition)
 Vector3 BlockObject::GetSize()
 {
 	return m_size;
+}
+
+Vector3 BlockObject::GetCenterOffset()
+{
+	Vector3 offset = m_size * -0.5f + Vector3(0.5f, 0.5f, 0.5f);
+	offset.y = GetGroundYOffset();
+
+	return offset;
 }

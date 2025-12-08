@@ -20,7 +20,7 @@ void GetBasisFromQuaternion(const Quaternion& q, Vec3& right, Vec3& up, Vec3& fo
 Quaternion BasisToQuaternion(const Vec3& r, const Vec3& u, const Vec3& f);
 
 // ベクトルを最も近い基本軸にスナップさせる
-Vec3 SnapToCardinalAxis(const Vec3& v);
+Vec3 SnapToCardinalAxis(const Vec3& v);	
 
 /**
  * @brief 現在の回転を最寄りの90度単位の回転に補正する
@@ -28,3 +28,5 @@ Vec3 SnapToCardinalAxis(const Vec3& v);
  * @return 補正後のクォータニオン
  */
 Quaternion SnapRotationToNearest90(const Quaternion& rotation);
+
+Vec2 GetFlattenedDirection(const Quaternion& rotation);
