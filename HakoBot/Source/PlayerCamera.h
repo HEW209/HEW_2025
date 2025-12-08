@@ -19,9 +19,10 @@ public:
 	~PlayerCamera() = default;
 
 	void Start() override;
-	void Update() override;
+	void LateUpdate() override;
 
 	void SetPlayer(Transform* pPlayerTransform) { m_pPlayerTranform = pPlayerTransform; }
+	void SetCameraDistance(float distance);
 
 private:
 	float m_cameraDistance;
@@ -31,4 +32,5 @@ private:
 	float m_currentAngleX;
 
 	Transform* m_pPlayerTranform;
+	Vector3 m_posOffset;
 };

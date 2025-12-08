@@ -28,7 +28,7 @@ public:
 	void OnDestroy() override;
 
 	/// @brief クリア形状を設定
-	void SetClearShape(const ShapeType& shape);
+	void SetClearShape(const ShapeType& shape, bool isHorogram);
 
 	/// @brief 現在の形状を設定
 	void SetCurrentShape(const ShapeType& shape);
@@ -37,11 +37,16 @@ public:
 	bool IsClear();
 
 private:
-	void UpdateClearShapeBlocks();
+	void UpdateClearShapeBlocks(bool isHorogram);
 	void UpdateCurrentShapeBlocks();
 
-	std::vector<ObjPtr<GameObject>> m_pCurrentShapeBlocks;
-	std::vector<ObjPtr<GameObject>> m_pClearShapeBlocks;
+	struct ShapeBlock
+	{
+		ObjPtr<GameObject> pObj;
+		ObjPtr<MeshRenderer> pRenderer;
+	};
+
+	std::vector<ShapeBlock> m_pShapeBlocks;
 	ShapeType m_clearShape;
 	ShapeType m_currentShape;
 };

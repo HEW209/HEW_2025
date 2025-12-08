@@ -78,9 +78,11 @@ void GridField::SetSize(Vec3Int size)
 	Vector3 sizeFloat = static_cast<Vector3>(size);
 	Vector3 sizeHalf = sizeFloat * 0.5f;
 
-	m_pShapeScreen[0]->GetTransform()->SetPosition(-sizeHalf.x - 2.0f, sizeHalf.y, 0.0f);
-	m_pShapeScreen[1]->GetTransform()->SetPosition(0.0f, -0.2f, 0.0f);
-	m_pShapeScreen[2]->GetTransform()->SetPosition(0.0f, sizeHalf.y, sizeHalf.z + 2.0f);
+	const float space = 3.0f;
+
+	m_pShapeScreen[0]->GetTransform()->SetPosition(-sizeHalf.x - space, sizeHalf.y + 0.6f, 0.0f);
+	m_pShapeScreen[1]->GetTransform()->SetPosition(0.0f, -0.1f, 0.0f);
+	m_pShapeScreen[2]->GetTransform()->SetPosition(0.0f, sizeHalf.y + 0.6f, sizeHalf.z + space);
 }
 
 bool GridField::IsOverlap(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation)
@@ -88,6 +90,12 @@ bool GridField::IsOverlap(const BlockSetData& blockSet, const Vector3& position,
 	Quaternion snappedRot = SnapRotationToNearest90(rotation);
 	Vec3 start = static_cast<Vec3>(GetGridOrigin());
 	Vec3 end = start + static_cast<Vec3>(m_gridData.GetSize());
+
+	// “y‘ä‚ÌŽü‚è‚É‚à’u‚¯‚È‚­‚·‚é
+	start.x -= 1.0f;
+	start.z -= 1.0f;
+	end.x += 1.0f;
+	end.z += 1.0f;
 
 	for (auto&& blockPos : blockSet.blocks) {
 		Vec3 pos = static_cast<Vec3>(position) + snappedRot * blockPos;
@@ -228,7 +236,7 @@ void GridField::SetClearShape(ShapeType shapeX, ShapeType shapeY, ShapeType shap
 	m_clearShape[2] = shapeZ;
 
 	for (int i = 0; i < 3; ++i) {
-		m_pShapeScreen[i]->SetClearShape(m_clearShape[i]);
+		m_pShapeScreen[i]->SetClearShape(m_clearShape[i], i != 1);
 	}
 }
 
