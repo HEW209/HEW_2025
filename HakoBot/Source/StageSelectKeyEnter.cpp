@@ -49,7 +49,7 @@ void StegeSelectKeyEnter::Update()
 		}
 		else
 		{											//1の桁が0ではなかった場合、2桁目にステージの面（大）を代入（ステージ2-5の場合・25になる）
-			StageID = m_UP_DOWN_selectIndex + (m_BIG_stageCount * 10);
+			StageID = m_UP_DOWN_selectIndex + (m_BIG_stageCount * 100);
 			m_SelectObject->LoadGame(StageID);
 		}
 	}

@@ -1,4 +1,6 @@
 #include"SampleStageSelectScene.h"
+#include"StageSelectObject.h"
+#include"StageSelectKeyEnter.h"
 
 void StageSelectScene::Init()
 {
@@ -11,7 +13,7 @@ void StageSelectScene::Init()
 		auto rendere = obj->AddComponent<SpriteRenderer>();
 		rendere->SetUI(true);
 		rendere->SetOffsetPos(-5.8f,3.0f);
-	
+		auto StageKeyEnter = obj->AddComponent<StegeSelectKeyEnter>();
 		
 	}
 }
