@@ -9,7 +9,7 @@ void GuideUITimeController::Start()
 	renderer->SetUI(true);
 	renderer->LoadTexture("Assets/Textures/result2.png");
 	renderer->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
-	GetTransform()->SetScale(0.1f, 0.1f, 0.0f);
+	GetTransform()->SetScale(0.0f, 0.0f, 0.0f);
 
 	m_defaultPosition = GetTransform()->GetPosition();
 	m_defaultScale = GetTransform()->GetScale();
@@ -20,7 +20,7 @@ void GuideUITimeController::Update()
 {
 	if (Input::GetKeyHold(KeyCode::R))
 	{
-		m_value += EASING;
+		m_value += EASING * 2.0f;
 
 		if (m_value > EASING_MAX)
 		{
@@ -41,8 +41,8 @@ void GuideUITimeController::Update()
 
 	//スケール変更
 	Vector3 offset = Vector3::zero;
-	offset.x = Easing::InSine(m_value,EASING_MAX,0.2f,0.0f);
-	offset.y = Easing::InSine(m_value,EASING_MAX, 0.2f, 0.0f);
+	offset.x = Easing::InSine(m_value,EASING_MAX,0.3f,0.0f);
+	offset.y = Easing::InSine(m_value,EASING_MAX, 0.3f, 0.0f);
 	GetTransform()->SetScale(m_defaultScale + offset);//0.3,0.3
 
 	////ポジション変更
