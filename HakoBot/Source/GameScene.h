@@ -14,4 +14,5 @@ private:
 	void KeyBind();
 	void CreateGridField();
 	void CreateStageSet();
+	void CreateUIObject();
 };
