@@ -1,3 +1,5 @@
+#include "DXGameFrameShader.hlsli"
+
 struct PS_IN
 {
     float4 pos : SV_POSITION;
@@ -6,16 +8,6 @@ struct PS_IN
     float4 color : COLOR0;
     float4 wPos : POSITION0;
 };
-
-cbuffer Light : register(b1)
-{
-    float3 lightDir;
-    float pad1;
-    float3 lightColor;
-    float pad2;
-    float3 ambientColor;
-    float pad3;
-}
 
 Texture2D tex : register(t0);
 SamplerState samp : register(s0);
@@ -29,9 +21,6 @@ float4 main(PS_IN pin) : SV_TARGET
     float3 N = normalize(pin.normal);
     float3 L = normalize(-lightDir); // Œõ‚Ì‹t•ûŒü
     float NdotL = saturate(dot(N, L));
-    
-    //float levels = 4.0; // ’iŠK”i—áF4ŠK’²j
-    //NdotL = floor(NdotL * levels) / (levels - 1);
     
     // ŠÂ‹«Œõ + ŠgU”½Ë
     float3 color = ambientColor + lightColor * NdotL;

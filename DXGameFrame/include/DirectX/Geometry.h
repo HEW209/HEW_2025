@@ -1,13 +1,14 @@
-/*****************************************************************//**
+/******************************************************************//**
  * @file   Geometry.h
  * @brief  基本図形の生成を行う
  * 
  * @author 石田怜
- * @date   2025/10/18
+ * @date   2025/11/23
  *********************************************************************/
 #pragma once
 
 #include "Model.h"
+#include <array>
 #include <memory>
 
 /**
@@ -39,16 +40,13 @@ public:
 	/**
 	 * @brief ジオメトリモデルを取得する
 	 */
-	std::shared_ptr<Model> GetModel(Type geometryType)
-	{
-		return m_pModels[geometryType];
-	}
+	std::shared_ptr<Model> GetModel(Type geometryType);
 
 private:
 	Geometry() = default;
 
 	/// ジオメトリモデル配列
-	std::shared_ptr<Model> m_pModels[Type::COUNT];
+	std::array<std::shared_ptr<Model>, Type::COUNT> m_pModels;
 
 	/**
 	 * @brief 箱のメッシュを生成する
@@ -73,9 +71,5 @@ public:
 	 * @brief 唯一のインスタンスを取得する
 	 * @return Geometryインスタンスへの参照
 	 */
-	static Geometry& Instance()
-	{
-		static Geometry s_instance;
-		return s_instance;
-	}
+	static Geometry& Instance();
 };

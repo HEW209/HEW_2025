@@ -1,14 +1,14 @@
-/*****************************************************************//**
+/******************************************************************//**
  * @file   ModelManager.h
  * @brief  モデルデータの管理を行う
  * 
  * @author 石田怜
- * @date   2025/10/18
+ * @date   2025/11/23
  *********************************************************************/
 #pragma once
 
 #include "Model.h"
-#include <Utility/Common.h>
+#include <unordered_map>
 
 /**
  * @brief モデルデータの管理を行う
@@ -19,7 +19,7 @@ public:
 	/**
 	 * @brief モデルデータを読み込む
 	 * @param filePath モデルデータへのファイルパス
-	 * @return モデルへのポインタ
+	 * @return モデルへのポインタ(shared_ptr)
 	 */
 	std::shared_ptr<Model> Load(const std::string& filePath);
 
@@ -44,9 +44,5 @@ public:
 	 * @brief 唯一のインスタンスを取得する
 	 * @return ModelManagerへの参照
 	 */
-	static ModelManager& Instance()
-	{
-		static ModelManager s_instance;
-		return s_instance;
-	}
+	static ModelManager& Instance();
 };

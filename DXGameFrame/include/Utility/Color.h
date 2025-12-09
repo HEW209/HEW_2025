@@ -1,13 +1,11 @@
 /*****************************************************************//**
  * @file   Color.h
  * @brief  Fî•ñ‚ğˆµ‚¤
- * 
+ *
  * @author Î“c—å
- * @date   2025/09/15
+ * @date   2025/09/23
  *********************************************************************/
 #pragma once
-
-#include "MathUtil.h"
 
 /// 0`255 •\‹L‚ÌRGB’l‚ÌÅ‘å’l
 constexpr float RGB255_Max = 255.0f;
@@ -37,55 +35,18 @@ public:
 	/// a¬•ª (0.0`1.0)
 	float a;
 
-	//”äŠrE‘ã“ü
-	Color& operator=(const Color& other)
-	{
-		r = other.r;
-		g = other.g;
-		b = other.b;
-		a = other.a;
-		return *this;
-	}
-	bool operator==(const Color& other) const
-	{
-		return MathUtil::Approximately(r, other.r) &&
-			MathUtil::Approximately(g, other.g) &&
-			MathUtil::Approximately(b, other.b) &&
-			MathUtil::Approximately(a, other.a);
-	}
-	bool operator!=(const Color& other) const
-	{
-		return !(*this == other);
-	}
+	// ”äŠrE‘ã“ü
+	Color& operator=(const Color& other);
+	bool operator==(const Color& other) const;
+	bool operator!=(const Color& other) const;
 
-	//‰ÁZEŒ¸ZEæZ
-	Color operator+(const Color& other) const
-	{
-		return Color(r + other.r, g + other.g, b + other.b, a + other.a);
-	}
-	Color operator-(const Color& other) const
-	{
-		return Color(r - other.r, g - other.g, b - other.b, a - other.a);
-	}
-	Color operator*(const Color& other) const
-	{
-		return Color(r * other.r, g * other.g, b * other.b, a * other.a);
-	}
-	Color& operator+=(const Color& other)
-	{
-		*this = *this + other;
-		return *this;
-	}
-	Color& operator-=(const Color& other)
-	{
-		*this = *this - other;
-		return *this;
-	}
-	Color& operator*=(const Color& other)
-	{
-		*this = *this * other;
-		return *this;
-	}
+	// ‰ÁZEŒ¸ZEæZ
+	Color operator+(const Color& other) const;
+	Color operator-(const Color& other) const;
+	Color operator*(const Color& other) const;
+	Color& operator+=(const Color& other);
+	Color& operator-=(const Color& other);
+	Color& operator*=(const Color& other);
 
 	/**
 	 * @brief 0`255‚Ì”ÍˆÍ‚ÌRGB’l‚©‚çF‚ğİ’è‚·‚é
@@ -94,7 +55,7 @@ public:
 	 * @param brue b¬•ª
 	 * @param alpha a¬•ª
 	 */
-	void Clamp01(float red, float green, float blue, float alpha = RGB255_Max);
+	void SetColor255(float red, float green, float blue, float alpha = RGB255_Max);
 
 	/**
 	 * @brief ³‹K‰»‚³‚ê‚½F‚ğæ“¾‚·‚é
