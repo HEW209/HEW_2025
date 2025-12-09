@@ -11,6 +11,7 @@
 #include "InputSystem.h"
 
 #include "SoundMaster.h"
+#include "SoundManager.h"
 
 // ウィンドウプロシージャ
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -111,6 +112,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	// XAudio2初期化
 	SoundMaster::Instance().Init();
+	// サウンドマネージャー
+	SoundManager::Load();
 
 	// シーンの作成
 	SceneManager::Init(std::make_unique<GameScene>());
@@ -164,6 +167,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SceneManager::Uninit();
 	ImGuiManager::Instance().Uninit();
 	Direct3D::Instance().Uninit();
+	SoundManager::StopAll();
 	SoundMaster::Instance().Uninit();
 	CoUninitialize();
 	return 0;

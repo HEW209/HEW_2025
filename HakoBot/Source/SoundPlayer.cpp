@@ -69,8 +69,12 @@ void SoundPlayer::StopWave()
 		pSourceVoice->Stop(0);
 		pSourceVoice->FlushSourceBuffers(); // 再生キューをクリア
 
-		// 後片付け
-		pSourceVoice->DestroyVoice();
+		// 破棄前にXAudio2がまだ存在しているかどうか確認
+		if (SoundMaster::Instance().GetXAudio2())
+		{
+			pSourceVoice->DestroyVoice();
+		}
+
 		pSourceVoice = nullptr;
 	}
 }

@@ -8,6 +8,9 @@
 #include "Player.h"
 #include "PlayerBlockHandler.h"
 #include "PlayerCamera.h"
+// サウンド
+#include "SoundMaster.h"
+#include "SoundManager.h"
 
 
 void GameScene::Init()
@@ -102,15 +105,8 @@ void GameScene::Init()
 		obj->GetTransform()->SetEulerAngle(50.0f, -30.0f, 0.0f);
 	}
 
-
-	// Waveデータ読み込み
-	if (!SoundData::LoadWave("Assets/Sound/BGM_Stage.wav", bgm))
-	{
-		MessageBoxA(NULL, "BGM_Stage.wav の読み込みに失敗しました", "Sound Error", MB_OK | MB_ICONWARNING);
-	}
-	// 再生
-	bgmPlayer.PlayWave(&bgm, false, 1.0f);
-
+	// BGM再生
+	SoundManager::PlayBGM("Stage1", 1.0f, true);
 }
 
 void GameScene::KeyBind()

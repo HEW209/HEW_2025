@@ -1,7 +1,8 @@
 #include "PlayerBlockHandler.h"
 #include "GameState.h"
 #include "InputSystem.h"
-
+#include "SoundMaster.h"
+#include "SoundManager.h"
 
 PlayerBlockHandler::PlayerBlockHandler()
 {
@@ -207,6 +208,8 @@ void PlayerBlockHandler::Update()
 					m_pBlockObject->SetBlockSet(blockData->blockSet);
 					blockTransform->SetQuaternion(blockData->rotation);
 
+					// SE再生
+					SoundManager::PlaySE("PutBox", 1.0f, false);
 				}
 
 			}
@@ -223,6 +226,10 @@ void PlayerBlockHandler::Update()
 						GameState::GetInstance()->RemoveWorldBlock(pBlock.Get());
 
 						pBlock->GetGameObject()->Destroy();
+
+						// SE再生
+						SoundManager::PlaySE("PutBox", 1.0f, false);
+
 						break;
 					}
 				}
@@ -244,6 +251,9 @@ void PlayerBlockHandler::Update()
 
 					m_pBlockObject->SetBlockSet(BlockSetData{});
 
+					// SE再生
+					SoundManager::PlaySE("PutBox", 1.0f, false);
+
 				}
 			}
 			else {
@@ -259,6 +269,9 @@ void PlayerBlockHandler::Update()
 				GameState::GetInstance()->AppendWorldBlock(component);
 				//使った頭上のブロックは初期化
 				m_pBlockObject->SetBlockSet(BlockSetData{});
+
+				// SE再生
+				SoundManager::PlaySE("PutBox", 1.0f, false);
 			}
 
 		}

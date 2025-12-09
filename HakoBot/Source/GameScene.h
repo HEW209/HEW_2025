@@ -2,11 +2,6 @@
 
 #include <DXGameFrame.h>
 
-// ƒTƒEƒ“ƒh
-#include "SoundMaster.h"
-#include "SoundData.h"
-#include "SoundPlayer.h"
-
 class GameScene : public Scene
 {
 public:
@@ -20,6 +15,4 @@ private:
 	void CreateGridField();
 	void CreateStageSet();
 
-	WaveData bgm;
-	SoundPlayer bgmPlayer;
 };
