@@ -6,6 +6,11 @@ SoundPlayer::SoundPlayer()
 {
 }
 
+SoundPlayer::~SoundPlayer()
+{
+	StopWave();
+}
+
 //--- Waveƒtƒ@ƒCƒ‹Ä¶
 bool SoundPlayer::PlayWave(WaveData* outData, bool loop)
 {

@@ -87,14 +87,14 @@
     <ClCompile Include="Source\PlayerStretch.cpp">
       <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
-    <ClCompile Include="SoundMaster.cpp">
-      <Filter>ソース ファイル\Component</Filter>
+    <ClCompile Include="Source\SoundPlayer.cpp">
+      <Filter>ソース ファイル\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="SoundData.cpp">
-      <Filter>ソース ファイル\Component</Filter>
+    <ClCompile Include="Source\SoundMaster.cpp">
+      <Filter>ソース ファイル\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="SoundPlayer.cpp">
-      <Filter>ソース ファイル\Component</Filter>
+    <ClCompile Include="Source\SoundData.cpp">
+      <Filter>ソース ファイル\Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -167,14 +167,14 @@
     <ClInclude Include="Source\ShapeScreen.h">
       <Filter>ヘッダー ファイル\Component</Filter>
     </ClInclude>
-    <ClInclude Include="SoundMaster.h">
-      <Filter>ヘッダー ファイル\Component</Filter>
+    <ClInclude Include="Source\SoundData.h">
+      <Filter>ヘッダー ファイル\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="SoundData.h">
-      <Filter>ヘッダー ファイル\Component</Filter>
+    <ClInclude Include="Source\SoundMaster.h">
+      <Filter>ヘッダー ファイル\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="SoundPlayer.h">
-      <Filter>ヘッダー ファイル\Component</Filter>
+    <ClInclude Include="Source\SoundPlayer.h">
+      <Filter>ヘッダー ファイル\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

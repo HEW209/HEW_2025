@@ -6,6 +6,7 @@ class SoundPlayer
 {
 public:
 	SoundPlayer();
+	~SoundPlayer();
 
 	bool PlayWave(WaveData* outData, bool loop);
 	void StopWave();

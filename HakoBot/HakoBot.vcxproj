@@ -159,9 +159,6 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="SoundData.cpp" />
-    <ClCompile Include="SoundMaster.cpp" />
-    <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="Source\BlockObject.cpp" />
     <ClCompile Include="Source\GameScene.cpp" />
     <ClCompile Include="Source\GameState.cpp" />
@@ -178,12 +175,12 @@
     <ClCompile Include="Source\PlayerStretch.cpp" />
     <ClCompile Include="Source\SampleCamera.cpp" />
     <ClCompile Include="Source\ShapeScreen.cpp" />
+    <ClCompile Include="Source\SoundData.cpp" />
+    <ClCompile Include="Source\SoundMaster.cpp" />
+    <ClCompile Include="Source\SoundPlayer.cpp" />
     <ClCompile Include="Source\VecUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SoundData.h" />
-    <ClInclude Include="SoundMaster.h" />
-    <ClInclude Include="SoundPlayer.h" />
     <ClInclude Include="Source\BlockData.h" />
     <ClInclude Include="Source\BlockObject.h" />
     <ClInclude Include="Source\Config.h" />
@@ -205,6 +202,9 @@
     <ClInclude Include="Source\PlayerStretch.h" />
     <ClInclude Include="Source\SampleCamera.h" />
     <ClInclude Include="Source\ShapeScreen.h" />
+    <ClInclude Include="Source\SoundData.h" />
+    <ClInclude Include="Source\SoundMaster.h" />
+    <ClInclude Include="Source\SoundPlayer.h" />
     <ClInclude Include="Source\Vec.h" />
     <ClInclude Include="Source\VecUtil.h" />
   </ItemGroup>
