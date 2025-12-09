@@ -9,11 +9,6 @@
 #include "PlayerBlockHandler.h"
 #include "PlayerCamera.h"
 
-// サウンド
-#include "SoundMaster.h"
-#include "SoundData.h"
-#include "SoundPlayer.h"
-
 
 void GameScene::Init()
 {
@@ -106,7 +101,7 @@ void GameScene::Init()
 		obj->AddComponent<DirectionalLight>();
 		obj->GetTransform()->SetEulerAngle(50.0f, -30.0f, 0.0f);
 	}
-	WaveData bgm;
+
 
 	// Waveデータ読み込み
 	if (!SoundData::LoadWave("Assets/Sound/BGM_Stage.wav", bgm))
@@ -114,8 +109,7 @@ void GameScene::Init()
 		MessageBoxA(NULL, "BGM_Stage.wav の読み込みに失敗しました", "Sound Error", MB_OK | MB_ICONWARNING);
 	}
 	// 再生
-	SoundPlayer bgmPlayer;
-	bgmPlayer.PlayWave(&bgm, false);
+	bgmPlayer.PlayWave(&bgm, false, 1.0f);
 
 }
 

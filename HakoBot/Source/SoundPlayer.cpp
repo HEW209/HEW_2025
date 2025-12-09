@@ -12,8 +12,10 @@ SoundPlayer::~SoundPlayer()
 }
 
 //--- Waveファイル再生
-bool SoundPlayer::PlayWave(WaveData* outData, bool loop)
+bool SoundPlayer::PlayWave(WaveData* outData, bool loop, float volume)
 {
+	StopWave(); // 既存のVoiceを破棄
+
 	if (!outData) return false; // Waveファイル読み込み失敗
 
 	// XAudio2本体を取得
@@ -47,6 +49,11 @@ bool SoundPlayer::PlayWave(WaveData* outData, bool loop)
 	buffer.LoopCount = loop ? XAUDIO2_LOOP_INFINITE : 0;
 	pSourceVoice->SubmitSourceBuffer(&buffer);
 
+	// 音量設定
+	if (volume < 0.0f)volume = 0.0f;
+	if (volume > 1.0f)volume = 1.0f;
+	pSourceVoice->SetVolume(volume);
+
 	// 音を鳴らす
 	pSourceVoice->Start();
 
@@ -65,16 +72,6 @@ void SoundPlayer::StopWave()
 		// 後片付け
 		pSourceVoice->DestroyVoice();
 		pSourceVoice = nullptr;
-	}
-}
-
-void SoundPlayer::SetVolume(float volume)
-{
-	if (pSourceVoice)
-	{
-		if (volume < 0.0f)volume = 0.0f;
-		if (volume > 1.0f)volume = 1.0f;
-		pSourceVoice->SetVolume(volume);
 	}
 }
 
