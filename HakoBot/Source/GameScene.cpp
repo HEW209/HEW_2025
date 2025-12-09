@@ -123,6 +123,9 @@ void GameScene::KeyBind()
 	InputSystem::CreateButtonAction("CameraRight"_hash);
 	InputSystem::CreateAxisAction("Move"_hash);
 	InputSystem::CreateAxisAction("CameraMove"_hash);
+	InputSystem::CreateAxisAction("Clear"_hash);
+	InputSystem::CreateAxisAction("Menu"_hash);
+	InputSystem::CreateAxisAction("MenuBack"_hash);
 
 	InputSystem::BindKey("RotateBlockUp"_hash, KeyCode::UP);
 	InputSystem::BindKey("RotateBlockDown"_hash, KeyCode::DOWN);
@@ -133,6 +136,9 @@ void GameScene::KeyBind()
 	InputSystem::BindKey("Down"_hash, KeyCode::Q);
 	InputSystem::BindKey("CameraLeft"_hash, KeyCode::MOUSE_LEFT);
 	InputSystem::BindKey("CameraRight"_hash, KeyCode::MOUSE_RIGHT);
+	InputSystem::BindKey("Clear"_hash, KeyCode::X);
+	InputSystem::BindKey("Menu"_hash, KeyCode::ESC);
+	InputSystem::BindKey("MenuBack"_hash, KeyCode::A);
 	InputSystem::BindVectorKeys("Move"_hash, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
 	InputSystem::BindVectorKeys("CameraMove"_hash, KeyCode::I, KeyCode::K, KeyCode::MOUSE_LEFT, KeyCode::MOUSE_RIGHT);
 
@@ -145,6 +151,9 @@ void GameScene::KeyBind()
 	InputSystem::BindPadButton("Down"_hash, PadCode::A);
 	InputSystem::BindPadButton("CameraLeft"_hash, PadCode::LEFT_SHOULDER);
 	InputSystem::BindPadButton("CameraRight"_hash, PadCode::RIGHT_SHOULDER);
+	InputSystem::BindPadButton("Clear"_hash, PadCode::X);
+	InputSystem::BindPadButton("Menu"_hash, PadCode::START);
+	InputSystem::BindPadButton("MenuBack"_hash, PadCode::A);
 	InputSystem::BindPadStick("Move"_hash, StickCode::LEFT);
 	InputSystem::BindPadStick("CameraMove"_hash, StickCode::RIGHT);
 }

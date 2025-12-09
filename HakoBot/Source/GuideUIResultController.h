@@ -12,5 +12,7 @@ class GuideUIResultController : public Component
 	Vector3 m_defaultScale;
 private:
 	float m_value = 0;
+	bool m_menu;
+	bool m_menu2;
 };
 
