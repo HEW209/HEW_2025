@@ -1,8 +1,0 @@
-{
-    "DefaultPS": "Assets/Shader/Default_PS.cso",
-    "DefaultSpritePS": "Assets/Shader/Sprite_PS.cso",
-    "DefaultSpriteVS": "Assets/Shader/Sprite_VS.cso",
-    "DefaultTexture": "Assets/Textures/Default.png",
-    "DefaultVS": "Assets/Shader/Default_VS.cso",
-    "PixelPerUnit": 100
-}

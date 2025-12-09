@@ -104,7 +104,7 @@ public:
 
 	/**
 	 * @brief  当たり判定が接触したら呼ばれる関数
-	 *
+	 *			
 	 *			コンストラクタではなくAwake()関数で定義する事!!!!!!!!!!!!!!!
 	 *			Awake()
 	 *			{
@@ -115,7 +115,7 @@ public:
 	 *					// ↑みたいな感じで書きます
 	 *				};
 	 *			}
-	 *
+	 * 
 	 */
 	std::function<void(GameObject* other)> OnCollisionEnter;
 

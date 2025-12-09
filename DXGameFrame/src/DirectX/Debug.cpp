@@ -1,4 +1,4 @@
-// Debug.cpp
+//Debug.cpp
 #include <DirectX/Debug.h>
 
 void Debug::ErrorMessage(const std::string& message)

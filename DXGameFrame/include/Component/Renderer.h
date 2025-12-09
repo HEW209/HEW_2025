@@ -3,7 +3,7 @@
  * @brief  3D描画コンポーネントの基底クラス
  *
  * @author 石田怜
- * @date   2025/11/24
+ * @date   2025/09/22
  *********************************************************************/
 #pragma once
 
@@ -22,19 +22,4 @@ public:
 	 * @brief 描画処理
 	 */
 	virtual void Draw() = 0;
-
-	/**
-	 * @brief 透過オブジェクトかを設定する
-	 * @param transparent 透過オブジェクトフラグ
-	 */
-	void SetTransparent(bool transparent);
-
-	/**
-	 * @brief 透過オブジェクト設定を取得する
-	 * @return 透過オブジェクトならtrueを返す
-	 */
-	bool IsTransparent();
-
-private:
-	bool m_isTransparent;
 };

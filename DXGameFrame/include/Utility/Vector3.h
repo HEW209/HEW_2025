@@ -1,17 +1,19 @@
-/******************************************************************//**
+/*****************************************************************//**
  * @file   Vector3.h
  * @brief  三次元ベクトルを扱う
- * 
+ *
  * @author 石田怜
- * @date   2025/11/23
+ * @date   2025/09/15
  *********************************************************************/
 #pragma once
 
+#include "MathUtil.h"
 #include <DirectX/DirectXInclude.h>
+#include <cassert>
 
- /**
-  * @brief 三次元ベクトルを扱う
-  */
+/**
+ * @brief 三次元ベクトルを扱う
+ */
 class Vector3
 {
 public:
@@ -29,21 +31,67 @@ public:
 	float z;
 
 	//比較・代入
-	Vector3& operator=(const Vector3& other);
-	bool operator==(const Vector3& other) const;
-	bool operator!=(const Vector3& other) const;
+	Vector3& operator=(const Vector3& other)
+	{
+		x = other.x;
+		y = other.y;
+		z = other.z;
+		return *this;
+	}
+	bool operator==(const Vector3& other) const
+	{
+		return MathUtil::Approximately(x, other.x) &&
+			MathUtil::Approximately(y, other.y) &&
+			MathUtil::Approximately(z, other.z);
+	}
+	bool operator!=(const Vector3& other) const
+	{
+		return !(*this == other);
+	}
 
 	//加算・減算
-	Vector3 operator+(const Vector3& other) const;
-	Vector3 operator-(const Vector3& other) const;
-	Vector3& operator+=(const Vector3& other);
-	Vector3& operator-=(const Vector3& other);
+	Vector3 operator+(const Vector3& other) const
+	{
+		return Vector3(x + other.x, y + other.y, z + other.z);
+	}
+	Vector3 operator-(const Vector3& other) const
+	{
+		return Vector3(x - other.x, y - other.y, z - other.z);
+	}
+	Vector3& operator+=(const Vector3& other)
+	{
+		*this = *this + other;
+		return *this;
+	}
+	Vector3& operator-=(const Vector3& other)
+	{
+		*this = *this - other;
+		return *this;
+	}
 
 	//スカラー
-	Vector3 operator*(float scalar) const;
-	Vector3 operator/(float scalar) const;
-	Vector3& operator*=(float scalar);
-	Vector3& operator/=(float scalar);
+	Vector3 operator*(float scalar) const
+	{
+		return Vector3(x * scalar, y * scalar, z * scalar);
+	}
+	Vector3 operator/(float scalar) const
+	{
+		assert(scalar != 0.0f);				//Debugでは強制終了
+		if (scalar == 0.0f)
+			return Vector3::zero;			//Releaseではゼロベクトルを返す
+
+		return Vector3(x / scalar, y / scalar, z / scalar);
+	}
+	Vector3& operator*=(float scalar)
+	{
+		*this = *this * scalar;
+		return *this;
+	}
+	Vector3& operator/=(float scalar)
+	{
+		*this = *this / scalar;
+		return *this;
+	}
 
 	/**
 	 * @brief xyz成分をセットする
@@ -51,7 +99,12 @@ public:
 	 * @param newY セットするy成分
 	 * @param newZ セットするz成分
 	 */
-	void SetVector(float newX, float newY, float newZ);
+	void SetVector(float newX, float newY, float newZ)
+	{
+		x = newX;
+		y = newY;
+		z = newZ;
+	}
 
 	/**
 	 * @brief ベクトルの長さを取得する

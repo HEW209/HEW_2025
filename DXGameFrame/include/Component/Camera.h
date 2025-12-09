@@ -1,19 +1,18 @@
 /*****************************************************************//**
  * @file   Camera.h
  * @brief  カメラ情報を扱う
- *
+ * 
  * @author 石田怜
- * @date   2025/11/24
+ * @date   2025/10/25
  *********************************************************************/
 #pragma once
 
 #include <GameFrame/Component.h>
 #include <DirectX/DirectXInclude.h>
-#include <Utility/Vector2.h>
 
- /**
-  * @brief カメラ情報を扱う
-  */
+/**
+ * @brief カメラ情報を扱う
+ */
 class Camera : public Component
 {
 public:
@@ -23,47 +22,49 @@ public:
 	/// カメラ設定
 	struct Config
 	{
-		float fovAngle = 60.0f;						// 視野角
-		Vector2 screenSize = { 1280.0f, 720.0f };	// 画面サイズ
-		float nearZ = 0.1f;							// 最近距離
-		float farZ = 1000.0f;						// 最遠距離
-		float cameraScale = 1.0f;					// カメラスケール (平行投影で使用)
+		float fovAngle = 60.0f;					// 視野角
+		float screenRatio = 16.0f / 9.0f;		// 画面比率
+		float nearZ = 0.1f;						// 最近距離
+		float farZ = 1000.0f;					// 最遠距離
 	};
 
 	/**
 	 * @brief カメラ設定を行う
 	 * @param fov カメラ設定情報
 	 */
-	void SetConfig(Config config);
+	void SetConfig(Config config)
+	{
+		m_config = config;
+	}
 
 	/**
-	 * @brief 現在のカメラ設定を取得する
+	 * @brief カメラ設定を取得する
 	 * @return カメラ設定
 	 */
-	Config GetConfig();
+	Config GetConfig()
+	{
+		return m_config;
+	}
 
 	/**
 	 * @brief このカメラをメインカメラに設定する
 	 */
-	void SetMain();
+	void SetMain()
+	{
+		s_pMainCamera = this;
+	}
 
 	/**
 	 * @brief このカメラからビュー行列を作成する
-	 * @return ビュー行列
+	 * @return このカメラのビュー行列
 	 */
-	DirectX::XMMATRIX GetViewMatrix();
+	DirectX::XMFLOAT4X4 GetViewMatrix();
 
 	/**
 	 * @brief このカメラからプロジェクション行列を作成する
-	 * @return プロジェクション行列
+	 * @return このカメラのプロジェクション行列
 	 */
-	DirectX::XMMATRIX GetProjectionMatrix();
-
-	/**
-	 * @brief このカメラから平行投影プロジェクション行列を作成する
-	 * @return プロジェクション行列
-	 */
-	DirectX::XMMATRIX GetOrthographicProjectionMatrix();
+	DirectX::XMFLOAT4X4 GetProjectionMatrix();
 
 private:
 	/// カメラ設定
@@ -74,13 +75,10 @@ public:
 	 * @brief メインカメラを取得する
 	 * @return メインカメラへのポインタ
 	 */
-	static Camera* GetMain();
-
-	/**
-	 * @brief デフォルトビュー行列を取得する
-	 * @return デフォルトビュー行列
-	 */
-	static DirectX::XMMATRIX GetDefaultViewMatrix();
+	static Camera* GetMain()
+	{
+		return s_pMainCamera;
+	}
 
 private:
 	/// メインカメラへのポインタ

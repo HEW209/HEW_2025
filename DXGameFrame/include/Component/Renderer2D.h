@@ -3,7 +3,7 @@
  * @brief  2D描画コンポーネントの基底クラス
  *
  * @author 石田怜
- * @date   2025/11/24
+ * @date   2025/09/22
  *********************************************************************/
 #pragma once
 
@@ -27,30 +27,21 @@ public:
 	 * @brief 現在の描画優先度を取得する
 	 * @return 描画優先度 (大きいほど上に表示される)
 	 */
-	int GetOrder() const;
+	int GetOrder() const
+	{
+		return m_drawOrder;
+	}
 
 	/**
 	 * @brief 描画優先度を設定する
 	 * @param order 描画優先度 (大きいほど上に表示される)
 	 */
-	void SetOrder(int order);
-
-	/**
-	 * @brief このRendererをUI用として扱うか設定する
-	 * @param isUI UI設定フラグ
-	 */
-	void SetUI(bool isUI);
-
-	/**
-	 * @brief このRendererがUIかを取得する
-	 * @return UIならtrueを返す
-	 */
-	bool IsUI();
+	void SetOrder(int order)
+	{
+		m_drawOrder = order;
+	}
 
 private:
 	/// 描画優先度
 	int m_drawOrder;
-
-	/// UIフラグ
-	bool m_isUI;
 };

@@ -71,6 +71,7 @@ HRESULT VertexShader::CreateInputLayout(const char* data, int dataSize)
 	HRESULT hr;		// 関数の結果
 
 	ComPtr<ID3D11ShaderReflection> reflection;	// シェーダーの反射インターフェース
+	reflection = nullptr;
 
 	// シェーダーの反射インターフェースを取得
 	hr = D3DReflect(
@@ -162,7 +163,7 @@ HRESULT VertexShader::CreateInputLayout(const char* data, int dataSize)
 		shaderDesc.InputParameters,
 		data,
 		dataSize,
-		m_pInputLayout.GetAddressOf()
+		&m_pInputLayout
 	);
 
 	// メモリ解放

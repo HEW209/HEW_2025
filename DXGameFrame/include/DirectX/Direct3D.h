@@ -1,68 +1,67 @@
-/******************************************************************//**
+/*****************************************************************//**
  * @file   Direct3D.h
  * @brief  Direct3Dを扱う
  * 
  * @author 石田怜
- * @date   2025/11/21
+ * @date   2025/09/15
  *********************************************************************/
 #pragma once
 
 #include "DirectXInclude.h"
+#include <Utility/Color.h>
 
 /**
  * @brief Direct3Dを扱う
  */
 class Direct3D
 {
-public:
+public:	
 	/**
 	 * @brief DirectXの初期化を行う
 	 * @param hWnd ウィンドウハンドル
-	 * @param width クライアント領域の幅
-	 * @param height クライアント領域の高さ
-	 * @return 成功したかを返す
+	 * @param width 画面の幅
+	 * @param height 画面の高さ
+	 * @param fullScreen フルスクリーンモード
+	 * @return 初期化が成功したかを返す
 	 */
-	HRESULT Init(HWND hWnd, UINT width, UINT height);
+	HRESULT Init(HWND hWnd, UINT width, UINT height, BOOL fullScreen);
 
 	/**
-	 * @brief DirectXの終了処理
+	 * @brief 終了処理を行う
 	 */
 	void Uninit();
-
-	/**
-	 * @brief ウィンドウサイズが変更時に呼ぶ処理
-	 * @param width クライアント領域の幅
-	 * @param height クライアント領域の高さ
-	 * @return 成功したかを返す
-	 */
-	HRESULT Resize(UINT width, UINT height);
-
+	
 	/**
 	 * @brief 描画を開始する
 	 * @param clearColor 画面クリア色
 	 */
-	void BeginDraw(const float clearColor[4]);
+	void BeginDraw(Color clearColor);
 
 	/**
 	 * @brief 描画を終了する
 	 */
-	void Present();
-
+	void EndDraw();
+	 
 	/**
 	 * @brief Direct3Dデバイスを取得する
-	 * @return デバイスへのポインタ
+	 * @return Direct3Dデバイスへのポインタ
 	 */
-	ID3D11Device* GetDevice() const;
+	ID3D11Device* GetDevice()
+	{
+		return m_pDevice.Get();
+	}
 
 	/**
-	 * @brief Direct3Dデバイスコンテクストを取得する
-	 * @return デバイスコンテクストへのポインタ
+	 * @brief デバイスコンテキストを取得する
+	 * @return デバイスコンテキストへのポインタ
 	 */
-	ID3D11DeviceContext* GetContext() const;
+	ID3D11DeviceContext* GetContext()
+	{
+		return m_pContext.Get();
+	}
 
 private:
 	Direct3D();
-	~Direct3D() = default;
 
 	/// Direct3Dデバイス
 	ComPtr<ID3D11Device> m_pDevice;
@@ -85,19 +84,12 @@ private:
 	/**
 	 * @brief デバイス・デバイスコンテキスト・スワップチェインを作成する
 	 * @param hWnd ウィンドウハンドル
-	 * @param width クライアント領域の幅
-	 * @param height クライアント領域の高さ
+	 * @param width 画面の幅
+	 * @param height 画面の高さ
+	 * @param fullScreen フルスクリーンモード
 	 * @return 成功したかを返す
 	 */
-	HRESULT CreateDeviceAndSwapChain(HWND hWnd, UINT width, UINT height);
-
-	/**
-	 * @brief レンダーターゲットビュー・深度ステンシルビューを作成しセットする
-	 * @param width クライアント領域の幅
-	 * @param height クライアント領域の高さ
-	 * @return 成功したかを返す
-	 */
-	HRESULT CreateRenderTargets(UINT width, UINT height);
+	HRESULT CreateDeviceAndSwapChain(HWND hWnd, UINT width, UINT height, BOOL fullScreen);
 
 	/**
 	 * @brief レンダーターゲットビューを作成する
@@ -107,42 +99,27 @@ private:
 
 	/**
 	 * @brief 深度ステンシルビューを作成する
-	 * @param width クライアント領域の幅
-	 * @param height クライアント領域の高さ
+	 * @param width 画面の幅
+	 * @param height 画面の高さ
 	 * @return 成功したかを返す
 	 */
 	HRESULT CreateDepthStencilView(UINT width, UINT height);
-
+	
 	/**
-	 * @brief ビューポート設定を行う
-	 * @param width クライアント領域の幅
-	 * @param height クライアント領域の高さ
+	 * @brief ビューポートの設定を行う
+	 * @param width 画面の幅
+	 * @param height 画面の高さ
 	 */
 	void SetViewPort(UINT width, UINT height);
 
-	/**
-	 * @brief スワップチェインのサイズを再設定する
-	 * @param width クライアント領域の幅
-	 * @param height クライアント領域の高さ
-	 * @return 成功したかを返す
-	 */
-	HRESULT ResizeSwapChain(UINT width, UINT height);
-
-	/**
-	 * @brief DirectX描画関連クラスをまとめて初期化する
-	 * @return 成功したかを返す
-	 */
-	HRESULT InitAllRenderSystems();
-
-	/**
-	 * @brief DirectX描画関連クラスをまとめて解放する
-	 */
-	void UninitAllRenderSystems();
-
-public:
+public:	
 	/**
 	 * @brief 唯一のインスタンスを取得する
 	 * @return Direct3Dインスタンスへの参照
 	 */
-	static Direct3D& Instance();
+	static Direct3D& Instance()
+	{
+		static Direct3D s_instance;
+		return s_instance;
+	}
 };

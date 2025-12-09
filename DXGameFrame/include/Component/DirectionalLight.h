@@ -1,7 +1,7 @@
 /******************************************************************//**
  * @file   DirectionalLight.h
  * @brief  指向性ライト情報を扱う
- *
+ * 
  * @author 石田怜
  * @date   2025/11/13
  *********************************************************************/
@@ -9,7 +9,7 @@
 
 #include <GameFrame/Component.h>
 #include <Utility/Color.h>
-#include <DirectX/ConstantBufferManager.h>
+#include <DirectX/ConstantBuffer.h>
 
  /**
   * @brief 指向性ライト情報を扱う
@@ -23,31 +23,34 @@ public:
 	/**
 	 * @brief このライトをメインライトに設定する
 	 */
-	void SetMain();
+	void SetMain()
+	{
+		s_pMainLight = this;
+	}
 
 	/**
 	 * @brief 光源色を設定する
 	 * @param color 光源色
 	 */
-	void SetLightColor(Color color);
+	void SetLightColor(Color color)
+	{
+		m_lightColor = color;
+	}
 
 	/**
 	 * @brief ライト情報を取得する
 	 * @return 定数バッファ用ライト情報
 	 */
-	LightConstantBuffer GetLightCB();
+	ConstantBuffer::Light GetLightData();
 
 	/**
 	 * @brief 環境光を設定する
 	 * @param color 環境光色
 	 */
-	void SetAmbientColor(Color color);
-
-	/**
-	 * @brief ライトの強さを設定する
-	 * @param intensity ライト強度 (デフォルト1)
-	 */
-	void SetLightIntensity(float intensity);
+	void SetAmbientColor(Color color)
+	{
+		m_ambientColor = color;
+	}
 
 private:
 	/// 光源カラー
@@ -56,15 +59,15 @@ private:
 	/// 環境光
 	Color m_ambientColor;
 
-	/// ライトの強さ
-	float m_lightIntensity;
-
 public:
 	/**
 	 * @brief メインライトを取得する
 	 * @return メインライトへのポインタ
 	 */
-	static DirectionalLight* GetMain();
+	static DirectionalLight* GetMain()
+	{
+		return s_pMainLight;
+	}
 
 private:
 	/// メインライトへのポインタ

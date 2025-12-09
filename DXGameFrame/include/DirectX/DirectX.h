@@ -1,16 +1,16 @@
-/******************************************************************//**
+/*****************************************************************//**
  * @file   DirectX.h
  * @brief  DirectX関連機能をまとめて使用する
  * 
  * @author 石田怜
- * @date   2025/11/22
+ * @date   2025/10/25
  *********************************************************************/
 #pragma once
 
 #include "Direct3D.h"
 #include "Debug.h"
-#include "ConfigManager.h"
-#include "PipelineStateManager.h"
-#include "ShaderManager.h"
+#include "PipelineState.h"
 #include "TextureManager.h"
-#include "ConstantBufferManager.h"
+#include "ShaderManager.h"
+#include "ModelManager.h"
+#include "Geometry.h"

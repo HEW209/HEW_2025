@@ -6,8 +6,7 @@ DirectionalLight* DirectionalLight::s_pMainLight = nullptr;
 
 DirectionalLight::DirectionalLight() :
 	m_lightColor(1.0f, 1.0f, 1.0f, 1.0f),
-	m_ambientColor(0.5f, 0.5f, 0.5f, 0.5f),
-	m_lightIntensity(1.0f)
+	m_ambientColor(0.5f, 0.5f, 0.5f, 0.5f)
 {
 	if (s_pMainLight == nullptr)
 	{
@@ -23,39 +22,12 @@ DirectionalLight::~DirectionalLight()
 	}
 }
 
-void DirectionalLight::SetMain()
+ConstantBuffer::Light DirectionalLight::GetLightData()
 {
-	s_pMainLight = this;
-}
-
-void DirectionalLight::SetLightColor(Color color)
-{
-	m_lightColor = color;
-}
-
-LightConstantBuffer DirectionalLight::GetLightCB()
-{
-	// ライト定数バッファ用データを作成
-	LightConstantBuffer lightCB = {};
+	ConstantBuffer::Light setting = {};
 	Vector3 lightDir = GetTransform()->GetQuaternion() * Vector3::forward;
-	lightCB.lightDir = { lightDir.x, lightDir.y, lightDir.z };
-	lightCB.lightIntensity = m_lightIntensity;
-	lightCB.lightColor = { m_lightColor.r, m_lightColor.g, m_lightColor.b };
-	lightCB.ambientColor = { m_ambientColor.r, m_ambientColor.g, m_ambientColor.b };
-	return lightCB;
-}
-
-void DirectionalLight::SetAmbientColor(Color color)
-{
-	m_ambientColor = color;
-}
-
-void DirectionalLight::SetLightIntensity(float intensity)
-{
-	m_lightIntensity = intensity;
-}
-
-DirectionalLight* DirectionalLight::GetMain()
-{
-	return s_pMainLight;
+	setting.lightDir = { lightDir.x, lightDir.y, lightDir.z };
+	setting.lightColor = { m_lightColor.r, m_lightColor.g, m_lightColor.b };
+	setting.ambientColor = { m_ambientColor.r,m_ambientColor.g,m_ambientColor.b };
+	return setting;
 }

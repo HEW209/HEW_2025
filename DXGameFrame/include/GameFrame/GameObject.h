@@ -1,12 +1,12 @@
 /*****************************************************************//**
  * @file   GameObject.h
  * @brief  ゲーム内のオブジェクト
- *
+ * 
  * コンポーネントを保持し、シーン上での状態管理や更新処理を行う
  * コンポーネントの追加・取得・削除などを行う
- *
+ * 
  * @author 石田怜
- * @date   2025/11/23
+ * @date   2025/09/10
  *********************************************************************/
 #pragma once
 
@@ -28,7 +28,7 @@ public:
 	~GameObject();
 
 	/**
-	 * @brief コンポーネントを取得する
+	 * @brief ★コンポーネントを取得する
 	 * @note 継承元のクラスそ指定した場合、継承先のクラスも検索対象になります
 	 * 例：Colliderコンポーネントを指定した場合、BoxColliderやSphereColliderも検索対象になる
 	 * @return 取得したコンポーネントへのポインタ
@@ -38,48 +38,48 @@ public:
 	T* GetComponent();
 
 	/**
-	 * @brief コンポーネントを追加する
+	 * @brief ★コンポーネントを追加する
 	 * @return 追加したコンポーネントへのポインタ
 	 */
 	template<typename T>
 	T* AddComponent();
 
 	/**
-	 * @brief コンポーネントを削除する
-	 * 削除対象が複数存在する場合は、最初に見つかったものを削除する
-	 * @note 継承元のクラスそ指定した場合、継承先のクラスも削除対象になります
-	 * 例：Colliderコンポーネントを指定した場合、BoxColliderやSphereColliderも削除対象になる
+	 * @brief ★コンポーネントを削除する
 	 * @return 削除できた場合trueを返す
 	 */
 	template<typename T>
 	bool RemoveComponent();
 
 	/**
-	 * @brief Transformコンポーネントを取得する
+	 * @brief ★Transformコンポーネントを取得する
 	 * @return このゲームオブジェクトが持つTransformコンポーネントへのポインタ
 	 */
-	Transform* GetTransform() const;
+	Transform* GetTransform()
+	{
+		return m_pTransform;
+	}
 
 	/**
 	 * @brief このゲームオブジェクトの有効状態を設定する
 	 * @param isActive 設定する有効状態
 	 */
-	void SetActive(bool isActive);
+	void SetActive(bool isActive)
+	{
+		m_isActive = isActive;
+	}
 
 	/**
-	 * @brief このゲームオブジェクト自身の有効状態を取得する
-	 * @return このゲームオブジェクト自身の有効状態
+	 * @brief このゲームオブジェクトの有効状態を取得する
+	 * @return このゲームオブジェクトの有効状態
 	 */
-	bool IsActiveSelf() const;
+	bool IsActive()
+	{
+		return m_isActive;
+	}
 
 	/**
-	 * @brief 親子関係を考慮した有効状態を取得する
-	 * @return ヒエラルキー上の有効状態
-	 */
-	bool IsActiveHierarchy() const;
-
-	/**
-	 * @brief このゲームオブジェクトを削除する
+	 * @brief ★このゲームオブジェクトを削除する
 	 * @details 実際の削除は全ての更新処理の終了時に安全に行われます
 	 */
 	void Destroy();
@@ -103,17 +103,17 @@ private:
 	/**
 	 * @brief 未実行のコンポーネントの開始処理を呼び出す
 	 */
-	void StartAllComponent();
+	void Start();
 
 	/**
 	 * @brief 全てのコンポーネントの更新処理を行う
 	 */
-	void UpdateAllComponent();
+	void Update();
 
 	/**
 	 * @brief 全てのコンポーネントの遅延更新処理を行う
 	 */
-	void LateUpdateAllComponent();
+	void LateUpdate();
 
 	/**
 	 * @brief 全てのコンポーネントの削除時処理を呼び出す
@@ -129,7 +129,10 @@ private:
 	 * @brief このゲームオブジェクトの削除フラグを取得する
 	 * @return このゲームオブジェクトの削除フラグ
 	 */
-	bool IsDestroyed() const;
+	bool IsDestroyed()
+	{
+		return m_destroyed;
+	}
 };
 
 template<typename T>

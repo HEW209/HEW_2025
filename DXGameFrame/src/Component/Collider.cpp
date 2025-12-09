@@ -1,9 +1,9 @@
 // Collider.cpp
 
 #include <Component/Collider.h>
-#include <GameFrame/ColliderSystem.h>
+#include <System/ColliderSystem.h>
 
-Collider::Collider() :Component::Component(), OnCollisionEnter(nullptr), IsStatic(true)
+Collider::Collider():Component::Component(), OnCollisionEnter(nullptr),IsStatic(true)
 {
 	// collider‚ð‚Ü‚Æ‚ß‚é”z—ñ‚É’Ç‰Á
 	ColliderSystem::Instance().Register(this);

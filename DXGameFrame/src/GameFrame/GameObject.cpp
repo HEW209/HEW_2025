@@ -1,4 +1,4 @@
-// GameObject.cpp
+//GameObject.cpp
 #include <GameFrame/GameObject.h>
 #include <GameFrame/Transform.h>
 
@@ -8,8 +8,8 @@ GameObject::GameObject(Scene* pScene) :
 	m_isActive(true),
 	m_destroyed(false)
 {
-	// Transformコンポーネントの追加
-	auto transform = std::make_unique<Transform>();
+	//Transformコンポーネントの追加
+	auto transform = std::make_unique<Transform>(this);
 	m_pTransform = transform.get();
 	m_components.emplace_back(std::move(transform));
 	m_pTransform->SetGameObject(this);
@@ -17,45 +17,18 @@ GameObject::GameObject(Scene* pScene) :
 
 GameObject::~GameObject()
 {
-	// コンポーネントをクリアしてから削除
 	m_components.clear();
 }
 
-Transform* GameObject::GetTransform() const
+void GameObject::Start()
 {
-	return m_pTransform;
-}
+	std::vector<Component*> comBuffer;			//操作するコンポーネントへのポインタリスト
 
-void GameObject::SetActive(bool isActive)
-{
-	m_isActive = isActive;
-}
-
-bool GameObject::IsActiveSelf() const
-{
-	return m_isActive;
-}
-
-bool GameObject::IsActiveHierarchy() const
-{
-	// 親がないまたは非アクティブの場合再帰処理を終了
-	Transform* pParent = GetTransform()->GetParent();
-	if (pParent == nullptr || m_isActive == false)
-		return m_isActive;
-
-	// 再帰的に有効状態を求める
-	return pParent->GetGameObject()->IsActiveHierarchy();
-}
-
-void GameObject::StartAllComponent()
-{
-	std::vector<Component*> comBuffer;		// 操作するコンポーネントへのポインタリスト
-
-	// 先にメモリを確保しておく
+	//先にメモリを確保しておく
 	comBuffer.reserve(m_components.size());
 
-	// コンポーネントの処理中に新しいコンポーネントが作成される可能性があるため、
-	// 操作するコンポーネントへの参照を作成してから処理を行う
+	//コンポーネントの処理中に新しいコンポーネントが作成される可能性があるため、
+	//操作するコンポーネントへの参照を作成してから処理を行う
 	for (auto& com : m_components)
 	{
 		if (com->IsStarted())
@@ -64,7 +37,7 @@ void GameObject::StartAllComponent()
 		comBuffer.emplace_back(com.get());
 	}
 
-	// 全ての追加したコンポーネントの開始処理を呼びだす
+	//全ての追加したコンポーネントの開始処理を呼びだす
 	for (auto* com : comBuffer)
 	{
 		if (!com->IsEnabled())
@@ -75,14 +48,14 @@ void GameObject::StartAllComponent()
 	}
 }
 
-void GameObject::UpdateAllComponent()
+void GameObject::Update()
 {
-	std::vector<Component*> comBuffer;		// 操作するコンポーネントへのポインタリスト
+	std::vector<Component*> comBuffer;		//操作するコンポーネントへのポインタリスト
 
-	// 先にメモリを確保しておく
+	//先にメモリを確保しておく
 	comBuffer.reserve(m_components.size());
 
-	// 操作するコンポーネントへの参照を作成
+	//操作するコンポーネントへの参照を作成
 	for (auto& com : m_components)
 	{
 		if (!com->IsStarted())
@@ -91,7 +64,7 @@ void GameObject::UpdateAllComponent()
 		comBuffer.emplace_back(com.get());
 	}
 
-	// 全てのコンポーネントのUpdateメソッドを呼びだす
+	//全てのコンポーネントのUpdateメソッドを呼びだす
 	for (auto* com : comBuffer)
 	{
 		if (!com->IsEnabled())
@@ -101,14 +74,14 @@ void GameObject::UpdateAllComponent()
 	}
 }
 
-void GameObject::LateUpdateAllComponent()
+void GameObject::LateUpdate()
 {
-	std::vector<Component*> comBuffer;		// 操作するコンポーネントへのポインタリスト
+	std::vector<Component*> comBuffer;		//操作するコンポーネントへのポインタリスト
 
-	// 先にメモリを確保しておく
+	//先にメモリを確保しておく
 	comBuffer.reserve(m_components.size());
 
-	// 操作するコンポーネントへの参照を作成
+	//操作するコンポーネントへの参照を作成
 	for (auto& com : m_components)
 	{
 		if (!com->IsStarted())
@@ -117,7 +90,7 @@ void GameObject::LateUpdateAllComponent()
 		comBuffer.emplace_back(com.get());
 	}
 
-	// 全てのコンポーネントのLateUpdateメソッドを呼びだす
+	//全てのコンポーネントのLateUpdateメソッドを呼びだす
 	for (auto* com : comBuffer)
 	{
 		if (!com->IsEnabled())
@@ -150,12 +123,12 @@ void GameObject::Destroy()
 
 void GameObject::ApplyRemoveComponent()
 {
-	std::vector<Component*> comBuffer;		// 操作するコンポーネントへのポインタリスト
+	std::vector<Component*> comBuffer;		//操作するコンポーネントへのポインタリスト
 
-	// 先にメモリを確保しておく
+	//先にメモリを確保しておく
 	comBuffer.reserve(m_components.size());
 
-	// 削除対象コンポーネントへの参照を作成
+	//削除対象コンポーネントへの参照を作成
 	for (auto& com : m_components)
 	{
 		if (!com->IsDestroyed())
@@ -164,21 +137,16 @@ void GameObject::ApplyRemoveComponent()
 		comBuffer.emplace_back(com.get());
 	}
 
-	// 削除時処理の実行と削除を行う
+	//削除時処理の実行と削除を行う
 	for (auto* com : comBuffer)
 	{
 		com->OnDestroy();
 
-		// 削除対象の実体を検索
+		//削除対象の実体を検索
 		auto it = std::find_if(m_components.begin(), m_components.end(),
 			[com](const std::unique_ptr<Component>& ptr) { return ptr.get() == com; });
 
 		if (it != m_components.end())
 			m_components.erase(it);
 	}
-}
-
-bool GameObject::IsDestroyed() const
-{
-	return m_destroyed;
 }

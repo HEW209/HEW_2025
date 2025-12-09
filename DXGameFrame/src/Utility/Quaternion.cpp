@@ -1,7 +1,7 @@
-// Quaternion.cpp
+//Quaternion.cpp
 #include <Utility/Quaternion.h>
-#include <Utility/Math.h>
-#include <cmath>
+#include <Utility/MathUtil.h>
+#include <math.h>
 
 const Quaternion Quaternion::identity(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -15,55 +15,14 @@ Quaternion::Quaternion(float x, float y, float z, float w) :
 {
 }
 
-Quaternion Quaternion::operator=(const Quaternion& q)
-{
-    x = q.x;
-    y = q.y;
-    z = q.z;
-    w = q.w;
-    return *this;
-}
-
-Quaternion Quaternion::operator*(const Quaternion& q) const
-{
-    return Quaternion(
-        w * q.x + x * q.w + y * q.z - z * q.y,
-        w * q.y - x * q.z + y * q.w + z * q.x,
-        w * q.z + x * q.y - y * q.x + z * q.w,
-        w * q.w - x * q.x - y * q.y - z * q.z
-    );
-}
-
-Quaternion Quaternion::operator*=(const Quaternion& q)
-{
-    *this = *this * q;
-    return *this;
-}
-
-Vector3 Quaternion::operator*(const Vector3& v) const
-{
-    Quaternion qv(v.x, v.y, v.z, 0);
-    Quaternion inv(-x, -y, -z, w);
-    Quaternion res = (*this) * qv * inv;
-    return Vector3(res.x, res.y, res.z);
-}
-
-void Quaternion::SetQuaternion(float newX, float newY, float newZ, float newW)
-{
-    x = newX;
-    y = newY;
-    z = newZ;
-    w = newW;
-}
-
 Quaternion Quaternion::Normalized() const
 {
-    // クォータニオンの長さを求める
+    //クォータニオンの長さを求める
     float mag = sqrtf(x * x + y * y + z * z + w * w);
     if (mag == 0.0f)
         return Quaternion::identity;
 
-    // 正規化クォータニオンを求める
+    //正規化クォータニオンを求める
     float invMag = 1.0f / mag;
     return Quaternion(x * invMag, y * invMag, z * invMag, w * invMag);
 }
@@ -72,58 +31,33 @@ Vector3 Quaternion::ToEuler() const
 {
     Vector3 euler;
 
+    // roll(Z)
+    float sinr_cosp = 2.0f * (w * z + x * y);
+    float cosr_cosp = 1.0f - 2.0f * (y * y + z * z);
+    float roll = atan2f(sinr_cosp, cosr_cosp);
+
     // pitch(X)
     float sinp = 2.0f * (w * x - y * z);
     float pitch;
-    pitch = asinf(sinp);
+    if (fabs(sinp) >= 1)
+        pitch = copysignf(DirectX::XM_PIDIV2, sinp); // 90度クランプ
+    else
+        pitch = asinf(sinp);
 
     // yaw(Y)
-    float yaw;
-    if (fabsf(cos(pitch)) > Math::Epsilon)
-    {
-        float y1 = 2.0f * (x * z + y * w);
-        float y2 = 2.0f * (w * w + z * z) - 1.0f;
-        yaw = atan2f(y1, y2);
-    }
-    else
-    {
-        float y1 = -2.0f * (x * z - y * w);
-        float y2 = 2.0f * (w * w + x * x) - 1.0f;
-        yaw = atan2f(y1, y2);
-    }
-
-    // roll(Z)
-    float roll;
-    if (fabsf(cos(pitch)) > Math::Epsilon)
-    {
-        float z1 = 2.0f * (x * y + z * w);
-        float z2 = 2.0f * (w * w + y * y) - 1.0f;
-        roll = atan2f(z1, z2);
-    }
-    else
-    {
-        roll = 0.0f;
-    }
+    float siny_cosp = 2.0f * (w * y + z * x);
+    float cosy_cosp = 1.0f - 2.0f * (x * x + y * y);
+    float yaw = atan2f(siny_cosp, cosy_cosp);
 
     //デグリーに変換
-    euler.x = Math::RadToDeg(pitch);
-    euler.y = Math::RadToDeg(yaw);
-    euler.z = Math::RadToDeg(roll);
+    euler.x = MathUtil::RadToDeg(pitch);
+    euler.y = MathUtil::RadToDeg(yaw);
+    euler.z = MathUtil::RadToDeg(roll);
 
     return euler;
 }
 
-Quaternion Quaternion::Inverse() const
-{
-    DirectX::XMVECTOR inv;
-    inv = DirectX::XMQuaternionInverse(this->ToXMVector());
-
-    DirectX::XMFLOAT4 f;
-    DirectX::XMStoreFloat4(&f, inv);
-    return Quaternion(f.x, f.y, f.z, f.w);
-}
-
-DirectX::XMVECTOR Quaternion::ToXMVector() const
+DirectX::XMVECTOR Quaternion::ToXMVector()
 {
     return DirectX::XMVectorSet(x, y, z, w);
 }
@@ -135,12 +69,12 @@ Quaternion Quaternion::Euler(Vector3 euler)
 
 Quaternion Quaternion::Euler(float x, float y, float z)
 {
-    // ラジアンに変換
-    float rad_x = Math::DegToRad(x);
-    float rad_y = Math::DegToRad(y);
-    float rad_z = Math::DegToRad(z);
+    //ラジアンに変換
+    float rad_x = MathUtil::DegToRad(x);
+    float rad_y = MathUtil::DegToRad(y);
+    float rad_z = MathUtil::DegToRad(z);
 
-    // 計算に使用するsin・cosを求める
+    //sin・cosを求める
     float cx = cosf(rad_x * 0.5f);
     float sx = sinf(rad_x * 0.5f);
     float cy = cosf(rad_y * 0.5f);
@@ -148,8 +82,8 @@ Quaternion Quaternion::Euler(float x, float y, float z)
     float cz = cosf(rad_z * 0.5f);
     float sz = sinf(rad_z * 0.5f);
 
-    // クォータニオンを求める
-    // 回転の適用順はZ→X→YなのでY×X×Zになる
+    //クォータニオンを求める
+    //式は (qz * qx * qy) をまとめて展開したものです
     Quaternion q;
     q.x = sx * cy * cz + cx * sy * sz;
     q.y = cx * sy * cz - sx * cy * sz;

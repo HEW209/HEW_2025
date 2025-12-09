@@ -1,7 +1,7 @@
 // MeshRenderer.cpp
 #include <Component/MeshRenderer.h>
 #include <DirectX/ModelManager.h>
-#include <DirectX/ConstantBufferManager.h>
+#include <DirectX/ConstantBuffer.h>
 #include <GameFrame/Transform.h>
 #include <DirectX/Geometry.h>
 
@@ -17,9 +17,10 @@ void MeshRenderer::Draw()
 		return;
 
 	// Transformからワールド行列をセット
-	DirectX::XMMATRIX matrix;
-	matrix = GetTransform()->GetWorldMatrix();
-	ConstantBufferManager::Instance().SetWorld(matrix);
+	DirectX::XMFLOAT4X4 matrix;
+	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixTranspose(
+		GetTransform()->GetWorldMatrix()));
+	ConstantBuffer::Instance().SetWorld(matrix);
 
 	// モデル描画処理
 	m_pModel->Draw(m_materials);
@@ -34,24 +35,22 @@ void MeshRenderer::LoadModel(const std::string& filePath)
 	m_materials = m_pModel->GetMaterials();
 }
 
-UINT MeshRenderer::GetMaterialNum()
-{
-	return (UINT)m_materials.size();
-}
-
-Material MeshRenderer::GetMaterial(UINT slot)
+Material* MeshRenderer::GetMaterial(UINT slot)
 {
 	if (slot < 0 || slot >= m_materials.size())
-		return Material();
+		return nullptr;
 
-	return m_materials[slot];
+	return &m_materials[slot];
 }
 
-void MeshRenderer::SetMaterial(Material pMaterial, UINT slot)
+void MeshRenderer::SetMaterial(Material* pMaterial, UINT slot)
 {
+	if (pMaterial == nullptr)
+		return;
+
 	if (slot < 0 || slot >= m_materials.size())
 		return;
 
 	// マテリアルをコピー
-	m_materials[slot] = pMaterial;
+	m_materials[slot] = *pMaterial;
 }

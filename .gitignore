@@ -363,8 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # 追加の除外設定
-**/Assets/**
-**/output/**
-**/imgui.ini
-!ThirdParty/
-!ThirdParty/**
+**/Assets/
+ThirdParty/

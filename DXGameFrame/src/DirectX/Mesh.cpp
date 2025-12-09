@@ -11,7 +11,7 @@ Mesh::Mesh() :
 
 HRESULT Mesh::Create(const Description& desc)
 {
-	HRESULT hr = S_OK;		// 関数の結果
+	HRESULT hr = S_OK;
 
 	// 頂点バッファ作成
 	hr = CreateVertexBuffer(desc.vtx, desc.isWrite);
@@ -44,7 +44,7 @@ void Mesh::Draw()
 	{
 		// インデックスバッファを使用して描画
 		DXGI_FORMAT format = {};
-		switch (sizeof(UINT))
+		switch (sizeof(int))
 		{
 		case 2: format = DXGI_FORMAT_R16_UINT;
 			break;
@@ -61,22 +61,13 @@ void Mesh::Draw()
 	}
 }
 
-const Mesh::Description& Mesh::GetDesc() const
-{
-	return m_desc;
-}
-
-UINT Mesh::GetMaterialID() const
-{
-	return m_desc.materialID;
-}
-
 HRESULT Mesh::CreateVertexBuffer(const std::vector<Vertex>& vtx, bool isWrite)
 {
-	HRESULT hr = S_OK;		// 関数の結果
+	HRESULT hr = S_OK;
 
 	// 頂点バッファの設定
-	D3D11_BUFFER_DESC bufDesc = {};		// 頂点バッファ設定情報
+	D3D11_BUFFER_DESC bufDesc;		// 頂点バッファ設定情報
+	ZeroMemory(&bufDesc, sizeof(bufDesc));
 	bufDesc.ByteWidth = (UINT)(sizeof(Vertex) * vtx.size());
 	bufDesc.Usage = D3D11_USAGE_DEFAULT;
 	bufDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -87,29 +78,31 @@ HRESULT Mesh::CreateVertexBuffer(const std::vector<Vertex>& vtx, bool isWrite)
 	}
 
 	// 初期化用データ設定
-	D3D11_SUBRESOURCE_DATA subResource = {};
+	D3D11_SUBRESOURCE_DATA subResource;
+	ZeroMemory(&subResource, sizeof(subResource));
 	subResource.pSysMem = vtx.data();
 
 	// 頂点バッファの作成
 	ID3D11Device* pDevice = Direct3D::Instance().GetDevice();
 	hr = pDevice->CreateBuffer(&bufDesc, &subResource, m_pVtxBuffer.GetAddressOf());
-	if (FAILED(hr)) { return hr; }
 
 	return hr;
 }
 
-HRESULT Mesh::CreateIndexBuffer(const std::vector<UINT>& idx)
+HRESULT Mesh::CreateIndexBuffer(const std::vector<int>& idx)
 {
-	HRESULT hr = S_OK;		// 関数の結果
+	HRESULT hr = S_OK;
 
 	// インデックスバッファの設定
-	D3D11_BUFFER_DESC bufDesc = {};
-	bufDesc.ByteWidth = sizeof(UINT) * (UINT)idx.size();
+	D3D11_BUFFER_DESC bufDesc;
+	ZeroMemory(&bufDesc, sizeof(bufDesc));
+	bufDesc.ByteWidth = (UINT)(sizeof(int) * idx.size());
 	bufDesc.Usage = D3D11_USAGE_DEFAULT;
 	bufDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 
 	// 初期化用データ設定
-	D3D11_SUBRESOURCE_DATA subResource = {};
+	D3D11_SUBRESOURCE_DATA subResource;
+	ZeroMemory(&subResource, sizeof(subResource));
 	subResource.pSysMem = idx.data();
 
 	// インデックスバッファの作成

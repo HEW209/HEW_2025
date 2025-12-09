@@ -1,15 +1,17 @@
-/******************************************************************//**
+/*****************************************************************//**
  * @file   Transform.h
  * @brief  オブジェクトの座標・スケール・回転を表す
  * 
  * @author 石田怜
- * @date   2025/11/23
+ * @date   2025/09/10
  *********************************************************************/
 #pragma once
 
 #include "Component.h"
 #include <Utility/Vector3.h>
 #include <Utility/Quaternion.h>
+
+class Transform;
 
 /// 座標空間
 enum class Space
@@ -24,94 +26,89 @@ enum class Space
 class Transform : public Component
 {
 public:
-	Transform();
+	Transform(GameObject* owner);
 	~Transform();
+
+	/// オブジェクトのローカル座標
+	Vector3 m_position;
+
+	/// オブジェクトのローカルスケール
+	Vector3 m_scale;
 
 	/**
 	 * @brief オブジェクトの座標を取得する
 	 * @param space 取得に使用する座標空間
 	 * @return 現在のオブジェクトの座標
 	 */
-	Vector3 GetPosition(Space space = Space::WORLD) const;
+	Vector3 GetPosition(Space space = Space::WORLD);
 
 	/**
 	 * @brief オブジェクトのスケールを取得する
 	 * @return 現在のオブジェクトのローカルスケール
 	 */
-	Vector3 GetScale() const;
-
+	Vector3 GetScale();
+	
 	/**
 	 * @brief オブジェクトの回転をオイラー角で取得する
 	 * @param space 取得に使用する座標空間
 	 * @return 現在のオブジェクトの回転 (オイラー角)
 	 */
-	Vector3 GetEulerAngle(Space space = Space::WORLD) const;
+	Vector3 GetEulerAngle(Space space = Space::WORLD);
 
 	/**
 	 * @brief オブジェクトの回転をクォータニオンで取得する
 	 * @param space 取得に使用する座標空間
 	 * @return 現在のオブジェクトの回転 (クォータニオン)
 	 */
-	Quaternion GetQuaternion(Space space = Space::WORLD) const;
+	Quaternion GetQuaternion(Space space = Space::WORLD);
 
 	/**
-	 * @brief オブジェクトの座標を設定する
-	 * @param position 設定する座標
-	 * @param space 設定に使用する座標空間
+	 * @brief 座標を設定する
+	 * @param position 設定するローカル座標
 	 */
-	void SetPosition(Vector3 position, Space space = Space::WORLD);
+	void SetPosition(Vector3 position);
 
 	/**
-	 * @brief オブジェクトの座標を設定する
-	 * @param x 設定するx座標
-	 * @param y 設定するy座標
-	 * @param z 設定するz座標
-	 * @param space 設定に使用する座標空間
+	 * @brief 座標を設定する
+	 * @param x ローカルx座標
+	 * @param y ローカルy座標
+	 * @param z ローカルz座標
 	 */
-	void SetPosition(float x, float y, float z, Space space = Space::WORLD);
+	void SetPosition(float x, float y, float z);
 
 	/**
-	 * @brief オブジェクトのスケールを設定する
+	 * @brief スケールを設定する
 	 * @param scale 設定するローカルスケール
 	 */
 	void SetScale(Vector3 scale);
 
 	/**
-	 * @brief オブジェクトのスケールを設定する
-	 * @param x 設定するローカルxスケール
-	 * @param y 設定するローカルyスケール
-	 * @param z 設定するローカルzスケール
+	 * @brief 座標を設定する
+	 * @param x ローカルx座標
+	 * @param y ローカルy座標
+	 * @param z ローカルz座標
 	 */
 	void SetScale(float x, float y, float z);
 
 	/**
-	 * @brief オブジェクトの回転をオイラー角で設定する
+	 * @brief ★オブジェクトの回転をオイラー角で設定する
 	 * @param euler 設定する回転 (オイラー角)
-	 * @param space 設定に使用する座標空間
 	 */
-	void SetEulerAngle(Vector3 euler, Space space = Space::WORLD);
+	void SetEulerAngle(Vector3 euler);
 
 	/**
 	 * @brief オブジェクトの回転をオイラー角で設定する
-	 * @param x 設定するx軸回転
-	 * @param y 設定するy軸回転
-	 * @param z 設定するz軸回転
-	 * @param space 設定に使用する座標空間
+	 * @param x x軸回転
+	 * @param y y軸回転
+	 * @param z z軸回転
 	 */
-	void SetEulerAngle(float x, float y, float z, Space space = Space::WORLD);
+	void SetEulerAngle(float x, float y, float z);
 
 	/**
 	 * @brief オブジェクトの回転をクォータニオンで設定する
 	 * @param quaternion 設定する回転 (クォータニオン)
-	 * @param space 設定に使用する座標空間
 	 */
-	void SetQuaternion(Quaternion quaternion, Space space = Space::WORLD);
-
-	/**
-	 * @brief 親Transformを設定する
-	 * @param pParent 親ゲームオブジェクトへのポインタ
-	 */
-	void SetParent(GameObject* pParent);
+	void SetQuaternion(Quaternion quaternion);
 
 	/**
 	 * @brief 親Transformを設定する
@@ -123,7 +120,7 @@ public:
 	 * @brief 親Transformを取得する
 	 * @return 親Transformへのポインタ
 	 */
-	Transform* GetParent() const;
+	Transform* GetParent();
 
 	/**
 	 * @brief ルートTransformを取得する
@@ -135,59 +132,58 @@ public:
 	 * @brief このTransformの子Transformを取得する
 	 * @return 子Transformへのポインタ配列
 	 */
-	std::vector<Transform*> GetChildren() const;
-
-	/**
-	 * @brief オブジェクトを移動させる
-	 * @param translation オブジェクトの移動量
-	 * @param space 回転に使用する座標空間
-	 */
-	void Translate(Vector3 translation, Space space = Space::WORLD);
-
-	/**
-	 * @brief オブジェクトを移動させる
-	 * @param x オブジェクトのx移動量
-	 * @param y オブジェクトのy移動量
-	 * @param z オブジェクトのz移動量
-	 * @param space 回転に使用する座標空間
-	 */
-	void Translate(float x, float y, float z, Space space = Space::WORLD);
-
-	/**
-	 * @brief オブジェクトを回転させる
-	 * @param euler 回転量 (オイラー)
-	 * @param space 回転に使用する座標空間
-	 */
-	void Rotate(Vector3 euler, Space space = Space::WORLD);
-
-	/**
-	 * @brief オブジェクトを回転させる
-	 * @param x x軸回転量
-	 * @param y y軸回転量
-	 * @param z z軸回転量
-	 * @param space 回転に使用する座標空間
-	 */
-	void Rotate(float x, float y, float z, Space space = Space::WORLD);
+	std::vector<Transform*> GetChildren();
 
 	/**
 	 * @brief ワールド変換行列を取得する
 	 * @return このTransformのワールド変換行列
 	 */
-	DirectX::XMMATRIX GetWorldMatrix() const;
+	DirectX::XMMATRIX GetWorldMatrix();
+
+	/**
+	 * @brief ★オブジェクトを移動させる
+	 * @param translation オブジェクトの移動量
+	 */
+	void Translate(Vector3 translation)
+	{
+		m_position += translation;
+	}
+
+	/**
+	 * @brief ★オブジェクトを移動させる
+	 * @param x オブジェクトのx移動量
+	 * @param y オブジェクトのy移動量
+	 * @param z オブジェクトのz移動量
+	 */
+	void Translate(float x, float y, float z)
+	{
+		m_position += Vector3(x, y, z);
+	}
+
+	/**
+	 * @brief ★オブジェクトを回転させる
+	 * @param euler 回転量 (オイラー)
+	 */
+	void Rotate(Vector3 euler, Space space = Space::WORLD);
+
+	/**
+	 * @brief ★オブジェクトを回転させる
+	 * @param x x軸回転
+	 * @param y y軸回転
+	 * @param z z軸回転
+	 */
+	void Rotate(float x, float y, float z, Space space = Space::WORLD);
 
 private:
 	// Transformクラスでは隠す
 	using Component::SetEnabled;
 	using Component::Destroy;
 
-	/// オブジェクトのローカル座標
-	Vector3 m_localPosition;
-
-	/// オブジェクトのローカルスケール
-	Vector3 m_localScale;
-
 	/// オブジェクトのローカルクォータニオン
-	Quaternion m_localQuaternion;
+	Quaternion m_quaternion;
+
+	/// オブジェクトのローカルオイラー角
+	Vector3 m_euler;
 
 	/// 親Transformへのポインタ
 	Transform* m_pParent;
@@ -196,8 +192,8 @@ private:
 	std::vector<Transform*> m_pChildren;
 
 	/**
-	 * @brief 子Transformから自身を切り離す
-	 * @param child 切り離す子Transformコンポーネントへのポインタ
+	 * @brief 子Transform登録を削除する
+	 * @param child 登録削除するTransformコンポーネントへのポインタ
 	 */
-	void DetachChild(Transform* child);
+	void DeleteChild(Transform* child);
 };

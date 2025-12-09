@@ -1,9 +1,9 @@
-/******************************************************************//**
+/*****************************************************************//**
  * @file   Mesh.h
  * @brief  メッシュを扱う
  * 
  * @author 石田怜
- * @date   2025/11/22
+ * @date   2025/10/17
  *********************************************************************/
 #pragma once
 
@@ -27,15 +27,15 @@ public:
 		DirectX::XMFLOAT2 uv;			// UV座標
 		DirectX::XMFLOAT4 color;		// 頂点カラー
 		float weight[4];				// ボーンへのウェイト
-		UINT index[4];					// 対応するボーンへのインデックス
+		unsigned int index[4];			// 対応するボーンへのインデックス
 	};
 
 	/// メッシュ情報
 	struct Description
 	{
 		std::vector<Vertex> vtx;		// 頂点データ
-		std::vector<UINT> idx;			// インデックスバッファのデータ
-		UINT materialID;				// 対応マテリアルID
+		std::vector<int> idx;			// インデックスバッファのデータ
+		unsigned int materialID;		// 対応マテリアルID
 		bool isWrite;					// 動的な頂点の書き換え可能フラグ
 		D3D11_PRIMITIVE_TOPOLOGY topology;		// トポロジー設定
 	};
@@ -56,13 +56,19 @@ public:
 	 * @brief メッシュ情報を取得
 	 * @return メッシュ情報
 	 */
-	const Description& GetDesc() const;
+	const Description& GetDesc()
+	{
+		return m_desc;
+	}
 
 	/**
 	 * @brief 対応マテリアルIDを取得
 	 * @return このメッシュに使用するマテリアルのID
 	 */
-	UINT GetMaterialID() const;
+	unsigned int GetMaterialID()
+	{
+		return m_desc.materialID;
+	}
 
 private:
 	/// メッシュ情報
@@ -85,7 +91,7 @@ private:
 	/**
 	 * @brief インデックスバッファを作成する
 	 * @param pIdx インデックス配列
-	 * @return 成功したかを返す
+	 * @return 成功したかを返す 
 	 */
-	HRESULT CreateIndexBuffer(const std::vector<UINT>& idx);
+	HRESULT CreateIndexBuffer(const std::vector<int>& idx);
 };
