@@ -166,6 +166,11 @@
     <ClCompile Include="Source\GridDebugSceneManager.cpp" />
     <ClCompile Include="Source\GridField.cpp" />
     <ClCompile Include="Source\InputSystem.cpp" />
+    <ClCompile Include="Source\GuideUIController.cpp" />
+    <ClCompile Include="Source\GuideUIController2.cpp" />
+    <ClCompile Include="Source\GuideUIResultController.cpp" />
+    <ClCompile Include="Source\GuideUITimeController.cpp" />
+    <ClCompile Include="Source\GuideUITimeController2.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\PlaceCursor.cpp" />
     <ClCompile Include="Source\Player.cpp" />
@@ -182,6 +187,7 @@
     <ClInclude Include="Source\BlockObject.h" />
     <ClInclude Include="Source\Config.h" />
     <ClInclude Include="Source\DynamicDimensionalArray.h" />
+    <ClInclude Include="Source\Easing.h" />
     <ClInclude Include="Source\GameScene.h" />
     <ClInclude Include="Source\GameState.h" />
     <ClInclude Include="Source\GameTypes.h" />
@@ -212,6 +218,11 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
+    <ClInclude Include="Source\GuideUIController.h" />
+    <ClInclude Include="Source\GuideUIController2.h" />
+    <ClInclude Include="Source\GuideUIResultController.h" />
+    <ClInclude Include="Source\GuideUITimeController.h" />
+    <ClInclude Include="Source\GuideUITimeController2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
