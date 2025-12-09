@@ -14,8 +14,9 @@ void GuideUIResultController::Start()
 
 	auto renderer1 = GetGameObject()->AddComponent<SpriteRenderer>();
 	renderer1->SetUI(true);
-	renderer1->LoadTexture("Assets/Textures/menukiban.png");
+	renderer1->LoadTexture("Assets/Textures/restart.png");
 	renderer1->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
+	renderer1->SetOffsetPos(1.0f,1.0f);
 
 	m_defaultPosition = GetTransform()->GetPosition();
 	m_defaultScale = GetTransform()->GetScale();
@@ -25,6 +26,7 @@ void GuideUIResultController::Start()
 
 void GuideUIResultController::Update()
 {
+	//ƒƒjƒ…[‚ğ‚Ğ‚ç‚­
 	if (InputSystem::GetButtonDown("Menu"_hash))
 	{
 		m_menu = true;

@@ -1,5 +1,6 @@
 #include "GuideUIController.h"
 #include "Easing.h"
+#include "InputSystem.h"
 
 
 
@@ -28,7 +29,7 @@ void GuideUIController::Start()
 
 void GuideUIController::Update()
 {
-	if (Input::GetKeyHold(KeyCode::F))
+	if (InputSystem::GetButtonDown("Clear"_hash))
 	{
 		if (!motu)
 		{
