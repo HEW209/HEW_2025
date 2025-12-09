@@ -1,5 +1,6 @@
 //GuideUITimeController.cpp
 #include "GuideUITimeController.h"
+#include "GameState.h"
 
 int digitToIndex[10] =
 {
@@ -78,7 +79,9 @@ void GuideUITimeController::Update()
 		SetDigitUV();
 	}
 
-	if (Input::GetKeyDown(KeyCode::A))
+	GridField* gridfield = GameState::GetInstance()->GetGridField();
+
+	if (gridfield->IsClear() && Input::GetKeyDown(KeyCode::X))
 	{
 		m_b = false;
 		for (int x = 0; x < 6; ++x)

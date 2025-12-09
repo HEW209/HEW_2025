@@ -1,6 +1,7 @@
 #include "GuideUIController2.h"
 #include "Easing.h"
 #include "GameScene.h"
+#include "GameState.h"
 
 GameScene gamescene;
 
@@ -14,7 +15,9 @@ void GuideUIController2::Start()
 
 void GuideUIController2::Update()
 {
-	if (Input::GetKeyHold(KeyCode::D))
+	GridField* gridfield = GameState::GetInstance()->GetGridField();
+
+	if (gridfield->IsClear())
 	{
 		m_value += 0.1f;
 
