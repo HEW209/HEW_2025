@@ -7,17 +7,20 @@ DebugEffectScene::DebugEffectScene()
 
 void DebugEffectScene::Init()
 {
-	{
-		auto obj = CreateGameObject();
-		obj->AddComponent<Camera>();
-	}
 
 	{
 		auto obj = CreateGameObject();
-		auto effeksser = obj->AddComponent<EffeksserDebug>();
-		auto manager = effeksser->GetManager();
-		/*Effekseer::Effect::Create(manager, L"assets/Laser01.efkefc")
-		 m_loadedEffect = Effekseer::Effect::Create(manager,L"assets/Laser01.efkefc");*/
+		auto camera = obj->AddComponent<Camera>();
+		auto transform = camera->GetTransform();
+		transform->SetPosition(Vector3(5.0f, 4.0f, 0.0f));
+
+
+	}
+
+	{
+
+		auto obj = CreateGameObject();
+
 	}
 
 }

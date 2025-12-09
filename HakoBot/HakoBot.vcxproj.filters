@@ -24,10 +24,7 @@
     <ClCompile Include="DebugEffectScene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="DeviceDX11.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="EffeksserDebug.cpp">
+    <ClCompile Include="EffekseerDebug.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -44,19 +41,16 @@
     <ClInclude Include="..\ThirdParty\Effeksser\Effekseer.Modules.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="..\ThirdParty\Effeksser\Effekseer.SIMD.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="..\ThirdParty\Effeksser\EffekseerRendererDX11.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="..\ThirdParty\Effeksser\Effekseer.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="DeviceDX11.h">
+    <ClInclude Include="EffekseerDebug.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="EffeksserDebug.h">
+    <ClInclude Include="..\ThirdParty\Effekseer\Effekseer.SIMD.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

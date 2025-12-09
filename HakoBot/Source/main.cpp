@@ -4,8 +4,8 @@
 #pragma comment(lib, "winmm.lib")
 
 
-#include "Effeksser/Effekseer.h"
-#include "Effeksser/EffekseerRendererDX11.h"
+#include "Effekseer/Effekseer.h"
+#include "Effekseer/EffekseerRendererDX11.h"
 #include "Config.h"
 #include <DXGameFrame.h>
 #include "GameScene.h"

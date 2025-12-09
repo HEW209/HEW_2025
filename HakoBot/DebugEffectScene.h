@@ -1,21 +1,21 @@
 #pragma once
 #include <DXGameFrame.h>
-#include "Effeksser/Effekseer.h"
-#include "Effeksser/EffekseerRendererDX11.h"
-#include"Effeksser/Effekseer.SIMD.h"
-#include"Effeksser/Effekseer.Modules.h"
+#include "Effekseer/Effekseer.h"
+#include "Effekseer/EffekseerRendererDX11.h"
+#include"Effekseer/Effekseer.SIMD.h"
+#include"Effekseer/Effekseer.Modules.h"
 #include <Component/Camera.h> //カメラクラスを使うために必要
-#include "EffeksserDebug.h"
+#include "EffekseerDebug.h"
 
 #ifdef _DEBUG
-#pragma comment(lib, "Effeksser/Effekseer.lib")
+#pragma comment(lib, "Effekseer/Effekseer.lib")
 #else
-#pragma comment(lib, "Effeksser/Effekseer.lib")
+#pragma comment(lib, "Effekseer/Effekseer.lib")
 #endif
 #ifdef _DEBUG
-#pragma comment(lib, "Effeksser/EffekseerRendererDX11.lib")
+#pragma comment(lib, "Effekseer/EffekseerRendererDX11.lib")
 #else
-#pragma comment(lib, "Effeksser/EffekseerRendererDX11.lib")
+#pragma comment(lib, "Effekseer/EffekseerRendererDX11.lib")
 #endif
 class DebugEffectScene :
     public Scene

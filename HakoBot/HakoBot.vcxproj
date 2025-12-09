@@ -140,19 +140,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DebugEffectScene.cpp" />
-    <ClCompile Include="DeviceDX11.cpp" />
-    <ClCompile Include="EffeksserDebug.cpp" />
+    <ClCompile Include="EffekseerDebug.cpp" />
     <ClCompile Include="Source\GameScene.cpp" />
     <ClCompile Include="Source\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\ThirdParty\Effekseer\Effekseer.SIMD.h" />
     <ClInclude Include="..\ThirdParty\Effeksser\Effekseer.h" />
     <ClInclude Include="..\ThirdParty\Effeksser\Effekseer.Modules.h" />
-    <ClInclude Include="..\ThirdParty\Effeksser\Effekseer.SIMD.h" />
     <ClInclude Include="..\ThirdParty\Effeksser\EffekseerRendererDX11.h" />
     <ClInclude Include="DebugEffectScene.h" />
-    <ClInclude Include="DeviceDX11.h" />
-    <ClInclude Include="EffeksserDebug.h" />
+    <ClInclude Include="EffekseerDebug.h" />
     <ClInclude Include="Source\Config.h" />
     <ClInclude Include="Source\GameScene.h" />
   </ItemGroup>
