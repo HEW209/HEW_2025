@@ -55,13 +55,21 @@ public:
 
 	void SetUseCollider(bool value) { m_shouldUseCollider = value; }
 
-	Vector3 GetSize();
+	Vector3 GetSize() const { return m_size; }
 
-	Vector3 GetCenterOffset();
+	Vector3 GetCenterOffset() const { return m_center * -1.0f; }
+
+	Vector3 GetCenterGroundOffset()
+	{
+		Vector3 offset = m_center * -1.0f;
+		offset.y = GetGroundYOffset();
+		return offset;
+	}
 
 private:
 	BlockSetData m_blockSet;
 	std::vector<ObjPtr<GameObject>> m_pBlocks;
 	Vector3 m_size;
+	Vector3 m_center;
 	bool m_shouldUseCollider;
 };
