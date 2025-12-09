@@ -10,8 +10,6 @@ public:
 
 	void Start() override;
 	void Update() override;
-
-	bool Complete;
 private:
 	float m_value;
 	Vector3 m_defaultPosition;

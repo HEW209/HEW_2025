@@ -10,19 +10,17 @@
 class GuideUITimeController : public Component
 {
 public:
-	void Start() override;
-	void Update() override;
-	void SetDigitUV();
-	void SetTimer();
-	SpriteRenderer* GetSprite();
+	void Start() override;			
+	void Update() override;			
+	void SetDigitUV();					//UV座標を設定
+	void SetTimer();					//時間を求めてメンバ変数にそれぞれの桁に値を格納
 
-	int m_totalTime;
-	int m_digit[6];
-	bool m_b;
-	SpriteRenderer* sprite[6];
-	SpriteRenderer* sprite1[3];
+	int m_totalTime;					//毎フレーム足される
+	int m_digit[6];						//各桁のディジットを格納(SetDigitUVで使います)
+	bool m_b;							//リザルト出す用　falseにすると時が止まる
+	SpriteRenderer* sprite[6];			//各桁の描画用
+	SpriteRenderer* sprite1[3];			//時計とコロン描画用
 private:
-	Vector2 m_defaultOffPos;
 	
   
 };

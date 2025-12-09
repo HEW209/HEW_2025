@@ -9,8 +9,7 @@ public:
 	~GameScene() = default;
 
 	void Init() override;
-	bool GetK();
 	
 private:
-	bool K;
+	void CreateUIObject();
 };

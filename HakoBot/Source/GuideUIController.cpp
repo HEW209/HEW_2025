@@ -62,8 +62,6 @@ void GuideUIController::Update()
 		}
 	}
 
-	/*Vector3 offset = Vector3::zero;
-	offset.y = Easing::OutQuad(m_value, 5.0f, 1.5f, 0.0f);
-	GetTransform()->SetPosition(m_defaultPosition + offset);*/
+	
 	
 }

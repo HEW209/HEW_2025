@@ -19,27 +19,25 @@ void GameScene::Init()
 		auto camera = obj->AddComponent<Camera>();
 	}
 
-	//メニューの十字
+	//UIオブジェクトを作成
+	CreateUIObject();
+}
+
+
+
+
+void GameScene::CreateUIObject()
+{
+	//メニュー
 	{
 		auto obj = CreateGameObject();
 		auto renderer = obj->AddComponent<SpriteRenderer>();
 		renderer->SetUI(true);
-		renderer->LoadTexture("Assets/Textures/menu!.png");
+		renderer->LoadTexture("Assets/Textures/menuu.png");
 		renderer->GetTransform()->SetPosition(-5.6f, 3.1f, 0.0f);
 		renderer->SetSize(110.0f, 110.0f);
-	
-	}
 
-	//メニュー文字
-	/*{
-		auto obj = CreateGameObject();
-		auto renderer = obj->AddComponent<SpriteRenderer>();
-		renderer->SetUI(true);
-		renderer->LoadTexture("Assets/Textures/menu.png");
-		renderer->GetTransform()->SetPosition(-3.9f, 1.5f, 0.0f);
-		renderer->SetSize(450.0f, 450.0f);
-	
-	}*/
+	}
 
 	//おく
 	{
@@ -52,30 +50,18 @@ void GameScene::Init()
 		obj->AddComponent<GuideUIController>();
 	}
 
-	//完成 Kがtrueなら看板、falseなら初期案 falseうごかなくした
+	//完成 
 	{
-		K = true;
 		auto obj = CreateGameObject();
 		auto renderer = obj->AddComponent<SpriteRenderer>();
 		renderer->SetUI(true);
-		if (!K)
-		{
-			renderer->LoadTexture("Assets/Textures/kansei!.png");
-			renderer->GetTransform()->SetPosition(7.6f, -2.9f, 0.0f);
-			renderer->SetSize(MOZI_SIZE + 150.0f, MOZI_SIZE + 20.0f);
-			obj->AddComponent<GuideUIController2>();
-		}
-		else
-		{
-			renderer->LoadTexture("Assets/Textures/kanbansei.png");
-			renderer->GetTransform()->SetPosition(4.3f, -4.6f, 0.0f);
-			renderer->SetSize(MOZI_SIZE + 150.0f, MOZI_SIZE + 100.0f);
-			obj->AddComponent<GuideUIController2>();
-		}
-		
+		renderer->LoadTexture("Assets/Textures/kanbansei.png");
+		renderer->GetTransform()->SetPosition(4.3f, -4.6f, 0.0f);
+		renderer->SetSize(MOZI_SIZE + 150.0f, MOZI_SIZE + 100.0f);
+		obj->AddComponent<GuideUIController2>();
 	}
 
-	//メニュー
+	//メニュー開いたやつ
 	{
 		auto obj = CreateGameObject();
 		obj->AddComponent<GuideUIResultController>();
@@ -84,24 +70,11 @@ void GameScene::Init()
 	//タイマー1
 	{
 		auto obj = CreateGameObject();
-		
+
 		obj->GetTransform()->SetPosition(4.1f, 3.2f, 0.0f);
-		
+
 		obj->AddComponent<GuideUITimeController>();
 	}
-
-	////タイマー2
-	//{
-	//	auto obj = CreateGameObject();
-	//	auto renderer = obj->AddComponent<SpriteRenderer>();
-	//	renderer->SetUI(true);
-	//	renderer->LoadTexture("Assets/Textures/sprite.png");
-	//	renderer->GetTransform()->SetPosition(4.0f, 3.2f, 0.0f);
-	//	renderer->SetUVScale(1.0f / 6.0f, 1.0f / 2.0f);
-	//	renderer->SetSize(MOZI_SIZE + 50.0f, MOZI_SIZE + 50.0f);
-	//	obj->AddComponent<GuideUITimeController2>();
-	//}
-
 
 	//リザルト
 	{
@@ -110,17 +83,9 @@ void GameScene::Init()
 		renderer->SetUI(true);
 		renderer->LoadTexture("Assets/Textures/result3.png");
 		renderer->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
-		obj->GetTransform()->SetScale(0.0f,0.0f,0.0f);
-		//renderer->SetSize(MOZI_SIZE + 70.0f, MOZI_SIZE + 70.0f);
+		obj->GetTransform()->SetScale(0.0f, 0.0f, 0.0f);
 		obj->AddComponent<GuideUITimeController2>();
 	}
-
-}
-
-
-bool GameScene::GetK()
-{
-	return K;
 }
 	
 

@@ -139,7 +139,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Easing.cpp" />
     <ClCompile Include="Source\GameScene.cpp" />
     <ClCompile Include="Source\GuideUIController.cpp" />
     <ClCompile Include="Source\GuideUIController2.cpp" />

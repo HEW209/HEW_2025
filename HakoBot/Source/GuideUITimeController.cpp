@@ -125,8 +125,3 @@ void GuideUITimeController::SetTimer()
 
 }
 
-SpriteRenderer* GuideUITimeController::GetSprite()
-{
-	return sprite[6];
-}
-

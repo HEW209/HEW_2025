@@ -21,9 +21,6 @@
     <ClCompile Include="Source\GameScene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Easing.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GuideUIController.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
