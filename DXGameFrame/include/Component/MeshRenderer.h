@@ -41,16 +41,15 @@ public:
 	/**
 	 * @brief マテリアルを取得する
 	 * @param slot マテリアルスロット番号
-	 * @return マテリアルのコピー
+	 * @return マテリアルへのポインタ
 	 */
-	Material GetMaterial(UINT slot);
+	Material* GetMaterial(UINT slot);
 
 	/**
-	 * @brief マテリアルを設定する
-	 * @param pMaterial 設定するマテリアル
-	 * @param slot マテリアルスロット番号
+	 * @brief 全てのマテリアルを取得する
+	 * @return マテリアル配列へポインタ
 	 */
-	void SetMaterial(Material pMaterial, UINT slot);
+	std::vector<Material>* GetMaterials();
 
 private:
 	/// モデルへのポインタ

@@ -26,8 +26,6 @@ void Scene::Update()
 	// オブジェクトの削除を適用
 	ApplyDestroyGameObject();
 
-	ColliderSystem::Instance().Check();
-
 	RenderSystem::Instance().DrawAll();
 }
 
@@ -63,6 +61,8 @@ void Scene::UpdateAllGameObject()
 
 		obj->UpdateAllComponent();
 	}
+
+	ColliderSystem::Instance().Check();
 
 	// オブジェクトの遅延更新処理
 	for (auto* obj : objBuffer)

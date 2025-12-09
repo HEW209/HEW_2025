@@ -7,7 +7,8 @@
  *********************************************************************/
 #pragma once
 
-#include "Component/Camera.h"
-#include "Component/MeshRenderer.h"
+#include "Camera.h"
+#include "MeshRenderer.h"
+#include "Collider.h"
 #include "SpriteRenderer.h"
-#include "Component/DirectionalLight.h"
+#include "DirectionalLight.h"

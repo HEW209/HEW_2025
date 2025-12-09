@@ -9,7 +9,10 @@ public:
 	~GameScene() = default;
 
 	void Init() override;
-	
+
 private:
+	void KeyBind();
+	void CreateGridField();
+	void CreateStageSet();
 	void CreateUIObject();
 };
