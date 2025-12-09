@@ -1,419 +1,312 @@
 #include "GameScene.h"
-#include "Easing.h"
-#include "GameFrame/Component.h"
+#include "LevelSerializer.h"
+#include "InputSystem.h"
+#include "GameState.h"
+#include "Player.h"
+#include "PlayerCamera.h"
+#include "BlockObject.h"
+#include "GridField.h"
+#include "ClearProduce.h"
+
 #include "GuideUIController.h"
 #include "GuideUIController2.h"
 #include "GuideUITimeController.h"
 #include "GuideUITimeController2.h"
 #include "GuideUIResultController.h"
 
-#include  "InputSystem.h"
-//カメラ用
-#include "SampleCamera.h"
-//グリッド
-#include "GameState.h"
-#include "Player.h"
-#include "PlayerBlockHandler.h"
-#include "PlayerCamera.h"
-
-#include "ClearProduce.h"
-
-void GameScene::Init()
-{
-	KeyBind();
-
-	//移動できるオブジェクト（プレイヤー）を作成	
-	//移動できるプレイヤーオブジェクトを作る
-	auto player = CreateGameObject();
-	player->AddComponent<Player>();
-
-	//カメラ
-	{
-		auto Obj = CreateGameObject();
-		auto playerCamera = Obj->AddComponent<PlayerCamera>();
-		playerCamera->SetPlayer(player->GetTransform());
-		playerCamera->SetCameraDistance(20.0f);
-	}
-
-	// シーンマネージャー
-	{
-		auto obj = CreateGameObject();
-		obj->AddComponent<GameState>();
-	}
-
-	CreateStageSet();
-	CreateGridField();
-
-	//ワールドに配置するブロック
-	{
-		BlockSetData blockSet;
-		blockSet.blocks.resize(1);
-		blockSet.blocks[0] = { 0, 0, 0 };
-
-		auto obj = CreateGameObject();
-		auto component = obj->AddComponent<BlockObject>();
-		component->SetBlockSet(blockSet);
-		auto transform = obj->GetTransform();
-		transform->SetPosition(Vector3{ 8.0f, 0.0f, 5.0f } + component->GetGroundOffset());
-
-		GameState::GetInstance()->AppendWorldBlock(component);
-	}
-	{
-		BlockSetData blockSet;
-		blockSet.blocks.resize(2);
-		blockSet.blocks[0] = { 0, 0, 0 };
-		blockSet.blocks[1] = { 1, 0, 0 };
-
-		auto obj = CreateGameObject();
-		auto component = obj->AddComponent<BlockObject>();
-		component->SetBlockSet(blockSet);
-		auto transform = obj->GetTransform();
-		transform->SetPosition(Vector3{ 8.0f, 0.0f, 2.0f } + component->GetGroundOffset());
-
-		GameState::GetInstance()->AppendWorldBlock(component);
-	}
-	{
-		BlockSetData blockSet;
-		blockSet.blocks.resize(3);
-		blockSet.blocks[0] = { 0, 0, 0 };
-		blockSet.blocks[1] = { 1, 0, 0 };
-		blockSet.blocks[2] = { 0, 0, 1 };
-
-		auto obj = CreateGameObject();
-		auto component = obj->AddComponent<BlockObject>();
-		component->SetBlockSet(blockSet);
-		auto transform = obj->GetTransform();
-		transform->SetPosition(Vector3{ 8.0f, 0.0f, -2.0f } + component->GetGroundOffset());
-
-		GameState::GetInstance()->AppendWorldBlock(component);
-	}
-	{
-		BlockSetData blockSet;
-		blockSet.blocks.resize(4);
-		blockSet.blocks[0] = { 0, 0, 0 };
-		blockSet.blocks[1] = { 1, 0, 0 };
-		blockSet.blocks[2] = { 0, 1, 0 };
-		blockSet.blocks[3] = { 0, 0, -1 };
-
-		auto obj = CreateGameObject();
-		auto component = obj->AddComponent<BlockObject>();
-		component->SetBlockSet(blockSet);
-		auto transform = obj->GetTransform();
-		transform->SetPosition(Vector3{ 8.0f, 0.0f, -5.0f } + component->GetGroundOffset());
-
-		GameState::GetInstance()->AppendWorldBlock(component);
-	}
-
-	{//ライト
-		auto obj = CreateGameObject();
-		obj->AddComponent<DirectionalLight>();
-		obj->GetTransform()->SetEulerAngle(50.0f, -30.0f, 0.0f);
-	}
-
-	{//ライト
-		auto obj = CreateGameObject();
-		obj->AddComponent<ClearProduce>();
-	}
+GameScene::GameScene(const std::string& levelName)
+    : m_levelName(levelName) {
 }
 
-void GameScene::KeyBind()
-{
-	InputSystem::CreateButtonAction("RotateBlockUp"_hash);
-	InputSystem::CreateButtonAction("RotateBlockDown"_hash);
-	InputSystem::CreateButtonAction("RotateBlockLeft"_hash);
-	InputSystem::CreateButtonAction("RotateBlockRight"_hash);
-	InputSystem::CreateButtonAction("PlaceAndRemove"_hash);
-	InputSystem::CreateButtonAction("Up"_hash);
-	InputSystem::CreateButtonAction("Down"_hash);
-	InputSystem::CreateButtonAction("CameraLeft"_hash);
-	InputSystem::CreateButtonAction("CameraRight"_hash);
-	InputSystem::CreateAxisAction("Move"_hash);
-	InputSystem::CreateAxisAction("CameraMove"_hash);
+void GameScene::Init() {
+    std::string path = "Assets/Level/Stages/" + m_levelName + ".json";
+    if (!LevelSerializer::LoadLevelData(path, m_levelData)) {
+        Debug::ErrorMessage("Failed to load level: " + m_levelName);
+    }
 
-	InputSystem::BindKey("RotateBlockUp"_hash, KeyCode::UP);
-	InputSystem::BindKey("RotateBlockDown"_hash, KeyCode::DOWN);
-	InputSystem::BindKey("RotateBlockLeft"_hash, KeyCode::LEFT);
-	InputSystem::BindKey("RotateBlockRight"_hash, KeyCode::RIGHT);
-	InputSystem::BindKey("PlaceAndRemove"_hash, KeyCode::SPACE);
-	InputSystem::BindKey("Up"_hash, KeyCode::E);
-	InputSystem::BindKey("Down"_hash, KeyCode::Q);
-	InputSystem::BindKey("CameraLeft"_hash, KeyCode::MOUSE_LEFT);
-	InputSystem::BindKey("CameraRight"_hash, KeyCode::MOUSE_RIGHT);
-	InputSystem::BindVectorKeys("Move"_hash, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
-	InputSystem::BindVectorKeys("CameraMove"_hash, KeyCode::I, KeyCode::K, KeyCode::MOUSE_LEFT, KeyCode::MOUSE_RIGHT);
+    KeyBind();
 
-	InputSystem::BindPadButton("RotateBlockUp"_hash, PadCode::UP);
-	InputSystem::BindPadButton("RotateBlockDown"_hash, PadCode::DOWN);
-	InputSystem::BindPadButton("RotateBlockLeft"_hash, PadCode::LEFT);
-	InputSystem::BindPadButton("RotateBlockRight"_hash, PadCode::RIGHT);
-	InputSystem::BindPadButton("PlaceAndRemove"_hash, PadCode::B);
-	InputSystem::BindPadButton("Up"_hash, PadCode::Y);
-	InputSystem::BindPadButton("Down"_hash, PadCode::A);
-	InputSystem::BindPadButton("CameraLeft"_hash, PadCode::LEFT_SHOULDER);
-	InputSystem::BindPadButton("CameraRight"_hash, PadCode::RIGHT_SHOULDER);
-	InputSystem::BindPadStick("Move"_hash, StickCode::LEFT);
-	InputSystem::BindPadStick("CameraMove"_hash, StickCode::RIGHT);
+    auto playerObj = CreateGameObject();
+    playerObj->AddComponent<Player>();
+
+    auto cameraObj = CreateGameObject();
+    auto playerCamera = cameraObj->AddComponent<PlayerCamera>();
+    playerCamera->SetPlayer(playerObj->GetTransform());
+    playerCamera->SetCameraDistance(20.0f);
+
+    auto gameStateObj = CreateGameObject();
+    gameStateObj->AddComponent<GameState>();
+
+    CreateStageSet();
+
+    CreateGridField();
+
+    float startX = 8.0f;
+    float startZ = 5.0f;
+    float intervalZ = -3.0f;
+
+    for (size_t i = 0; i < m_levelData.inventoryBlockFiles.size(); ++i) {
+        std::string blockName = m_levelData.inventoryBlockFiles[i];
+        std::string blockPath = "Assets/Level/Blocks/" + blockName + ".json";
+
+        BlockTemplateData blockData;
+        if (LevelSerializer::LoadBlockTemplate(blockPath, blockData)) {
+
+            BlockSetData blockSet;
+            for (const auto& pos : blockData.blocks) {
+                blockSet.blocks.push_back({ pos.x, pos.y, pos.z });
+            }
+
+            auto obj = CreateGameObject();
+
+            auto blockComp = obj->AddComponent<BlockObject>();
+            blockComp->SetBlockSet(blockSet);
+
+            if (!blockData.modelPath.empty()) {
+                blockComp->SetModel(blockData.modelPath);
+            }
+
+            Vector3 pos;
+            pos.x = startX;
+            pos.y = 0.0f;
+            pos.z = startZ + (i * intervalZ);
+
+            obj->GetTransform()->SetPosition(pos + blockComp->GetGroundOffset());
+
+            GameState::GetInstance()->AppendWorldBlock(blockComp);
+        }
+    }
+
+    auto lightObj = CreateGameObject();
+    auto light = lightObj->AddComponent<DirectionalLight>();
+    lightObj->GetTransform()->SetEulerAngle(50.0f, -30.0f, 0.0f);
+
+    auto clearObj = CreateGameObject();
+    clearObj->AddComponent<ClearProduce>();
 }
 
-void GameScene::CreateGridField()
-{
-	int size_x = 4;
-	int size_y = 4;
-	int size_z = 4;
+void GameScene::KeyBind() {
+    InputSystem::CreateButtonAction("RotateBlockUp"_hash);
+    InputSystem::CreateButtonAction("RotateBlockDown"_hash);
+    InputSystem::CreateButtonAction("RotateBlockLeft"_hash);
+    InputSystem::CreateButtonAction("RotateBlockRight"_hash);
+    InputSystem::CreateButtonAction("PlaceAndRemove"_hash);
+    InputSystem::CreateButtonAction("Up"_hash);
+    InputSystem::CreateButtonAction("Down"_hash);
+    InputSystem::CreateButtonAction("CameraLeft"_hash);
+    InputSystem::CreateButtonAction("CameraRight"_hash);
+    InputSystem::CreateAxisAction("Move"_hash);
+    InputSystem::CreateAxisAction("CameraMove"_hash);
 
-	{
-		//グリッドフィールドの作成
-		auto obj = CreateGameObject();
-		auto component = obj->AddComponent<GridField>();
-		GameState::GetInstance()->SetGridField(component);
-		component->SetSize({ size_x, size_y, size_z });
-		ShapeType clearShapeX({ size_y, size_z });
-		ShapeType clearShapeY({ size_x, size_z });
-		ShapeType clearShapeZ({ size_x, size_y });
-		clearShapeX.SetData({
-			1, 0, 0, 0,
-			1, 1, 0, 0,
-			0, 1, 1, 0,
-			0, 0, 0, 0,
-			});
-		clearShapeY.SetData({
-			1, 1, 1, 0,
-			1, 1, 1, 0,
-			0, 0, 1, 1,
-			0, 0, 0, 0,
-			});
-		clearShapeZ.SetData({
-			1, 1, 1, 0,
-			0, 0, 1, 0,
-			0, 0, 1, 1,
-			0, 0, 0, 0,
-			});
-		component->SetClearShape(clearShapeX, clearShapeY, clearShapeZ);
+    InputSystem::BindKey("RotateBlockUp"_hash, KeyCode::UP);
+    InputSystem::BindKey("RotateBlockDown"_hash, KeyCode::DOWN);
+    InputSystem::BindKey("RotateBlockLeft"_hash, KeyCode::LEFT);
+    InputSystem::BindKey("RotateBlockRight"_hash, KeyCode::RIGHT);
+    InputSystem::BindKey("PlaceAndRemove"_hash, KeyCode::SPACE);
+    InputSystem::BindKey("Up"_hash, KeyCode::E);
+    InputSystem::BindKey("Down"_hash, KeyCode::Q);
+    InputSystem::BindKey("CameraLeft"_hash, KeyCode::MOUSE_LEFT);
+    InputSystem::BindKey("CameraRight"_hash, KeyCode::MOUSE_RIGHT);
+    InputSystem::BindVectorKeys("Move"_hash, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
+    InputSystem::BindVectorKeys("CameraMove"_hash, KeyCode::I, KeyCode::K, KeyCode::MOUSE_LEFT, KeyCode::MOUSE_RIGHT);
 
-		obj->GetTransform()->SetPosition(0.0f, 0.2f, 0.0f);
-	}
-
-	// 投影機
-	for (int i = 0; i < 2; ++i)
-	{
-		auto obj = CreateGameObject();
-		auto renderer = obj->AddComponent<MeshRenderer>();
-		renderer->LoadModel("Assets/Model/Stage/fbx/toueiki.fbx");
-
-		Transform* transform = obj->GetTransform();
-		if (i == 0)
-		{
-			transform->SetPosition(-(3.0f + size_x * 0.5f), 0.0f, 0.0f);
-			transform->SetEulerAngle(0.0f, 90.0f, 0.0f);
-		}
-		else
-		{
-			transform->SetPosition(0.0f, 0.0f, 3.0f + size_z * 0.5f);
-		}
-	}
-
-	// 危険エリア Z
-	for (int i = 0; i < 2; ++i)
-	{
-		float flip = i == 0 ? 1.0f : -1.0f;
-		for (int x = 0; x < size_x; ++x)
-		{
-			auto obj = CreateGameObject();
-			auto renderer = obj->AddComponent<MeshRenderer>();
-			renderer->LoadModel("Assets/Model/Stage/fbx/kiken.fbx");
-
-			Vector3 pos;
-			pos.x = x - size_x * 0.5f + 0.5f;
-			pos.z = (size_z * 0.5f + 0.5f) * flip;
-			obj->GetTransform()->SetPosition(pos);
-			obj->GetTransform()->SetEulerAngle(0.0f, 90.0f * flip, 0.0f);
-		}
-	}
-
-	// 危険エリア X
-	for (int i = 0; i < 2; ++i)
-	{
-		float flip = i == 0 ? 1.0f : -1.0f;
-		for (int z = 0; z < size_z; ++z)
-		{
-			auto obj = CreateGameObject();
-			auto renderer = obj->AddComponent<MeshRenderer>();
-			renderer->LoadModel("Assets/Model/Stage/fbx/kiken.fbx");
-
-			Vector3 pos;
-			pos.x = (size_x * 0.5f + 0.5f) * flip;
-			pos.z = z - size_z * 0.5f + 0.5f;
-			obj->GetTransform()->SetPosition(pos);
-			obj->GetTransform()->SetEulerAngle(0.0f, 90.0f + 90.0f * flip, 0.0f);
-		}
-	}
-
-	// 危険エリア コーナー
-	for (int i = 0; i < 4; ++i)
-	{
-		Vector3 pos;
-		pos.x = size_x * 0.5f + 0.5f;
-		pos.z = size_z * 0.5f + 0.5f;
-		if (i == 1 || i == 2)
-		{
-			pos.x *= -1;
-		}
-		if (i == 2 || i == 3)
-		{
-			pos.z *= -1;
-		}
-
-		auto obj = CreateGameObject();
-		auto renderer = obj->AddComponent<MeshRenderer>();
-		renderer->LoadModel("Assets/Model/Stage/fbx/Kiken_Corner.fbx");
-		obj->GetTransform()->SetPosition(pos);
-		obj->GetTransform()->SetEulerAngle(0.0f, 90.0f - 90.0f * i, 0.0f);
-	}
-
-	// 土台当たり判定用
-	{
-		// スケーリング時の判定がおかしい
-		
-		/*auto obj = CreateGameObject();
-		obj->AddComponent<MeshRenderer>();
-		obj->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
-		obj->GetTransform()->SetScale(size_x+1.0f, 0.2f, size_z);
-		auto collider = obj->AddComponent<Collider>();
-		collider->m_scale = Vector3(size_x + 2.0f, 0.02f, size_z + 2.0f);*/
-	}
+    InputSystem::BindPadButton("RotateBlockUp"_hash, PadCode::UP);
+    InputSystem::BindPadButton("RotateBlockDown"_hash, PadCode::DOWN);
+    InputSystem::BindPadButton("RotateBlockLeft"_hash, PadCode::LEFT);
+    InputSystem::BindPadButton("RotateBlockRight"_hash, PadCode::RIGHT);
+    InputSystem::BindPadButton("PlaceAndRemove"_hash, PadCode::B);
+    InputSystem::BindPadButton("Up"_hash, PadCode::Y);
+    InputSystem::BindPadButton("Down"_hash, PadCode::A);
+    InputSystem::BindPadButton("CameraLeft"_hash, PadCode::LEFT_SHOULDER);
+    InputSystem::BindPadButton("CameraRight"_hash, PadCode::RIGHT_SHOULDER);
+    InputSystem::BindPadStick("Move"_hash, StickCode::LEFT);
+    InputSystem::BindPadStick("CameraMove"_hash, StickCode::RIGHT);
 }
 
-void GameScene::CreateStageSet()
-{
-	// ギミック以外のステージオブジェクト
+void GameScene::CreateGridField() {
+    int size_x = m_levelData.gridSize.x;
+    int size_y = m_levelData.gridSize.y;
+    int size_z = m_levelData.gridSize.z;
 
-	//床
-	int stageSize_x = 25;
-	int stageSize_z = 25;
-	float blockScale = 1.0f;
-	for (int z = 0; z < stageSize_z; ++z)
-	{
-		for (int x = 0; x < stageSize_x; ++x)
-		{
-			Vector3 pos(x - stageSize_x * 0.5f + 0.5f, 0.0f, z - stageSize_z * 0.5f + 0.5f);
-			pos *= blockScale;
+    {
+        auto obj = CreateGameObject();
+        auto component = obj->AddComponent<GridField>();
+        GameState::GetInstance()->SetGridField(component);
 
-			auto obj = CreateGameObject();
-			auto renderer = obj->AddComponent<MeshRenderer>();
-			renderer->LoadModel("Assets/Model/Stage/fbx/yuka.fbx");
-			obj->GetTransform()->SetPosition(pos);
-			obj->GetTransform()->SetScale(0.25f, 0.25f, 0.25f);
-		}
-	}
+        component->SetSize({ size_x, size_y, size_z });
 
-	//柵
-	for (int z = 0; z < stageSize_z; ++z)
-	{
-		for (int x = 0; x < stageSize_x; ++x)
-		{
-			Vector3 rotateAngle = Vector3::zero;
-			if (x == 0)
-			{
-				rotateAngle.y = 180.0f;
-			}
-			else if (x == stageSize_x - 1)
-			{
-				rotateAngle.y = 0.0f;
-			}
-			else if (z == 0)
-			{
-				rotateAngle.y = 90.0f;
-			}
-			else if (z == stageSize_z - 1)
-			{
-				rotateAngle.y = 270.0f;
-			}
-			else
-			{
-				continue;
-			}
+        component->SetClearShape(
+            m_levelData.targetShapes[0],
+            m_levelData.targetShapes[1],
+            m_levelData.targetShapes[2]
+        );
 
-			if (x % 2 == 0 && z % 2 == 0)
-				continue;
+        obj->GetTransform()->SetPosition(0.0f, 0.2f, 0.0f);
+    }
 
-			Vector3 pos(x - stageSize_x * 0.5f + 0.5f, 0.0f, z - stageSize_z * 0.5f + 0.5f);
-			pos *= blockScale;
+    // 投影機
+    for (int i = 0; i < 2; ++i) {
+        auto obj = CreateGameObject();
+        auto renderer = obj->AddComponent<MeshRenderer>();
+        renderer->LoadModel("Assets/Model/Stage/fbx/toueiki.fbx");
 
-			auto obj = CreateGameObject();
-			auto renderer = obj->AddComponent<MeshRenderer>();
-			renderer->LoadModel("Assets/Model/Stage/fbx/saku.fbx");
-			obj->GetTransform()->SetPosition(pos);
-			obj->GetTransform()->SetEulerAngle(rotateAngle);
-		}
-	}
+        Transform* transform = obj->GetTransform();
+        if (i == 0) {
+            transform->SetPosition(-(3.0f + size_x * 0.5f), 0.0f, 0.0f);
+            transform->SetEulerAngle(0.0f, 90.0f, 0.0f);
+        }
+        else {
+            transform->SetPosition(0.0f, 0.0f, 3.0f + size_z * 0.5f);
+        }
+    }
 
-	//UIオブジェクトを作成
-	CreateUIObject();
+    // 危険エリア Z
+    for (int i = 0; i < 2; ++i) {
+        float flip = i == 0 ? 1.0f : -1.0f;
+        for (int x = 0; x < size_x; ++x) {
+            auto obj = CreateGameObject();
+            auto renderer = obj->AddComponent<MeshRenderer>();
+            renderer->LoadModel("Assets/Model/Stage/fbx/kiken.fbx");
+
+            Vector3 pos;
+            pos.x = x - size_x * 0.5f + 0.5f;
+            pos.z = (size_z * 0.5f + 0.5f) * flip;
+            obj->GetTransform()->SetPosition(pos);
+            obj->GetTransform()->SetEulerAngle(0.0f, 90.0f * flip, 0.0f);
+        }
+    }
+
+    // 危険エリア X
+    for (int i = 0; i < 2; ++i) {
+        float flip = i == 0 ? 1.0f : -1.0f;
+        for (int z = 0; z < size_z; ++z) {
+            auto obj = CreateGameObject();
+            auto renderer = obj->AddComponent<MeshRenderer>();
+            renderer->LoadModel("Assets/Model/Stage/fbx/kiken.fbx");
+
+            Vector3 pos;
+            pos.x = (size_x * 0.5f + 0.5f) * flip;
+            pos.z = z - size_z * 0.5f + 0.5f;
+            obj->GetTransform()->SetPosition(pos);
+            obj->GetTransform()->SetEulerAngle(0.0f, 90.0f + 90.0f * flip, 0.0f);
+        }
+    }
+
+    // 危険エリア コーナー
+    for (int i = 0; i < 4; ++i) {
+        Vector3 pos;
+        pos.x = size_x * 0.5f + 0.5f;
+        pos.z = size_z * 0.5f + 0.5f;
+        if (i == 1 || i == 2) pos.x *= -1;
+        if (i == 2 || i == 3) pos.z *= -1;
+
+        auto obj = CreateGameObject();
+        auto renderer = obj->AddComponent<MeshRenderer>();
+        renderer->LoadModel("Assets/Model/Stage/fbx/Kiken_Corner.fbx");
+        obj->GetTransform()->SetPosition(pos);
+        obj->GetTransform()->SetEulerAngle(0.0f, 90.0f - 90.0f * i, 0.0f);
+    }
 }
 
+void GameScene::CreateStageSet() {
+    // 床
+    int stageSize_x = 25;
+    int stageSize_z = 25;
+    float blockScale = 1.0f;
+    for (int z = 0; z < stageSize_z; ++z) {
+        for (int x = 0; x < stageSize_x; ++x) {
+            Vector3 pos(x - stageSize_x * 0.5f + 0.5f, 0.0f, z - stageSize_z * 0.5f + 0.5f);
+            pos *= blockScale;
 
+            auto obj = CreateGameObject();
+            auto renderer = obj->AddComponent<MeshRenderer>();
+            renderer->LoadModel("Assets/Model/Stage/fbx/yuka.fbx");
+            obj->GetTransform()->SetPosition(pos);
+            obj->GetTransform()->SetScale(0.25f, 0.25f, 0.25f);
+        }
+    }
 
+    // 柵
+    for (int z = 0; z < stageSize_z; ++z) {
+        for (int x = 0; x < stageSize_x; ++x) {
+            Vector3 rotateAngle = Vector3::zero;
+            if (x == 0) rotateAngle.y = 180.0f;
+            else if (x == stageSize_x - 1) rotateAngle.y = 0.0f;
+            else if (z == 0) rotateAngle.y = 90.0f;
+            else if (z == stageSize_z - 1) rotateAngle.y = 270.0f;
+            else continue;
 
-void GameScene::CreateUIObject()
-{
-	//メニュー
-	{
-		auto obj = CreateGameObject();
-		auto renderer = obj->AddComponent<SpriteRenderer>();
-		renderer->SetUI(true);
-		renderer->LoadTexture("Assets/Textures/menuu.png");
-		renderer->GetTransform()->SetPosition(-5.6f, 3.1f, 0.0f);
-		renderer->SetSize(110.0f, 110.0f);
+            if (x % 2 == 0 && z % 2 == 0) continue;
 
-	}
+            Vector3 pos(x - stageSize_x * 0.5f + 0.5f, 0.0f, z - stageSize_z * 0.5f + 0.5f);
+            pos *= blockScale;
 
-	//おく
-	{
-		auto obj = CreateGameObject();
-		auto renderer = obj->AddComponent<SpriteRenderer>();
-		renderer->SetUI(true);
-		renderer->LoadTexture("Assets/Textures/okuB.png");
-		renderer->GetTransform()->SetPosition(5.6f, -1.6f, 0.0f);
-		renderer->SetSize(MOZI_SIZE + 70.0f, MOZI_SIZE + 20.0f);
-		obj->AddComponent<GuideUIController>();
-	}
+            auto obj = CreateGameObject();
+            auto renderer = obj->AddComponent<MeshRenderer>();
+            renderer->LoadModel("Assets/Model/Stage/fbx/saku.fbx");
+            obj->GetTransform()->SetPosition(pos);
+            obj->GetTransform()->SetEulerAngle(rotateAngle);
+        }
+    }
 
-	//完成 
-	{
-		auto obj = CreateGameObject();
-		auto renderer = obj->AddComponent<SpriteRenderer>();
-		renderer->SetUI(true);
-		renderer->LoadTexture("Assets/Textures/kanbansei.png");
-		renderer->GetTransform()->SetPosition(4.3f, -4.6f, 0.0f);
-		renderer->SetSize(MOZI_SIZE + 150.0f, MOZI_SIZE + 100.0f);
-		obj->AddComponent<GuideUIController2>();
-	}
-
-	//メニュー開いたやつ
-	{
-		auto obj = CreateGameObject();
-		obj->AddComponent<GuideUIResultController>();
-	}
-
-	//タイマー1
-	{
-		auto obj = CreateGameObject();
-
-		obj->GetTransform()->SetPosition(4.1f, 3.2f, 0.0f);
-
-		obj->AddComponent<GuideUITimeController>();
-	}
-
-	//リザルト
-	{
-		auto obj = CreateGameObject();
-		auto renderer = obj->AddComponent<SpriteRenderer>();
-		renderer->SetUI(true);
-		renderer->LoadTexture("Assets/Textures/result3.png");
-		renderer->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
-		obj->GetTransform()->SetScale(0.0f, 0.0f, 0.0f);
-		obj->AddComponent<GuideUITimeController2>();
-	}
+    // UIオブジェクト
+    CreateUIObject();
 }
-	
 
+void GameScene::CreateUIObject() {
+    // メニュー
+    {
+        auto obj = CreateGameObject();
+        auto renderer = obj->AddComponent<SpriteRenderer>();
+        renderer->SetUI(true);
+        renderer->LoadTexture("Assets/Textures/menuu.png");
+        renderer->GetTransform()->SetPosition(-5.6f, 3.1f, 0.0f);
+        renderer->SetSize(110.0f, 110.0f);
+    }
+
+    // おく
+    {
+        auto obj = CreateGameObject();
+        auto renderer = obj->AddComponent<SpriteRenderer>();
+        renderer->SetUI(true);
+        renderer->LoadTexture("Assets/Textures/okuB.png");
+        renderer->GetTransform()->SetPosition(5.6f, -1.6f, 0.0f);
+        renderer->SetSize(MOZI_SIZE + 70.0f, MOZI_SIZE + 20.0f);
+        obj->AddComponent<GuideUIController>();
+    }
+
+    // 完成 
+    {
+        auto obj = CreateGameObject();
+        auto renderer = obj->AddComponent<SpriteRenderer>();
+        renderer->SetUI(true);
+        renderer->LoadTexture("Assets/Textures/kanbansei.png");
+        renderer->GetTransform()->SetPosition(4.3f, -4.6f, 0.0f);
+        renderer->SetSize(MOZI_SIZE + 150.0f, MOZI_SIZE + 100.0f);
+        obj->AddComponent<GuideUIController2>();
+    }
+
+    // メニュー開いたやつ
+    {
+        auto obj = CreateGameObject();
+        obj->AddComponent<GuideUIResultController>();
+    }
+
+    // タイマー1
+    {
+        auto obj = CreateGameObject();
+        obj->GetTransform()->SetPosition(4.1f, 3.2f, 0.0f);
+        obj->AddComponent<GuideUITimeController>();
+    }
+
+    // リザルト
+    {
+        auto obj = CreateGameObject();
+        auto renderer = obj->AddComponent<SpriteRenderer>();
+        renderer->SetUI(true);
+        renderer->LoadTexture("Assets/Textures/result3.png");
+        renderer->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
+        obj->GetTransform()->SetScale(0.0f, 0.0f, 0.0f);
+        obj->AddComponent<GuideUITimeController2>();
+    }
+}

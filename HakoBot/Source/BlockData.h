@@ -31,3 +31,10 @@ struct BlockSetAndRotationData
 	BlockSetData	blockSet;
 	Quaternion		rotation;
 };
+
+struct BlockData
+{
+	BlockSetData	blockSet;
+	Quaternion		rotation;
+	std::string		modelPath;
+};

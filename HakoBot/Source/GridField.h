@@ -39,7 +39,7 @@ public:
 	bool IsOverlap(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation);
 
 	// 配置カーソルをセット
-	void SetPlaceCursor(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation);	
+	void SetPlaceCursor(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation, const std::string& modelPath);
 
 	void ResetPlaceCursor();
 
@@ -55,7 +55,7 @@ public:
 	// 除外カーソルの位置からブロックを取り除く
 	// 戻り値は取り除いたブロックのデータ
 	// ブロックが存在しない場合はnulloptを返す
-	std::optional<BlockSetAndRotationData> RemoveBlock();
+	std::optional<BlockData> RemoveBlock();
 
 	// クリア判定の形状を登録する関数
 	void SetClearShape(ShapeType shapeX , ShapeType shapeY , ShapeType shapeZ);

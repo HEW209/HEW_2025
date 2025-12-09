@@ -20,6 +20,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
+	SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+
 	//----------------------------
 	//		ウィンドウの作成
 	//----------------------------
@@ -93,7 +95,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//		ゲームフレームワークの初期化
 	//-----------------------------------------
 	// Direct3Dクラスの作成
-	if (FAILED(Direct3D::Instance().Init(hWnd, ScreenWidth, ScreenHeight)))
+	RECT clientRc;
+	GetClientRect(hWnd, &clientRc);
+	int clientW = clientRc.right - clientRc.left;
+	int clientH = clientRc.bottom - clientRc.top;
+
+	if (FAILED(Direct3D::Instance().Init(hWnd, clientW, clientH)))
 	{
 		Debug::ErrorMessage("Direct3Dの初期化に失敗しました");
 		return 0;
@@ -103,7 +110,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		hWnd, Direct3D::Instance().GetDevice(), Direct3D::Instance().GetContext());
 
 	// シーンの作成
-	SceneManager::Init(std::make_unique<GameScene>());
+	SceneManager::Init(std::make_unique<GameScene>("TestLevel01"));
 
 	//-------------------------
 	//		その他の準備

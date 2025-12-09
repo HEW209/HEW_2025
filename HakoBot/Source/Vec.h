@@ -414,6 +414,30 @@ struct Vec : public VectorStorage<T, N>
     constexpr T DistanceSqFrom(const Vec& other) const {
         return (*this - other).LengthSq();
     }
+
+    // 自身の成分の中で最も小さい値を返す
+    constexpr T MinElement() const requires (N > 0) {
+        return *std::min_element(data.begin(), data.end());
+    }
+
+    // 自身の成分の中で最も大きい値を返す
+    constexpr T MaxElement() const requires (N > 0) {
+        return *std::max_element(data.begin(), data.end());
+    }
+
+    // 絶対値が最小の成分を返す
+    constexpr T MinAbsElement() const requires (N > 0) {
+        auto it = std::min_element(data.begin(), data.end(),
+            [](T a, T b) { return std::abs(a) < std::abs(b); });
+        return std::abs(*it);
+    }
+
+    // 絶対値が最大の成分を返す
+    constexpr T MaxAbsElement() const requires (N > 0) {
+        auto it = std::max_element(data.begin(), data.end(),
+            [](T a, T b) { return std::abs(a) < std::abs(b); });
+        return std::abs(*it);
+    }
     
     // 出力用（デバッグ）
     friend std::ostream& operator<<(std::ostream& os, const Vec& v) {
@@ -425,6 +449,49 @@ struct Vec : public VectorStorage<T, N>
         return os;
     }
 
+
+    // 2つのベクトルの各成分を比較し、小さい方を採用したベクトルを返す
+    static constexpr Vec Min(const Vec& a, const Vec& b) {
+        Vec result;
+        for (std::size_t i = 0; i < N; ++i) {
+            result[i] = std::min(a[i], b[i]);
+        }
+        return result;
+    }
+
+    template <typename... Args>
+        requires (std::same_as<Args, Vec> && ...)
+    static constexpr Vec Min(const Vec& first, const Args&... args) {
+        Vec result = first;
+        ((result = Min(result, args)), ...);
+        return result;
+    }
+
+    // 2つのベクトルの各成分を比較し、大きい方を採用したベクトルを返す
+    static constexpr Vec Max(const Vec& a, const Vec& b) {
+        Vec result;
+        for (std::size_t i = 0; i < N; ++i) {
+            result[i] = std::max(a[i], b[i]);
+        }
+        return result;
+    }
+
+    template <typename... Args>
+        requires (std::same_as<Args, Vec> && ...)
+    static constexpr Vec Max(const Vec& first, const Args&... args) {
+        Vec result = first;
+        ((result = Max(result, args)), ...);
+        return result;
+    }
+
+    // ベクトルの各成分を minVec と maxVec の範囲に収める
+    static constexpr Vec Clamp(const Vec& value, const Vec& minVec, const Vec& maxVec) {
+        Vec result;
+        for (std::size_t i = 0; i < N; ++i) {
+            result[i] = std::clamp(value[i], minVec[i], maxVec[i]);
+        }
+        return result;
+    }
 
     // 極小の値のスカラー
     static constexpr T EpsilonScalar = []() {

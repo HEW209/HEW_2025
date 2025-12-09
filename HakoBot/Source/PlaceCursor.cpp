@@ -43,6 +43,11 @@ void PlaceCursor::SetBlockSet(const BlockSetData& blockSet)
 	}
 }
 
+void PlaceCursor::SetModelPath(const std::string& modelPath)
+{
+	m_modelPath = modelPath;
+}
+
 void PlaceCursor::SetPlaceable(bool value)
 {
 	Material material;
