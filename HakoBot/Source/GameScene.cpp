@@ -16,6 +16,8 @@
 #include "PlayerBlockHandler.h"
 #include "PlayerCamera.h"
 
+#include "ClearProduce.h"
+
 void GameScene::Init()
 {
 	KeyBind();
@@ -108,6 +110,10 @@ void GameScene::Init()
 		obj->GetTransform()->SetEulerAngle(50.0f, -30.0f, 0.0f);
 	}
 
+	{//ライト
+		auto obj = CreateGameObject();
+		obj->AddComponent<ClearProduce>();
+	}
 }
 
 void GameScene::KeyBind()
@@ -268,12 +274,12 @@ void GameScene::CreateGridField()
 	{
 		// スケーリング時の判定がおかしい
 		
-		//auto obj = CreateGameObject();
-		//obj->AddComponent<MeshRenderer>();
-		//obj->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
-		//obj->GetTransform()->SetScale(size_x+1.0f, 0.2f, size_z);
-		//auto collider = obj->AddComponent<Collider>();
-		//collider->m_scale = Vector3(size_x + 2.0f, 0.01f, size_z + 2.0f);
+		/*auto obj = CreateGameObject();
+		obj->AddComponent<MeshRenderer>();
+		obj->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
+		obj->GetTransform()->SetScale(size_x+1.0f, 0.2f, size_z);
+		auto collider = obj->AddComponent<Collider>();
+		collider->m_scale = Vector3(size_x + 2.0f, 0.02f, size_z + 2.0f);*/
 	}
 }
 

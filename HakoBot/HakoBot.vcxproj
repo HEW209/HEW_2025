@@ -160,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\BlockObject.cpp" />
+    <ClCompile Include="Source\ClearProduce.cpp" />
     <ClCompile Include="Source\GameScene.cpp" />
     <ClCompile Include="Source\GameState.cpp" />
     <ClCompile Include="Source\GridBlockData.cpp" />
@@ -185,6 +186,7 @@
   <ItemGroup>
     <ClInclude Include="Source\BlockData.h" />
     <ClInclude Include="Source\BlockObject.h" />
+    <ClInclude Include="Source\ClearProduce.h" />
     <ClInclude Include="Source\Config.h" />
     <ClInclude Include="Source\DynamicDimensionalArray.h" />
     <ClInclude Include="Source\Easing.h" />
