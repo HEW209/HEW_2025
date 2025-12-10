@@ -165,10 +165,10 @@
     <ClCompile Include="Source\GameState.cpp" />
     <ClCompile Include="Source\GridBlockData.cpp" />
     <ClCompile Include="Source\GridField.cpp" />
+    <ClCompile Include="Source\GuideUIResultController.cpp" />
     <ClCompile Include="Source\InputSystem.cpp" />
     <ClCompile Include="Source\GuideUIController.cpp" />
     <ClCompile Include="Source\GuideUIController2.cpp" />
-    <ClCompile Include="Source\GuideUIResultController.cpp" />
     <ClCompile Include="Source\GuideUITimeController.cpp" />
     <ClCompile Include="Source\GuideUITimeController2.cpp" />
     <ClCompile Include="Source\LevelSerializer.cpp" />
@@ -196,6 +196,7 @@
     <ClInclude Include="Source\GameTypes.h" />
     <ClInclude Include="Source\GridBlockData.h" />
     <ClInclude Include="Source\GridField.h" />
+    <ClInclude Include="Source\GuideUIResultController.h" />
     <ClInclude Include="Source\HashUtil.h" />
     <ClInclude Include="Source\IDGenerator.h" />
     <ClInclude Include="Source\InputSystem.h" />
@@ -223,7 +224,6 @@
     </FxCompile>
     <ClInclude Include="Source\GuideUIController.h" />
     <ClInclude Include="Source\GuideUIController2.h" />
-    <ClInclude Include="Source\GuideUIResultController.h" />
     <ClInclude Include="Source\GuideUITimeController.h" />
     <ClInclude Include="Source\GuideUITimeController2.h" />
   </ItemGroup>
