@@ -107,12 +107,13 @@ bool GridField::IsOverlap(const BlockSetData& blockSet, const Vector3& position,
 	return false;
 }
 
-void GridField::SetPlaceCursor(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation)
+void GridField::SetPlaceCursor(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation, const std::string& modelPath)
 {
 	Quaternion snappedRot = SnapRotationToNearest90(rotation);
 
 	if (!IsInside(blockSet, position, snappedRot)) {
 		m_pPlaceCursorComponent->SetBlockSet(BlockSetData{});
+		m_pPlaceCursorComponent->SetModelPath("");
 		return;
 	}
 
@@ -122,6 +123,7 @@ void GridField::SetPlaceCursor(const BlockSetData& blockSet, const Vector3& posi
 	Vector3 pos = origin + static_cast<Vector3>(coord) + Vector3{0.5f, 0.5f, 0.5f};
 
 	m_pPlaceCursorComponent->SetBlockSet(blockSet);
+	m_pPlaceCursorComponent->SetModelPath(modelPath);
 	m_pPlaceCursorComponent->SetPlaceable(CanPlace(blockSet, position, snappedRot));
 	m_pPlaceCursor->GetTransform()->SetPosition(pos);
 	m_pPlaceCursor->GetTransform()->SetQuaternion(snappedRot);
@@ -135,6 +137,7 @@ void GridField::ResetPlaceCursor()
 bool GridField::PlaceBlock()
 {
 	BlockSetData blockSet = m_pPlaceCursorComponent->GetBlockSet();
+	std::string modelPath = m_pPlaceCursorComponent->GetModelPath();
 
 	if (blockSet.blocks.empty()) {
 		return false;
@@ -145,7 +148,7 @@ bool GridField::PlaceBlock()
 
 	Vec3Int posGrid = CalcGridCoord(pos - Vector3{0.5f, 0.5f, 0.5f});
 
-	auto blockId = m_gridData.PlaceBlock(blockSet, posGrid, rot);
+	auto blockId = m_gridData.PlaceBlock(blockSet, posGrid, rot, modelPath);
 
 	if (!blockId) {
 		return false;
@@ -155,6 +158,7 @@ bool GridField::PlaceBlock()
 	auto component = obj->AddComponent<BlockObject>();
 	component->SetUseCollider(true);
 	component->SetBlockSet(blockSet);
+	component->SetModel(modelPath);
 	auto transform = obj->GetTransform();
 	transform->SetPosition(pos);
 	transform->SetQuaternion(rot);
@@ -169,6 +173,7 @@ bool GridField::PlaceBlock()
 	m_pPlacedBlocks[blockId - 1] = obj;
 
 	m_pPlaceCursorComponent->SetBlockSet(BlockSetData{});
+	m_pPlaceCursorComponent->SetModelPath("");
 
 	if (IsClear())
 	{
@@ -212,7 +217,7 @@ void GridField::ResetRemoveCursor()
 	m_removeCursorBlockId = 0u;
 }
 
-std::optional<BlockSetAndRotationData> GridField::RemoveBlock()
+std::optional<BlockData> GridField::RemoveBlock()
 {
 	auto data = m_gridData.RemoveBlock(m_removeCursorBlockId);
 	if (0u < m_removeCursorBlockId && m_removeCursorBlockId <= m_pPlacedBlocks.size()) {

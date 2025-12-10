@@ -3,6 +3,12 @@
 #include "BlockObject.h"
 #include <Component/Collider.h>
 
+void BlockObject::Awake()
+{
+	m_pBlockMeshRenderer = GetGameObject()->AddComponent<MeshRenderer>();
+	m_pBlockMeshRenderer->SetEnabled(false);
+}
+
 void BlockObject::OnDestroy()
 {
 	for (auto&& block : m_pBlocks) {
@@ -24,11 +30,10 @@ void BlockObject::SetBlockSet(const BlockSetData& blockSet)
 	m_pBlocks.clear();
 	m_pBlocks.reserve(m_blockSet.blocks.size());
 
-	Vector3 min(100.0f, 100.0f, 100.0f);
-	Vector3 max(-100.0f, -100.0f, -100.0f);
+	Vector3 min{ std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max() };
+	Vector3 max{ std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest() };
 	for (auto&& blockPos : blockSet.blocks) {
 		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
-		auto renderer = obj->AddComponent<MeshRenderer>();
 		if (m_shouldUseCollider)
 		{
 			obj->AddComponent<Collider>();
@@ -47,34 +52,38 @@ void BlockObject::SetBlockSet(const BlockSetData& blockSet)
 		auto transform = obj->GetTransform();
 		transform->SetParent(GetTransform());
 		transform->SetPosition(blockPos.x, blockPos.y, blockPos.z, Space::LOCAL);
-		m_size = max - min + Vector3(1.0f, 1.0f, 1.0f);
+	
 		m_pBlocks.push_back(obj);
 	}
+	m_size = max - min + Vector3(1.0f, 1.0f, 1.0f);
+	m_center = (min + max) * 0.5f;
+}
 
-	//サイズからオフセット座標を設定
-	for (auto& block : m_pBlocks)
-	{
-		//意図しない結果になる
-		//Vector3 offset = m_size * -0.5f + Vector3(0.5f, 0.5f, 0.5f);
-		//offset.y = 0;
-		//block->GetTransform()->Translate(offset);
+void BlockObject::SetModel(const std::string& modelPath)
+{
+	m_modelPath = modelPath;
+	if (modelPath.empty()) {
+		m_pBlockMeshRenderer->SetEnabled(false);
 	}
-
+	else {
+		m_pBlockMeshRenderer->LoadModel(modelPath);
+		m_pBlockMeshRenderer->SetEnabled(true);
+	}
 }
 
 void BlockObject::SetSelect(bool value)
 {
 	if (value) {
-		for (auto && pBlock : m_pBlocks)
-		{
-			pBlock->GetTransform()->SetScale(0.9f, 0.9f, 0.9f);
-		}
+		//for (auto && pBlock : m_pBlocks)
+		//{
+		//	pBlock->GetTransform()->SetScale(0.9f, 0.9f, 0.9f);
+		//}
 	}
 	else {
-		for (auto&& pBlock : m_pBlocks)
-		{
-			pBlock->GetTransform()->SetScale(1.0f, 1.0f, 1.0f);
-		}
+		//for (auto&& pBlock : m_pBlocks)
+		//{
+		//	pBlock->GetTransform()->SetScale(1.0f, 1.0f, 1.0f);
+		//}
 	}
 }
 
@@ -172,9 +181,4 @@ bool BlockObject::IsInside(const Vector3& worldPosition)
 	}
 
 	return false;
-}
-
-Vector3 BlockObject::GetSize()
-{
-	return m_size;
 }

@@ -20,13 +20,13 @@ public:
 	void Awake() override;
 	void Update() override;
 
-	//ブロックを置くための関数
-	void SetBlockObject(BlockObject* pBlockObject);
-
 private:
-	//回転軸オブジェクト
-	ObjPtr<GameObject> m_rotateRoot;
+	void SetBlockSet(const BlockSetData& blockSet);
+
 
 	//持ってるブロックオブジェクト
 	ObjPtr<BlockObject> m_pBlockObject;
+
+	//ブロックの回転情報を持つ、親オブジェクト
+	ObjPtr<GameObject> m_pBlockHolder;
 };

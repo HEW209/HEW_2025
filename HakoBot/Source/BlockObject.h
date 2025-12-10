@@ -25,10 +25,13 @@ public:
 	BlockObject() :m_shouldUseCollider(true) {}
 	~BlockObject() = default;
 
+	void Awake() override;
 	void OnDestroy() override;
 
 	void SetBlockSet(const BlockSetData& blockSet);
 	const BlockSetData& GetBlockSet() const { return m_blockSet; }
+	void SetModel(const std::string& modelPath);
+	const std::string& GetModelPath() const { return m_modelPath; }
 
 	void SetSelect(bool value);
 
@@ -55,11 +58,23 @@ public:
 
 	void SetUseCollider(bool value) { m_shouldUseCollider = value; }
 
-	Vector3 GetSize();
+	Vector3 GetSize() const { return m_size; }
+
+	Vector3 GetCenterOffset() const { return m_center * -1.0f; }
+
+	Vector3 GetCenterGroundOffset()
+	{
+		Vector3 offset = m_center * -1.0f;
+		offset.y = GetGroundYOffset();
+		return offset;
+	}
 
 private:
 	BlockSetData m_blockSet;
 	std::vector<ObjPtr<GameObject>> m_pBlocks;
+	ObjPtr<MeshRenderer> m_pBlockMeshRenderer;
+	std::string m_modelPath;
 	Vector3 m_size;
+	Vector3 m_center;
 	bool m_shouldUseCollider;
 };

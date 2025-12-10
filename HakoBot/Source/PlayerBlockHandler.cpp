@@ -1,8 +1,14 @@
 #include "PlayerBlockHandler.h"
+
 #include "GameState.h"
 #include "InputSystem.h"
 #include "SoundMaster.h"
 #include "SoundManager.h"
+#include "VecUtil.h"
+
+
+Vec2 CalcSpacedRectPos(const Vec2& rectSize, float distance, const Vec2& direction);
+
 
 PlayerBlockHandler::PlayerBlockHandler()
 {
@@ -10,172 +16,74 @@ PlayerBlockHandler::PlayerBlockHandler()
 
 void PlayerBlockHandler::Awake()
 {
-	m_rotateRoot = SceneManager::GetActiveScene()->CreateGameObject();
+	m_pBlockHolder = SceneManager::GetActiveScene()->CreateGameObject();
+
+	{
+		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
+		obj->GetComponent<Transform>()->SetParent(m_pBlockHolder->GetTransform());
+		m_pBlockObject = obj->AddComponent<BlockObject>();
+		m_pBlockObject->SetUseCollider(false);
+	}
 }
 
 void PlayerBlockHandler::Update()
 {
 	auto blockTransform = m_pBlockObject->GetTransform();
 	auto playerTransform = GetTransform();
+	auto holderTransform = m_pBlockHolder->GetTransform();
+
+
+	Vector3 blockOffset{ 0.0f, 1.5f, 0.0f };
+	//åœ°é¢ã«è¨­ç½®ã•ã›ã‚‹ãŸã‚ã«è¨ˆç®—
+	blockOffset += m_pBlockObject->GetGroundOffset();
+
+	holderTransform->SetPosition(playerTransform->GetPosition() + blockOffset);
 
 
 	if (InputSystem::GetButtonDown("RotateBlockRight"_hash)) {
-		blockTransform->Rotate(0.0f, -90.0f, 0.0f);
+		holderTransform->Rotate(0.0f, -90.0f, 0.0f);
 
 	}
 	if (InputSystem::GetButtonDown("RotateBlockLeft"_hash)) {
-		blockTransform->Rotate(0.0f, 90.0f, 0.0f);
+		holderTransform->Rotate(0.0f, 90.0f, 0.0f);
 
 	}
 
-	/*if (Input::GetKeyDown(KeyCode::KEY_1)) {
-		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
 
-		BlockSetData data;
-		data.blocks.resize(1);
-		data.blocks[0] = { 0, 0, 0 };
-		m_pBlockObject->SetBlockSet(data);
-	}
-	if (Input::GetKeyDown(KeyCode::KEY_2)) {
-		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
+	Vec2 dir = GetFlattenedDirection(playerTransform->GetQuaternion());
+	Vector3 blockSize = m_pBlockObject->GetSize();
+	blockSize = m_pBlockObject->GetTransform()->GetQuaternion() * blockSize;
+	blockSize.x = std::fabsf(blockSize.x);
+	blockSize.y = std::fabsf(blockSize.y);
+	blockSize.z = std::fabsf(blockSize.z);
+	Vec2 placeCursorOffsetXZ = -CalcSpacedRectPos(Vec2{ blockSize.x, blockSize.z }, 1.0f, dir);
 
-		BlockSetData data;
-		data.blocks.resize(2);
-		data.blocks[0] = { 0, 0, 0 };
-		data.blocks[1] = { 1, 0, 0 };
-		m_pBlockObject->SetBlockSet(data);
-	}
-	if (Input::GetKeyDown(KeyCode::KEY_3)) {
-		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
+	Vector3 placeCursorOffset{ placeCursorOffsetXZ.x, 0.0f, placeCursorOffsetXZ.y };
+	placeCursorOffset -= blockOffset + Vector3{ 0.0f, 0.5f, 0.0f };
 
-		BlockSetData data;
-		data.blocks.resize(3);
-		data.blocks[0] = { 0, 0, 0 };
-		data.blocks[1] = { 1, 0, 0 };
-		data.blocks[2] = { 0, 1, 0 };
-		m_pBlockObject->SetBlockSet(data);
-	}
-	if (Input::GetKeyDown(KeyCode::KEY_4)) {
-		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
+	Vector3 placeCursorPos = blockTransform->GetPosition() + placeCursorOffset;
 
-		BlockSetData data;
-		data.blocks.resize(4);
-		data.blocks[0] = { 0, 0, 0 };
-		data.blocks[1] = { 1, 0, 0 };
-		data.blocks[2] = { 0, 1, 0 };
-		data.blocks[3] = { 1, 1, 0 };
-		m_pBlockObject->SetBlockSet(data);
-	}
-	if (Input::GetKeyDown(KeyCode::KEY_5)) {
-		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
-
-		BlockSetData data;
-		data.blocks.resize(4);
-		data.blocks[0] = { 0, 0, 0 };
-		data.blocks[1] = { 1, 0, 0 };
-		data.blocks[2] = { 0, 1, 0 };
-		data.blocks[3] = { 0, 0, 1 };
-		m_pBlockObject->SetBlockSet(data);
-	}
-	if (Input::GetKeyDown(KeyCode::KEY_6)) {
-		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
-
-		BlockSetData data;
-		data.blocks.resize(5);
-		data.blocks[0] = { 0, 0, 0 };
-		data.blocks[1] = { 1, 0, 0 };
-		data.blocks[2] = { 0, 1, 0 };
-		data.blocks[3] = { 1, 1, 0 };
-		data.blocks[4] = { 0, 0, 1 };
-		m_pBlockObject->SetBlockSet(data);
-	}
-	if (Input::GetKeyDown(KeyCode::KEY_7)) {
-		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
-
-		BlockSetData data;
-		data.blocks.resize(6);
-		data.blocks[0] = { 0, 0, 0 };
-		data.blocks[1] = { 1, 0, 0 };
-		data.blocks[2] = { 0, 1, 0 };
-		data.blocks[3] = { 1, 1, 0 };
-		data.blocks[4] = { 0, 0, 1 };
-		data.blocks[5] = { 1, 0, 1 };
-		m_pBlockObject->SetBlockSet(data);
-	}
-	if (Input::GetKeyDown(KeyCode::KEY_8)) {
-		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
-
-		BlockSetData data;
-		data.blocks.resize(6);
-		data.blocks[0] = { 0, 0, 0 };
-		data.blocks[1] = { 1, 0, 0 };
-		data.blocks[2] = { 0, 1, 0 };
-		data.blocks[3] = { 1, 1, 0 };
-		data.blocks[4] = { 0, 0, 1 };
-		data.blocks[5] = { 1, 1, 1 };
-		m_pBlockObject->SetBlockSet(data);
-	}
-	if (Input::GetKeyDown(KeyCode::KEY_9)) {
-		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
-
-		BlockSetData data;
-		data.blocks.resize(7);
-		data.blocks[0] = { 0, 0, 0 };
-		data.blocks[1] = { 1, 0, 0 };
-		data.blocks[2] = { 0, 1, 0 };
-		data.blocks[3] = { 1, 1, 0 };
-		data.blocks[4] = { 0, 0, 1 };
-		data.blocks[5] = { 1, 0, 1 };
-		data.blocks[6] = { 0, 1, 1 };
-		m_pBlockObject->SetBlockSet(data);
-	}
-	if (Input::GetKeyDown(KeyCode::KEY_0)) {
-		m_pBlockObject->GetTransform()->SetEulerAngle(0, 0, 0);
-
-		BlockSetData data;
-		data.blocks.resize(8);
-		data.blocks[0] = { 0, 0, 0 };
-		data.blocks[1] = { 1, 0, 0 };
-		data.blocks[2] = { 0, 1, 0 };
-		data.blocks[3] = { 1, 1, 0 };
-		data.blocks[4] = { 0, 0, 1 };
-		data.blocks[5] = { 1, 0, 1 };
-		data.blocks[6] = { 0, 1, 1 };
-		data.blocks[7] = { 1, 1, 1 };
-		m_pBlockObject->SetBlockSet(data);
-	}*/
-
-
-	//ƒvƒŒƒCƒ„[‚©‚çƒuƒƒbƒN‚ð’u‚­ˆÊ’u‚ðŒˆ‚ß‚é‚½‚ß‚Ì‘Š‘ÎƒIƒtƒZƒbƒgiƒvƒŒƒCƒ„[‘O•û1.5mj
-	//Vector3 blockSize = playerTransform->GetQuaternion() * m_pBlockObject->GetSize();
-	//Vector3 placeCursorOffset{ 0.0f, 0.0f, -std::abs(blockSize.z) * 0.5f - 1.0f };
-	Vector3 placeCursorOffset{ 0.0f, 0.0f, -1.5f };
-
-	//ƒvƒŒƒCƒ„[‚ÌƒNƒH[ƒ^ƒjƒIƒ“‚ðA‘Š‘ÎƒIƒtƒZƒbƒg•ûŒü‚É“K—p
-	//uƒvƒŒƒCƒ„[‚ÌŒü‚¢‚Ä‚¢‚é•ûŒü‚É‰ž‚¶‚ÄA‘O•û1.5m‚ÌˆÊ’uv‚ð‹‚ß‚éB
-	Vector3 placeCursorPos = playerTransform->GetPosition() + playerTransform->GetQuaternion() * placeCursorOffset; 
-
-	//ƒuƒƒbƒN‚Ì’ê–Ê•ª‚¾‚¯ˆÊ’u‚ð•â³i’n–Ê‚ÉÚ’n‚³‚¹‚é‚½‚ß‚ÌƒIƒtƒZƒbƒgj
+	//ãƒ–ãƒ­ãƒƒã‚¯ã®åº•é¢åˆ†ã ã‘ä½ç½®ã‚’è£œæ­£ï¼ˆåœ°é¢ã«æŽ¥åœ°ã•ã›ã‚‹ãŸã‚ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆï¼‰
 	placeCursorPos += m_pBlockObject->GetGroundOffset();
 
-	//ƒvƒŒƒCƒ„[‚©‚ç‚ÌƒuƒƒbƒN‚ðŽæ‚é‚½‚ß‚Ì‘Š‘ÎÀ•W
-	Vector3 removeCursorOffset{ 0.0f, 0.5f, -1.2f };
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‹ã‚‰ã®ãƒ–ãƒ­ãƒƒã‚¯ã‚’å–ã‚‹ãŸã‚ã®ç›¸å¯¾åº§æ¨™
+	Vector3 removeCursorOffset{ 0.0f, 0.5f, -1.15f };
 
 	Vector3 removeCursorPos = playerTransform->GetPosition() + playerTransform->GetQuaternion() * removeCursorOffset;
 
-	//–ˆ‰ñ‘‚­‚Æ’·‚­‚È‚é‚Ì‚ÅŠi”[‚µ‚Ä‚í‚©‚è‚â‚·‚­‚·‚éB
+	//æ¯Žå›žæ›¸ãã¨é•·ããªã‚‹ã®ã§æ ¼ç´ã—ã¦ã‚ã‹ã‚Šã‚„ã™ãã™ã‚‹ã€‚
 	GridField* pGridField = GameState::GetInstance()->GetGridField();
 
-	//ƒuƒƒbƒN‚ª‘¶Ý‚µ‚È‚©‚Á‚½‚ç
+	//ãƒ–ãƒ­ãƒƒã‚¯ãŒå­˜åœ¨ã—ãªã‹ã£ãŸã‚‰
 	if (m_pBlockObject->GetBlockSet().blocks.empty()) {
 
-		//”z’uƒJ[ƒ\ƒ‹‚ÌˆÊ’u‚ð‰Šú‰»‚·‚éB
+		//é…ç½®ã‚«ãƒ¼ã‚½ãƒ«ã®ä½ç½®ã‚’åˆæœŸåŒ–ã™ã‚‹ã€‚
 		pGridField->ResetPlaceCursor();
 
-		//Žæ“¾ƒJ[ƒ\ƒ‹‚ÌˆÊ’u‚ðÝ’è‚·‚éB
+		//å–å¾—ã‚«ãƒ¼ã‚½ãƒ«ã®ä½ç½®ã‚’è¨­å®šã™ã‚‹ã€‚
 		pGridField->SetRemoveCursor(removeCursorPos);
 
-		//–ˆ‰ñ‘‚­‚Æ’·‚­‚È‚é‚Ì‚ÅŠi”[‚µ‚Ä‚í‚©‚è‚â‚·‚­‚·‚éB
+		//æ¯Žå›žæ›¸ãã¨é•·ããªã‚‹ã®ã§æ ¼ç´ã—ã¦ã‚ã‹ã‚Šã‚„ã™ãã™ã‚‹ã€‚
 		auto pWorldBlocks = GameState::GetInstance()->GetWorldBlocks();
 
 		
@@ -198,36 +106,38 @@ void PlayerBlockHandler::Update()
 
 		if (InputSystem::GetButtonDown("PlaceAndRemove"_hash)) {
 
-			//true‚ª‹A‚Á‚Ä‚«‚½‚çƒOƒŠƒbƒh“à
+			//trueãŒå¸°ã£ã¦ããŸã‚‰ã‚°ãƒªãƒƒãƒ‰å†…
 			if (pGridField->IsInside(removeCursorPos)) {
 
 
 				auto blockData = pGridField->RemoveBlock();
 				if (blockData.has_value()) {
 
-					m_pBlockObject->SetBlockSet(blockData->blockSet);
-					blockTransform->SetQuaternion(blockData->rotation);
+					SetBlockSet(blockData->blockSet);
+					m_pBlockObject->SetModel(blockData->modelPath);
+					holderTransform->SetQuaternion(blockData->rotation);
 
-					// SEÄ¶
+					// SEå†ç”Ÿ
 					SoundManager::PlaySE("PutBox", 1.0f, false);
 				}
 
 			}
-			else {//fale‚ª‹A‚Á‚Ä‚«‚½‚ç
+			else {//faleãŒå¸°ã£ã¦ããŸã‚‰
 
 				auto pWorldBlocks = GameState::GetInstance()->GetWorldBlocks();
 
 				for (auto&& pBlock : pWorldBlocks) {
 					
 					if (pBlock->IsInside(removeCursorPos)) {
-						m_pBlockObject->SetBlockSet(pBlock->GetBlockSet());
-						blockTransform->SetQuaternion(pBlock->GetTransform()->GetQuaternion());
+						SetBlockSet(pBlock->GetBlockSet());
+						m_pBlockObject->SetModel(pBlock->GetModelPath());
+						holderTransform->SetQuaternion(pBlock->GetTransform()->GetQuaternion());
 
 						GameState::GetInstance()->RemoveWorldBlock(pBlock.Get());
 
 						pBlock->GetGameObject()->Destroy();
 
-						// SEÄ¶
+						// SEå†ç”Ÿ
 						SoundManager::PlaySE("PutBox", 1.0f, false);
 
 						break;
@@ -239,25 +149,27 @@ void PlayerBlockHandler::Update()
 	else {
 
 		pGridField->ResetRemoveCursor();
-		pGridField->SetPlaceCursor(m_pBlockObject->GetBlockSet(), placeCursorPos, blockTransform->GetQuaternion());
+		pGridField->SetPlaceCursor(m_pBlockObject->GetBlockSet(), placeCursorPos, blockTransform->GetQuaternion(), m_pBlockObject->GetModelPath());
 
 		if (InputSystem::GetButtonDown("PlaceAndRemove"_hash)) {
 
-			//ƒOƒŠƒbƒh“à‚©‚Ç‚¤‚©‚Ì”»’è
+			//ã‚°ãƒªãƒƒãƒ‰å†…ã‹ã©ã†ã‹ã®åˆ¤å®š
 			if (pGridField->IsOverlap(m_pBlockObject->GetBlockSet(), placeCursorPos, blockTransform->GetQuaternion()))
 			{
-				//ƒuƒƒbƒN‚ð‰Šú‰»‚µ‚Ä‚È‚­‚·
+				//ãƒ–ãƒ­ãƒƒã‚¯ã‚’åˆæœŸåŒ–ã—ã¦ãªãã™
 				if (pGridField->PlaceBlock()) {
 
 					m_pBlockObject->SetBlockSet(BlockSetData{});
 
-					// SEÄ¶
+					// SEå†ç”Ÿ
 					SoundManager::PlaySE("PutBox", 1.0f, false);
 
+					SetBlockSet(BlockSetData{});
+					m_pBlockObject->SetModel("");
 				}
 			}
 			else {
-				//ƒOƒŠƒbƒhŠO‚Ìê‡‚Íƒ[ƒ‹ƒh‚É”z’u‚·‚éB
+				//ã‚°ãƒªãƒƒãƒ‰å¤–ã®å ´åˆã¯ãƒ¯ãƒ¼ãƒ«ãƒ‰ã«é…ç½®ã™ã‚‹ã€‚
 
 				auto obj = SceneManager::GetActiveScene()->CreateGameObject();
 				auto component = obj->AddComponent<BlockObject>();
@@ -266,29 +178,40 @@ void PlayerBlockHandler::Update()
 				transform->SetQuaternion(blockTransform->GetQuaternion());
 				component->SetUseCollider(true);
 				component->SetBlockSet(m_pBlockObject->GetBlockSet());
+				component->SetModel(m_pBlockObject->GetModelPath());
 				GameState::GetInstance()->AppendWorldBlock(component);
-				//Žg‚Á‚½“ªã‚ÌƒuƒƒbƒN‚Í‰Šú‰»
+				//ä½¿ã£ãŸé ­ä¸Šã®ãƒ–ãƒ­ãƒƒã‚¯ã¯åˆæœŸåŒ–
 				m_pBlockObject->SetBlockSet(BlockSetData{});
 
-				// SEÄ¶
+				// SEå†ç”Ÿ
 				SoundManager::PlaySE("PutBox", 1.0f, false);
+				SetBlockSet(BlockSetData{});
+				m_pBlockObject->SetModel("");
 			}
 
 		}
 	}
-
-	
-	Vector3 blockOffset{ 0.0f, 2.0f, 0.0f };
-	//’n–Ê‚ÉÝ’u‚³‚¹‚é‚½‚ß‚ÉŒvŽZ
-	blockOffset += m_pBlockObject->GetGroundOffset();
-	
-	blockTransform->SetPosition(playerTransform->GetPosition() + blockOffset);
-
-
-
 }
 
-void PlayerBlockHandler::SetBlockObject(BlockObject* pBlockObject)
+
+void PlayerBlockHandler::SetBlockSet(const BlockSetData& blockSet)
 {
-	m_pBlockObject = pBlockObject;
+	m_pBlockObject->SetBlockSet(blockSet);
+	m_pBlockObject->GetTransform()->SetPosition(m_pBlockObject->GetCenterGroundOffset(), Space::LOCAL);
+}
+
+
+Vec2 CalcSpacedRectPos(const Vec2& rectSize, float distance, const Vec2& direction)
+{
+	float halfW = rectSize.x * 0.5f;
+	float halfH = rectSize.y * 0.5f;
+
+	float distX = (std::abs(direction.x) > direction.EpsilonScalar) ? (halfW / std::abs(direction.x)) : std::numeric_limits<float>::max();
+	float distY = (std::abs(direction.y) > direction.EpsilonScalar) ? (halfH / std::abs(direction.y)) : std::numeric_limits<float>::max();
+
+	float distToRectEdge = std::min(distX, distY);
+
+	float totalDist = distance + distToRectEdge;
+
+	return direction * totalDist;
 }

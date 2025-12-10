@@ -1,7 +1,6 @@
 // GridBlockData.cpp
 
 #include "GridBlockData.h"
-#include "GridDebugSceneManager.h"
 
 GridBlockData::GridBlockData(size_t width, size_t height, size_t depth)
 {
@@ -49,7 +48,7 @@ bool GridBlockData::CanPlace(const BlockSetData& blockSetData, const Vec3Int& po
 	return true;
 }
 
-auto GridBlockData::PlaceBlock(const BlockSetData& blockSetData, const Vec3Int& position, const Quaternion& rotation) -> BlockIdType
+auto GridBlockData::PlaceBlock(const BlockSetData& blockSetData, const Vec3Int& position, const Quaternion& rotation, const std::string& modelPath) -> BlockIdType
 {
 	// 置けるか確認
 	if (!CanPlace(blockSetData, position, rotation)) {
@@ -63,8 +62,9 @@ auto GridBlockData::PlaceBlock(const BlockSetData& blockSetData, const Vec3Int& 
 	}
 
 	// ブロックリストに追加
-	BlockData blockData;
+	BlockDataImpl blockData;
 	blockData.blockSet = blockSetData;
+	blockData.modelPath = modelPath;
 	blockData.position = position;
 	blockData.rotation = rotation;
 
@@ -88,7 +88,7 @@ auto GridBlockData::RemoveBlock(const Vec3Int position) -> BlockIdType
 		return BlockIdType();
 	}
 
-	BlockData blockData = m_blocks[blockId - 1];
+	BlockDataImpl blockData = m_blocks[blockId - 1];
 
 	// 配置されているブロックの座標に無効値0uを記録
 	for (auto&& blockPos : blockData.blockSet.blocks) {
@@ -96,20 +96,20 @@ auto GridBlockData::RemoveBlock(const Vec3Int position) -> BlockIdType
 		m_gridData(pos.x, pos.y, pos.z) = 0u;
 	}
 
-	m_blocks[blockId - 1] = BlockData{};
+	m_blocks[blockId - 1] = BlockDataImpl{};
 
 	m_blockIdGen.Release(blockId);
 
 	return blockId;
 }
 
-std::optional<BlockSetAndRotationData> GridBlockData::RemoveBlock(BlockIdType blockId)
+std::optional<BlockData> GridBlockData::RemoveBlock(BlockIdType blockId)
 {
 	if (blockId <= 0u || m_blocks.size() < blockId) {
 		return std::nullopt;
 	}
 
-	BlockData blockData = m_blocks[blockId - 1];
+	BlockDataImpl blockData = m_blocks[blockId - 1];
 
 	if (blockData.blockSet.blocks.empty()) {
 		return std::nullopt;
@@ -121,13 +121,14 @@ std::optional<BlockSetAndRotationData> GridBlockData::RemoveBlock(BlockIdType bl
 		m_gridData(pos.x, pos.y, pos.z) = 0u;
 	}
 
-	m_blocks[blockId - 1] = BlockData{};
+	m_blocks[blockId - 1] = BlockDataImpl{};
 
 	m_blockIdGen.Release(blockId);
 
-	BlockSetAndRotationData data;
+	BlockData data;
 	data.blockSet = blockData.blockSet;
 	data.rotation = blockData.rotation;
+	data.modelPath = blockData.modelPath;
 
 	return data;
 }

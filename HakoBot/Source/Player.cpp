@@ -13,6 +13,7 @@ void Player::Awake()
 
 	pObj->AddComponent<PlayerMove>();
 	auto collider = pObj->AddComponent<Collider>();
+	collider->m_scale = Vector3(0.7f, 1.0f, 0.7f);
 	collider->IsStatic = false;
 
 	// 頭作る	
@@ -38,13 +39,4 @@ void Player::Awake()
 
 	// 支柱を登録
 	playerStretch->SetPillarObject(playerPillar);
-
-	//ブロックオブジェクトを生成
-	auto blockObj = SceneManager::GetActiveScene()->CreateGameObject();
-
-	//オフセットで位置を変える
-	blockObj->GetTransform()->SetPosition(0.0f, 2.0f, 0.0f);
-	auto blockComponent = blockObj->AddComponent<BlockObject>();
-	blockComponent->SetUseCollider(false);
-	blockHandler->SetBlockObject(blockComponent);
 }

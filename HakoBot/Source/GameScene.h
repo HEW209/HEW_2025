@@ -1,18 +1,21 @@
 #pragma once
-
 #include <DXGameFrame.h>
+#include <string>
+#include "EditorTypes.h"
 
-class GameScene : public Scene
-{
+class GameScene : public Scene {
 public:
-	GameScene() = default;
-	~GameScene() = default;
+    GameScene(const std::string& levelName);
+    ~GameScene() override = default;
 
-	void Init() override;
+    void Init() override;
 
 private:
-	void KeyBind();
-	void CreateGridField();
-	void CreateStageSet();
+    void KeyBind();
+    void CreateGridField();
+    void CreateStageSet();
+    void CreateUIObject();
 
+    std::string m_levelName;
+    LevelData m_levelData;
 };

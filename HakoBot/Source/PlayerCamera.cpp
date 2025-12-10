@@ -59,5 +59,5 @@ void PlayerCamera::SetCameraDistance(float distance)
 	const float distanceToOffsetY = 0.05f;
 
 	m_cameraDistance = distance;
-	m_posOffset.y = distance * distanceToOffsetY;
+	m_posOffset.y = distance * distanceToOffsetY + 0.5f;
 }

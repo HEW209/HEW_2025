@@ -28,12 +28,15 @@ public:
 	void OnDestroy() override;
 
 	void SetBlockSet(const BlockSetData& blockSet);
+	void SetModelPath(const std::string& modelPath);
+	const std::string& GetModelPath() const { return m_modelPath; }
 	const BlockSetData& GetBlockSet() const { return m_blockSet; }
 
 	void SetPlaceable(bool value);
 
 private:
 	BlockSetData m_blockSet;
+	std::string m_modelPath;
 
 	/// ƒuƒƒbƒNî•ñ
 	struct BlockObj
