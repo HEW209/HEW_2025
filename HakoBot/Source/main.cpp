@@ -9,6 +9,7 @@
 // 最初のシーン
 #include "GameScene.h"
 #include "InputSystem.h"
+#include "TitleScene.h"
 
 #include "SoundMaster.h"
 #include "SoundManager.h"
@@ -123,7 +124,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SoundManager::Load();
 
 	// シーンの作成
-	SceneManager::Init(std::make_unique<GameScene>("TestLevel01"));
+	SceneManager::Init(std::make_unique<TitleScene>());
 
 	//-------------------------
 	//		その他の準備
