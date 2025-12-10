@@ -1,6 +1,6 @@
 #include "GameScene.h"
 #include "LevelSerializer.h"
-#include "InputSystem.h"
+#include "InputManager.h"
 #include "GameState.h"
 #include "Player.h"
 #include "PlayerCamera.h"
@@ -88,41 +88,7 @@ void GameScene::Init() {
 }
 
 void GameScene::KeyBind() {
-    InputSystem::CreateButtonAction("RotateBlockUp"_hash);
-    InputSystem::CreateButtonAction("RotateBlockDown"_hash);
-    InputSystem::CreateButtonAction("RotateBlockLeft"_hash);
-    InputSystem::CreateButtonAction("RotateBlockRight"_hash);
-    InputSystem::CreateButtonAction("PlaceAndRemove"_hash);
-    InputSystem::CreateButtonAction("Up"_hash);
-    InputSystem::CreateButtonAction("Down"_hash);
-    InputSystem::CreateButtonAction("CameraLeft"_hash);
-    InputSystem::CreateButtonAction("CameraRight"_hash);
-    InputSystem::CreateAxisAction("Move"_hash);
-    InputSystem::CreateAxisAction("CameraMove"_hash);
-
-    InputSystem::BindKey("RotateBlockUp"_hash, KeyCode::UP);
-    InputSystem::BindKey("RotateBlockDown"_hash, KeyCode::DOWN);
-    InputSystem::BindKey("RotateBlockLeft"_hash, KeyCode::LEFT);
-    InputSystem::BindKey("RotateBlockRight"_hash, KeyCode::RIGHT);
-    InputSystem::BindKey("PlaceAndRemove"_hash, KeyCode::SPACE);
-    InputSystem::BindKey("Up"_hash, KeyCode::E);
-    InputSystem::BindKey("Down"_hash, KeyCode::Q);
-    InputSystem::BindKey("CameraLeft"_hash, KeyCode::MOUSE_LEFT);
-    InputSystem::BindKey("CameraRight"_hash, KeyCode::MOUSE_RIGHT);
-    InputSystem::BindVectorKeys("Move"_hash, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
-    InputSystem::BindVectorKeys("CameraMove"_hash, KeyCode::I, KeyCode::K, KeyCode::MOUSE_LEFT, KeyCode::MOUSE_RIGHT);
-
-    InputSystem::BindPadButton("RotateBlockUp"_hash, PadCode::UP);
-    InputSystem::BindPadButton("RotateBlockDown"_hash, PadCode::DOWN);
-    InputSystem::BindPadButton("RotateBlockLeft"_hash, PadCode::LEFT);
-    InputSystem::BindPadButton("RotateBlockRight"_hash, PadCode::RIGHT);
-    InputSystem::BindPadButton("PlaceAndRemove"_hash, PadCode::B);
-    InputSystem::BindPadButton("Up"_hash, PadCode::Y);
-    InputSystem::BindPadButton("Down"_hash, PadCode::A);
-    InputSystem::BindPadButton("CameraLeft"_hash, PadCode::LEFT_SHOULDER);
-    InputSystem::BindPadButton("CameraRight"_hash, PadCode::RIGHT_SHOULDER);
-    InputSystem::BindPadStick("Move"_hash, StickCode::LEFT);
-    InputSystem::BindPadStick("CameraMove"_hash, StickCode::RIGHT);
+    InputManager::ChangeBindType(InputBindType::GAMEPLAY);
 }
 
 void GameScene::CreateGridField() {

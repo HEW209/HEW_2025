@@ -34,9 +34,6 @@ Vector2 InputAction::GetVector2() const
 }
 
 
-std::unordered_map<uint64_t, InputAction> InputSystem::m_actions;
-std::unordered_map<uint64_t, bool> InputSystem::m_prevButtonStates;
-
 void InputSystem::CreateButtonAction(std::string_view name)
 {
 	CreateButtonAction(StringHash(name));
@@ -146,12 +143,12 @@ void InputSystem::BindVectorKeys(uint64_t actionNameHash, KeyCode up, KeyCode do
     }
 }
 
-bool InputSystem::GetButtonHold(std::string_view name)
+bool InputSystem::GetButtonHold(std::string_view name) const
 {
 	return GetButtonHold(StringHash(name));
 }
 
-bool InputSystem::GetButtonHold(uint64_t nameHash)
+bool InputSystem::GetButtonHold(uint64_t nameHash) const
 {
     if (const auto* action = FindAction(nameHash))
     {
@@ -160,12 +157,12 @@ bool InputSystem::GetButtonHold(uint64_t nameHash)
     return false;
 }
 
-bool InputSystem::GetButtonDown(std::string_view name)
+bool InputSystem::GetButtonDown(std::string_view name) const
 {
 	return GetButtonDown(StringHash(name));
 }
 
-bool InputSystem::GetButtonDown(uint64_t nameHash)
+bool InputSystem::GetButtonDown(uint64_t nameHash) const
 {
     bool current = GetButtonHold(nameHash);
 
@@ -175,12 +172,12 @@ bool InputSystem::GetButtonDown(uint64_t nameHash)
     return current && !prev;
 }
 
-bool InputSystem::GetButtonUp(std::string_view name)
+bool InputSystem::GetButtonUp(std::string_view name) const
 {
 	return GetButtonUp(StringHash(name));
 }
 
-bool InputSystem::GetButtonUp(uint64_t nameHash)
+bool InputSystem::GetButtonUp(uint64_t nameHash) const
 {
     bool current = GetButtonHold(nameHash);
 
@@ -190,12 +187,12 @@ bool InputSystem::GetButtonUp(uint64_t nameHash)
     return !current && prev;
 }
 
-Vector2 InputSystem::GetAxis(std::string_view name)
+Vector2 InputSystem::GetAxis(std::string_view name) const
 {
 	return GetAxis(StringHash(name));
 }
 
-Vector2 InputSystem::GetAxis(uint64_t nameHash)
+Vector2 InputSystem::GetAxis(uint64_t nameHash) const
 {
     if (const auto* action = FindAction(nameHash))
     {
@@ -216,6 +213,16 @@ void InputSystem::Update()
 }
 
 InputAction* InputSystem::FindAction(uint64_t nameHash)
+{
+    auto it = m_actions.find(nameHash);
+    if (it != m_actions.end())
+    {
+        return &it->second;
+    }
+    return nullptr;
+}
+
+const InputAction* InputSystem::FindAction(uint64_t nameHash) const
 {
     auto it = m_actions.find(nameHash);
     if (it != m_actions.end())

@@ -8,7 +8,7 @@
 
 // 最初のシーン
 #include "GameScene.h"
-#include "InputSystem.h"
+#include "InputManager.h"
 
 // ウィンドウプロシージャ
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -109,6 +109,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	ImGuiManager::Instance().Init(
 		hWnd, Direct3D::Instance().GetDevice(), Direct3D::Instance().GetContext());
 
+	InputManager::Init();
+
 	// シーンの作成
 	SceneManager::Init(std::make_unique<GameScene>("TestLevel01"));
 
@@ -153,7 +155,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 			// ゲームの処理
 			SceneManager::Execute(deltaTime);
-			InputSystem::Update();
+			InputManager::Update();
 		}
 	}
 
