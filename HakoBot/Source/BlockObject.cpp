@@ -3,6 +3,12 @@
 #include "BlockObject.h"
 #include <Component/Collider.h>
 
+void BlockObject::Awake()
+{
+	m_pBlockMeshRenderer = GetGameObject()->AddComponent<MeshRenderer>();
+	m_pBlockMeshRenderer->SetEnabled(false);
+}
+
 void BlockObject::OnDestroy()
 {
 	for (auto&& block : m_pBlocks) {
@@ -28,7 +34,6 @@ void BlockObject::SetBlockSet(const BlockSetData& blockSet)
 	Vector3 max{ std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest() };
 	for (auto&& blockPos : blockSet.blocks) {
 		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
-		auto renderer = obj->AddComponent<MeshRenderer>();
 		if (m_shouldUseCollider)
 		{
 			obj->AddComponent<Collider>();
@@ -54,19 +59,31 @@ void BlockObject::SetBlockSet(const BlockSetData& blockSet)
 	m_center = (min + max) * 0.5f;
 }
 
+void BlockObject::SetModel(const std::string& modelPath)
+{
+	m_modelPath = modelPath;
+	if (modelPath.empty()) {
+		m_pBlockMeshRenderer->SetEnabled(false);
+	}
+	else {
+		m_pBlockMeshRenderer->LoadModel(modelPath);
+		m_pBlockMeshRenderer->SetEnabled(true);
+	}
+}
+
 void BlockObject::SetSelect(bool value)
 {
 	if (value) {
-		for (auto && pBlock : m_pBlocks)
-		{
-			pBlock->GetTransform()->SetScale(0.9f, 0.9f, 0.9f);
-		}
+		//for (auto && pBlock : m_pBlocks)
+		//{
+		//	pBlock->GetTransform()->SetScale(0.9f, 0.9f, 0.9f);
+		//}
 	}
 	else {
-		for (auto&& pBlock : m_pBlocks)
-		{
-			pBlock->GetTransform()->SetScale(1.0f, 1.0f, 1.0f);
-		}
+		//for (auto&& pBlock : m_pBlocks)
+		//{
+		//	pBlock->GetTransform()->SetScale(1.0f, 1.0f, 1.0f);
+		//}
 	}
 }
 

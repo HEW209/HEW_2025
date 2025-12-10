@@ -108,6 +108,7 @@ void PlayerBlockHandler::Update()
 				if (blockData.has_value()) {
 
 					SetBlockSet(blockData->blockSet);
+					m_pBlockObject->SetModel(blockData->modelPath);
 					holderTransform->SetQuaternion(blockData->rotation);
 
 				}
@@ -121,6 +122,7 @@ void PlayerBlockHandler::Update()
 					
 					if (pBlock->IsInside(removeCursorPos)) {
 						SetBlockSet(pBlock->GetBlockSet());
+						m_pBlockObject->SetModel(pBlock->GetModelPath());
 						holderTransform->SetQuaternion(pBlock->GetTransform()->GetQuaternion());
 
 						GameState::GetInstance()->RemoveWorldBlock(pBlock.Get());
@@ -135,7 +137,7 @@ void PlayerBlockHandler::Update()
 	else {
 
 		pGridField->ResetRemoveCursor();
-		pGridField->SetPlaceCursor(m_pBlockObject->GetBlockSet(), placeCursorPos, blockTransform->GetQuaternion());
+		pGridField->SetPlaceCursor(m_pBlockObject->GetBlockSet(), placeCursorPos, blockTransform->GetQuaternion(), m_pBlockObject->GetModelPath());
 
 		if (InputSystem::GetButtonDown("PlaceAndRemove"_hash)) {
 
@@ -146,7 +148,7 @@ void PlayerBlockHandler::Update()
 				if (pGridField->PlaceBlock()) {
 
 					SetBlockSet(BlockSetData{});
-
+					m_pBlockObject->SetModel("");
 				}
 			}
 			else {
@@ -159,9 +161,11 @@ void PlayerBlockHandler::Update()
 				transform->SetQuaternion(blockTransform->GetQuaternion());
 				component->SetUseCollider(true);
 				component->SetBlockSet(m_pBlockObject->GetBlockSet());
+				component->SetModel(m_pBlockObject->GetModelPath());
 				GameState::GetInstance()->AppendWorldBlock(component);
 				//使った頭上のブロックは初期化
 				SetBlockSet(BlockSetData{});
+				m_pBlockObject->SetModel("");
 			}
 
 		}
