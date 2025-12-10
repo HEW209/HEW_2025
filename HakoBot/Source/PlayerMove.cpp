@@ -1,6 +1,6 @@
 #include "PlayerMove.h"
 
-#include "InputSystem.h"
+#include "InputManager.h"
 
 PlayerMove::PlayerMove() :
 	m_moveSpeed(0.10f),
@@ -52,7 +52,7 @@ void PlayerMove::Update()
 
 	//“ü—Í‚ðŽæ“¾
 	
-	Vector2 inputVec2 = InputSystem::GetAxis("Move"_hash);
+	Vector2 inputVec2 = InputManager::CurrentInputSystem().GetAxis("Move"_hash);
 	input.x = inputVec2.x;
 	input.z = inputVec2.y;
 		

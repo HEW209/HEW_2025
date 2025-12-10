@@ -1,6 +1,7 @@
 ﻿#include "PlayerBlockHandler.h"
 
 #include "GameState.h"
+#include "InputManager.h"
 #include "InputSystem.h"
 #include "SoundMaster.h"
 #include "SoundManager.h"
@@ -40,11 +41,11 @@ void PlayerBlockHandler::Update()
 	holderTransform->SetPosition(playerTransform->GetPosition() + blockOffset);
 
 
-	if (InputSystem::GetButtonDown("RotateBlockRight"_hash)) {
+	if (InputManager::CurrentInputSystem().GetButtonDown("RotateBlockRight"_hash)) {
 		holderTransform->Rotate(0.0f, -90.0f, 0.0f);
 
 	}
-	if (InputSystem::GetButtonDown("RotateBlockLeft"_hash)) {
+	if (InputManager::CurrentInputSystem().GetButtonDown("RotateBlockLeft"_hash)) {
 		holderTransform->Rotate(0.0f, 90.0f, 0.0f);
 
 	}
@@ -104,7 +105,7 @@ void PlayerBlockHandler::Update()
 			}
 		}
 
-		if (InputSystem::GetButtonDown("PlaceAndRemove"_hash)) {
+		if (InputManager::CurrentInputSystem().GetButtonDown("PlaceAndRemove"_hash)) {
 
 			//trueが帰ってきたらグリッド内
 			if (pGridField->IsInside(removeCursorPos)) {
@@ -151,7 +152,7 @@ void PlayerBlockHandler::Update()
 		pGridField->ResetRemoveCursor();
 		pGridField->SetPlaceCursor(m_pBlockObject->GetBlockSet(), placeCursorPos, blockTransform->GetQuaternion(), m_pBlockObject->GetModelPath());
 
-		if (InputSystem::GetButtonDown("PlaceAndRemove"_hash)) {
+		if (InputManager::CurrentInputSystem().GetButtonDown("PlaceAndRemove"_hash)) {
 
 			//グリッド内かどうかの判定
 			if (pGridField->IsOverlap(m_pBlockObject->GetBlockSet(), placeCursorPos, blockTransform->GetQuaternion()))

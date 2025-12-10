@@ -1,6 +1,6 @@
 #include "PlayerCamera.h"
 
-#include "InputSystem.h"
+#include "InputManager.h"
 
 constexpr float X_ANGLE_MAX = 80.0f;
 constexpr float X_ANGLE_MIN = -0.0f;
@@ -30,7 +30,7 @@ void PlayerCamera::Start()
 
 void PlayerCamera::LateUpdate()
 {
-	Vector2 input = InputSystem::GetAxis("CameraMove"_hash);
+	Vector2 input = InputManager::CurrentInputSystem().GetAxis("CameraMove"_hash);
 
 	m_currentAngleY += input.x * m_rotateSpeed;
 

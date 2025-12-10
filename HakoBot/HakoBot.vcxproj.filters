@@ -117,6 +117,9 @@
     <ClCompile Include="Source\LevelSerializer.cpp">
       <Filter>ソース ファイル\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="Source\InputManager.cpp">
+      <Filter>ソース ファイル\Utility</Filter>
+    </ClCompile>
     <ClCompile Include="Source\TitleScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
@@ -228,6 +231,9 @@
       <Filter>ヘッダー ファイル\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Source\LevelSerializer.h">
+      <Filter>ヘッダー ファイル\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\InputManager.h">
       <Filter>ヘッダー ファイル\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Source\TitleScene.h">
