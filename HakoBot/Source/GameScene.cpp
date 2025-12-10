@@ -19,6 +19,8 @@ GameScene::GameScene(const std::string& levelName)
 }
 
 void GameScene::Init() {
+    RenderSystem::Instance().SetClearColor(Color(1.0f, 0.7f, 0.2f, 1.0f));
+
     std::string path = "Assets/Level/Stages/" + m_levelName + ".json";
     if (!LevelSerializer::LoadLevelData(path, m_levelData)) {
         Debug::ErrorMessage("Failed to load level: " + m_levelName);
@@ -32,7 +34,7 @@ void GameScene::Init() {
     auto cameraObj = CreateGameObject();
     auto playerCamera = cameraObj->AddComponent<PlayerCamera>();
     playerCamera->SetPlayer(playerObj->GetTransform());
-    playerCamera->SetCameraDistance(20.0f);
+    playerCamera->SetCameraDistance(5.0f+m_levelData.gridSize.y * 3.0f);
 
     auto gameStateObj = CreateGameObject();
     gameStateObj->AddComponent<GameState>();

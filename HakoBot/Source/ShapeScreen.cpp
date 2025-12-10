@@ -85,7 +85,7 @@ void ShapeScreen::UpdateClearShapeBlocks(bool isHorogram)
 		Material* material = renderer->GetMaterial(0);
 		Color currentColor;
 		if (*it) {
-			currentColor = Color(0.0f, 0.6f, 3.0f, 0.6f);
+			currentColor = Color(0.2f, 0.8f, 4.0f, 0.6f);
 		}
 		else {
 			currentColor = Color(0.0f, 0.2f, 1.0f, 0.6f);
@@ -128,7 +128,7 @@ void ShapeScreen::UpdateCurrentShapeBlocks()
 		else
 		{
 			if (isInside) {
-				currentColor = Color(0.0f, 0.6f, 3.0f, 0.6f);
+				currentColor = Color(0.2f, 0.8f, 4.0f, 0.6f);
 			}
 			else {
 				currentColor = Color(0.0f, 0.2f, 1.0f, 0.6f);
