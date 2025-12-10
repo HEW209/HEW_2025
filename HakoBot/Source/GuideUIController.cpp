@@ -15,13 +15,13 @@ void GuideUIController::Start()
 	renderer1->LoadTexture("Assets/Textures/nobiruRT.png");
 	renderer1->SetOffsetPos(0.1f, -0.8f);
 	renderer1->SetUI(true);
-	renderer1->SetSize(MOZI_SIZE + 30.0f, MOZI_SIZE - 20.0f);
+	renderer1->SetSize(MOZI_SIZE + 50.0f);
 	//‚¿‚À‚Þ
 	auto renderer2 = GetGameObject()->AddComponent<SpriteRenderer>();
 	renderer2->LoadTexture("Assets/Textures/tidimuLT.png");
 	renderer2->SetOffsetPos(0.1f, -1.6f);
 	renderer2->SetUI(true);
-	renderer2->SetSize(MOZI_SIZE + 30.0f, MOZI_SIZE - 20.0f);
+	renderer2->SetSize(MOZI_SIZE + 50.0f);
 
 
 	//‰ŠúêŠŽæ“¾
@@ -40,12 +40,12 @@ void GuideUIController::Update()
 	if (m_motu)
 	{
 		m_pRenderer->LoadTexture("Assets/Textures/motuB.png");
-		m_pRenderer->SetSize(MOZI_SIZE + 70.0f, MOZI_SIZE + 20.0f);
+		m_pRenderer->SetSize(MOZI_SIZE + 70.0f);
 	}
 	else
 	{
 		m_pRenderer->LoadTexture("Assets/Textures/okuB.png");
-		m_pRenderer->SetSize(MOZI_SIZE + 70.0f, MOZI_SIZE + 20.0f);
+		m_pRenderer->SetSize(MOZI_SIZE + 70.0f);
 	}
 	
 	if (Input::GetKeyHold(KeyCode::D))

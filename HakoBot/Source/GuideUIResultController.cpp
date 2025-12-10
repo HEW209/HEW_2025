@@ -3,6 +3,8 @@
 #include "GuideUIController.h"
 #include "Easing.h"
 #include "InputSystem.h"
+#include "GridField.h"
+#include "GameState.h"
 
 void GuideUIResultController::Start()
 {
@@ -37,7 +39,12 @@ void GuideUIResultController::Update()
 	//メニューをひらく
 	if (InputSystem::GetButtonDown("Menu"_hash))
 	{
-		m_menu = true;
+		GridField* gridfield = GameState::GetInstance()->GetGridField();
+		//クリアしてたらメニュー表示できない
+		if (!gridfield->IsClear())
+		{
+			m_menu = true;
+		}
 		m_rend->SetColor(255.0f, 255.0f, 255.0f, 1.0f);
 		m_rend2->SetColor(255.0f, 255.0f, 255.0f, 1.0f);
 	}

@@ -42,7 +42,7 @@ void GameScene::Init() {
 
     auto cameraObj = CreateGameObject();
     auto playerCamera = cameraObj->AddComponent<PlayerCamera>();
-    playerCamera->SetPlayer(playerObj->GetTransform());
+    playerCamera->SetPlayer(player->GetTransform());
     playerCamera->SetCameraDistance(5.0f+m_levelData.gridSize.y * 3.0f);
 
 	
@@ -284,9 +284,9 @@ void GameScene::CreateUIObject() {
         auto obj = CreateGameObject();
         auto renderer = obj->AddComponent<SpriteRenderer>();
         renderer->SetUI(true);
-        renderer->LoadTexture("Assets/Textures/menuu.png");
-        renderer->GetTransform()->SetPosition(-5.6f, 3.1f, 0.0f);
-        renderer->SetSize(110.0f, 110.0f);
+        renderer->LoadTexture("Assets/Textures/menu!.png");
+        renderer->GetTransform()->SetPosition(-5.3f, 3.2f, 0.20f);
+        renderer->SetSize(200.0f);
     }
 
     // ‚¨‚­

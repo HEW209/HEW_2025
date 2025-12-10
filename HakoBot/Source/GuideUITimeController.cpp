@@ -24,7 +24,7 @@ void GuideUITimeController::Start()
 	{
 		sprite[x] = GetGameObject()->AddComponent<SpriteRenderer>();
 		sprite[x]->SetUI(true);
-		sprite[x]->LoadTexture("Assets/Textures/sprite.png");
+		sprite[x]->LoadTexture("Assets/Textures/newSprite.png");
 		sprite[x]->SetOffsetPos(PosX,0.0f);
 		PosX += 0.3f;
 		if (x % 2)
@@ -38,17 +38,17 @@ void GuideUITimeController::Start()
 	
 	//時計マーク
 	auto renderer1 = GetGameObject()->AddComponent<SpriteRenderer>();
-	renderer1->LoadTexture("Assets/Textures/sprite.png");
-	renderer1->SetOffsetPos(-0.6f, 0.0f);
+	renderer1->LoadTexture("Assets/Textures/newSprite.png");
+	renderer1->SetOffsetPos(-0.5f, 0.01f);
 	renderer1->SetUI(true);
 	renderer1->SetUVScale(1.0f / 6.0f, 1.0f / 2.0f);
 	renderer1->SetUVOffsetPos(5.0f / 6.0f, 1.0f / 2.0f);
-	renderer1->SetSize(MOZI_SIZE + 40.0f, MOZI_SIZE + 40.0f);
+	renderer1->SetSize(MOZI_SIZE, MOZI_SIZE);
 	sprite1[0] = renderer1;
 
 	//点１
 	auto renderer2 = GetGameObject()->AddComponent<SpriteRenderer>();
-	renderer2->LoadTexture("Assets/Textures/sprite.png");
+	renderer2->LoadTexture("Assets/Textures/newSprite.png");
 	renderer2->SetOffsetPos(0.55f, 0.0f);
 	renderer2->SetUI(true);
 	renderer2->SetUVScale(1.0f / 6.0f, 1.0f / 2.0f);
@@ -58,7 +58,7 @@ void GuideUITimeController::Start()
 
 	//点２
 	auto renderer3 = GetGameObject()->AddComponent<SpriteRenderer>();
-	renderer3->LoadTexture("Assets/Textures/sprite.png");
+	renderer3->LoadTexture("Assets/Textures/newSprite.png");
 	renderer3->SetOffsetPos(1.35f, 0.0f);
 	renderer3->SetUI(true);
 	renderer3->SetUVScale(1.0f / 6.0f, 1.0f / 2.0f);
@@ -86,7 +86,7 @@ void GuideUITimeController::Update()
 		m_b = false;
 		for (int x = 0; x < 6; ++x)
 		{
-			sprite[x]->GetTransform()->SetPosition(-1.35f + x * 0.1f,-0.15f,0.0f);
+			sprite[x]->GetTransform()->SetPosition(-1.5f + x * 0.1f,-0.15f,0.0f);
 			sprite[x]->GetTransform()->SetScale(1.5f, 1.5f, 0.0f);
 		}
 	}
