@@ -31,7 +31,7 @@ void PlayerBlockHandler::Update()
 	auto holderTransform = m_pBlockHolder->GetTransform();
 
 
-	Vector3 blockOffset{ 0.0f, 2.0f, 0.0f };
+	Vector3 blockOffset{ 0.0f, 1.5f, 0.0f };
 	//地面に設置させるために計算
 	blockOffset += m_pBlockObject->GetGroundOffset();
 
@@ -61,7 +61,7 @@ void PlayerBlockHandler::Update()
 	placeCursorPos += m_pBlockObject->GetGroundOffset();
 
 	//プレイヤーからのブロックを取るための相対座標
-	Vector3 removeCursorOffset{ 0.0f, 0.5f, -1.35f };
+	Vector3 removeCursorOffset{ 0.0f, 0.5f, -1.15f };
 
 	Vector3 removeCursorPos = playerTransform->GetPosition() + playerTransform->GetQuaternion() * removeCursorOffset;
 
