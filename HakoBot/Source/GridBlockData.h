@@ -36,12 +36,12 @@ public:
 	bool CanPlace(const BlockSetData& blockSetData, const Vec3Int& position, const Quaternion& rotation) const;
 
 	// ブロックを置く。戻り値は置いたブロックのId。置けない場合は0を返す
-	BlockIdType PlaceBlock(const BlockSetData& blockSetData, const Vec3Int& position, const Quaternion& rotation);
+	BlockIdType PlaceBlock(const BlockSetData& blockSetData, const Vec3Int& position, const Quaternion& rotation, const std::string& modelPath);
 
 	// ブロックを取り除く。戻り値は取り除いたブロックのId。ブロックが存在しない場合は0を返す
 	BlockIdType RemoveBlock(const Vec3Int position);
 
-	std::optional<BlockSetAndRotationData> RemoveBlock(BlockIdType blockId);
+	std::optional<BlockData> RemoveBlock(BlockIdType blockId);
 
 	// 二次元の形状（シルエット）を取得
 	// projectionAxis: 0=X, 1=Y, 2=Z
@@ -51,15 +51,16 @@ public:
 	ShapeType GetShapeZ() const { return GetShape(2); }
 
 private:
-	struct BlockData
+	struct BlockDataImpl
 	{
 		BlockSetData	blockSet;
+		std::string		modelPath;
 		Vec3Int			position;
 		Quaternion		rotation;
 	};
 
 	Vec3Int m_size;
 	DynamicDimArray<BlockIdType, 3> m_gridData;
-	std::vector<BlockData> m_blocks;
+	std::vector<BlockDataImpl> m_blocks;
 	IDGenerator<BlockIdType> m_blockIdGen;
 };

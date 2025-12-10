@@ -3,7 +3,6 @@
 #include "GameScene.h"
 #include "GameState.h"
 
-GameScene gamescene;
 
 void GuideUIController2::Start()
 {
