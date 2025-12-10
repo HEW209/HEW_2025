@@ -1,9 +1,13 @@
-#include "GameScene.h"
+ï»¿#include "GameScene.h"
 #include "LevelSerializer.h"
 #include "InputManager.h"
 #include "GameState.h"
 #include "Player.h"
 #include "PlayerCamera.h"
+// ã‚µã‚¦ãƒ³ãƒ‰
+#include "SoundMaster.h"
+#include "SoundManager.h"
+
 #include "BlockObject.h"
 #include "GridField.h"
 #include "ClearProduce.h"
@@ -30,6 +34,7 @@ void GameScene::Init() {
 
     auto playerObj = CreateGameObject();
     playerObj->AddComponent<Player>();
+    playerObj->GetTransform()->SetPosition(0.0f, 0.0f, -8.0f);
 
     auto cameraObj = CreateGameObject();
     auto playerCamera = cameraObj->AddComponent<PlayerCamera>();
@@ -50,6 +55,7 @@ void GameScene::Init() {
     for (size_t i = 0; i < m_levelData.inventoryBlockFiles.size(); ++i) {
         std::string blockName = m_levelData.inventoryBlockFiles[i];
         std::string blockPath = "Assets/Level/Blocks/" + blockName + ".json";
+
 
         BlockTemplateData blockData;
         if (LevelSerializer::LoadBlockTemplate(blockPath, blockData)) {
@@ -85,6 +91,9 @@ void GameScene::Init() {
 
     auto clearObj = CreateGameObject();
     clearObj->AddComponent<ClearProduce>();
+
+    // BGMå†ç”Ÿ
+    SoundManager::PlayBGM("Stage1", 0.2f, true);
 }
 
 void GameScene::KeyBind() {
@@ -112,7 +121,7 @@ void GameScene::CreateGridField() {
         obj->GetTransform()->SetPosition(0.0f, 0.2f, 0.0f);
     }
 
-    // “Š‰e‹@
+    // æŠ•å½±æ©Ÿ
     for (int i = 0; i < 2; ++i) {
         auto obj = CreateGameObject();
         auto renderer = obj->AddComponent<MeshRenderer>();
@@ -128,7 +137,7 @@ void GameScene::CreateGridField() {
         }
     }
 
-    // ŠëŒ¯ƒGƒŠƒA Z
+    // å±é™ºã‚¨ãƒªã‚¢ Z
     for (int i = 0; i < 2; ++i) {
         float flip = i == 0 ? 1.0f : -1.0f;
         for (int x = 0; x < size_x; ++x) {
@@ -144,7 +153,7 @@ void GameScene::CreateGridField() {
         }
     }
 
-    // ŠëŒ¯ƒGƒŠƒA X
+    // å±é™ºã‚¨ãƒªã‚¢ X
     for (int i = 0; i < 2; ++i) {
         float flip = i == 0 ? 1.0f : -1.0f;
         for (int z = 0; z < size_z; ++z) {
@@ -160,7 +169,7 @@ void GameScene::CreateGridField() {
         }
     }
 
-    // ŠëŒ¯ƒGƒŠƒA ƒR[ƒi[
+    // å±é™ºã‚¨ãƒªã‚¢ ã‚³ãƒ¼ãƒŠãƒ¼
     for (int i = 0; i < 4; ++i) {
         Vector3 pos;
         pos.x = size_x * 0.5f + 0.5f;
@@ -177,7 +186,7 @@ void GameScene::CreateGridField() {
 }
 
 void GameScene::CreateStageSet() {
-    // °
+    // åºŠ
     int stageSize_x = 25;
     int stageSize_z = 25;
     float blockScale = 1.0f;
@@ -194,7 +203,7 @@ void GameScene::CreateStageSet() {
         }
     }
 
-    // ò
+    // æŸµ
     for (int z = 0; z < stageSize_z; ++z) {
         for (int x = 0; x < stageSize_x; ++x) {
             Vector3 rotateAngle = Vector3::zero;
@@ -217,12 +226,12 @@ void GameScene::CreateStageSet() {
         }
     }
 
-    // UIƒIƒuƒWƒFƒNƒg
+    // UIã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
     CreateUIObject();
 }
 
 void GameScene::CreateUIObject() {
-    // ƒƒjƒ…[
+    // ãƒ¡ãƒ‹ãƒ¥ãƒ¼
     {
         auto obj = CreateGameObject();
         auto renderer = obj->AddComponent<SpriteRenderer>();
@@ -232,7 +241,7 @@ void GameScene::CreateUIObject() {
         renderer->SetSize(110.0f, 110.0f);
     }
 
-    // ‚¨‚­
+    // ãŠã
     {
         auto obj = CreateGameObject();
         auto renderer = obj->AddComponent<SpriteRenderer>();
@@ -243,7 +252,7 @@ void GameScene::CreateUIObject() {
         obj->AddComponent<GuideUIController>();
     }
 
-    // Š®¬ 
+    // å®Œæˆ 
     {
         auto obj = CreateGameObject();
         auto renderer = obj->AddComponent<SpriteRenderer>();
@@ -254,20 +263,20 @@ void GameScene::CreateUIObject() {
         obj->AddComponent<GuideUIController2>();
     }
 
-    // ƒƒjƒ…[ŠJ‚¢‚½‚â‚Â
+    // ãƒ¡ãƒ‹ãƒ¥ãƒ¼é–‹ã„ãŸã‚„ã¤
     {
         auto obj = CreateGameObject();
         obj->AddComponent<GuideUIResultController>();
     }
 
-    // ƒ^ƒCƒ}[1
+    // ã‚¿ã‚¤ãƒãƒ¼1
     {
         auto obj = CreateGameObject();
         obj->GetTransform()->SetPosition(4.1f, 3.2f, 0.0f);
         obj->AddComponent<GuideUITimeController>();
     }
 
-    // ƒŠƒUƒ‹ƒg
+    // ãƒªã‚¶ãƒ«ãƒˆ
     {
         auto obj = CreateGameObject();
         auto renderer = obj->AddComponent<SpriteRenderer>();

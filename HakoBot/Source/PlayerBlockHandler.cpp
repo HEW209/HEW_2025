@@ -1,7 +1,10 @@
-#include "PlayerBlockHandler.h"
+ï»¿#include "PlayerBlockHandler.h"
 
 #include "GameState.h"
 #include "InputManager.h"
+#include "InputSystem.h"
+#include "SoundMaster.h"
+#include "SoundManager.h"
 #include "VecUtil.h"
 
 
@@ -32,7 +35,7 @@ void PlayerBlockHandler::Update()
 
 
 	Vector3 blockOffset{ 0.0f, 1.5f, 0.0f };
-	//’n–Ê‚ÉÝ’u‚³‚¹‚é‚½‚ß‚ÉŒvŽZ
+	//åœ°é¢ã«è¨­ç½®ã•ã›ã‚‹ãŸã‚ã«è¨ˆç®—
 	blockOffset += m_pBlockObject->GetGroundOffset();
 
 	holderTransform->SetPosition(playerTransform->GetPosition() + blockOffset);
@@ -50,6 +53,10 @@ void PlayerBlockHandler::Update()
 
 	Vec2 dir = GetFlattenedDirection(playerTransform->GetQuaternion());
 	Vector3 blockSize = m_pBlockObject->GetSize();
+	blockSize = m_pBlockObject->GetTransform()->GetQuaternion() * blockSize;
+	blockSize.x = std::fabsf(blockSize.x);
+	blockSize.y = std::fabsf(blockSize.y);
+	blockSize.z = std::fabsf(blockSize.z);
 	Vec2 placeCursorOffsetXZ = -CalcSpacedRectPos(Vec2{ blockSize.x, blockSize.z }, 1.0f, dir);
 
 	Vector3 placeCursorOffset{ placeCursorOffsetXZ.x, 0.0f, placeCursorOffsetXZ.y };
@@ -57,27 +64,27 @@ void PlayerBlockHandler::Update()
 
 	Vector3 placeCursorPos = blockTransform->GetPosition() + placeCursorOffset;
 
-	//ƒuƒƒbƒN‚Ì’ê–Ê•ª‚¾‚¯ˆÊ’u‚ð•â³i’n–Ê‚ÉÚ’n‚³‚¹‚é‚½‚ß‚ÌƒIƒtƒZƒbƒgj
+	//ãƒ–ãƒ­ãƒƒã‚¯ã®åº•é¢åˆ†ã ã‘ä½ç½®ã‚’è£œæ­£ï¼ˆåœ°é¢ã«æŽ¥åœ°ã•ã›ã‚‹ãŸã‚ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆï¼‰
 	placeCursorPos += m_pBlockObject->GetGroundOffset();
 
-	//ƒvƒŒƒCƒ„[‚©‚ç‚ÌƒuƒƒbƒN‚ðŽæ‚é‚½‚ß‚Ì‘Š‘ÎÀ•W
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‹ã‚‰ã®ãƒ–ãƒ­ãƒƒã‚¯ã‚’å–ã‚‹ãŸã‚ã®ç›¸å¯¾åº§æ¨™
 	Vector3 removeCursorOffset{ 0.0f, 0.5f, -1.15f };
 
 	Vector3 removeCursorPos = playerTransform->GetPosition() + playerTransform->GetQuaternion() * removeCursorOffset;
 
-	//–ˆ‰ñ‘‚­‚Æ’·‚­‚È‚é‚Ì‚ÅŠi”[‚µ‚Ä‚í‚©‚è‚â‚·‚­‚·‚éB
+	//æ¯Žå›žæ›¸ãã¨é•·ããªã‚‹ã®ã§æ ¼ç´ã—ã¦ã‚ã‹ã‚Šã‚„ã™ãã™ã‚‹ã€‚
 	GridField* pGridField = GameState::GetInstance()->GetGridField();
 
-	//ƒuƒƒbƒN‚ª‘¶Ý‚µ‚È‚©‚Á‚½‚ç
+	//ãƒ–ãƒ­ãƒƒã‚¯ãŒå­˜åœ¨ã—ãªã‹ã£ãŸã‚‰
 	if (m_pBlockObject->GetBlockSet().blocks.empty()) {
 
-		//”z’uƒJ[ƒ\ƒ‹‚ÌˆÊ’u‚ð‰Šú‰»‚·‚éB
+		//é…ç½®ã‚«ãƒ¼ã‚½ãƒ«ã®ä½ç½®ã‚’åˆæœŸåŒ–ã™ã‚‹ã€‚
 		pGridField->ResetPlaceCursor();
 
-		//Žæ“¾ƒJ[ƒ\ƒ‹‚ÌˆÊ’u‚ðÝ’è‚·‚éB
+		//å–å¾—ã‚«ãƒ¼ã‚½ãƒ«ã®ä½ç½®ã‚’è¨­å®šã™ã‚‹ã€‚
 		pGridField->SetRemoveCursor(removeCursorPos);
 
-		//–ˆ‰ñ‘‚­‚Æ’·‚­‚È‚é‚Ì‚ÅŠi”[‚µ‚Ä‚í‚©‚è‚â‚·‚­‚·‚éB
+		//æ¯Žå›žæ›¸ãã¨é•·ããªã‚‹ã®ã§æ ¼ç´ã—ã¦ã‚ã‹ã‚Šã‚„ã™ãã™ã‚‹ã€‚
 		auto pWorldBlocks = GameState::GetInstance()->GetWorldBlocks();
 
 		
@@ -100,7 +107,7 @@ void PlayerBlockHandler::Update()
 
 		if (InputManager::CurrentInputSystem().GetButtonDown("PlaceAndRemove"_hash)) {
 
-			//true‚ª‹A‚Á‚Ä‚«‚½‚çƒOƒŠƒbƒh“à
+			//trueãŒå¸°ã£ã¦ããŸã‚‰ã‚°ãƒªãƒƒãƒ‰å†…
 			if (pGridField->IsInside(removeCursorPos)) {
 
 
@@ -111,10 +118,12 @@ void PlayerBlockHandler::Update()
 					m_pBlockObject->SetModel(blockData->modelPath);
 					holderTransform->SetQuaternion(blockData->rotation);
 
+					// SEå†ç”Ÿ
+					SoundManager::PlaySE("PutBox", 1.0f, false);
 				}
 
 			}
-			else {//fale‚ª‹A‚Á‚Ä‚«‚½‚ç
+			else {//faleãŒå¸°ã£ã¦ããŸã‚‰
 
 				auto pWorldBlocks = GameState::GetInstance()->GetWorldBlocks();
 
@@ -128,6 +137,10 @@ void PlayerBlockHandler::Update()
 						GameState::GetInstance()->RemoveWorldBlock(pBlock.Get());
 
 						pBlock->GetGameObject()->Destroy();
+
+						// SEå†ç”Ÿ
+						SoundManager::PlaySE("PutBox", 1.0f, false);
+
 						break;
 					}
 				}
@@ -141,18 +154,23 @@ void PlayerBlockHandler::Update()
 
 		if (InputManager::CurrentInputSystem().GetButtonDown("PlaceAndRemove"_hash)) {
 
-			//ƒOƒŠƒbƒh“à‚©‚Ç‚¤‚©‚Ì”»’è
+			//ã‚°ãƒªãƒƒãƒ‰å†…ã‹ã©ã†ã‹ã®åˆ¤å®š
 			if (pGridField->IsOverlap(m_pBlockObject->GetBlockSet(), placeCursorPos, blockTransform->GetQuaternion()))
 			{
-				//ƒuƒƒbƒN‚ð‰Šú‰»‚µ‚Ä‚È‚­‚·
+				//ãƒ–ãƒ­ãƒƒã‚¯ã‚’åˆæœŸåŒ–ã—ã¦ãªãã™
 				if (pGridField->PlaceBlock()) {
+
+					m_pBlockObject->SetBlockSet(BlockSetData{});
+
+					// SEå†ç”Ÿ
+					SoundManager::PlaySE("PutBox", 1.0f, false);
 
 					SetBlockSet(BlockSetData{});
 					m_pBlockObject->SetModel("");
 				}
 			}
 			else {
-				//ƒOƒŠƒbƒhŠO‚Ìê‡‚Íƒ[ƒ‹ƒh‚É”z’u‚·‚éB
+				//ã‚°ãƒªãƒƒãƒ‰å¤–ã®å ´åˆã¯ãƒ¯ãƒ¼ãƒ«ãƒ‰ã«é…ç½®ã™ã‚‹ã€‚
 
 				auto obj = SceneManager::GetActiveScene()->CreateGameObject();
 				auto component = obj->AddComponent<BlockObject>();
@@ -163,7 +181,11 @@ void PlayerBlockHandler::Update()
 				component->SetBlockSet(m_pBlockObject->GetBlockSet());
 				component->SetModel(m_pBlockObject->GetModelPath());
 				GameState::GetInstance()->AppendWorldBlock(component);
-				//Žg‚Á‚½“ªã‚ÌƒuƒƒbƒN‚Í‰Šú‰»
+				//ä½¿ã£ãŸé ­ä¸Šã®ãƒ–ãƒ­ãƒƒã‚¯ã¯åˆæœŸåŒ–
+				m_pBlockObject->SetBlockSet(BlockSetData{});
+
+				// SEå†ç”Ÿ
+				SoundManager::PlaySE("PutBox", 1.0f, false);
 				SetBlockSet(BlockSetData{});
 				m_pBlockObject->SetModel("");
 			}

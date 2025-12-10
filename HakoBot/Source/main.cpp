@@ -6,11 +6,16 @@
 #include "Config.h"
 #include <DXGameFrame.h>
 
-// Å‰‚ÌƒV[ƒ“
+// æœ€åˆã®ã‚·ãƒ¼ãƒ³
 #include "GameScene.h"
 #include "InputManager.h"
+#include "InputSystem.h"
+#include "TitleScene.h"
 
-// ƒEƒBƒ“ƒhƒEƒvƒƒV[ƒWƒƒ
+#include "SoundMaster.h"
+#include "SoundManager.h"
+
+// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(
@@ -23,78 +28,83 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
 
 	//----------------------------
-	//		ƒEƒBƒ“ƒhƒE‚Ìì¬
+	//		ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ä½œæˆ
 	//----------------------------
-	WNDCLASSEX wcex;	// ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX
-	HWND hWnd;			// ƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹
-	MSG message;		// ƒƒbƒZ[ƒW
+	WNDCLASSEX wcex;	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹
+	HWND hWnd;			// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
+	MSG message;		// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 
-	// ƒEƒBƒ“ƒhƒEƒNƒ‰ƒXî•ñ‚ğİ’è
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹æƒ…å ±ã‚’è¨­å®š
 	ZeroMemory(&wcex, sizeof(wcex));
-	wcex.hInstance = hInstance;									// ƒCƒ“ƒXƒ^ƒ“ƒXƒnƒ“ƒhƒ‹
-	wcex.lpszClassName = "Class Name";							// ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX–¼
-	wcex.lpfnWndProc = WndProc;									// ƒEƒBƒ“ƒhƒEƒvƒƒV[ƒWƒƒ‚Ö‚Ìƒ|ƒCƒ“ƒ^
-	wcex.style = CS_HREDRAW | CS_VREDRAW;						// ƒEƒBƒ“ƒhƒE‚Ì‹““®
-	wcex.cbSize = sizeof(WNDCLASSEX);							// \‘¢‘Ì‚ÌƒTƒCƒY
-	wcex.hIcon = LoadIcon(NULL, IDI_APPLICATION);				// ƒAƒvƒŠƒAƒCƒRƒ“
-	wcex.hIconSm = wcex.hIcon;									// ƒAƒvƒŠƒAƒCƒRƒ“(¬)
-	wcex.hCursor = LoadCursor(NULL, IDC_ARROW);					// ƒJ[ƒ\ƒ‹ƒAƒCƒRƒ“
-	wcex.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);	// ”wŒi‚ÌF
+	wcex.hInstance = hInstance;									// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒãƒ³ãƒ‰ãƒ«
+	wcex.lpszClassName = "Class Name";							// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹å
+	wcex.lpfnWndProc = WndProc;									// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+	wcex.style = CS_HREDRAW | CS_VREDRAW;						// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®æŒ™å‹•
+	wcex.cbSize = sizeof(WNDCLASSEX);							// æ§‹é€ ä½“ã®ã‚µã‚¤ã‚º
+	wcex.hIcon = LoadIcon(NULL, IDI_APPLICATION);				// ã‚¢ãƒ—ãƒªã‚¢ã‚¤ã‚³ãƒ³
+	wcex.hIconSm = wcex.hIcon;									// ã‚¢ãƒ—ãƒªã‚¢ã‚¤ã‚³ãƒ³(å°)
+	wcex.hCursor = LoadCursor(NULL, IDC_ARROW);					// ã‚«ãƒ¼ã‚½ãƒ«ã‚¢ã‚¤ã‚³ãƒ³
+	wcex.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);	// èƒŒæ™¯ã®è‰²
 
-	// ƒEƒBƒ“ƒhƒEƒNƒ‰ƒXî•ñ‚Ì“o˜^
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹æƒ…å ±ã®ç™»éŒ²
 	if (!RegisterClassEx(&wcex))
 	{
-		Debug::ErrorMessage("ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^‚É¸”s‚µ‚Ü‚µ‚½");
+		Debug::ErrorMessage("ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ã«å¤±æ•—ã—ã¾ã—ãŸ");
 		return 0;
 	}
 
-	// ƒEƒBƒ“ƒhƒEƒXƒ^ƒCƒ‹İ’è
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¹ã‚¿ã‚¤ãƒ«è¨­å®š
 	DWORD windowStyle;
 	windowStyle = WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX;
 
-	// ƒEƒBƒ“ƒhƒE‚ÌƒTƒCƒY‚ğŒvZ
-	RECT windowRect;		// ƒEƒBƒ“ƒhƒEƒTƒCƒY
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚ºã‚’è¨ˆç®—
+	RECT windowRect;		// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚º
 	windowRect.left = 0;
 	windowRect.top = 0;
 	windowRect.right = ScreenWidth;
 	windowRect.bottom = ScreenHeight;
 	AdjustWindowRect(&windowRect, windowStyle, false);
 
-	// ƒEƒBƒ“ƒhƒE‚Ìì¬
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ä½œæˆ
 	hWnd = CreateWindowEx(
-		WS_EX_OVERLAPPEDWINDOW,				// ƒEƒBƒ“ƒhƒE‚ÌŒ©‚½–Ú(Ex‚©‚ç‚Ì’Ç‰ÁƒXƒ^ƒCƒ‹)
-		wcex.lpszClassName,					// ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX–¼
-		GameTitle,							// ƒEƒBƒ“ƒhƒE‚Ìƒ^ƒCƒgƒ‹
-		windowStyle,						// ƒEƒBƒ“ƒhƒE‚ÌŒ©‚½–Ú(ƒXƒ^ƒCƒ‹)
-		CW_USEDEFAULT, CW_USEDEFAULT,		// ƒEƒBƒ“ƒhƒE‚ÌˆÊ’u
-		windowRect.right - windowRect.left,	// ƒEƒBƒ“ƒhƒE‚ÌƒTƒCƒY
-		windowRect.bottom - windowRect.top,	// ƒEƒBƒ“ƒhƒE‚ÌƒTƒCƒY
-		HWND_DESKTOP,						// eƒEƒBƒ“ƒhƒE
-		NULL,								// qƒEƒBƒ“ƒhƒE–”‚Íƒƒjƒ…[
+		WS_EX_OVERLAPPEDWINDOW,				// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®è¦‹ãŸç›®(Exã‹ã‚‰ã®è¿½åŠ ã‚¹ã‚¿ã‚¤ãƒ«)
+		wcex.lpszClassName,					// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹å
+		GameTitle,							// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚¿ã‚¤ãƒˆãƒ«
+		windowStyle,						// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®è¦‹ãŸç›®(ã‚¹ã‚¿ã‚¤ãƒ«)
+		CW_USEDEFAULT, CW_USEDEFAULT,		// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ä½ç½®
+		windowRect.right - windowRect.left,	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚º
+		windowRect.bottom - windowRect.top,	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚º
+		HWND_DESKTOP,						// è¦ªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦
+		NULL,								// å­ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦åˆã¯ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 		hInstance, NULL
 	);
 
-	// ƒGƒ‰[ƒ`ƒFƒbƒN
+	// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 	if (hWnd == NULL) {
-		Debug::ErrorMessage("ƒEƒBƒ“ƒhƒE‚Ì¶¬‚É¸”s‚µ‚Ü‚µ‚½");
+		Debug::ErrorMessage("ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ç”Ÿæˆã«å¤±æ•—ã—ã¾ã—ãŸ");
 		return 0;
 	}
 
-	// ƒEƒBƒ“ƒhƒE‚Ì•\¦
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®è¡¨ç¤º
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
+	// COMã®åˆæœŸåŒ–
+	HRESULT result;
+	result = CoInitializeEx(NULL, COINIT_MULTITHREADED);
+	if (FAILED(result)) return false;
+
 
 	//-------------------------------------
-	//		ƒ‰ƒCƒuƒ‰ƒŠİ’è‚Ì“Ç‚İ‚İ
+	//		ãƒ©ã‚¤ãƒ–ãƒ©ãƒªè¨­å®šã®èª­ã¿è¾¼ã¿
 	//-------------------------------------
 	if (!ConfigManager::Instance().Load("DXGameFrameConfig.json"))
 		return 0;
 
 	//-----------------------------------------
-	//		ƒQ[ƒ€ƒtƒŒ[ƒ€ƒ[ƒN‚Ì‰Šú‰»
+	//		ã‚²ãƒ¼ãƒ ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¯ãƒ¼ã‚¯ã®åˆæœŸåŒ–
 	//-----------------------------------------
-	// Direct3DƒNƒ‰ƒX‚Ìì¬
+	// Direct3Dã‚¯ãƒ©ã‚¹ã®ä½œæˆ
 	RECT clientRc;
 	GetClientRect(hWnd, &clientRc);
 	int clientW = clientRc.right - clientRc.left;
@@ -102,7 +112,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	if (FAILED(Direct3D::Instance().Init(hWnd, clientW, clientH)))
 	{
-		Debug::ErrorMessage("Direct3D‚Ì‰Šú‰»‚É¸”s‚µ‚Ü‚µ‚½");
+		Debug::ErrorMessage("Direct3Dã®åˆæœŸåŒ–ã«å¤±æ•—ã—ã¾ã—ãŸ");
 		return 0;
 	}
 
@@ -110,23 +120,27 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		hWnd, Direct3D::Instance().GetDevice(), Direct3D::Instance().GetContext());
 
 	InputManager::Init();
+	// XAudio2åˆæœŸåŒ–
+	SoundMaster::Instance().Init();
+	// ã‚µã‚¦ãƒ³ãƒ‰ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼
+	SoundManager::Load();
 
-	// ƒV[ƒ“‚Ìì¬
-	SceneManager::Init(std::make_unique<GameScene>("TestLevel01"));
+	// ã‚·ãƒ¼ãƒ³ã®ä½œæˆ
+	SceneManager::Init(std::make_unique<TitleScene>());
 
 	//-------------------------
-	//		‚»‚Ì‘¼‚Ì€”õ
+	//		ãã®ä»–ã®æº–å‚™
 	//-------------------------
 	srand(time(0));
-	timeBeginPeriod(1);				//•ª‰ğ”\ (‚Pƒ~ƒŠ•b)
+	timeBeginPeriod(1);				//åˆ†è§£èƒ½ (ï¼‘ãƒŸãƒªç§’)
 
-	int nExecLastTime;				//ÅIÀsŠÔ
-	int nCrrentTime;				//Œ»İŠÔ
+	int nExecLastTime;				//æœ€çµ‚å®Ÿè¡Œæ™‚é–“
+	int nCrrentTime;				//ç¾åœ¨æ™‚é–“
 	nExecLastTime = nCrrentTime = timeGetTime();
 
 
 	//----------------------------
-	//		ƒƒbƒZ[ƒWƒ‹[ƒv
+	//		ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒ«ãƒ¼ãƒ—
 	//----------------------------
 	while (1)
 	{
@@ -144,7 +158,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		}
 		else
 		{
-			// FPSŒÅ’è
+			// FPSå›ºå®š
 			nCrrentTime = timeGetTime();
 			float deltaTime = (nCrrentTime - nExecLastTime) * 0.001f;
 			if (deltaTime < 1.0f / FPS)
@@ -153,21 +167,24 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			}
 			nExecLastTime = nCrrentTime;
 
-			// ƒQ[ƒ€‚Ìˆ—
+			// ã‚²ãƒ¼ãƒ ã®å‡¦ç†
 			SceneManager::Execute(deltaTime);
 			InputManager::Update();
 		}
 	}
 
-	// ƒŠƒ\[ƒX‚Ì‰ğ•ú
+	// ãƒªã‚½ãƒ¼ã‚¹ã®è§£æ”¾
 	SceneManager::Uninit();
 	ImGuiManager::Instance().Uninit();
 	Direct3D::Instance().Uninit();
+	SoundManager::StopAll();
+	SoundMaster::Instance().Uninit();
+	CoUninitialize();
 	return 0;
 }
 
 
-// ƒEƒBƒ“ƒhƒEƒvƒƒV[ƒWƒƒ
+// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
@@ -176,14 +193,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	switch (message)
 	{
 	case WM_CLOSE:
-		if (IDNO == MessageBox(hWnd, "I—¹‚µ‚Ü‚·‚©H", "I—¹Šm”F", MB_YESNO))
+		if (IDNO == MessageBox(hWnd, "çµ‚äº†ã—ã¾ã™ã‹ï¼Ÿ", "çµ‚äº†ç¢ºèª", MB_YESNO))
 		{
 			return 0;
 		}
 		break;
 
 	case WM_DESTROY:
-		// ƒXƒŒƒbƒh‚ÌI—¹‚ğƒVƒXƒeƒ€‚É“`‚¦‚é
+		// ã‚¹ãƒ¬ãƒƒãƒ‰ã®çµ‚äº†ã‚’ã‚·ã‚¹ãƒ†ãƒ ã«ä¼ãˆã‚‹
 		PostQuitMessage(0);
 		break;
 	}
