@@ -84,6 +84,18 @@
     <ClCompile Include="Source\PlayerStretch.cpp">
       <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SoundPlayer.cpp">
+      <Filter>ソース ファイル\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SoundMaster.cpp">
+      <Filter>ソース ファイル\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SoundData.cpp">
+      <Filter>ソース ファイル\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SoundManager.cpp">
+      <Filter>ソース ファイル\Utility</Filter>
+    </ClCompile>
     <ClCompile Include="Source\ClearProduce.cpp">
       <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
@@ -172,6 +184,18 @@
     </ClInclude>
     <ClInclude Include="Source\ShapeScreen.h">
       <Filter>ヘッダー ファイル\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SoundData.h">
+      <Filter>ヘッダー ファイル\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SoundMaster.h">
+      <Filter>ヘッダー ファイル\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SoundPlayer.h">
+      <Filter>ヘッダー ファイル\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SoundManager.h">
+      <Filter>ヘッダー ファイル\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Source\ClearProduce.h">
       <Filter>ヘッダー ファイル\Component</Filter>

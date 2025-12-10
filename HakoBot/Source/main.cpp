@@ -10,6 +10,9 @@
 #include "GameScene.h"
 #include "InputSystem.h"
 
+#include "SoundMaster.h"
+#include "SoundManager.h"
+
 // ウィンドウプロシージャ
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
@@ -84,6 +87,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
+	// COMの初期化
+	HRESULT result;
+	result = CoInitializeEx(NULL, COINIT_MULTITHREADED);
+	if (FAILED(result)) return false;
+
 
 	//-------------------------------------
 	//		ライブラリ設定の読み込み
@@ -108,6 +116,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	ImGuiManager::Instance().Init(
 		hWnd, Direct3D::Instance().GetDevice(), Direct3D::Instance().GetContext());
+
+	// XAudio2初期化
+	SoundMaster::Instance().Init();
+	// サウンドマネージャー
+	SoundManager::Load();
 
 	// シーンの作成
 	SceneManager::Init(std::make_unique<GameScene>("TestLevel01"));
@@ -161,6 +174,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SceneManager::Uninit();
 	ImGuiManager::Instance().Uninit();
 	Direct3D::Instance().Uninit();
+	SoundManager::StopAll();
+	SoundMaster::Instance().Uninit();
+	CoUninitialize();
 	return 0;
 }
 
