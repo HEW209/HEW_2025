@@ -1,10 +1,10 @@
-ï»¿#include "GameScene.h"
+#include "GameScene.h"
 #include "LevelSerializer.h"
 #include "InputManager.h"
 #include "GameState.h"
 #include "Player.h"
 #include "PlayerCamera.h"
-// ã‚µã‚¦ãƒ³ãƒ‰
+// ƒTƒEƒ“ƒh
 #include "SoundMaster.h"
 #include "SoundManager.h"
 
@@ -92,7 +92,7 @@ void GameScene::Init() {
     auto clearObj = CreateGameObject();
     clearObj->AddComponent<ClearProduce>();
 
-    // BGMå†ç”Ÿ
+    // BGMÄ¶
     SoundManager::PlayBGM("Stage1", 0.2f, true);
 }
 
@@ -121,7 +121,7 @@ void GameScene::CreateGridField() {
         obj->GetTransform()->SetPosition(0.0f, 0.2f, 0.0f);
     }
 
-    // æŠ•å½±æ©Ÿ
+    // “Š‰e‹@
     for (int i = 0; i < 2; ++i) {
         auto obj = CreateGameObject();
         auto renderer = obj->AddComponent<MeshRenderer>();
@@ -137,7 +137,7 @@ void GameScene::CreateGridField() {
         }
     }
 
-    // å±é™ºã‚¨ãƒªã‚¢ Z
+    // ŠëŒ¯ƒGƒŠƒA Z
     for (int i = 0; i < 2; ++i) {
         float flip = i == 0 ? 1.0f : -1.0f;
         for (int x = 0; x < size_x; ++x) {
@@ -153,7 +153,7 @@ void GameScene::CreateGridField() {
         }
     }
 
-    // å±é™ºã‚¨ãƒªã‚¢ X
+    // ŠëŒ¯ƒGƒŠƒA X
     for (int i = 0; i < 2; ++i) {
         float flip = i == 0 ? 1.0f : -1.0f;
         for (int z = 0; z < size_z; ++z) {
@@ -169,7 +169,7 @@ void GameScene::CreateGridField() {
         }
     }
 
-    // å±é™ºã‚¨ãƒªã‚¢ ã‚³ãƒ¼ãƒŠãƒ¼
+    // ŠëŒ¯ƒGƒŠƒA ƒR[ƒi[
     for (int i = 0; i < 4; ++i) {
         Vector3 pos;
         pos.x = size_x * 0.5f + 0.5f;
@@ -186,7 +186,7 @@ void GameScene::CreateGridField() {
 }
 
 void GameScene::CreateStageSet() {
-    // åºŠ
+    // °
     int stageSize_x = 25;
     int stageSize_z = 25;
     float blockScale = 1.0f;
@@ -203,7 +203,7 @@ void GameScene::CreateStageSet() {
         }
     }
 
-    // æŸµ
+    // ò
     for (int z = 0; z < stageSize_z; ++z) {
         for (int x = 0; x < stageSize_x; ++x) {
             Vector3 rotateAngle = Vector3::zero;
@@ -226,12 +226,12 @@ void GameScene::CreateStageSet() {
         }
     }
 
-    // UIã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+    // UIƒIƒuƒWƒFƒNƒg
     CreateUIObject();
 }
 
 void GameScene::CreateUIObject() {
-    // ãƒ¡ãƒ‹ãƒ¥ãƒ¼
+    // ƒƒjƒ…[
     {
         auto obj = CreateGameObject();
         auto renderer = obj->AddComponent<SpriteRenderer>();
@@ -241,7 +241,7 @@ void GameScene::CreateUIObject() {
         renderer->SetSize(110.0f, 110.0f);
     }
 
-    // ãŠã
+    // ‚¨‚­
     {
         auto obj = CreateGameObject();
         auto renderer = obj->AddComponent<SpriteRenderer>();
@@ -252,7 +252,7 @@ void GameScene::CreateUIObject() {
         obj->AddComponent<GuideUIController>();
     }
 
-    // å®Œæˆ 
+    // Š®¬ 
     {
         auto obj = CreateGameObject();
         auto renderer = obj->AddComponent<SpriteRenderer>();
@@ -263,20 +263,20 @@ void GameScene::CreateUIObject() {
         obj->AddComponent<GuideUIController2>();
     }
 
-    // ãƒ¡ãƒ‹ãƒ¥ãƒ¼é–‹ã„ãŸã‚„ã¤
+    // ƒƒjƒ…[ŠJ‚¢‚½‚â‚Â
     {
         auto obj = CreateGameObject();
         obj->AddComponent<GuideUIResultController>();
     }
 
-    // ã‚¿ã‚¤ãƒãƒ¼1
+    // ƒ^ƒCƒ}[1
     {
         auto obj = CreateGameObject();
         obj->GetTransform()->SetPosition(4.1f, 3.2f, 0.0f);
         obj->AddComponent<GuideUITimeController>();
     }
 
-    // ãƒªã‚¶ãƒ«ãƒˆ
+    // ƒŠƒUƒ‹ƒg
     {
         auto obj = CreateGameObject();
         auto renderer = obj->AddComponent<SpriteRenderer>();
