@@ -1,4 +1,4 @@
-// main.cpp
+﻿// main.cpp
 #include <Windows.h>
 #include <iostream>
 #pragma comment(lib, "winmm.lib")
