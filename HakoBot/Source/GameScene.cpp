@@ -56,8 +56,7 @@ void GameScene::Init() {
         std::string blockName = m_levelData.inventoryBlockFiles[i];
         std::string blockPath = "Assets/Level/Blocks/" + blockName + ".json";
 
-	// BGM再生
-	SoundManager::PlayBGM("Stage1", 1.0f, true);
+
         BlockTemplateData blockData;
         if (LevelSerializer::LoadBlockTemplate(blockPath, blockData)) {
 
@@ -92,6 +91,9 @@ void GameScene::Init() {
 
     auto clearObj = CreateGameObject();
     clearObj->AddComponent<ClearProduce>();
+
+    // BGM再生
+    SoundManager::PlayBGM("Stage1", 0.2f, true);
 }
 
 void GameScene::KeyBind() {
