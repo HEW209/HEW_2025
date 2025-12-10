@@ -14,5 +14,7 @@ private:
 	float m_value = 0;
 	bool m_menu;
 	bool m_menu2;
+	SpriteRenderer* m_rend;
+	SpriteRenderer* m_rend2;
 };
 

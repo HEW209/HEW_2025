@@ -1,6 +1,5 @@
 #include "Player.h"
 #include "PlayerMove.h"
-#include "PlayerBlockHandler.h"
 #include "PlayerStretch.h"
 #include <Component/Collider.h>
 
@@ -25,7 +24,7 @@ void Player::Awake()
 	auto playerStretch = playerHead->AddComponent<PlayerStretch>();
 
 	//ブロック操作コンポーネントの追加
-	auto blockHandler = playerHead->AddComponent<PlayerBlockHandler>();
+	m_pBlockHandler = playerHead->AddComponent<PlayerBlockHandler>();
 
 	// 支柱作る
 	auto playerPillar = SceneManager::GetActiveScene()->CreateGameObject();

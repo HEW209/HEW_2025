@@ -16,7 +16,15 @@ void GuideUIResultController::Start()
 	renderer1->SetUI(true);
 	renderer1->LoadTexture("Assets/Textures/restart.png");
 	renderer1->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
-	renderer1->SetOffsetPos(1.0f,1.0f);
+	renderer1->SetOffsetPos(0.0f,2.0f);
+	m_rend = renderer1;
+
+	auto renderer2 = GetGameObject()->AddComponent<SpriteRenderer>();
+	renderer2->SetUI(true);
+	renderer2->LoadTexture("Assets/Textures/stageselectback.png");
+	renderer2->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
+	renderer2->SetOffsetPos(0.0f, -1.0f);
+	m_rend2 = renderer2;
 
 	m_defaultPosition = GetTransform()->GetPosition();
 	m_defaultScale = GetTransform()->GetScale();
@@ -30,6 +38,8 @@ void GuideUIResultController::Update()
 	if (InputSystem::GetButtonDown("Menu"_hash))
 	{
 		m_menu = true;
+		m_rend->SetColor(255.0f, 255.0f, 255.0f, 1.0f);
+		m_rend2->SetColor(255.0f, 255.0f, 255.0f, 1.0f);
 	}
 
 	//メニュー開いてるとき
@@ -62,7 +72,19 @@ void GuideUIResultController::Update()
 		if (InputSystem::GetButtonDown("MenuBack"_hash))
 		{
 			m_menu2 = true;		//でかくするイージングoff
-		
+		}
+
+		//上を選択したとき、リスタートをオレンジに
+		if (InputSystem::GetButtonDown("MenuUp"_hash))
+		{
+			m_rend->SetColor(255.0f,165.0f,0.0f,1.0f);
+			m_rend2->SetColor(255.0f, 255.0f, 255.0f, 1.0f);
+		}
+		//下を選択したとき、ステージ選択に戻るをオレンジに
+		if (InputSystem::GetButtonDown("MenuDown"_hash))
+		{
+			m_rend2->SetColor(255.0f, 165.0f, 0.0f, 1.0f);
+			m_rend->SetColor(255.0f, 255.0f, 255.0f, 1.0f);
 		}
 	}
 

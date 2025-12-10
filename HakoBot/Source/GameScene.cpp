@@ -20,10 +20,17 @@ void GameScene::Init()
 {
 	KeyBind();
 
+	// ゲームステート
+	{
+		auto obj = CreateGameObject();
+		obj->AddComponent<GameState>();
+	}
+
 	//移動できるオブジェクト（プレイヤー）を作成	
 	//移動できるプレイヤーオブジェクトを作る
 	auto player = CreateGameObject();
-	player->AddComponent<Player>();
+	auto playerComp = player->AddComponent<Player>();
+	GameState::GetInstance()->SetPlayer(playerComp);
 
 	//カメラ
 	{
@@ -33,11 +40,7 @@ void GameScene::Init()
 		playerCamera->SetCameraDistance(20.0f);
 	}
 
-	// シーンマネージャー
-	{
-		auto obj = CreateGameObject();
-		obj->AddComponent<GameState>();
-	}
+	
 
 	CreateStageSet();
 	CreateGridField();
@@ -126,6 +129,8 @@ void GameScene::KeyBind()
 	InputSystem::CreateAxisAction("Clear"_hash);
 	InputSystem::CreateAxisAction("Menu"_hash);
 	InputSystem::CreateAxisAction("MenuBack"_hash);
+	InputSystem::CreateAxisAction("MenuUp"_hash);
+	InputSystem::CreateAxisAction("MenuDown"_hash);
 
 	InputSystem::BindKey("RotateBlockUp"_hash, KeyCode::UP);
 	InputSystem::BindKey("RotateBlockDown"_hash, KeyCode::DOWN);
@@ -139,6 +144,8 @@ void GameScene::KeyBind()
 	InputSystem::BindKey("Clear"_hash, KeyCode::X);
 	InputSystem::BindKey("Menu"_hash, KeyCode::ESC);
 	InputSystem::BindKey("MenuBack"_hash, KeyCode::A);
+	InputSystem::BindKey("MenuUp"_hash, KeyCode::UP);
+	InputSystem::BindKey("MenuDown"_hash, KeyCode::DOWN);
 	InputSystem::BindVectorKeys("Move"_hash, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
 	InputSystem::BindVectorKeys("CameraMove"_hash, KeyCode::I, KeyCode::K, KeyCode::MOUSE_LEFT, KeyCode::MOUSE_RIGHT);
 
@@ -147,13 +154,15 @@ void GameScene::KeyBind()
 	InputSystem::BindPadButton("RotateBlockLeft"_hash, PadCode::LEFT);
 	InputSystem::BindPadButton("RotateBlockRight"_hash, PadCode::RIGHT);
 	InputSystem::BindPadButton("PlaceAndRemove"_hash, PadCode::B);
-	InputSystem::BindPadButton("Up"_hash, PadCode::Y);
-	InputSystem::BindPadButton("Down"_hash, PadCode::A);
+	InputSystem::BindPadButton("Up"_hash, PadCode::RIGHT_TRIGGER);
+	InputSystem::BindPadButton("Down"_hash, PadCode::LEFT_TRIGGER);
 	InputSystem::BindPadButton("CameraLeft"_hash, PadCode::LEFT_SHOULDER);
 	InputSystem::BindPadButton("CameraRight"_hash, PadCode::RIGHT_SHOULDER);
 	InputSystem::BindPadButton("Clear"_hash, PadCode::X);
 	InputSystem::BindPadButton("Menu"_hash, PadCode::START);
 	InputSystem::BindPadButton("MenuBack"_hash, PadCode::A);
+	InputSystem::BindPadButton("MenuUp"_hash, PadCode::UP);
+	InputSystem::BindPadButton("MenuDown"_hash, PadCode::DOWN);
 	InputSystem::BindPadStick("Move"_hash, StickCode::LEFT);
 	InputSystem::BindPadStick("CameraMove"_hash, StickCode::RIGHT);
 }
@@ -412,7 +421,7 @@ void GameScene::CreateUIObject()
 		auto obj = CreateGameObject();
 		auto renderer = obj->AddComponent<SpriteRenderer>();
 		renderer->SetUI(true);
-		renderer->LoadTexture("Assets/Textures/result3.png");
+		renderer->LoadTexture("Assets/Textures/result!.png");
 		renderer->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
 		obj->GetTransform()->SetScale(0.0f, 0.0f, 0.0f);
 		obj->AddComponent<GuideUITimeController2>();

@@ -1,6 +1,8 @@
 #include "GuideUIController.h"
 #include "Easing.h"
 #include "InputSystem.h"
+#include "Player.h"
+#include "GameState.h"
 
 
 
@@ -24,25 +26,26 @@ void GuideUIController::Start()
 
 	//初期場所取得
 	m_defaultPosition = GetTransform()->GetPosition();
-	motu = false;
+	m_motu = false;
 }
 
 void GuideUIController::Update()
 {
-	if (InputSystem::GetButtonDown("Clear"_hash))
+	Player* player = GameState::GetInstance()->GetPlayer();
+	PlayerBlockHandler* playerBlockHandler = player->GetBlockHandler();
+
+	//ここをプレイヤーがブロックを持っていたら
+	m_motu = !playerBlockHandler->HasBlock();
+
+	if (m_motu)
 	{
-		if (!motu)
-		{
-			m_pRenderer->LoadTexture("Assets/Textures/motuB.png");
-			m_pRenderer->SetSize(MOZI_SIZE + 70.0f, MOZI_SIZE + 20.0f);
-			motu = true;
-		}
-		else
-		{
-			m_pRenderer->LoadTexture("Assets/Textures/okuB.png");
-			m_pRenderer->SetSize(MOZI_SIZE + 70.0f, MOZI_SIZE + 20.0f);
-			motu = false;
-		}
+		m_pRenderer->LoadTexture("Assets/Textures/motuB.png");
+		m_pRenderer->SetSize(MOZI_SIZE + 70.0f, MOZI_SIZE + 20.0f);
+	}
+	else
+	{
+		m_pRenderer->LoadTexture("Assets/Textures/okuB.png");
+		m_pRenderer->SetSize(MOZI_SIZE + 70.0f, MOZI_SIZE + 20.0f);
 	}
 	
 	if (Input::GetKeyHold(KeyCode::D))
