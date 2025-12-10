@@ -4,7 +4,7 @@
 #include "InputSystem.h"
 
 
-consteval enum class InputBindType
+enum class InputBindType
 {
 	GAMEPLAY,
 	UI,
