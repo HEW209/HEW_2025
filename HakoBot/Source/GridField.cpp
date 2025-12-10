@@ -175,16 +175,6 @@ bool GridField::PlaceBlock()
 	m_pPlaceCursorComponent->SetBlockSet(BlockSetData{});
 	m_pPlaceCursorComponent->SetModelPath("");
 
-	if (IsClear())
-	{
-		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
-		auto renderer = obj->AddComponent<MeshRenderer>();
-
-		renderer->GetMaterial(0)->SetTexture("Assets/Model/SelectGrid/Texture.png");
-		obj->GetTransform()->SetPosition(0.0f, GetSize().y + 2.0f, 0.0f);
-		obj->GetTransform()->SetParent(GetTransform());
-	}
-
 	for (int i = 0; i < 3; ++i) {
 		m_pShapeScreen[i]->SetCurrentShape(m_gridData.GetShape(i));
 	}

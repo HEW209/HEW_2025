@@ -12,7 +12,7 @@ void GuideUITimeController2::Start()
 	auto renderer1 = GetGameObject()->AddComponent<SpriteRenderer>();
 	renderer1->SetUI(true);
 	renderer1->LoadTexture("Assets/Textures/restart.png");
-	renderer1->SetOffsetPos(0.0f, -3.4f);
+	renderer1->SetOffsetPos(0.0f, -3.3f);
 	m_restart = renderer1;
 
 	auto renderer2 = GetGameObject()->AddComponent<SpriteRenderer>();

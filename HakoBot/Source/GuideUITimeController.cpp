@@ -107,7 +107,7 @@ void GuideUITimeController::Update()
 		for (int x = 0; x < 6; ++x)
 		{
 			// y -0.15f‚Å‚µ‚½
-			sprite[x]->GetTransform()->SetPosition(-1.5f + x * 0.1f, 0.28f, 0.0f);
+			sprite[x]->GetTransform()->SetPosition(-1.5f + x * 0.1f, 0.25f, 0.0f);
 			sprite[x]->GetTransform()->SetScale(1.5f, 1.5f, 0.0f);
 		}
 	}
