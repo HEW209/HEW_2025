@@ -50,6 +50,10 @@ void PlayerBlockHandler::Update()
 
 	Vec2 dir = GetFlattenedDirection(playerTransform->GetQuaternion());
 	Vector3 blockSize = m_pBlockObject->GetSize();
+	blockSize = m_pBlockObject->GetTransform()->GetQuaternion() * blockSize;
+	blockSize.x = std::fabsf(blockSize.x);
+	blockSize.y = std::fabsf(blockSize.y);
+	blockSize.z = std::fabsf(blockSize.z);
 	Vec2 placeCursorOffsetXZ = -CalcSpacedRectPos(Vec2{ blockSize.x, blockSize.z }, 1.0f, dir);
 
 	Vector3 placeCursorOffset{ placeCursorOffsetXZ.x, 0.0f, placeCursorOffsetXZ.y };

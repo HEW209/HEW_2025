@@ -30,6 +30,7 @@ void GameScene::Init() {
 
     auto playerObj = CreateGameObject();
     playerObj->AddComponent<Player>();
+    playerObj->GetTransform()->SetPosition(0.0f, 0.0f, -8.0f);
 
     auto cameraObj = CreateGameObject();
     auto playerCamera = cameraObj->AddComponent<PlayerCamera>();
