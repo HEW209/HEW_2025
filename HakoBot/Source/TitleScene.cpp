@@ -3,13 +3,14 @@
 
 void TitleScene::Init()
 {
+    RenderSystem::Instance().SetClearColor(Color(1.0f, 0.7f, 0.2f, 1.0f));
     // ƒ^ƒCƒgƒ‹
     {
         auto obj = CreateGameObject();
         auto renderer = obj->AddComponent<SpriteRenderer>();
         renderer->SetUI(true);
         renderer->LoadTexture("Assets/Textures/title.png");
-        renderer->SetSize(150.0f, 150.0f);
+        renderer->SetSize(150.0f);
         renderer->SetOffsetPos(0.0f, 0.1f);
     }
 

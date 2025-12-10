@@ -11,5 +11,9 @@ class GuideUITimeController2 : public Component
 private:
 	int m_time2;
 	bool m_b3;
+	SpriteRenderer* m_restart;
+	SpriteRenderer* m_stageSelect;
+	int m_curcirPos;
+	bool isActive;
 };
 
