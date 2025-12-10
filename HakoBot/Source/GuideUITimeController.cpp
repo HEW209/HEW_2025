@@ -1,6 +1,9 @@
 //GuideUITimeController.cpp
 #include "GuideUITimeController.h"
 #include "GameState.h"
+#include "InputManager.h"
+#include "GuideUIResultController.h"
+
 
 int digitToIndex[10] =
 {
@@ -68,25 +71,42 @@ void GuideUITimeController::Start()
 
 	m_totalTime = 0;
 	m_b = true;
+	m_b2 = false;
 }
 
 void GuideUITimeController::Update()
 {
 	if (m_b == true)
 	{
-		m_totalTime++;
-		SetTimer();
-		SetDigitUV();
+	
+		
+			m_totalTime++;
+			SetTimer();
+			SetDigitUV();
+		
+
 	}
+
+	
 
 	GridField* gridfield = GameState::GetInstance()->GetGridField();
 
-	if (gridfield->IsClear() && Input::GetKeyDown(KeyCode::X))
+	if (gridfield->IsClear() && InputManager::CurrentInputSystem().GetButtonDown("Clear"_hash))
+	{
+		m_b2 = true;
+	}
+
+	if (m_b2)
+	{
+		m_time++;
+	}
+
+	if (m_time / 60 > 4)
 	{
 		m_b = false;
 		for (int x = 0; x < 6; ++x)
 		{
-			sprite[x]->GetTransform()->SetPosition(-1.5f + x * 0.1f,-0.15f,0.0f);
+			sprite[x]->GetTransform()->SetPosition(-1.5f + x * 0.1f, -0.15f, 0.0f);
 			sprite[x]->GetTransform()->SetScale(1.5f, 1.5f, 0.0f);
 		}
 	}

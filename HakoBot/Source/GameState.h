@@ -12,6 +12,7 @@
 
 #include "PlayerBlockHandler.h"
 #include "Player.h"
+#include "GuideUIResultController.h"
 
 class GameState : public Component
 {
@@ -38,6 +39,8 @@ public:
 		return m_pPlayer.Get();
 	}
 	
+
+
 	static GameState* GetInstance() { return s_pInstance; }
 
 private:

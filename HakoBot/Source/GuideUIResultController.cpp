@@ -2,9 +2,9 @@
 #include "GuideUIResultController.h"
 #include "GuideUIController.h"
 #include "Easing.h"
-#include "InputSystem.h"
 #include "GridField.h"
 #include "GameState.h"
+#include "InputManager.h"
 
 void GuideUIResultController::Start()
 {
@@ -37,13 +37,14 @@ void GuideUIResultController::Start()
 void GuideUIResultController::Update()
 {
 	//メニューをひらく
-	if (InputSystem::GetButtonDown("Menu"_hash))
+	if (InputManager::CurrentInputSystem().GetButtonDown("Menu"_hash))
 	{
 		GridField* gridfield = GameState::GetInstance()->GetGridField();
 		//クリアしてたらメニュー表示できない
 		if (!gridfield->IsClear())
 		{
 			m_menu = true;
+			InputManager::ChangeBindType(InputBindType::UI);
 		}
 		m_rend->SetColor(255.0f, 255.0f, 255.0f, 1.0f);
 		m_rend2->SetColor(255.0f, 255.0f, 255.0f, 1.0f);
@@ -76,19 +77,20 @@ void GuideUIResultController::Update()
 			}
 		}
 
-		if (InputSystem::GetButtonDown("MenuBack"_hash))
+		if (InputManager::CurrentInputSystem().GetButtonDown("MenuBack"_hash))
 		{
 			m_menu2 = true;		//でかくするイージングoff
+			InputManager::ChangeBindType(InputBindType::GAMEPLAY);
 		}
 
 		//上を選択したとき、リスタートをオレンジに
-		if (InputSystem::GetButtonDown("MenuUp"_hash))
+		if (InputManager::CurrentInputSystem().GetButtonDown("MenuUp"_hash))
 		{
 			m_rend->SetColor(255.0f,165.0f,0.0f,1.0f);
 			m_rend2->SetColor(255.0f, 255.0f, 255.0f, 1.0f);
 		}
 		//下を選択したとき、ステージ選択に戻るをオレンジに
-		if (InputSystem::GetButtonDown("MenuDown"_hash))
+		if (InputManager::CurrentInputSystem().GetButtonDown("MenuDown"_hash))
 		{
 			m_rend2->SetColor(255.0f, 165.0f, 0.0f, 1.0f);
 			m_rend->SetColor(255.0f, 255.0f, 255.0f, 1.0f);
@@ -103,3 +105,9 @@ void GuideUIResultController::Update()
 
 
 }
+
+bool GuideUIResultController::GetMenuBool()
+{
+	return m_menu;
+}
+

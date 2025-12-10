@@ -60,7 +60,7 @@ void InputManager::Init()
 		system.CreateAxisAction("MenuUp"_hash);
 		system.CreateAxisAction("MenuDown"_hash);
 
-		system.BindKey("MenuBack"_hash, KeyCode::A);
+		system.BindKey("MenuBack"_hash, KeyCode::Z);
 		system.BindKey("MenuUp"_hash, KeyCode::UP);
 		system.BindKey("MenuDown"_hash, KeyCode::DOWN);
 

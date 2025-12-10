@@ -1,4 +1,7 @@
 #include "ClearProduce.h"
+#include "GridField.h"
+#include "GameState.h"
+#include "InputManager.h"
 
 ClearProduce::ClearProduce():
 	m_isActive(false),
@@ -24,7 +27,8 @@ void ClearProduce::Update()
 {
 	if (!m_isActive)
 	{
-		if (Input::GetKeyDown(KeyCode::ENTER))
+		GridField* gridfield = GameState::GetInstance()->GetGridField();
+		if (gridfield->IsClear() && InputManager::CurrentInputSystem().GetButtonDown("Clear"_hash))
 		{
 			m_pCamera->SetMain();
 			m_isActive = true;
