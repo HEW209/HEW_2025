@@ -1,12 +1,18 @@
 #include "StageSelectKeyEnter.h"
 
+
+
+
+
 void StegeSelectKeyEnter::Start()
 {
-	m_SelectObject->GetGameObject()->GetComponent<StageSelectObject>();
+	
 }
 
 void StegeSelectKeyEnter::Update()
 {
+	
+	
 	//============================================================================
 	//						  ステージセレクトINDEX
 	//============================================================================
@@ -53,12 +59,17 @@ void StegeSelectKeyEnter::Update()
 			m_SelectObject->LoadGame(StageID);
 		}
 	}
+	
 }
+
 
 int StegeSelectKeyEnter::GetMenuID()
 {
-	m_MenuID++;
+	
+	m_MenuID += m_MenuID +1;
 	return m_MenuID - 1;
 }
+
+
 
 

@@ -10,6 +10,8 @@ public:
 	~StageSelectScene() = default;
 
 	void Init() override;
+	
 private:
-	GameObject* aa;
+	
+	
 };

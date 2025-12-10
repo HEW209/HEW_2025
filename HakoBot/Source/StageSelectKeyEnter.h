@@ -11,6 +11,7 @@ public:
 	void Update()override;
 
 	int GetMenuID();
+	void GetSelectObject();
 private:
 	//========================================ステージの変数=================================================
 	int m_UP_DOWN_selectIndex;				//小面(1-X)インデックス変数

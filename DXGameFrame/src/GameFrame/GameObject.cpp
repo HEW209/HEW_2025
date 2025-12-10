@@ -73,6 +73,7 @@ void GameObject::StartAllComponent()
 		com->Start();
 		com->SetStarted();
 	}
+
 }
 
 void GameObject::UpdateAllComponent()
