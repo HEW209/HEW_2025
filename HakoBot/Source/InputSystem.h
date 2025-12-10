@@ -68,25 +68,25 @@ public:
      * @brief bool型のアクションを作成
      * @param name アクション名
      */
-    static void CreateButtonAction(std::string_view name);
+    void CreateButtonAction(std::string_view name);
 
     /**
      * @brief bool型のアクションを作成
 	 * @param nameHash アクション名のハッシュ値
      */
-    static void CreateButtonAction(uint64_t nameHash);
+    void CreateButtonAction(uint64_t nameHash);
 
     /**
      * @brief Vector2型のアクションを作成
      * @param name アクション名
      */
-    static void CreateAxisAction(std::string_view name);
+    void CreateAxisAction(std::string_view name);
 
     /**
      * @brief Vector2型のアクションを作成
 	 * @param nameHash アクション名のハッシュ値
      */
-    static void CreateAxisAction(uint64_t nameHash);
+    void CreateAxisAction(uint64_t nameHash);
 
     // --- アクション削除 ---
 
@@ -94,71 +94,72 @@ public:
      * @brief 指定した名前のアクションを削除する
      * @param name 削除したいアクション名
      */
-    static void RemoveAction(std::string_view name);
+    void RemoveAction(std::string_view name);
 
     /**
      * @brief 指定した名前のアクションを削除する
 	 * @param nameHash 削除したいアクション名のハッシュ値
      */
-    static void RemoveAction(uint64_t nameHash);
+    void RemoveAction(uint64_t nameHash);
 
     /**
      * @brief 全てのアクションを削除する
      * シーン遷移時などにリセットする場合に使用
      */
-    static void Clear();
+    void Clear();
 
     // --- バインディング設定 ---
 
     // キーをアクションに割り当て
-    static void BindKey(std::string_view actionName, KeyCode key);
-    static void BindKey(uint64_t actionNameHash, KeyCode key);
+    void BindKey(std::string_view actionName, KeyCode key);
+    void BindKey(uint64_t actionNameHash, KeyCode key);
 
     // コントローラーボタンをアクションに割り当て
-    static void BindPadButton(std::string_view actionName, PadCode button);
-    static void BindPadButton(uint64_t actionNameHash, PadCode button);
+    void BindPadButton(std::string_view actionName, PadCode button);
+    void BindPadButton(uint64_t actionNameHash, PadCode button);
 
     // コントローラーのスティックをアクションに割り当て (Axisアクション用)
-    static void BindPadStick(std::string_view actionName, StickCode stick, std::optional<float> deadzone = std::nullopt);
-    static void BindPadStick(uint64_t actionNameHash, StickCode stick, std::optional<float> deadzone = std::nullopt);
+    void BindPadStick(std::string_view actionName, StickCode stick, std::optional<float> deadzone = std::nullopt);
+    void BindPadStick(uint64_t actionNameHash, StickCode stick, std::optional<float> deadzone = std::nullopt);
 
     // キーをVector2アクションに指定した値で割り当て
-    static void BindVectorKey(std::string_view actionName, KeyCode key, const Vector2& value);
-    static void BindVectorKey(uint64_t actionNameHash, KeyCode key, const Vector2& value);
+    void BindVectorKey(std::string_view actionName, KeyCode key, const Vector2& value);
+    void BindVectorKey(uint64_t actionNameHash, KeyCode key, const Vector2& value);
 
     // 4つのキーをVector2アクションに割り当て
-    static void BindVectorKeys(std::string_view actionName, KeyCode up, KeyCode down, KeyCode left, KeyCode right);
-    static void BindVectorKeys(uint64_t actionNameHash, KeyCode up, KeyCode down, KeyCode left, KeyCode right);
+    void BindVectorKeys(std::string_view actionName, KeyCode up, KeyCode down, KeyCode left, KeyCode right);
+    void BindVectorKeys(uint64_t actionNameHash, KeyCode up, KeyCode down, KeyCode left, KeyCode right);
 
     // --- 入力取得 ---
 
     // ボタンアクションの状態を取得
-    static bool GetButtonHold(std::string_view name);
-    static bool GetButtonHold(uint64_t nameHash);
+    bool GetButtonHold(std::string_view name) const;
+    bool GetButtonHold(uint64_t nameHash) const;
 
     // ボタンアクションが押された瞬間を取得
-    static bool GetButtonDown(std::string_view name);
-    static bool GetButtonDown(uint64_t nameHash);
+    bool GetButtonDown(std::string_view name) const;
+    bool GetButtonDown(uint64_t nameHash) const;
 
     // ボタンアクションが離された瞬間を取得
-    static bool GetButtonUp(std::string_view name);
-    static bool GetButtonUp(uint64_t nameHash);
+    bool GetButtonUp(std::string_view name) const;
+    bool GetButtonUp(uint64_t nameHash) const;
 
     // Axisアクションの値を取得
-    static Vector2 GetAxis(std::string_view name);
-    static Vector2 GetAxis(uint64_t nameHash);
+    Vector2 GetAxis(std::string_view name) const;
+    Vector2 GetAxis(uint64_t nameHash) const;
 
     // 毎フレーム更新
-    static void Update();
+    void Update();
 
 private:
-    static InputAction* FindAction(uint64_t nameHash);
+    InputAction* FindAction(uint64_t nameHash);
+    const InputAction* FindAction(uint64_t nameHash) const;
 
 private:
-    static std::unordered_map<uint64_t, InputAction> m_actions;
+    std::unordered_map<uint64_t, InputAction> m_actions;
 
     // トリガー判定用、前フレームのbool状態を保持
-    static std::unordered_map<uint64_t, bool> m_prevButtonStates;
+    std::unordered_map<uint64_t, bool> m_prevButtonStates;
 };
 
 

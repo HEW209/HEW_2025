@@ -1,9 +1,13 @@
 #include "GameScene.h"
 #include "LevelSerializer.h"
-#include "InputSystem.h"
+#include "InputManager.h"
 #include "GameState.h"
 #include "Player.h"
 #include "PlayerCamera.h"
+// ÉTÉEÉìÉh
+#include "SoundMaster.h"
+#include "SoundManager.h"
+
 #include "BlockObject.h"
 #include "GridField.h"
 #include "ClearProduce.h"
@@ -58,6 +62,7 @@ void GameScene::Init() {
         std::string blockName = m_levelData.inventoryBlockFiles[i];
         std::string blockPath = "Assets/Level/Blocks/" + blockName + ".json";
 
+
         BlockTemplateData blockData;
         if (LevelSerializer::LoadBlockTemplate(blockPath, blockData)) {
 
@@ -92,60 +97,13 @@ void GameScene::Init() {
 
     auto clearObj = CreateGameObject();
     clearObj->AddComponent<ClearProduce>();
+
+    // BGMçƒê∂
+    SoundManager::PlayBGM("Stage1", 0.2f, true);
 }
 
-void GameScene::KeyBind()
-{
-	InputSystem::CreateButtonAction("RotateBlockUp"_hash);
-	InputSystem::CreateButtonAction("RotateBlockDown"_hash);
-	InputSystem::CreateButtonAction("RotateBlockLeft"_hash);
-	InputSystem::CreateButtonAction("RotateBlockRight"_hash);
-	InputSystem::CreateButtonAction("PlaceAndRemove"_hash);
-	InputSystem::CreateButtonAction("Up"_hash);
-	InputSystem::CreateButtonAction("Down"_hash);
-	InputSystem::CreateButtonAction("CameraLeft"_hash);
-	InputSystem::CreateButtonAction("CameraRight"_hash);
-	InputSystem::CreateAxisAction("Move"_hash);
-	InputSystem::CreateAxisAction("CameraMove"_hash);
-	InputSystem::CreateAxisAction("Clear"_hash);
-	InputSystem::CreateAxisAction("Menu"_hash);
-	InputSystem::CreateAxisAction("MenuBack"_hash);
-	InputSystem::CreateAxisAction("MenuUp"_hash);
-	InputSystem::CreateAxisAction("MenuDown"_hash);
-
-	InputSystem::BindKey("RotateBlockUp"_hash, KeyCode::UP);
-	InputSystem::BindKey("RotateBlockDown"_hash, KeyCode::DOWN);
-	InputSystem::BindKey("RotateBlockLeft"_hash, KeyCode::LEFT);
-	InputSystem::BindKey("RotateBlockRight"_hash, KeyCode::RIGHT);
-	InputSystem::BindKey("PlaceAndRemove"_hash, KeyCode::SPACE);
-	InputSystem::BindKey("Up"_hash, KeyCode::E);
-	InputSystem::BindKey("Down"_hash, KeyCode::Q);
-	InputSystem::BindKey("CameraLeft"_hash, KeyCode::MOUSE_LEFT);
-	InputSystem::BindKey("CameraRight"_hash, KeyCode::MOUSE_RIGHT);
-	InputSystem::BindKey("Clear"_hash, KeyCode::X);
-	InputSystem::BindKey("Menu"_hash, KeyCode::ESC);
-	InputSystem::BindKey("MenuBack"_hash, KeyCode::A);
-	InputSystem::BindKey("MenuUp"_hash, KeyCode::UP);
-	InputSystem::BindKey("MenuDown"_hash, KeyCode::DOWN);
-	InputSystem::BindVectorKeys("Move"_hash, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
-	InputSystem::BindVectorKeys("CameraMove"_hash, KeyCode::I, KeyCode::K, KeyCode::MOUSE_LEFT, KeyCode::MOUSE_RIGHT);
-
-	InputSystem::BindPadButton("RotateBlockUp"_hash, PadCode::UP);
-	InputSystem::BindPadButton("RotateBlockDown"_hash, PadCode::DOWN);
-	InputSystem::BindPadButton("RotateBlockLeft"_hash, PadCode::LEFT);
-	InputSystem::BindPadButton("RotateBlockRight"_hash, PadCode::RIGHT);
-	InputSystem::BindPadButton("PlaceAndRemove"_hash, PadCode::B);
-	InputSystem::BindPadButton("Up"_hash, PadCode::RIGHT_TRIGGER);
-	InputSystem::BindPadButton("Down"_hash, PadCode::LEFT_TRIGGER);
-	InputSystem::BindPadButton("CameraLeft"_hash, PadCode::LEFT_SHOULDER);
-	InputSystem::BindPadButton("CameraRight"_hash, PadCode::RIGHT_SHOULDER);
-	InputSystem::BindPadButton("Clear"_hash, PadCode::X);
-	InputSystem::BindPadButton("Menu"_hash, PadCode::START);
-	InputSystem::BindPadButton("MenuBack"_hash, PadCode::A);
-	InputSystem::BindPadButton("MenuUp"_hash, PadCode::UP);
-	InputSystem::BindPadButton("MenuDown"_hash, PadCode::DOWN);
-	InputSystem::BindPadStick("Move"_hash, StickCode::LEFT);
-	InputSystem::BindPadStick("CameraMove"_hash, StickCode::RIGHT);
+void GameScene::KeyBind() {
+    InputManager::ChangeBindType(InputBindType::GAMEPLAY);
 }
 
 void GameScene::CreateGridField() {
