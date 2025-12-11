@@ -19,23 +19,13 @@ void TitleScene::Init()
         auto obj = CreateGameObject();
         obj->AddComponent<Camera>();
     }
-    // タイトル
-    {
-        auto obj = CreateGameObject();
-        auto renderer = obj->AddComponent<SpriteRenderer>();
-        renderer->SetUI(true);
-        renderer->LoadTexture("Assets/Textures/title.png");
-        renderer->SetSize(800.0f);
-        renderer->SetOffsetPos(0.0f, 1.0f);
-    }
 
-    // はじめる
+    // タイトルUI
     {
         auto obj = CreateGameObject();
         obj->AddComponent<TitleExit>();
         obj->AddComponent<TitleUI>();
     }
 
-    //BGM再生
-    SoundManager::PlayBGM("Title", 1.0f, true);
+    
 }

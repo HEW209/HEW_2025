@@ -48,23 +48,7 @@ void GuideUIController::Update()
 		m_pRenderer->SetSize(MOZI_SIZE + 70.0f);
 	}
 	
-	if (Input::GetKeyHold(KeyCode::D))
-	{
-		m_value += EASING;
-
-		if (m_value > EASING_MAX)
-		{
-			m_value = EASING_MAX;
-		}
-	}
-	else
-	{
-		m_value -= EASING;
-		if (m_value < 0.0f)
-		{
-			m_value = 0.0f;
-		}
-	}
+	
 
 	
 	
