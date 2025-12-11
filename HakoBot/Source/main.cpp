@@ -103,6 +103,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	ImGuiManager::Instance().Init(
 		hWnd, Direct3D::Instance().GetDevice(), Direct3D::Instance().GetContext());
 
+	EffectManager::Instance().Init();
+
 	// ÉVÅ[ÉìÇÃçÏê¨
 	SceneManager::Init(std::make_unique<DebugEffectScene>());
 

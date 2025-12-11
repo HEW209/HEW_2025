@@ -5,18 +5,9 @@
 #include"Effekseer/Effekseer.SIMD.h"
 #include"Effekseer/Effekseer.Modules.h"
 #include <Component/Camera.h> //カメラクラスを使うために必要
-#include "EffekseerDebug.h"
 
-#ifdef _DEBUG
-#pragma comment(lib, "Effekseer/Effekseer.lib")
-#else
-#pragma comment(lib, "Effekseer/Effekseer.lib")
-#endif
-#ifdef _DEBUG
-#pragma comment(lib, "Effekseer/EffekseerRendererDX11.lib")
-#else
-#pragma comment(lib, "Effekseer/EffekseerRendererDX11.lib")
-#endif
+
+
 class DebugEffectScene :
     public Scene
 {

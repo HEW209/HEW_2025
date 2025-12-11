@@ -9,3 +9,4 @@
 
 #include "SceneManager.h"
 #include "Transform.h"
+#include "EffectManager.h"
