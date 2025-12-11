@@ -1,6 +1,5 @@
 #include"SampleStageSelectScene.h"
 #include"StageSelectObject.h"
-#include"StageSelectKeyEnter.h"
 
 
 void StageSelectScene::Init()

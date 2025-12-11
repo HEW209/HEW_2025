@@ -1,5 +1,5 @@
 #include "StageSelectObject.h"
-#include"StageSelectKeyEnter.h"
+
 #define STAGE_FILE "Asets/Stage/StageDate%d.json"
 void StageSelectObject::Start()
 {
@@ -164,7 +164,8 @@ void StageSelectObject::LoadGame(int StageID)
 	}
 	else
 	{
-		//LoadGame(filePath)	//ステージ読み込むやつ
+		//SceneManager::ChangeScene(std::make_unique<GameScene>(filePath));//ステージ読み込むやつ
+			
 	}
 }
 
