@@ -9,9 +9,14 @@ SoundPlayer SoundManager::sePlayer;
 void SoundManager::Load()
 {
 	//--- BGMìoò^
+	bgmMap["Title"];
+	if (!SoundData::LoadWave("Assets/Sound/BGM_Title.wav", bgmMap["Title"].data))
+		MessageBoxA(NULL, "BGM_Title.wav ÇÃì«Ç›çûÇ›Ç…é∏îsÇµÇ‹ÇµÇΩ", "Sound Error", MB_OK | MB_ICONWARNING);
+
 	bgmMap["Stage1"];
 	if(!SoundData::LoadWave("Assets/Sound/BGM_Stage.wav", bgmMap["Stage1"].data))
 		MessageBoxA(NULL, "BGM_Stage.wav ÇÃì«Ç›çûÇ›Ç…é∏îsÇµÇ‹ÇµÇΩ", "Sound Error", MB_OK | MB_ICONWARNING);
+
 
 	//--- SEìoò^
 	seMap["PutBox"];

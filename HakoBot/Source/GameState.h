@@ -38,8 +38,8 @@ public:
 	{
 		return m_pPlayer.Get();
 	}
-	
 
+	
 
 	static GameState* GetInstance() { return s_pInstance; }
 
