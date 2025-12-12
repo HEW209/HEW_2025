@@ -49,7 +49,9 @@ void TitleUI::Update()
         //一回だけ実行
         SoundManager::PlaySE("TitleLanding", 1.0f, false);
         m_bTitleLanding = true;
+        //アニメーションが終わったらtrue今は仮でここ本来は「ハコボット！」みたいな音鳴らしたい
         m_bTitleAnimComplete = true;
+        // SoundManager::PlaySE("TitleHakoBot", 1.0f, false);音が鳴り終わり次第ハコボット音ならしたいよねー
     }
 
     //ロゴ落下
