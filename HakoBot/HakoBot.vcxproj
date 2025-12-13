@@ -85,6 +85,11 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\;$(SolutionDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <FxCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ObjectFileOutput>$(ProjectDir)Assets\Shader\%(Filename).cso</ObjectFileOutput>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -103,6 +108,11 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\;$(SolutionDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <FxCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ObjectFileOutput>$(ProjectDir)Assets\Shader\%(Filename).cso</ObjectFileOutput>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -119,6 +129,11 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\;$(SolutionDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <FxCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ObjectFileOutput>$(ProjectDir)Assets\Shader\%(Filename).cso</ObjectFileOutput>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -137,20 +152,100 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\;$(SolutionDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <FxCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ObjectFileOutput>$(ProjectDir)Assets\Shader\%(Filename).cso</ObjectFileOutput>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\BlockObject.cpp" />
+    <ClCompile Include="Source\ClearProduce.cpp" />
     <ClCompile Include="DebugEffectScene.cpp" />
     <ClCompile Include="Source\GameScene.cpp" />
+    <ClCompile Include="Source\GameState.cpp" />
+    <ClCompile Include="Source\GridBlockData.cpp" />
+    <ClCompile Include="Source\GridField.cpp" />
+    <ClCompile Include="Source\InputSystem.cpp" />
+    <ClCompile Include="Source\GuideUIController.cpp" />
+    <ClCompile Include="Source\GuideUIController2.cpp" />
+    <ClCompile Include="Source\GuideUIResultController.cpp" />
+    <ClCompile Include="Source\GuideUITimeController.cpp" />
+    <ClCompile Include="Source\GuideUITimeController2.cpp" />
+    <ClCompile Include="Source\InputManager.cpp" />
+    <ClCompile Include="Source\LevelSerializer.cpp" />
     <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\PlaceCursor.cpp" />
+    <ClCompile Include="Source\Player.cpp" />
+    <ClCompile Include="Source\PlayerBlockHandler.cpp" />
+    <ClCompile Include="source\PlayerCamera.cpp" />
+    <ClCompile Include="Source\PlayerMove.cpp" />
+    <ClCompile Include="Source\PlayerStretch.cpp" />
+    <ClCompile Include="Source\SampleCamera.cpp" />
+    <ClCompile Include="Source\ShapeScreen.cpp" />
+    <ClCompile Include="Source\TitleExit.cpp" />
+    <ClCompile Include="Source\TitleScene.cpp" />
+    <ClCompile Include="Source\SoundData.cpp" />
+    <ClCompile Include="Source\SoundManager.cpp" />
+    <ClCompile Include="Source\SoundMaster.cpp" />
+    <ClCompile Include="Source\SoundPlayer.cpp" />
+    <ClCompile Include="Source\VecUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\BlockData.h" />
+    <ClInclude Include="Source\BlockObject.h" />
+    <ClInclude Include="Source\ClearProduce.h" />
     <ClInclude Include="..\ThirdParty\Effekseer\Effekseer.SIMD.h" />
     <ClInclude Include="..\ThirdParty\Effeksser\Effekseer.h" />
     <ClInclude Include="..\ThirdParty\Effeksser\Effekseer.Modules.h" />
     <ClInclude Include="..\ThirdParty\Effeksser\EffekseerRendererDX11.h" />
     <ClInclude Include="DebugEffectScene.h" />
     <ClInclude Include="Source\Config.h" />
+    <ClInclude Include="Source\DynamicDimensionalArray.h" />
+    <ClInclude Include="Source\Easing.h" />
+    <ClInclude Include="Source\EditorTypes.h" />
     <ClInclude Include="Source\GameScene.h" />
+    <ClInclude Include="Source\GameState.h" />
+    <ClInclude Include="Source\GameTypes.h" />
+    <ClInclude Include="Source\GridBlockData.h" />
+    <ClInclude Include="Source\GridField.h" />
+    <ClInclude Include="Source\HashUtil.h" />
+    <ClInclude Include="Source\IDGenerator.h" />
+    <ClInclude Include="Source\InputSystem.h" />
+    <ClInclude Include="Source\InputManager.h" />
+    <ClInclude Include="Source\LevelSerializer.h" />
+    <ClInclude Include="Source\PlaceCursor.h" />
+    <ClInclude Include="Source\Player.h" />
+    <ClInclude Include="Source\PlayerBlockHandler.h" />
+    <ClInclude Include="source\PlayerCamera.h" />
+    <ClInclude Include="Source\PlayerMove.h" />
+    <ClInclude Include="Source\PlayerStretch.h" />
+    <ClInclude Include="Source\SampleCamera.h" />
+    <ClInclude Include="Source\ShapeScreen.h" />
+    <ClInclude Include="Source\TitleExit.h" />
+    <ClInclude Include="Source\TitleScene.h" />
+    <ClInclude Include="Source\SoundData.h" />
+    <ClInclude Include="Source\SoundManager.h" />
+    <ClInclude Include="Source\SoundMaster.h" />
+    <ClInclude Include="Source\SoundPlayer.h" />
+    <ClInclude Include="Source\Vec.h" />
+    <ClInclude Include="Source\VecUtil.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\HLSL\DXGameFrameShader.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Source\HLSL\Hologram_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <ClInclude Include="Source\GuideUIController.h" />
+    <ClInclude Include="Source\GuideUIController2.h" />
+    <ClInclude Include="Source\GuideUIResultController.h" />
+    <ClInclude Include="Source\GuideUITimeController.h" />
+    <ClInclude Include="Source\GuideUITimeController2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

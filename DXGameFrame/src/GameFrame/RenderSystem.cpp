@@ -1,10 +1,12 @@
 // RenderSystem.cpp
 #include <GameFrame/RenderSystem.h>
 #include <GameFrame/GameObject.h>
+#include <GameFrame/Transform.h>
 #include <DirectX/Direct3D.h>
 #include <DirectX/ConstantBufferManager.h>
 #include <Component/Camera.h>
 #include <Component/DirectionalLight.h>
+#include <GameFrame/Time.h>
 #include <DirectX/PipelineStateManager.h>
 #include <../imgui/ImguiManager.h>
 #include <algorithm>
@@ -35,6 +37,9 @@ void RenderSystem::DrawAll()
 		lightCB.lightIntensity = 1.0f;
 	}
 	ConstantBufferManager::Instance().SetLight(lightCB);
+
+	// 時間設定
+	ConstantBufferManager::Instance().SetTime(Time::GetSceneTime());
 
 	DrawAll3D();
 	DrawAll2D();
@@ -93,6 +98,9 @@ void RenderSystem::DrawAll3D()
 	// フレーム定数バッファを更新
 	ConstantBufferManager::Instance().UpdateFrameConstantBuffer();
 	EffectManager::Instance().BeginDraw();
+
+	PipelineStateManager::Instance().Refresh();
+
 	// 3D描画処理
 	for (auto* renderer : m_pRendererComponents)
 	{
@@ -106,6 +114,20 @@ void RenderSystem::DrawAll3D()
 	}
 
 	// 3D透過オブジェクト描画処理
+	// 描画順ソートの準備
+	struct TransparentRendererInfo
+	{
+		Renderer* pRenderer;
+		float cameraDistance = 0.0f;
+	};
+	std::vector<TransparentRendererInfo> transparentRenderer;		// 透過描画オブジェクト配列
+	Vector3 cameraPos;
+	if (pMainCamera != nullptr)
+	{
+		cameraPos = pMainCamera->GetTransform()->GetPosition();
+	}
+
+	// 透過オブジェクト登録
 	for (auto* renderer : m_pRendererComponents)
 	{
 		if (renderer->IsEnabled() &&
@@ -113,8 +135,25 @@ void RenderSystem::DrawAll3D()
 			renderer->GetGameObject()->IsActiveHierarchy() &&
 			renderer->IsTransparent())
 		{
-			renderer->Draw();
+			// 透過オブジェクト情報登録
+			TransparentRendererInfo info;
+			info.pRenderer = renderer;
+			Vector3 rendererPos = renderer->GetTransform()->GetPosition();
+			info.cameraDistance = (cameraPos - rendererPos).Magnitude();
+			transparentRenderer.emplace_back(info);
 		}
+	}
+
+	// カメラ距離でソート
+	std::stable_sort(transparentRenderer.begin(), transparentRenderer.end(),
+		[](TransparentRendererInfo a, TransparentRendererInfo b) {
+			return a.cameraDistance > b.cameraDistance;
+		});
+
+	// 透過オブジェクト描画
+	for (auto& rendererInfo : transparentRenderer)
+	{
+		rendererInfo.pRenderer->Draw();
 	}
 	EffectManager::Instance().EndDraw();
 }
@@ -182,13 +221,6 @@ void RenderSystem::DrawDebugUI()
 {
 	// ImGuiの描画
 	ImGuiManager::Instance().Draw();
-	// パイプラインステートをリセット
-	PipelineStateManager::Instance().SetPipelineState(
-		RasterizerState::DEFAULT,
-		DepthStencilState::DEFAULT,
-		SamplerState::DEFAULT,
-		BlendState::DEFAULT
-	);
 }
 
 RenderSystem& RenderSystem::Instance()

@@ -9,6 +9,7 @@
 
 #include "Camera.h"
 #include "MeshRenderer.h"
+#include "Collider.h"
 #include "SpriteRenderer.h"
 #include "DirectionalLight.h"
 #include "EffectRenderer.h"
