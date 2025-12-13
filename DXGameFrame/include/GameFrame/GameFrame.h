@@ -10,3 +10,4 @@
 #include "SceneManager.h"
 #include "Transform.h"
 #include "RenderSystem.h"
+#include "EffectManager.h"

@@ -92,6 +92,12 @@ public:
 	 */
 	void SetBlendState(BlendState blendState);
 
+	/**
+	 * @brief パイプラインステートのキャッシュをリセットする
+	 * PipelineManagerを介さずにステートが変更されたとき呼び出してください
+	 */
+	void Refresh();
+
 private:
 	PipelineStateManager() = default;
 
