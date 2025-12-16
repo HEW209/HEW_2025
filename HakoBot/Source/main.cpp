@@ -3,8 +3,13 @@
 #include <iostream>
 #pragma comment(lib, "winmm.lib")
 
+
+#include "Effekseer/Effekseer.h"
+#include "Effekseer/EffekseerRendererDX11.h"
 #include "Config.h"
 #include <DXGameFrame.h>
+#include "GameScene.h"
+#include "../DebugEffectScene.h"
 
 // 最初のシーン
 #include "GameScene.h"
@@ -124,6 +129,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SoundMaster::Instance().Init();
 	// サウンドマネージャー
 	SoundManager::Load();
+
+	EffectManager::Instance().Init();
 
 	// シーンの作成
 	SceneManager::Init(std::make_unique<TitleScene>());

@@ -161,6 +161,7 @@
   <ItemGroup>
     <ClCompile Include="Source\BlockObject.cpp" />
     <ClCompile Include="Source\ClearProduce.cpp" />
+    <ClCompile Include="DebugEffectScene.cpp" />
     <ClCompile Include="Source\GameScene.cpp" />
     <ClCompile Include="Source\GameState.cpp" />
     <ClCompile Include="Source\GridBlockData.cpp" />
@@ -195,6 +196,11 @@
     <ClInclude Include="Source\BlockData.h" />
     <ClInclude Include="Source\BlockObject.h" />
     <ClInclude Include="Source\ClearProduce.h" />
+    <ClInclude Include="..\ThirdParty\Effekseer\Effekseer.SIMD.h" />
+    <ClInclude Include="..\ThirdParty\Effeksser\Effekseer.h" />
+    <ClInclude Include="..\ThirdParty\Effeksser\Effekseer.Modules.h" />
+    <ClInclude Include="..\ThirdParty\Effeksser\EffekseerRendererDX11.h" />
+    <ClInclude Include="DebugEffectScene.h" />
     <ClInclude Include="Source\Config.h" />
     <ClInclude Include="Source\DynamicDimensionalArray.h" />
     <ClInclude Include="Source\Easing.h" />

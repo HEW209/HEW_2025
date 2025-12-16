@@ -10,7 +10,7 @@
 #include <DirectX/PipelineStateManager.h>
 #include <../imgui/ImguiManager.h>
 #include <algorithm>
-
+#include <GameFrame/EffectManager.h>
 RenderSystem::RenderSystem() :
 	m_clearColor(0.4f, 0.4f, 1.0f, 1.0f)
 {
@@ -97,6 +97,9 @@ void RenderSystem::DrawAll3D()
 
 	// フレーム定数バッファを更新
 	ConstantBufferManager::Instance().UpdateFrameConstantBuffer();
+	EffectManager::Instance().BeginDraw();
+
+	PipelineStateManager::Instance().Refresh();
 
 	// 3D描画処理
 	for (auto* renderer : m_pRendererComponents)
@@ -152,6 +155,7 @@ void RenderSystem::DrawAll3D()
 	{
 		rendererInfo.pRenderer->Draw();
 	}
+	EffectManager::Instance().EndDraw();
 }
 
 void RenderSystem::DrawAll2D()
@@ -217,13 +221,6 @@ void RenderSystem::DrawDebugUI()
 {
 	// ImGuiの描画
 	ImGuiManager::Instance().Draw();
-	// パイプラインステートをリセット
-	PipelineStateManager::Instance().SetPipelineState(
-		RasterizerState::DEFAULT,
-		DepthStencilState::DEFAULT,
-		SamplerState::DEFAULT,
-		BlendState::DEFAULT
-	);
 }
 
 RenderSystem& RenderSystem::Instance()
