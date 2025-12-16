@@ -76,6 +76,22 @@ void PipelineStateManager::SetBlendState(BlendState blendState)
 	m_blendStateManager.SetState(blendState);
 }
 
+void PipelineStateManager::Refresh()
+{
+	SetPipelineState(
+		(RasterizerState)1,
+		(DepthStencilState)1,
+		(SamplerState)1,
+		(BlendState)1
+	);
+	SetPipelineState(
+		RasterizerState::DEFAULT,
+		DepthStencilState::DEFAULT,
+		SamplerState::DEFAULT,
+		BlendState::DEFAULT
+	);
+}
+
 PipelineStateManager& PipelineStateManager::Instance()
 {
 	static PipelineStateManager s_instance;
