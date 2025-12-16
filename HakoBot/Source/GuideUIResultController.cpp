@@ -32,6 +32,10 @@ void GuideUIResultController::Start()
 	m_defaultScale = GetTransform()->GetScale();
 	m_menu = false;
 	m_menu2 = false;
+	m_targetScale = Vector3(0.3f, 0.3f, 0.3f);
+	m_closePhase = ClosePhase::None;
+	m_closeValue = 0.0f;
+	m_closeStartScale = Vector3::zero;
 }
 
 void GuideUIResultController::Update()
@@ -39,6 +43,8 @@ void GuideUIResultController::Update()
 	//メニューをひらく
 	if (InputManager::CurrentInputSystem().GetButtonDown("Menu"_hash))
 	{
+		
+		m_value2 = 0.0f;
 		GridField* gridfield = GameState::GetInstance()->GetGridField();
 		//クリアしてたらメニュー表示できない
 		if (!gridfield->IsClear())
@@ -53,40 +59,22 @@ void GuideUIResultController::Update()
 	//メニュー開いてるとき
 	if (m_menu)
 	{
-		//メニュー出現
-		if (!m_menu2)
-		{
-			m_value += EASING * 2.0f;
-
-			if (m_value > EASING_MAX)
-			{
-				m_value = EASING_MAX;
-			}
-		}
-
-		//メニュー縮小
-		if (m_menu2)
-		{
-			m_value -= EASING;
-
-			if (m_value <= 0.0f)
-			{
-				m_value = 0.0f;
-				m_menu = false;
-				m_menu2 = false;
-			}
-		}
-
+		//メニューを閉じるボタン押したとき
 		if (InputManager::CurrentInputSystem().GetButtonDown("MenuBack"_hash))
 		{
+			m_closeStartScale = GetTransform()->GetScale();
 			m_menu2 = true;		//でかくするイージングoff
+			m_closePhase = ClosePhase::Pop;
+			m_closeValue = 0.0f;
+			m_value1 = 0.0f;	//初期化
+		
 			InputManager::ChangeBindType(InputBindType::GAMEPLAY);
 		}
 
 		//上を選択したとき、リスタートをオレンジに
 		if (InputManager::CurrentInputSystem().GetButtonDown("MenuUp"_hash))
 		{
-			m_rend->SetColor(255.0f,165.0f,0.0f,1.0f);
+			m_rend->SetColor(255.0f, 165.0f, 0.0f, 1.0f);
 			m_rend2->SetColor(255.0f, 255.0f, 255.0f, 1.0f);
 		}
 		//下を選択したとき、ステージ選択に戻るをオレンジに
@@ -95,13 +83,111 @@ void GuideUIResultController::Update()
 			m_rend2->SetColor(255.0f, 165.0f, 0.0f, 1.0f);
 			m_rend->SetColor(255.0f, 255.0f, 255.0f, 1.0f);
 		}
+
+
+		//メニュー出現
+		if (!m_menu2)
+		{
+			m_value1 += EASING * 2.0f;
+			//メニュー拡大
+			Vector3 scale;
+			scale.x = Easing::InSine(m_value1, EASING_MAX, m_targetScale.x, 0.0f);
+			scale.y = Easing::InSine(m_value1, EASING_MAX, m_targetScale.y, 0.0f);
+			scale.z = 1.0f;
+
+			GetTransform()->SetScale(scale);
+
+			if (m_value1 >= EASING_MAX)
+			{
+				m_value1 = EASING_MAX;
+			}
+		}
+
+		//メニュー閉じる
+		/*if (m_menu2)
+		{
+			m_value2 += EASING * 2.0f;
+
+			Vector3 scale;
+			scale.x = Easing::OutSine(m_value2, EASING_MAX, 0.0f, m_targetScale.x);
+			scale.y = Easing::OutSine(m_value2, EASING_MAX, 0.0f, m_targetScale.y);
+			scale.z = 1.0f;
+
+			GetTransform()->SetScale(scale);
+
+			if (m_value2 >= EASING_MAX)
+			{
+				GetTransform()->SetScale(0.0f, 0.0f, 0.0f);
+				m_menu = false;
+				m_menu2 = false;
+			}
+		}*/
+
+		if (m_menu2)
+		{
+			m_closeValue += EASING * 3.0f;
+
+			// 少し拡大
+			if (m_closePhase == ClosePhase::Pop)
+			{
+				Vector3 scale;
+				scale.x = Easing::OutSine(
+					m_closeValue,
+					EASING_MAX / 2.0f,
+					m_closeStartScale.x * 1.15f, // 目的地（ちょい大）
+					m_closeStartScale.x          // 開始値
+				);
+				scale.y = Easing::OutSine(
+					m_closeValue,
+					EASING_MAX / 2.0f,
+					m_closeStartScale.y * 1.15f,
+					m_closeStartScale.y
+				);
+				scale.z = 1.0f;
+
+				GetTransform()->SetScale(scale);
+
+				if (m_closeValue >= EASING_MAX / 2.0f)
+				{
+					m_closePhase = ClosePhase::Shrink;
+					m_closeValue = 0.0f;
+				}
+			}
+			// ② 縮小
+			else if (m_closePhase == ClosePhase::Shrink)
+			{
+				Vector3 scale;
+				scale.x = Easing::OutSine(
+					m_closeValue,
+					EASING_MAX,
+					0.0f,
+					m_closeStartScale.x * 1.15f
+				);
+				scale.y = Easing::OutSine(
+					m_closeValue,
+					EASING_MAX,
+					0.0f,
+					m_closeStartScale.y * 1.15f
+				);
+				scale.z = 1.0f;
+
+				GetTransform()->SetScale(scale);
+
+				if (scale.x <= 0.1f)
+				{
+					GetTransform()->SetScale(0.0f, 0.0f, 0.0f);
+					m_menu = false;
+					m_menu2 = false;
+					m_closePhase = ClosePhase::None;
+				}
+			}
+
+		}
+
+		
 	}
 
-	//スケール変更
-	Vector3 offset = Vector3::zero;
-	offset.x = Easing::InSine(m_value, EASING_MAX, 0.3f, 0.0f);
-	offset.y = Easing::InSine(m_value, EASING_MAX, 0.3f, 0.0f);
-	GetTransform()->SetScale(m_defaultScale + offset);
+	
 
 
 }
