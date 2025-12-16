@@ -7,7 +7,7 @@ PlayerMove::PlayerMove() :
 	m_jumpPower(0.5f),
 	m_gravity(0.05f),
 	m_velocity_y(0.0f),
-	m_rotateSpeed (800.0f)
+	m_rotateSpeed (1000.0f)
 
 {
 }

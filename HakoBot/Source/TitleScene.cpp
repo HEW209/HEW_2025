@@ -1,26 +1,31 @@
 #include "TitleScene.h"
 #include "TitleExit.h"
+// サウンド
+#include "SoundMaster.h"
+#include "SoundManager.h"
+#include "GameState.h"
+#include "TitleUI.h"
+#include "InputManager.h"
 
 void TitleScene::Init()
 {
-    // タイトル
+    InputManager::ChangeBindType(InputBindType::UI);
+    SoundManager::StopAll();
+    SoundManager::Load();
+    RenderSystem::Instance().SetClearColor(Color(1.0f, 0.7f, 0.2f, 1.0f));
+    
+    // カメラ
     {
         auto obj = CreateGameObject();
-        auto renderer = obj->AddComponent<SpriteRenderer>();
-        renderer->SetUI(true);
-        renderer->LoadTexture("Assets/Textures/title.png");
-        renderer->SetSize(150.0f, 150.0f);
-        renderer->SetOffsetPos(0.0f, 0.1f);
+        obj->AddComponent<Camera>();
     }
 
-    // はじめる
+    // タイトルUI
     {
         auto obj = CreateGameObject();
-        auto renderer = obj->AddComponent<SpriteRenderer>();
-        renderer->SetUI(true);
-        renderer->LoadTexture("Assets/Textures/hajimeru.png");
-        renderer->SetSize(70.0f);
-        renderer->SetOffsetPos(0.0f, -0.6f);
         obj->AddComponent<TitleExit>();
+        obj->AddComponent<TitleUI>();
     }
+
+    
 }

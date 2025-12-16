@@ -20,6 +20,12 @@ public:
 	void Awake() override;
 	void Update() override;
 
+
+	bool HasBlock()
+	{
+		return !m_pBlockObject->GetBlockSet().blocks.empty();
+	}
+
 private:
 	void SetBlockSet(const BlockSetData& blockSet);
 

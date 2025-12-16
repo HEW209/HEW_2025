@@ -23,6 +23,7 @@ GameScene::GameScene(const std::string& levelName)
 }
 
 void GameScene::Init() {
+    SoundManager::StopAll();
     RenderSystem::Instance().SetClearColor(Color(1.0f, 0.7f, 0.2f, 1.0f));
 
     std::string path = "Assets/Level/Stages/" + m_levelName + ".json";
@@ -32,21 +33,27 @@ void GameScene::Init() {
 
     KeyBind();
 
-    auto playerObj = CreateGameObject();
-    playerObj->AddComponent<Player>();
-    playerObj->GetTransform()->SetPosition(0.0f, 0.0f, -8.0f);
+	// ゲームステート
+	{
+		auto obj = CreateGameObject();
+		obj->AddComponent<GameState>();
+	}
+
+	//移動できるオブジェクト（プレイヤー）を作成	
+	//移動できるプレイヤーオブジェクトを作る
+	auto player = CreateGameObject();
+	auto playerComp = player->AddComponent<Player>();
+	GameState::GetInstance()->SetPlayer(playerComp);
 
     auto cameraObj = CreateGameObject();
     auto playerCamera = cameraObj->AddComponent<PlayerCamera>();
-    playerCamera->SetPlayer(playerObj->GetTransform());
+    playerCamera->SetPlayer(player->GetTransform());
     playerCamera->SetCameraDistance(5.0f+m_levelData.gridSize.y * 3.0f);
 
-    auto gameStateObj = CreateGameObject();
-    gameStateObj->AddComponent<GameState>();
+	
 
-    CreateStageSet();
-
-    CreateGridField();
+	CreateStageSet();
+	CreateGridField();
 
     float startX = 8.0f;
     float startZ = 5.0f;
@@ -236,9 +243,9 @@ void GameScene::CreateUIObject() {
         auto obj = CreateGameObject();
         auto renderer = obj->AddComponent<SpriteRenderer>();
         renderer->SetUI(true);
-        renderer->LoadTexture("Assets/Textures/menuu.png");
-        renderer->GetTransform()->SetPosition(-5.6f, 3.1f, 0.0f);
-        renderer->SetSize(110.0f, 110.0f);
+        renderer->LoadTexture("Assets/Textures/menu!.png");
+        renderer->GetTransform()->SetPosition(-5.3f, 3.2f, 0.20f);
+        renderer->SetSize(200.0f);
     }
 
     // おく
@@ -276,14 +283,16 @@ void GameScene::CreateUIObject() {
         obj->AddComponent<GuideUITimeController>();
     }
 
-    // リザルト
-    {
-        auto obj = CreateGameObject();
-        auto renderer = obj->AddComponent<SpriteRenderer>();
-        renderer->SetUI(true);
-        renderer->LoadTexture("Assets/Textures/result3.png");
-        renderer->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
-        obj->GetTransform()->SetScale(0.0f, 0.0f, 0.0f);
-        obj->AddComponent<GuideUITimeController2>();
-    }
+	//リザルト
+	{
+		auto obj = CreateGameObject();
+		auto renderer = obj->AddComponent<SpriteRenderer>();
+		renderer->SetUI(true);
+		renderer->LoadTexture("Assets/Textures/result!.png");
+		renderer->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
+		obj->GetTransform()->SetScale(0.0f, 0.0f, 0.0f);
+		obj->AddComponent<GuideUITimeController2>();
+	}
 }
+	
+

@@ -2,40 +2,98 @@
 #include "GuideUIResultController.h"
 #include "GuideUIController.h"
 #include "Easing.h"
+#include "GridField.h"
+#include "GameState.h"
+#include "InputManager.h"
 
 void GuideUIResultController::Start()
 {
 	auto renderer = GetGameObject()->AddComponent<SpriteRenderer>();
 	renderer->SetUI(true);
-	renderer->LoadTexture("Assets/Textures/result2.png");
+	renderer->LoadTexture("Assets/Textures/menukiban.png");
 	renderer->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
 	GetTransform()->SetScale(0.0f, 0.0f, 0.0f);
 
+	auto renderer1 = GetGameObject()->AddComponent<SpriteRenderer>();
+	renderer1->SetUI(true);
+	renderer1->LoadTexture("Assets/Textures/restart.png");
+	renderer1->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
+	renderer1->SetOffsetPos(0.0f,2.0f);
+	m_rend = renderer1;
+
+	auto renderer2 = GetGameObject()->AddComponent<SpriteRenderer>();
+	renderer2->SetUI(true);
+	renderer2->LoadTexture("Assets/Textures/stageselectback.png");
+	renderer2->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
+	renderer2->SetOffsetPos(0.0f, -1.0f);
+	m_rend2 = renderer2;
+
 	m_defaultPosition = GetTransform()->GetPosition();
 	m_defaultScale = GetTransform()->GetScale();
-
+	m_menu = false;
+	m_menu2 = false;
 }
 
 void GuideUIResultController::Update()
 {
-	if (Input::GetKeyHold(KeyCode::R))
+	//メニューをひらく
+	if (InputManager::CurrentInputSystem().GetButtonDown("Menu"_hash))
 	{
-		m_value += EASING * 2.0f;
-
-		if (m_value > EASING_MAX)
+		GridField* gridfield = GameState::GetInstance()->GetGridField();
+		//クリアしてたらメニュー表示できない
+		if (!gridfield->IsClear())
 		{
-			m_value = EASING_MAX;
+			m_menu = true;
+			InputManager::ChangeBindType(InputBindType::UI);
+		}
+		m_rend->SetColor(255.0f, 255.0f, 255.0f, 1.0f);
+		m_rend2->SetColor(255.0f, 255.0f, 255.0f, 1.0f);
+	}
+
+	//メニュー開いてるとき
+	if (m_menu)
+	{
+		//メニュー出現
+		if (!m_menu2)
+		{
+			m_value += EASING * 2.0f;
+
+			if (m_value > EASING_MAX)
+			{
+				m_value = EASING_MAX;
+			}
 		}
 
-
-	}
-	else
-	{
-		m_value -= EASING;
-
-		if (m_value < 0.0f)
+		//メニュー縮小
+		if (m_menu2)
 		{
-			m_value = 0.0f;
+			m_value -= EASING;
+
+			if (m_value <= 0.0f)
+			{
+				m_value = 0.0f;
+				m_menu = false;
+				m_menu2 = false;
+			}
+		}
+
+		if (InputManager::CurrentInputSystem().GetButtonDown("MenuBack"_hash))
+		{
+			m_menu2 = true;		//でかくするイージングoff
+			InputManager::ChangeBindType(InputBindType::GAMEPLAY);
+		}
+
+		//上を選択したとき、リスタートをオレンジに
+		if (InputManager::CurrentInputSystem().GetButtonDown("MenuUp"_hash))
+		{
+			m_rend->SetColor(255.0f,165.0f,0.0f,1.0f);
+			m_rend2->SetColor(255.0f, 255.0f, 255.0f, 1.0f);
+		}
+		//下を選択したとき、ステージ選択に戻るをオレンジに
+		if (InputManager::CurrentInputSystem().GetButtonDown("MenuDown"_hash))
+		{
+			m_rend2->SetColor(255.0f, 165.0f, 0.0f, 1.0f);
+			m_rend->SetColor(255.0f, 255.0f, 255.0f, 1.0f);
 		}
 	}
 
@@ -47,3 +105,9 @@ void GuideUIResultController::Update()
 
 
 }
+
+bool GuideUIResultController::GetMenuBool()
+{
+	return m_menu;
+}
+

@@ -21,7 +21,7 @@ public:
 	SpriteRenderer* sprite[6];			//各桁の描画用
 	SpriteRenderer* sprite1[3];			//時計とコロン描画用
 private:
-	
-  
+	int m_time;
+	bool m_b2;
 };
 

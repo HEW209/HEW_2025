@@ -108,9 +108,6 @@
     <ClCompile Include="Source\GuideUITimeController.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GuideUIResultController.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GuideUITimeController2.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -120,6 +117,9 @@
     <ClCompile Include="Source\InputManager.cpp">
       <Filter>ソース ファイル\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GuideUIResultController.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
     <ClCompile Include="Source\TitleScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
@@ -127,6 +127,9 @@
       <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
     <ClCompile Include="DebugEffectScene.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TitleUI.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -224,9 +227,6 @@
     <ClInclude Include="Source\GuideUITimeController.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GuideUIResultController.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Source\GuideUITimeController2.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -238,6 +238,9 @@
     </ClInclude>
     <ClInclude Include="Source\InputManager.h">
       <Filter>ヘッダー ファイル\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GuideUIResultController.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Source\TitleScene.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
