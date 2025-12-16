@@ -103,76 +103,38 @@ void GuideUIResultController::Update()
 			}
 		}
 
-		//メニュー閉じる
-		/*if (m_menu2)
-		{
-			m_value2 += EASING * 2.0f;
-
-			Vector3 scale;
-			scale.x = Easing::OutSine(m_value2, EASING_MAX, 0.0f, m_targetScale.x);
-			scale.y = Easing::OutSine(m_value2, EASING_MAX, 0.0f, m_targetScale.y);
-			scale.z = 1.0f;
-
-			GetTransform()->SetScale(scale);
-
-			if (m_value2 >= EASING_MAX)
-			{
-				GetTransform()->SetScale(0.0f, 0.0f, 0.0f);
-				m_menu = false;
-				m_menu2 = false;
-			}
-		}*/
-
+		//メニューを閉じる
 		if (m_menu2)
 		{
 			m_closeValue += EASING * 3.0f;
 
-			// 少し拡大
+			//Pop:少し拡大
 			if (m_closePhase == ClosePhase::Pop)
 			{
 				Vector3 scale;
-				scale.x = Easing::OutSine(
-					m_closeValue,
-					EASING_MAX / 2.0f,
-					m_closeStartScale.x * 1.15f, // 目的地（ちょい大）
-					m_closeStartScale.x          // 開始値
-				);
-				scale.y = Easing::OutSine(
-					m_closeValue,
-					EASING_MAX / 2.0f,
-					m_closeStartScale.y * 1.15f,
-					m_closeStartScale.y
-				);
+				scale.x = Easing::OutSine(m_closeValue,EASING_MAX / 2.0f,m_closeStartScale.x * 1.15f,m_closeStartScale.x);
+				scale.y = Easing::OutSine(m_closeValue,EASING_MAX / 2.0f,m_closeStartScale.y * 1.15f,m_closeStartScale.y);
 				scale.z = 1.0f;
-
 				GetTransform()->SetScale(scale);
 
+				//マックスになったら
 				if (m_closeValue >= EASING_MAX / 2.0f)
 				{
-					m_closePhase = ClosePhase::Shrink;
-					m_closeValue = 0.0f;
+					m_closePhase = ClosePhase::Shrink;	//縮小開始
+					m_closeValue = 0.0f;				//イージングの値を初期化
 				}
 			}
-			// ② 縮小
+
+			//Shrink:縮小
 			else if (m_closePhase == ClosePhase::Shrink)
 			{
 				Vector3 scale;
-				scale.x = Easing::OutSine(
-					m_closeValue,
-					EASING_MAX,
-					0.0f,
-					m_closeStartScale.x * 1.15f
-				);
-				scale.y = Easing::OutSine(
-					m_closeValue,
-					EASING_MAX,
-					0.0f,
-					m_closeStartScale.y * 1.15f
-				);
+				scale.x = Easing::OutSine(m_closeValue,EASING_MAX,0.0f,m_closeStartScale.x * 1.15f);
+				scale.y = Easing::OutSine(m_closeValue,EASING_MAX,0.0f,m_closeStartScale.y * 1.15f);
 				scale.z = 1.0f;
-
 				GetTransform()->SetScale(scale);
 
+				//メニュー画面のサイズが0.1fを下回ったらサイズをゼロに
 				if (scale.x <= 0.1f)
 				{
 					GetTransform()->SetScale(0.0f, 0.0f, 0.0f);

@@ -28,11 +28,10 @@ private:
 		None,
 		Pop,		//少し拡大
 		Shrink,		//縮小
-		Delete		//消す
 	};
 
-	ClosePhase m_closePhase;
-	Vector3 m_closeStartScale;
-	float m_closeValue;
+	ClosePhase m_closePhase;			//現在のメニュー閉じアニメーションの状態
+	Vector3 m_closeStartScale;			//メニュー閉じアニメーションが始まるまえののスケール
+	float m_closeValue;					//メニュー閉じアニメーションイージング用
 };
 
