@@ -10,7 +10,7 @@ void StageSelectScene::Init()
 	}
 	
 
-	for(int i =0;i<=11;i++)
+	for(int i =0;i<=31;i++)
 	{
 		{
 			auto obj = CreateGameObject();
@@ -19,11 +19,8 @@ void StageSelectScene::Init()
 			
 			auto rendere = obj->AddComponent<SpriteRenderer>();
 			rendere->SetUI(true);
-			if (i == 11)
-			{
-				rendere->LoadTexture("Assets/Textures/Cyan.png");
-				rendere->SetSize(50);
-			}
+
+			
 			SelectObject->SetStageID(i);
 			
 			Vector2 SetPos = SelectObject->SetPosID(i);
