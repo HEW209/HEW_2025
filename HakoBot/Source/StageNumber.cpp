@@ -2,7 +2,7 @@
 
 #define STAGE_FILE "Asets/Stage/StageDate%d.json"
 
-int digitToIndex[10] =
+int digitIndex[10] =
 {
 0,  // 0�̈ʒu
 1,  // 1
@@ -173,7 +173,7 @@ void StageNumber::SetDigitUV()
 
 	for (int x = 0; x < 3; ++x)
 	{
-		int index = digitToIndex[digit[x]];
+		int index = digitIndex[digit[x]];
 
 		float u = (index % 6) * uSize;
 		float v = (index / 6) * vSize;
