@@ -132,6 +132,9 @@
     <ClCompile Include="Source\TitleUI.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Source\OutlineMeshRenderer.cpp">
+      <Filter>ソース ファイル\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Config.h">
@@ -263,14 +266,29 @@
     <ClInclude Include="..\ThirdParty\Effekseer\Effekseer.SIMD.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Source\TitleUI.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\OutlineMeshRenderer.h">
+      <Filter>ヘッダー ファイル\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\HLSL\DXGameFrameShader.hlsli">
       <Filter>HLSL</Filter>
     </None>
+    <None Include="Source\HLSL\Outline.hlsli">
+      <Filter>HLSL</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\HLSL\Hologram_PS.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\HLSL\Outline_VS.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\HLSL\Outline_PS.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
   </ItemGroup>

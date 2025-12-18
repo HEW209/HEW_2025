@@ -14,6 +14,7 @@
 #include <DXGameFrame.h>
 
 #include "BlockData.h"
+#include "OutlineMeshRenderer.h"
 
 
 /**
@@ -72,7 +73,7 @@ public:
 private:
 	BlockSetData m_blockSet;
 	std::vector<ObjPtr<GameObject>> m_pBlocks;
-	ObjPtr<MeshRenderer> m_pBlockMeshRenderer;
+	ObjPtr<OutlineMeshRenderer> m_pBlockMeshRenderer;
 	std::string m_modelPath;
 	Vector3 m_size;
 	Vector3 m_center;

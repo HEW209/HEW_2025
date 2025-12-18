@@ -31,7 +31,7 @@ HRESULT Direct3D::Init(HWND hWnd, UINT width, UINT height)
 	if (FAILED(hr)) { return hr; }
 
 	// ビューポートの設定
-	SetViewPort(width, height);
+	SetViewport(width, height);
 
 	// その他の描画関連機能の初期化
 	hr = InitAllRenderSystems();
@@ -67,7 +67,7 @@ HRESULT Direct3D::Resize(UINT width, UINT height)
 	ResizeSwapChain(width, height);
 
 	// ビューポート再設定
-	SetViewPort(width, height);
+	SetViewport(width, height);
 
 	// レンダーターゲットビュー・深度ステンシルビューを作成
 	hr = CreateRenderTargets(width, height);
@@ -90,6 +90,12 @@ void Direct3D::Present()
 {
 	//描画内容を画面に表示
 	m_pSwapChain->Present(0, 0);
+}
+
+void Direct3D::ClearStencilView()
+{
+	m_pContext->ClearDepthStencilView(m_pDSV.Get(),
+		D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
 
 ID3D11Device* Direct3D::GetDevice() const
@@ -246,7 +252,7 @@ HRESULT Direct3D::CreateDepthStencilView(UINT width, UINT height)
 	return hr;
 }
 
-void Direct3D::SetViewPort(UINT width, UINT height)
+void Direct3D::SetViewport(UINT width, UINT height)
 {
 	// ビューポートの設定
 	D3D11_VIEWPORT vp = {};			// ビューポート設定情報
@@ -259,6 +265,10 @@ void Direct3D::SetViewPort(UINT width, UINT height)
 
 	// ビューポートを設定
 	m_pContext->RSSetViewports(1, &vp);
+
+	// ビューポートの幅・高さを保存
+	m_viewportSizeW = width;
+	m_viewportSizeH = height;
 }
 
 HRESULT Direct3D::ResizeSwapChain(UINT width, UINT height)

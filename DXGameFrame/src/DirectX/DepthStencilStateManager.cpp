@@ -44,7 +44,7 @@ void DepthStencilStateManager::SetState(DepthStencilState state)
 
 	// ステートを変更
 	m_currentState = state;
-	m_pContext->OMSetDepthStencilState(m_pStates[(UINT)state].Get(), 0);
+	m_pContext->OMSetDepthStencilState(m_pStates[(UINT)state].Get(), 1);
 }
 
 HRESULT DepthStencilStateManager::CreateAllState()
@@ -98,6 +98,39 @@ HRESULT DepthStencilStateManager::CreateAllState()
 			dsDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
 			dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
 			dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+			dsDesc.BackFace = dsDesc.FrontFace;
+			break;
+
+		case DepthStencilState::DISABLE_STENCIL:
+			// 深度テストOFF、ステンシルON
+			dsDesc.DepthEnable = FALSE;
+			dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+			dsDesc.StencilEnable = TRUE;
+			dsDesc.StencilReadMask = 0xFF;
+			dsDesc.StencilWriteMask = 0xFF;
+
+			dsDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+			dsDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+			dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
+			dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+			dsDesc.BackFace = dsDesc.FrontFace;
+			break;
+
+		case DepthStencilState::OUTLINE:
+			// アウトライン描画用
+			dsDesc.DepthEnable = TRUE;
+			dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+			dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
+			dsDesc.StencilEnable = TRUE;
+			dsDesc.StencilReadMask = 0xFF;
+			dsDesc.StencilWriteMask = 0xFF;
+
+			dsDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+			dsDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+			dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+			dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_NOT_EQUAL;
 
 			dsDesc.BackFace = dsDesc.FrontFace;
 			break;

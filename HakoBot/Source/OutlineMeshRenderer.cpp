@@ -1,0 +1,52 @@
+#include "OutlineMeshRenderer.h"
+
+OutlineMeshRenderer::OutlineMeshRenderer()
+	: m_outlineThickness(5.0f)
+	, m_shouldDrawOutline(true)
+	, m_outlineColor(1.0f, 0.0f, 0.0f, 1.0f)
+{
+}
+
+void OutlineMeshRenderer::Draw()
+{
+	if (m_pModel == nullptr)
+		return;
+
+	// Transformからワールド行列をセット
+	DirectX::XMMATRIX matrix;
+	matrix = GetTransform()->GetWorldMatrix();
+	ConstantBufferManager::Instance().SetWorld(matrix);
+
+	// モデル描画処理
+	m_pModel->Draw(m_materials);
+
+	if (m_shouldDrawOutline) {
+		Direct3D::Instance().ClearStencilView();
+		std::vector<Material> meshMaterials, outlineMaterials;
+		meshMaterials = m_materials;
+		outlineMaterials.resize(m_materials.size());
+		for (auto itMeshMat = meshMaterials.begin(), itOutlineMat = outlineMaterials.begin(); itMeshMat != meshMaterials.end(); ++itMeshMat, ++itOutlineMat) {
+			itMeshMat->SetDepthStencilState(DepthStencilState::DISABLE_STENCIL);
+			itMeshMat->SetBlendState(BlendState::DISABLE);
+			itMeshMat->SetRasterizerState(RasterizerState::NONE);
+			itOutlineMat->SetVertexShader("Assets/Shader/Outline_VS.cso");
+			itOutlineMat->SetPixelShader("Assets/Shader/Outline_PS.cso");
+			struct OutlineParams {
+				Color outlineColor;
+				float outlineThickness;
+				Vector2 viewportSize;
+				float padding;
+			} params;
+			params.outlineColor = m_outlineColor;
+			params.outlineThickness = m_outlineThickness;
+			params.viewportSize.x = Direct3D::Instance().GetViewportSizeW();
+			params.viewportSize.y = Direct3D::Instance().GetViewportSizeH();
+			itOutlineMat->SetParameter(&params, sizeof(params));
+			itOutlineMat->SetDepthStencilState(DepthStencilState::OUTLINE);
+			itOutlineMat->SetBlendState(BlendState::DEFAULT);
+			itOutlineMat->SetRasterizerState(RasterizerState::NONE);
+		}
+		m_pModel->Draw(meshMaterials);
+		m_pModel->Draw(outlineMaterials);
+	}
+}

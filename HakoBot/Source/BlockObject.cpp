@@ -5,7 +5,7 @@
 
 void BlockObject::Awake()
 {
-	m_pBlockMeshRenderer = GetGameObject()->AddComponent<MeshRenderer>();
+	m_pBlockMeshRenderer = GetGameObject()->AddComponent<OutlineMeshRenderer>();
 	m_pBlockMeshRenderer->SetEnabled(false);
 }
 

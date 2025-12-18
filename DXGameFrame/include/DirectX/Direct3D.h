@@ -49,6 +49,11 @@ public:
 	void Present();
 
 	/**
+	 * @brief ステンシルビューをクリアする
+	 */
+	void ClearStencilView();
+
+	/**
 	 * @brief Direct3Dデバイスを取得する
 	 * @return デバイスへのポインタ
 	 */
@@ -59,6 +64,18 @@ public:
 	 * @return デバイスコンテクストへのポインタ
 	 */
 	ID3D11DeviceContext* GetContext() const;
+
+	/**
+	 * @brief ビューポートの幅を取得する
+	 * @return ビューポートの幅
+	 */
+	UINT GetViewportSizeW() const { return m_viewportSizeW; }
+
+	/**
+	 * @brief ビューポートの高さを取得する
+	 * @return ビューポートの高さ
+	 */
+	UINT GetViewportSizeH() const { return m_viewportSizeH; }
 
 private:
 	Direct3D();
@@ -81,6 +98,11 @@ private:
 
 	/// 深度ステンシルバッファ
 	ComPtr<ID3D11Texture2D> m_pDepthBuffer;
+
+	/// ビューポートの幅
+	UINT m_viewportSizeW;
+	/// ビューポートの高さ
+	UINT m_viewportSizeH;
 
 	/**
 	 * @brief デバイス・デバイスコンテキスト・スワップチェインを作成する
@@ -118,7 +140,7 @@ private:
 	 * @param width クライアント領域の幅
 	 * @param height クライアント領域の高さ
 	 */
-	void SetViewPort(UINT width, UINT height);
+	void SetViewport(UINT width, UINT height);
 
 	/**
 	 * @brief スワップチェインのサイズを再設定する

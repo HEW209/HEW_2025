@@ -19,12 +19,12 @@ class MeshRenderer : public Renderer
 {
 public:
 	MeshRenderer();
-	~MeshRenderer() = default;
+	virtual ~MeshRenderer() = default;
 
 	/**
 	 * @brief 描画処理
 	 */
-	void Draw() override;
+	virtual void Draw() override;
 
 	/**
 	 * @brief モデルデータを読み込む
@@ -51,7 +51,7 @@ public:
 	 */
 	std::vector<Material>* GetMaterials();
 
-private:
+protected:
 	/// モデルへのポインタ
 	std::shared_ptr<Model> m_pModel;
 
