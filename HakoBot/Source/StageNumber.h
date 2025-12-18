@@ -1,6 +1,6 @@
 #pragma once
 #include <DXGameFrame.h>
-
+#define MOZI_SIZE (450.0f)
 
 
 class StageNumber : public Component

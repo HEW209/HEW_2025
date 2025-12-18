@@ -30,23 +30,12 @@ void StageSelectScene::Init()
 	}
 	*/
 	
-	for (int i = 0; i < 3; i++)
+
 	{
-		{
-			auto obj = CreateGameObject();
-			auto SelectNumber = obj->AddComponent<StageNumber>();
-
-			auto rendere = obj->AddComponent<SpriteRenderer>();
-			rendere->SetUI(true);
-
-
-			SelectNumber->Set_StegeNumberdigit(i);
-
-			Vector2 SetPos = SelectNumber->SetPos_StegeNumber(i);
-
-			rendere->SetOffsetPos(SetPos);
-		}
+		auto obj = CreateGameObject();
+		auto SelectNumber = obj->AddComponent<StageNumber>();
 	}
+	
 }
 
 

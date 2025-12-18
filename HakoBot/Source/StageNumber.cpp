@@ -1,8 +1,39 @@
 #include "StageNumber.h"
 
 #define STAGE_FILE "Asets/Stage/StageDate%d.json"
+
+int digitToIndex[10] =
+{
+0,  // 0の位置
+1,  // 1
+2,  // 2
+3,  // 3
+4,  // 4
+5,  // 5
+6,  // 6
+7,  // 7
+8,  // 8
+9   // 9
+};
+
+
 void StageNumber::Start()
 {
+	float PosX = -4.2f;
+	float PosY = 1.3f;
+	float PosInterval = 0.3f * (MOZI_SIZE / 100);	//文字間隔　＊　文字サイズによる間隔補正
+
+	for (int x = 0; x < 3; ++x)
+	{
+		sprite[x] = GetGameObject()->AddComponent<SpriteRenderer>();
+		sprite[x]->SetUI(true);
+		sprite[x]->LoadTexture("Assets/Textures/newSprite.png");
+		sprite[x]->SetOffsetPos(PosX, PosY);
+		PosX += PosInterval;
+
+		sprite[x]->SetUVScale(1.0f / 6.0f, 1.0f / 2.0f);
+		sprite[x]->SetSize(MOZI_SIZE + 50.0f, MOZI_SIZE + 50.0f);
+	}
 
 }
 
@@ -97,4 +128,35 @@ Vector2 StageNumber::SetPos_StegeNumber(int CallNum)
 	ReturnPos.y = StageDrawPosY;
 
 	return ReturnPos;
+}
+
+void StageNumber::SetDigitUV()
+{
+	// 1マスのUVサイズ
+	const float uSize = 1.0f / 6.0f;
+	const float vSize = 1.0f / 2.0f;
+
+	for (int x = 0; x < 3; ++x)
+	{
+		int index = digitToIndex[m_digit[x]];
+
+		float u = (index % 6) * uSize;
+		float v = (index / 6) * vSize;
+
+		sprite[x]->SetUVOffsetPos(u, v);
+	}
+}
+
+void StageNumber::SetTimer()
+{
+
+	int totalSeconds = m_stageCount;
+
+	int Hundred = totalSeconds / 100;
+	int Ten = (totalSeconds / 10);
+	int One = totalSeconds % 10;
+
+	m_digit[0] = Hundred ;
+	m_digit[1] = Ten;//1が一桁目、2が二桁目
+	m_digit[2] = One;
 }
