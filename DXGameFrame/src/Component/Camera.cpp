@@ -31,6 +31,11 @@ Camera::Config Camera::GetConfig()
 	return m_config;
 }
 
+void Camera::SetMain()
+{
+	s_pMainCamera = this;
+}
+
 DirectX::XMMATRIX Camera::GetViewMatrix()
 {
 	DirectX::XMMATRIX view;		// 計算用ビュー行列

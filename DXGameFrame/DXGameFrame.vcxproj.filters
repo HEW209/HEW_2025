@@ -264,6 +264,15 @@
     <ClInclude Include="include\GameFrame\ColliderSystem.h">
       <Filter>ヘッダー ファイル\GameFrame</Filter>
     </ClInclude>
+    <ClInclude Include="include\Component\EffectRenderer.h">
+      <Filter>ヘッダー ファイル\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GameFrame\EffectManager.h">
+      <Filter>ヘッダー ファイル\GameFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GameFrame\Time.h">
+      <Filter>ヘッダー ファイル\GameFrame</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\DirectX\Direct3D.cpp">
@@ -411,6 +420,15 @@
       <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
     <ClCompile Include="src\GameFrame\ColliderSystem.cpp">
+      <Filter>ソース ファイル\GameFrame</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Component\EffectRenderer.cpp">
+      <Filter>ソース ファイル\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameFrame\EffectManager.cpp">
+      <Filter>ソース ファイル\GameFrame</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameFrame\Time.cpp">
       <Filter>ソース ファイル\GameFrame</Filter>
     </ClCompile>
   </ItemGroup>

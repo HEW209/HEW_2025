@@ -32,6 +32,7 @@
     <ClInclude Include="include\Component\Collider.h" />
     <ClInclude Include="include\Component\DefaultComponent.h" />
     <ClInclude Include="include\Component\DirectionalLight.h" />
+    <ClInclude Include="include\Component\EffectRenderer.h" />
     <ClInclude Include="include\Component\MeshRenderer.h" />
     <ClInclude Include="include\Component\Renderer.h" />
     <ClInclude Include="include\Component\Renderer2D.h" />
@@ -64,12 +65,14 @@
     <ClInclude Include="include\DXGameFrame.h" />
     <ClInclude Include="include\GameFrame\ColliderSystem.h" />
     <ClInclude Include="include\GameFrame\Component.h" />
+    <ClInclude Include="include\GameFrame\EffectManager.h" />
     <ClInclude Include="include\GameFrame\GameFrame.h" />
     <ClInclude Include="include\GameFrame\GameObject.h" />
     <ClInclude Include="include\GameFrame\Object.h" />
     <ClInclude Include="include\GameFrame\RenderSystem.h" />
     <ClInclude Include="include\GameFrame\Scene.h" />
     <ClInclude Include="include\GameFrame\SceneManager.h" />
+    <ClInclude Include="include\GameFrame\Time.h" />
     <ClInclude Include="include\GameFrame\Transform.h" />
     <ClInclude Include="include\Utility\Color.h" />
     <ClInclude Include="include\Utility\Input.h" />
@@ -90,6 +93,7 @@
     <ClCompile Include="src\Component\Camera.cpp" />
     <ClCompile Include="src\Component\Collider.cpp" />
     <ClCompile Include="src\Component\DirectionalLight.cpp" />
+    <ClCompile Include="src\Component\EffectRenderer.cpp" />
     <ClCompile Include="src\Component\MeshRenderer.cpp" />
     <ClCompile Include="src\Component\Renderer.cpp" />
     <ClCompile Include="src\Component\Renderer2D.cpp" />
@@ -118,10 +122,12 @@
     <ClCompile Include="src\DirectX\VertexShader.cpp" />
     <ClCompile Include="src\GameFrame\ColliderSystem.cpp" />
     <ClCompile Include="src\GameFrame\Component.cpp" />
+    <ClCompile Include="src\GameFrame\EffectManager.cpp" />
     <ClCompile Include="src\GameFrame\GameObject.cpp" />
     <ClCompile Include="src\GameFrame\RenderSystem.cpp" />
     <ClCompile Include="src\GameFrame\Scene.cpp" />
     <ClCompile Include="src\GameFrame\SceneManager.cpp" />
+    <ClCompile Include="src\GameFrame\Time.cpp" />
     <ClCompile Include="src\GameFrame\Transform.cpp" />
     <ClCompile Include="src\Utility\Color.cpp" />
     <ClCompile Include="src\Utility\Input.cpp" />
