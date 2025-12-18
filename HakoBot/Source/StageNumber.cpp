@@ -1,6 +1,9 @@
 #include "StageNumber.h"
+#include <memory>
+#include "GameScene.h"
+#include "InputManager.h"
 
-#define STAGE_FILE "Asets/Stage/StageDate%d.json"
+#define STAGE_FILE "Assets/Stage/Level%d.json"
 
 int digitIndex[10] =
 {
@@ -86,16 +89,7 @@ void StageNumber::KeyEnter()
 
 	if (Input::GetKeyUp(KeyCode::ENTER))
 	{
-		int StageID;								//int型ステージの代償を結合する変数
-		StageID = m_selectIndex;			//1の桁を代入
-		if (StageID == 0)							//0だった場合：メニューに戻る処理、
-		{											//これは1-0・2-0・3-0全てはメニューに戻るEx
-			//Exit メニューに移行の処理
-		}
-		else
-		{											//1の桁が0ではなかった場合、2桁目にステージの面（大）を代入（ステージ2-5の場合・25になる）
-			LoadGame(StageID);
-		}
+		LoadGame(m_selectIndex+1);
 	}
 }
 
@@ -152,16 +146,19 @@ void StageNumber::LoadGame(int StageID)
 {
 	char filePath[256];
 	sprintf_s(filePath, STAGE_FILE, StageID);
-	
-	if (StageID == 0)
-	{
-		//Exit処理				//タイトルに戻るやつ
-	}
-	else
-	{
-		//SceneManager::ChangeScene(std::make_unique<GameScene>(filePath));//ステージ読み込むやつ
-			
-	}
+
+	std::string StageIDstr = std::to_string(StageID);
+
+	std::string path = "Level" + StageIDstr + "";
+
+	InputManager::ChangeBindType(InputBindType::GAMEPLAY);
+	SceneManager::ChangeScene(std::make_unique<GameScene>(path));//ステージ読み込むやつ
+
+
+	//SceneManager::ChangeScene(std::make_unique<GameScene>("TestLevel01"));
+
+
+
 }
 
 
