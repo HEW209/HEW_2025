@@ -253,9 +253,9 @@ void GameScene::CreateUIObject() {
         auto obj = CreateGameObject();
         auto renderer = obj->AddComponent<SpriteRenderer>();
         renderer->SetUI(true);
-        renderer->LoadTexture("Assets/Textures/okuB.png");
-        renderer->GetTransform()->SetPosition(5.6f, -1.6f, 0.0f);
-        renderer->SetSize(MOZI_SIZE + 70.0f, MOZI_SIZE + 20.0f);
+        renderer->LoadTexture("Assets/Textures/oku.png");
+        renderer->GetTransform()->SetPosition(5.5f, -2.1f, 0.0f);
+        renderer->SetSize(MOZI_SIZE + 20.0f);
         obj->AddComponent<GuideUIController>();
     }
 

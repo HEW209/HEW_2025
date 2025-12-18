@@ -21,4 +21,6 @@ private:
 	float m_value;
 	Vector3 m_defaultPosition;
 	bool m_motu;
+	SpriteRenderer* m_bRend;
+	bool m_bUV;
 };

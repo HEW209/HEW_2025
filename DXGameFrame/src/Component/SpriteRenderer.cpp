@@ -79,6 +79,7 @@ void SpriteRenderer::SetSize(float x)
 		// c‚ÌƒTƒCƒY‚ðŽæ“¾
 		Texture::Size size = pTexture->GetSize();
 		y = x * (float)size.y / (float)size.x;
+		y *= m_parameter.uvScale.y / m_parameter.uvScale.x;
 	}
 	else
 	{

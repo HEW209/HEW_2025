@@ -10,8 +10,8 @@ void TitleUI::Start()
     //ƒ^ƒCƒgƒ‹ƒƒS
     m_pTitle = GetGameObject()->AddComponent<SpriteRenderer>();
     m_pTitle->SetUI(true);
-    m_pTitle->LoadTexture("Assets/Textures/title.png");
-    m_pTitle->SetSize(800.0f);
+    m_pTitle->LoadTexture("Assets/Textures/titleHakobot.png");
+    m_pTitle->SetSize(1100.0f);
     m_pTitle->SetOffsetPos(0.0f, 5.0f);
     m_defaultTitlePos = m_pTitle->GetOffsetPos();
 
@@ -19,7 +19,7 @@ void TitleUI::Start()
 	m_pRend = GetGameObject()->AddComponent<SpriteRenderer>();
     m_pRend->SetUI(true);
     m_pRend->LoadTexture("Assets/Textures/hajimeru.png");
-    m_pRend->SetSize(400.0f);
+    m_pRend->SetSize(250.0f);
     m_pRend->SetOffsetPos(0.0f, -10.0f);
     m_rendDefaultScale = m_pRend->GetSize();
     m_rendColor = m_pRend->GetColor();

@@ -69,18 +69,18 @@ void GuideUITimeController::Start()
 	renderer3->SetSize(MOZI_SIZE + 40.0f, MOZI_SIZE + 40.0f);
 	sprite1[2] = renderer3;
 
-	m_totalTime = 0;
-	m_b = true;
+	totalTime = 0;
+	timeStop = true;
 	m_b2 = false;
 }
 
 void GuideUITimeController::Update()
 {
-	if (m_b == true)
+	if (timeStop == true)
 	{
 	
 		
-			m_totalTime++;
+			totalTime++;
 			SetTimer();
 			SetDigitUV();
 		
@@ -103,7 +103,7 @@ void GuideUITimeController::Update()
 
 	if (m_time / 60 > 4)
 	{
-		m_b = false;
+		timeStop = false;
 		for (int x = 0; x < 6; ++x)
 		{
 			// y -0.15f‚Å‚µ‚½
@@ -123,7 +123,7 @@ void  GuideUITimeController::SetDigitUV()
 
 	for (int x = 0; x < 6; ++x)
 	{
-		int index = digitToIndex[m_digit[x]];
+		int index = digitToIndex[digit[x]];
 
 		float u = (index % 6) * uSize;
 		float v = (index / 6) * vSize;
@@ -134,18 +134,18 @@ void  GuideUITimeController::SetDigitUV()
 
 void GuideUITimeController::SetTimer()
 {
-	int totalSeconds = m_totalTime / 60;
+	int totalSeconds = totalTime / 60;
 
 	int h = totalSeconds / 3600;
 	int m = (totalSeconds / 60) % 60;
 	int s = totalSeconds % 60;
 
-	m_digit[0] = h / 10;
-	m_digit[1] = h % 10;//1‚ªˆêŒ…–ÚA2‚ª“ñŒ…–Ú
-	m_digit[2] = m / 10;
-	m_digit[3] = m % 10;
-	m_digit[4] = s / 10;
-	m_digit[5] = s % 10;
+	digit[0] = h / 10;
+	digit[1] = h % 10;//1‚ªˆêŒ…–ÚA2‚ª“ñŒ…–Ú
+	digit[2] = m / 10;
+	digit[3] = m % 10;
+	digit[4] = s / 10;
+	digit[5] = s % 10;
 
 }
 
