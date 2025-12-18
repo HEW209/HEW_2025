@@ -2,11 +2,12 @@
 #include <DXGameFrame.h>
 
 
-class StageSelectObject : public Component
+
+class StageNumber : public Component
 {
 public:
-	StageSelectObject() = default;
-	~StageSelectObject() = default;
+	StageNumber() = default;
+	~StageNumber() = default;
 
 	void Start() override;
 	void Update()override;
@@ -14,9 +15,10 @@ public:
 
 	void LoadGame(int StageID);
 	void KeyEnter();
-	void SetStageID(int StageID);
-	Vector2 SetPosID(int StageID);
 
+	void Set_StegeNumberdigit(int CallNum);
+	Vector2 SetPos_StegeNumber(int CallNum);
+	
 private:
 
 	//========================================ステージの変数=================================================
@@ -24,8 +26,8 @@ private:
 	const int m_stageCount = 30;		//m_UP_DOWN_selectIndexの最大数（小ステージ数）
 	//=======================================================================================================	
 
-
-	int m_StageID = 0;
+	
+	int m_StegeNumberdigit =0;
 
 
 };

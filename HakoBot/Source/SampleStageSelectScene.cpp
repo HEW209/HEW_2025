@@ -1,4 +1,5 @@
 #include"SampleStageSelectScene.h"
+#include"StageNumber.h"
 #include"StageSelectObject.h"
 
 
@@ -9,7 +10,7 @@ void StageSelectScene::Init()
 		auto camera = obj->AddComponent<Camera>();
 	}
 	
-
+	/*
 	for(int i =0;i<=31;i++)
 	{
 		{
@@ -27,8 +28,25 @@ void StageSelectScene::Init()
 			rendere->SetOffsetPos(SetPos);
 		}
 	}
+	*/
 	
-	
+	for (int i = 0; i < 3; i++)
+	{
+		{
+			auto obj = CreateGameObject();
+			auto SelectNumber = obj->AddComponent<StageNumber>();
+
+			auto rendere = obj->AddComponent<SpriteRenderer>();
+			rendere->SetUI(true);
+
+
+			SelectNumber->Set_StegeNumberdigit(i);
+
+			Vector2 SetPos = SelectNumber->SetPos_StegeNumber(i);
+
+			rendere->SetOffsetPos(SetPos);
+		}
+	}
 }
 
 
