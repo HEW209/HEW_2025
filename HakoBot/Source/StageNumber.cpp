@@ -39,7 +39,11 @@ void StageNumber::Start()
 
 void StageNumber::Update()
 {
+	
+
 		KeyEnter();
+		SetStegeNumberdigit();
+		SetDigitUV();
 }
 
 
@@ -51,15 +55,18 @@ void StageNumber::KeyEnter()
 	//============================================================================
 	if (Input::GetKeyUp(KeyCode::UP))
 	{
-		m_selectIndex -=5;
-		if (m_selectIndex < 0) { m_selectIndex = m_stageCount - 1; }
-	}
-
-	if (Input::GetKeyUp(KeyCode::DOWN))
-	{
-		m_selectIndex +=5;
+		m_bAutoCountUp = true;
+		//m_selectIndex += 5;
 		if (m_selectIndex >= m_stageCount) { m_selectIndex = 0; }
 	}
+	if (Input::GetKeyUp(KeyCode::DOWN))
+	{
+		m_bAutoCountDown = true;
+		//m_selectIndex-=5;
+		if (m_selectIndex < 0) { m_selectIndex = m_stageCount - 1; }
+	}
+	AutoCount();
+
 	if (Input::GetKeyUp(KeyCode::LEFT))
 	{
 		m_selectIndex--;
@@ -92,6 +99,52 @@ void StageNumber::KeyEnter()
 	}
 }
 
+void StageNumber::AutoCount()
+{
+	if (m_bAutoCountUp)
+	{
+		static int count = 0;
+		if (m_totalTime >= 3)
+		{
+			m_totalTime = 0;
+			m_selectIndex++;
+			count++;
+			if (m_selectIndex >= m_stageCount) { m_selectIndex = 0; }
+		}
+		else
+		{
+			m_totalTime++;
+		}
+		if (count > 4)
+		{
+			m_bAutoCountUp = false;
+			count = 0;
+		}
+
+
+	}
+	if (m_bAutoCountDown)
+	{
+		static int count = 0;
+		if (m_totalTime >= 3)
+		{
+			m_totalTime = 0;
+			m_selectIndex--;
+			count++;
+			if (m_selectIndex < 0) { m_selectIndex = m_stageCount - 1; }
+		}
+		else
+		{
+			m_totalTime++;
+		}
+		if (count > 4)
+		{
+			m_bAutoCountDown = false;
+			count = 0;
+		}
+	}
+}
+
 
 
 
@@ -111,24 +164,6 @@ void StageNumber::LoadGame(int StageID)
 	}
 }
 
-void StageNumber::Set_StegeNumberdigit(int CallNum)
-{
-	m_StegeNumberdigit = CallNum;
-}
-
-Vector2 StageNumber::SetPos_StegeNumber(int CallNum)
-{
-	float StageDrawPosX = -4.4f;			//100の桁の位置X
-	float StageDrawPosY = 1.5f;			//100の桁の位置X
-	float StageDrawinterval = 1.5f;		//ステージ番号の表示間隔
-
-	Vector2 ReturnPos;
-
-	ReturnPos.x = (StageDrawPosX + (CallNum * StageDrawinterval));
-	ReturnPos.y = StageDrawPosY;
-
-	return ReturnPos;
-}
 
 void StageNumber::SetDigitUV()
 {
@@ -138,7 +173,7 @@ void StageNumber::SetDigitUV()
 
 	for (int x = 0; x < 3; ++x)
 	{
-		int index = digitToIndex[m_digit[x]];
+		int index = digitToIndex[digit[x]];
 
 		float u = (index % 6) * uSize;
 		float v = (index / 6) * vSize;
@@ -147,16 +182,16 @@ void StageNumber::SetDigitUV()
 	}
 }
 
-void StageNumber::SetTimer()
+void StageNumber::SetStegeNumberdigit()
 {
 
-	int totalSeconds = m_stageCount;
+	int totalSeconds = m_selectIndex+1;
 
 	int Hundred = totalSeconds / 100;
 	int Ten = (totalSeconds / 10);
 	int One = totalSeconds % 10;
 
-	m_digit[0] = Hundred ;
-	m_digit[1] = Ten;//1が一桁目、2が二桁目
-	m_digit[2] = One;
+	digit[0] = Hundred ;
+	digit[1] = Ten;//1が一桁目、2が二桁目
+	digit[2] = One;
 }

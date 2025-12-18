@@ -36,6 +36,7 @@ void StageSelectScene::Init()
 		auto SelectNumber = obj->AddComponent<StageNumber>();
 	}
 	
+
 }
 
 
