@@ -13,12 +13,21 @@ public:
 	void Update()override;
 
 
-	void LoadGame(int StageID);
-	void KeyEnter();
+	void LoadGame(int StageID);					//ステージ読み出し
+	void KeyEnter();							//キー入力
 
-	void Set_StegeNumberdigit(int CallNum);
+	void Set_StegeNumberdigit(int CallNum);		//
 	Vector2 SetPos_StegeNumber(int CallNum);
 	
+	void SetDigitUV();					//UV座標を設定
+	void SetTimer();					//時間を求めてメンバ変数にそれぞれの桁に値を格納
+
+
+	int m_digit[6];						//各桁のディジットを格納(SetDigitUVで使います)
+
+	SpriteRenderer* sprite[6];			//各桁の描画用
+	SpriteRenderer* sprite1[3];			//時計とコロン描画用
+
 private:
 
 	//========================================ステージの変数=================================================
