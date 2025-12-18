@@ -56,13 +56,13 @@ void StageNumber::KeyEnter()
 	//============================================================================
 	//						  ステージセレクトINDEX
 	//============================================================================
-	if (Input::GetKeyUp(KeyCode::UP))
+	if (Input::GetKeyDown(KeyCode::UP))
 	{
 		m_bAutoCountUp = true;
 		//m_selectIndex += 5;
 		if (m_selectIndex >= m_stageCount) { m_selectIndex = 0; }
 	}
-	if (Input::GetKeyUp(KeyCode::DOWN))
+	if (Input::GetKeyDown(KeyCode::DOWN))
 	{
 		m_bAutoCountDown = true;
 		//m_selectIndex-=5;
@@ -70,14 +70,14 @@ void StageNumber::KeyEnter()
 	}
 	AutoCount();
 
-	if (Input::GetKeyUp(KeyCode::LEFT))
+	if (Input::GetKeyDown(KeyCode::LEFT))
 	{
 		m_selectIndex--;
 		if (m_selectIndex < 0) { m_selectIndex = m_stageCount - 1; }
 
 	}
 
-	if (Input::GetKeyUp(KeyCode::RIGHT))
+	if (Input::GetKeyDown(KeyCode::RIGHT))
 	{
 		m_selectIndex++;
 		if (m_selectIndex >= m_stageCount) { m_selectIndex = 0; }
@@ -87,7 +87,7 @@ void StageNumber::KeyEnter()
 
 
 
-	if (Input::GetKeyUp(KeyCode::ENTER))
+	if ((Input::GetKeyDown(KeyCode::ENTER)&&(m_bAutoCountUp!=true&& m_bAutoCountDown != true )))
 	{
 		LoadGame(m_selectIndex+1);
 	}

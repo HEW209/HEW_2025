@@ -134,7 +134,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	EffectManager::Instance().Init();
 
 	// シーンの作成
-	SceneManager::Init(std::make_unique<StageSelectScene>());
+	SceneManager::Init(std::make_unique<TitleScene>());
 
 
 	//-------------------------
