@@ -32,6 +32,12 @@ public:
 	 */
 	void Unregister(Collider* pCollider);
 
+#ifdef _DEBUG
+
+	void SetDrawFlag(bool flag);
+
+#endif
+
 private:
 
 	ColliderSystem() {};

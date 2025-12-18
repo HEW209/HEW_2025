@@ -85,6 +85,17 @@ void ColliderSystem::Unregister(Collider* pCollider)
     std::erase(m_colliders, pCollider);
 }
 
+#ifdef _DEBUG
+void ColliderSystem::SetDrawFlag(bool flag)
+{
+    std::vector<Collider*>::iterator colliderIt = m_colliders.begin();
+    for (; colliderIt != m_colliders.end(); ++colliderIt)
+    {
+        (*colliderIt)->renderer->SetEnabled(flag);
+    }
+}
+#endif
+
 double ColliderSystem::GetProjectionRadius(const Vector3 scale, const Vector3 axis, const Collider::Axis3 obbAxes)
 {
     // 各ローカル軸と分離軸の内積の絶対値 を取り、

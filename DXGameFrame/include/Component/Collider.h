@@ -12,6 +12,7 @@
 #include <vector>
 
 #include <functional>
+#include <Component/MeshRenderer.h>
 
 class Collider :public Component
 {
@@ -31,6 +32,15 @@ public:
 
 	Collider();
 	~Collider();
+
+#ifdef _DEBUG
+	/**
+	 * @brief š“–‚½‚è”»’è‚ğ•\¦‚·‚é
+	 */
+	void Awake()override;	
+	MeshRenderer* renderer;
+
+#endif 
 
 	Quaternion GetQuaternion() { return m_rotateOffset; }
 	Vector3 GetPosition() { return m_positionOffset; }

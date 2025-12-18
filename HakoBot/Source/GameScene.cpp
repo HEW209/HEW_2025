@@ -18,6 +18,8 @@
 #include "GuideUITimeController2.h"
 #include "GuideUIResultController.h"
 
+#include "ColliderDebug.h"
+
 GameScene::GameScene(const std::string& levelName)
     : m_levelName(levelName) {
 }
@@ -101,6 +103,11 @@ void GameScene::Init() {
 
     // BGMÄ¶
     SoundManager::PlayBGM("Stage1", 0.2f, true);
+
+#ifdef _DEBUG
+    auto obj = CreateGameObject();
+    obj->AddComponent<ColliderDebug>();
+#endif
 }
 
 void GameScene::KeyBind() {
