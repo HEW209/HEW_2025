@@ -4,6 +4,8 @@
 #include "InputManager.h"
 
 #define STAGE_FILE "Assets/Stage/Level%d.json"
+#define FONT_SIZE (450.0f)
+
 
 int digitIndex[10] =
 {
@@ -24,18 +26,18 @@ void StageNumber::Start()
 {
 	float PosX = -4.2f;
 	float PosY = 1.3f;
-	float PosInterval = 0.3f * (MOZI_SIZE / 100);	//文字間隔　＊　文字サイズによる間隔補正
+	float PosInterval = 0.3f * (FONT_SIZE / 100);	//文字間隔　＊　文字サイズによる間隔補正
 
 	for (int x = 0; x < 3; ++x)
 	{
-		sprite[x] = GetGameObject()->AddComponent<SpriteRenderer>();
-		sprite[x]->SetUI(true);
-		sprite[x]->LoadTexture("Assets/Textures/newSprite.png");
-		sprite[x]->SetOffsetPos(PosX, PosY);
+		m_NumberSprite[x] = GetGameObject()->AddComponent<SpriteRenderer>();
+		m_NumberSprite[x]->SetUI(true);
+		m_NumberSprite[x]->LoadTexture("Assets/Textures/newSprite.png");
+		m_NumberSprite[x]->SetOffsetPos(PosX, PosY);
 		PosX += PosInterval;
 
-		sprite[x]->SetUVScale(1.0f / 6.0f, 1.0f / 2.0f);
-		sprite[x]->SetSize(MOZI_SIZE + 50.0f, MOZI_SIZE + 50.0f);
+		m_NumberSprite[x]->SetUVScale(1.0f / 6.0f, 1.0f / 2.0f);
+		m_NumberSprite[x]->SetSize(FONT_SIZE + 50.0f, FONT_SIZE + 50.0f);
 	}
 
 }
@@ -44,13 +46,13 @@ void StageNumber::Update()
 {
 	
 
-		KeyEnter();
+	KeyEnter_Number();
 		SetStegeNumberdigit();
 		SetDigitUV();
 }
 
 
-void StageNumber::KeyEnter()
+void StageNumber::KeyEnter_Number()
 {
 
 	//============================================================================
@@ -175,7 +177,7 @@ void StageNumber::SetDigitUV()
 		float u = (index % 6) * uSize;
 		float v = (index / 6) * vSize;
 
-		sprite[x]->SetUVOffsetPos(u, v);
+		m_NumberSprite[x]->SetUVOffsetPos(u, v);
 	}
 }
 
