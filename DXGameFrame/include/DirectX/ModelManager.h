@@ -19,9 +19,10 @@ public:
 	/**
 	 * @brief モデルデータを読み込む
 	 * @param filePath モデルデータへのファイルパス
+	 * @param loadType モデルの読み込みタイプ
 	 * @return モデルへのポインタ(shared_ptr)
 	 */
-	std::shared_ptr<Model> Load(const std::string& filePath);
+	std::shared_ptr<Model> Load(const std::string& filePath, ModelLoadType loadType = ModelLoadType::DEFAULT);
 
 	/**
 	 * @brief 使用していないモデルデータを解放する

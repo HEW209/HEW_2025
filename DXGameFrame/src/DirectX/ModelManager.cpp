@@ -1,10 +1,18 @@
 // ModelManager.cpp
 #include <DirectX/ModelManager.h>
 
-std::shared_ptr<Model> ModelManager::Load(const std::string& filePath)
+std::shared_ptr<Model> ModelManager::Load(const std::string& filePath, ModelLoadType loadType)
 {
+	if (loadType == ModelLoadType::COUNT) {
+		loadType = ModelLoadType::DEFAULT;
+	}
+
+	// モデルデータを格納するマップのキー
+	// ファイルパス|読み込みタイプ
+	std::string mapKey = filePath + "|" + std::to_string(static_cast<int>(loadType));
+
 	// すでに読み込まれているかチェック
-	auto it = m_models.find(filePath);
+	auto it = m_models.find(mapKey);
 	if (it != m_models.end())
 	{
 		// 読み込まれていれば再利用
@@ -13,8 +21,8 @@ std::shared_ptr<Model> ModelManager::Load(const std::string& filePath)
 
 	// モデルデータ作成
 	auto model = std::make_shared<Model>();
-	model->Load(filePath);
-	m_models[filePath] = model;
+	model->Load(filePath, loadType);
+	m_models[mapKey] = model;
 
 	return model;
 }

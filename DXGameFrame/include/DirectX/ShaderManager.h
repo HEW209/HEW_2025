@@ -9,6 +9,7 @@
 
 #include "VertexShader.h"
 #include "PixelShader.h"
+#include "GeometryShader.h"
 #include <unordered_map>
 #include <memory>
 
@@ -27,10 +28,17 @@ public:
 
 	/**
 	 * @brief 多重読み込みを防ぎつつピクセルシェーダーを読み込む
-	 * @param filePath 頂点シェーダー(.cso)へのファイルパス
+	 * @param filePath ピクセルシェーダー(.cso)へのファイルパス
 	 * @return ピクセルシェーダーへのポインタ(shared_ptr)
 	*/
 	std::shared_ptr<PixelShader> LoadPixelShader(const std::string& filePath);
+
+	/**
+	 * @brief 多重読み込みを防ぎつつジオメトリシェーダーを読み込む
+	 * @param filePath ジオメトリシェーダー(.cso)へのファイルパス
+	 * @return ジオメトリシェーダーへのポインタ(shared_ptr)
+	*/
+	std::shared_ptr<GeometryShader> LoadGeometryShader(const std::string& filePath);
 
 	/**
 	 * @brief 頂点シェーダーをセットする
@@ -46,6 +54,12 @@ public:
 	void SetPixelShader(ID3D11PixelShader* pPS);
 
 	/**
+	 * @brief ジオメトリシェーダーをセットする
+	 * @param pGeometryShader 実際のジオメトリシェーダーへのポインタ
+	 */
+	void SetGeometryShader(ID3D11GeometryShader* pGS);
+
+	/**
 	 * @brief 全てのシェーダーを解放する
 	 */
 	void Clear();
@@ -59,11 +73,17 @@ private:
 	/// ピクセルシェーダーとファイルパスのマップ
 	std::unordered_map<std::string, std::shared_ptr<PixelShader>> m_pPixelShaders;
 
+	/// ジオメトリシェーダーとファイルパスのマップ
+	std::unordered_map<std::string, std::shared_ptr<GeometryShader>> m_pGeometryShaders;
+
 	/// 現在セットされている頂点シェーダー
 	ID3D11VertexShader* m_pCurrentVS;
 
 	/// 現在セットされているピクセルシェーダー
 	ID3D11PixelShader* m_pCurrentPS;
+
+	/// 現在セットされているジオメトリシェーダー
+	ID3D11GeometryShader* m_pCurrentGS;
 
 public:
 	/**

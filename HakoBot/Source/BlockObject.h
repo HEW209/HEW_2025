@@ -14,6 +14,7 @@
 #include <DXGameFrame.h>
 
 #include "BlockData.h"
+#include "OutlineMeshRenderer.h"
 
 
 /**
@@ -33,7 +34,7 @@ public:
 	void SetModel(const std::string& modelPath);
 	const std::string& GetModelPath() const { return m_modelPath; }
 
-	void SetSelect(bool value);
+	void SetSelect(bool isSelected);
 
 	/**
 	 * @brief ブロックが地面に設置した際の原点のY軸オフセットを取得する
@@ -72,7 +73,7 @@ public:
 private:
 	BlockSetData m_blockSet;
 	std::vector<ObjPtr<GameObject>> m_pBlocks;
-	ObjPtr<MeshRenderer> m_pBlockMeshRenderer;
+	ObjPtr<OutlineMeshRenderer> m_pBlockMeshRenderer;
 	std::string m_modelPath;
 	Vector3 m_size;
 	Vector3 m_center;

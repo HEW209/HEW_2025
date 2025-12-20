@@ -5,8 +5,11 @@
 
 void BlockObject::Awake()
 {
-	m_pBlockMeshRenderer = GetGameObject()->AddComponent<MeshRenderer>();
+	m_pBlockMeshRenderer = GetGameObject()->AddComponent<OutlineMeshRenderer>();
 	m_pBlockMeshRenderer->SetEnabled(false);
+	m_pBlockMeshRenderer->SetShouldDrawOutline(false);
+	m_pBlockMeshRenderer->SetOutlineColor(Color{1.0f, 1.0f, 0.0f});
+	m_pBlockMeshRenderer->SetOutlineThickness(5.0f);
 }
 
 void BlockObject::OnDestroy()
@@ -71,20 +74,9 @@ void BlockObject::SetModel(const std::string& modelPath)
 	}
 }
 
-void BlockObject::SetSelect(bool value)
+void BlockObject::SetSelect(bool isSelected)
 {
-	if (value) {
-		//for (auto && pBlock : m_pBlocks)
-		//{
-		//	pBlock->GetTransform()->SetScale(0.9f, 0.9f, 0.9f);
-		//}
-	}
-	else {
-		//for (auto&& pBlock : m_pBlocks)
-		//{
-		//	pBlock->GetTransform()->SetScale(1.0f, 1.0f, 1.0f);
-		//}
-	}
+	m_pBlockMeshRenderer->SetShouldDrawOutline(isSelected);
 }
 
 float BlockObject::GetGroundYOffset()
