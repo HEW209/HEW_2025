@@ -9,6 +9,13 @@ cbuffer OutlineParam : register(b3)
     float pad;
 };
 
+struct GS_IN
+{
+    float4 pos : SV_POSITION;         // ローカル座標
+    float3 normal : NORMAL;           // 面法線
+    float3 smoothNormal : TEXCOORD1;  // スムース法線
+};
+
 struct PS_IN
 {
     float4 pos : SV_POSITION;

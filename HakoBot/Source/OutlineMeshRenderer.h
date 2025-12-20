@@ -14,6 +14,12 @@ public:
 	virtual void Draw() override;
 
 	/**
+	 * @brief モデルデータを読み込む
+	 * @param filePath モデルデータへのファイルパス
+	 */
+	virtual void LoadModel(const std::string& filePath);
+
+	/**
 	 * @brief アウトライン描画を有効化/無効化する
 	 * @param shouldDrawOutline アウトライン描画を有効化する場合はtrue、無効化する場合はfalse
 	 */
@@ -56,4 +62,5 @@ private:
 	float m_outlineThickness;
 	///	アウトラインを描画するか
 	bool m_shouldDrawOutline;
+	/// モデルの
 };

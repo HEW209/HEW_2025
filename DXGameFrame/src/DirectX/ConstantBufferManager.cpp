@@ -63,6 +63,7 @@ void ConstantBufferManager::SetWorld(const DirectX::XMMATRIX& world)
 	// 定数バッファを更新
 	m_pContext->UpdateSubresource(m_pWorldBuffer.Get(), 0, nullptr, &worldCB, 0, 0);
 	m_pContext->VSSetConstantBuffers((UINT)SlotNum::WORLD, 1, m_pWorldBuffer.GetAddressOf());
+	m_pContext->GSSetConstantBuffers((UINT)SlotNum::WORLD, 1, m_pWorldBuffer.GetAddressOf());
 	m_pContext->PSSetConstantBuffers((UINT)SlotNum::WORLD, 1, m_pWorldBuffer.GetAddressOf());
 }
 
@@ -137,6 +138,7 @@ void ConstantBufferManager::SetCustomData(const std::vector<BYTE>& data)
 	// カスタム定数バッファの更新
 	m_pContext->UpdateSubresource(m_pCustomBuffer.Get(), 0, nullptr, customData, 0, 0);
 	m_pContext->VSSetConstantBuffers((UINT)SlotNum::CUSTOM, 1, m_pCustomBuffer.GetAddressOf());
+	m_pContext->GSSetConstantBuffers((UINT)SlotNum::CUSTOM, 1, m_pCustomBuffer.GetAddressOf());
 	m_pContext->PSSetConstantBuffers((UINT)SlotNum::CUSTOM, 1, m_pCustomBuffer.GetAddressOf());
 }
 
@@ -145,6 +147,7 @@ void ConstantBufferManager::UpdateFrameConstantBuffer()
 	// フレーム更新定数バッファの更新
 	m_pContext->UpdateSubresource(m_pFrameBuffer.Get(), 0, nullptr, &m_frameCB, 0, 0);
 	m_pContext->VSSetConstantBuffers((UINT)SlotNum::FRAME, 1, m_pFrameBuffer.GetAddressOf());
+	m_pContext->GSSetConstantBuffers((UINT)SlotNum::FRAME, 1, m_pFrameBuffer.GetAddressOf());
 	m_pContext->PSSetConstantBuffers((UINT)SlotNum::FRAME, 1, m_pFrameBuffer.GetAddressOf());
 }
 

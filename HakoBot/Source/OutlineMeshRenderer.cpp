@@ -47,6 +47,17 @@ void OutlineMeshRenderer::Draw()
 			itOutlineMat->SetRasterizerState(RasterizerState::NONE);
 		}
 		m_pModel->Draw(meshMaterials);
+		ShaderManager::Instance().LoadGeometryShader("Assets/Shader/Outline_GS.cso")->Bind();
 		m_pModel->Draw(outlineMaterials);
+		ShaderManager::Instance().SetGeometryShader(nullptr);
 	}
+}
+
+void OutlineMeshRenderer::LoadModel(const std::string& filePath)
+{
+	// モデル読み込み
+	m_pModel = ModelManager::Instance().Load(filePath, ModelLoadType::OUTLINE);
+
+	// マテリアルをコピー
+	m_materials = m_pModel->GetMaterials();
 }

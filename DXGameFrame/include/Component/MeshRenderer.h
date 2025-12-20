@@ -30,7 +30,7 @@ public:
 	 * @brief モデルデータを読み込む
 	 * @param filePath モデルデータへのファイルパス
 	 */
-	void LoadModel(const std::string& filePath);
+	virtual void LoadModel(const std::string& filePath);
 
 	/**
 	 * @brief マテリアル数を取得する
