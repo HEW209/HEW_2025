@@ -8,7 +8,7 @@ void BlockObject::Awake()
 	m_pBlockMeshRenderer = GetGameObject()->AddComponent<OutlineMeshRenderer>();
 	m_pBlockMeshRenderer->SetEnabled(false);
 	m_pBlockMeshRenderer->SetShouldDrawOutline(false);
-	m_pBlockMeshRenderer->SetOutlineColor(Color{1.0f, 1.0f, 0.0f});
+	m_pBlockMeshRenderer->SetOutlineColor(Color{1.0f, 0.5f, 0.0f});
 	m_pBlockMeshRenderer->SetOutlineThickness(5.0f);
 }
 

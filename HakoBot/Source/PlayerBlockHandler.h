@@ -35,4 +35,8 @@ private:
 
 	//ブロックの回転情報を持つ、親オブジェクト
 	ObjPtr<GameObject> m_pBlockHolder;
+
+	ObjPtr<MeshRenderer> m_pRenderer;
+	MeshGroup::AnimeNo m_motuAnime;
+	MeshGroup::AnimeNo m_okuAnime;
 };

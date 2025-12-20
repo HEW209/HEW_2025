@@ -8,10 +8,14 @@
 #include "VecUtil.h"
 
 
+static const float g_blendTime = 0.5f;
+
 Vec2 CalcSpacedRectPos(const Vec2& rectSize, float distance, const Vec2& direction);
 
 
-PlayerBlockHandler::PlayerBlockHandler()
+PlayerBlockHandler::PlayerBlockHandler():
+	m_okuAnime(MeshGroup::ANIME_NONE),
+	m_motuAnime(MeshGroup::ANIME_NONE)
 {
 }
 
@@ -25,6 +29,17 @@ void PlayerBlockHandler::Awake()
 		m_pBlockObject = obj->AddComponent<BlockObject>();
 		m_pBlockObject->SetUseCollider(false);
 	}
+
+	m_pRenderer = GetGameObject()->GetComponent<MeshRenderer>();
+	m_okuAnime = m_pRenderer->LoadAnimation("Assets/Model/Player/fbx/orosi.fbx");
+	m_motuAnime = m_pRenderer->LoadAnimation("Assets/Model/Player/fbx/motiage.fbx");
+	auto materials = m_pRenderer->GetMaterials();
+	for (auto& material : *materials)
+	{
+		material.SetVertexShader("Assets/Shader/Anime_VS.cso");
+	}
+
+	m_pRenderer->PlayAnime(m_motuAnime, true);
 }
 
 void PlayerBlockHandler::Update()
@@ -120,6 +135,7 @@ void PlayerBlockHandler::Update()
 
 					// SE再生
 					SoundManager::PlaySE("PutBox", 1.0f, false);
+					m_pRenderer->PlayBlend(m_motuAnime, g_blendTime, false);
 				}
 
 			}
@@ -140,6 +156,7 @@ void PlayerBlockHandler::Update()
 
 						// SE再生
 						SoundManager::PlaySE("PutBox", 1.0f, false);
+						m_pRenderer->PlayBlend(m_motuAnime, g_blendTime, false);
 
 						break;
 					}
@@ -164,6 +181,7 @@ void PlayerBlockHandler::Update()
 
 					// SE再生
 					SoundManager::PlaySE("PutBox", 1.0f, false);
+					m_pRenderer->PlayBlend(m_okuAnime, g_blendTime, false);
 
 					SetBlockSet(BlockSetData{});
 					m_pBlockObject->SetModel("");
@@ -186,6 +204,7 @@ void PlayerBlockHandler::Update()
 
 				// SE再生
 				SoundManager::PlaySE("PutBox", 1.0f, false);
+				m_pRenderer->PlayBlend(m_okuAnime, g_blendTime, false);
 				SetBlockSet(BlockSetData{});
 				m_pBlockObject->SetModel("");
 			}
