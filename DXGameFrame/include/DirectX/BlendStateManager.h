@@ -18,6 +18,7 @@ enum class BlendState : UINT
 	ADD,			// 加算
 	SUB,			// 減算
 	MUL,			// 乗算
+	DISABLE,		// カラー描画無し
 	COUNT			// ブレンドモードの種類数
 };
 

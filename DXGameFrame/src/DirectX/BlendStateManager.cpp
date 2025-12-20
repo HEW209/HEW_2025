@@ -125,6 +125,12 @@ HRESULT BlendStateManager::CreateAllState()
 			rt.BlendOpAlpha = D3D11_BLEND_OP_ADD;
 			rt.RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 			break;
+
+		case BlendState::DISABLE:
+			// カラー描画無し
+			rt.BlendEnable = FALSE;
+			rt.RenderTargetWriteMask = 0;
+			break;
 		}
 
 		// ブレンドステートの作成

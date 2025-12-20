@@ -7,6 +7,7 @@
  *********************************************************************/
 #pragma once
 
+#include "DXTypes.h"
 #include "Mesh.h"
 #include "Material.h"
 #include <assimp/scene.h>
@@ -29,7 +30,7 @@ public:
 	 * @brief メッシュグループを作成する
 	 * @param pScene assimpのシーンへのポインタ
 	 */
-	void Create(const aiScene* pScene);
+	void Create(const aiScene* pScene, ModelLoadType loadType = ModelLoadType::DEFAULT);
 
 	/**
 	 * @brief メッシュ情報から単一のメッシュを作成する

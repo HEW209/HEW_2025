@@ -14,7 +14,55 @@ MeshGroup::MeshGroup() :
 {
 }
 
-void MeshGroup::Create(const aiScene* pScene)
+#include <map>
+
+// 頂点比較用
+struct Vec3Comparator {
+	bool operator()(const DirectX::XMFLOAT3& a, const DirectX::XMFLOAT3& b) const {
+		if (a.x != b.x) return a.x < b.x;
+		if (a.y != b.y) return a.y < b.y;
+		return a.z < b.z;
+	}
+};
+
+// スムース法線を計算して頂点データに埋め込む関数
+void CalcSmoothNormals(std::vector<Mesh::Vertex>& vertices)
+{
+	// 位置ごとの法線合計を蓄積するマップ
+	// key: 頂点座標, value: 法線の合計ベクトル
+	std::map<DirectX::XMFLOAT3, DirectX::XMVECTOR, Vec3Comparator> positionToNormalSum;
+
+	// 全頂点を走査し、同じ位置にある頂点の法線を加算
+	for (const auto& v : vertices)
+	{
+		DirectX::XMVECTOR normal = DirectX::XMLoadFloat3(&v.normal);
+
+		if (positionToNormalSum.find(v.pos) == positionToNormalSum.end())
+		{
+			positionToNormalSum[v.pos] = normal;
+		}
+		else
+		{
+			positionToNormalSum[v.pos] = DirectX::XMVectorAdd(positionToNormalSum[v.pos], normal);
+		}
+	}
+
+	// 加算された法線を平均化
+	for (auto& pair : positionToNormalSum)
+	{
+		pair.second = DirectX::XMVector3Normalize(pair.second);
+	}
+
+	// スムース法線を各頂点に適用
+	for (auto& v : vertices)
+	{
+		// 自分の位置に対応する平均化法線を取得
+		DirectX::XMVECTOR smoothNorm = positionToNormalSum[v.pos];
+		DirectX::XMStoreFloat4(&v.color, smoothNorm);
+	}
+}
+
+void MeshGroup::Create(const aiScene* pScene, ModelLoadType loadType)
 {
 	CreateBones(pScene);
 	CreateMesh(pScene);
@@ -371,6 +419,10 @@ void MeshGroup::CreateMesh(const aiScene* pScene)
 			desc.vtx[j].normal = DirectX::XMFLOAT3(normal.x, normal.y, normal.z);
 			desc.vtx[j].uv = DirectX::XMFLOAT2(uv.x, uv.y);
 			desc.vtx[j].color = DirectX::XMFLOAT4(color.r, color.g, color.b, color.a);
+		}
+
+		if (loadType == ModelLoadType::OUTLINE) {
+			CalcSmoothNormals(desc.vtx);
 		}
 
 		// ボーン生成

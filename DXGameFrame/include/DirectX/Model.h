@@ -7,6 +7,7 @@
  *********************************************************************/
 #pragma once
 
+#include "DXTypes.h"
 #include "MeshGroup.h"
 #include "Material.h"
 #include <unordered_map>
@@ -23,9 +24,10 @@ public:
 	/**
 	 * @brief モデルデータを読み込む
 	 * @param filePath モデルデータへのファイルパス
+	 * @param loadType モデルの読み込みタイプ
 	 * @return 実行結果
 	 */
-	bool Load(const std::string& filePath);
+	bool Load(const std::string& filePath, ModelLoadType loadType);
 
 	/**
 	 * @brief アニメーションデータを読み込む

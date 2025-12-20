@@ -24,7 +24,7 @@
 #endif
 #endif
 
-bool Model::Load(const std::string& filePath)
+bool Model::Load(const std::string& filePath, ModelLoadType loadType)
 {
 	// モデル読み込み設定
 	Assimp::Importer importer;
@@ -54,10 +54,19 @@ bool Model::Load(const std::string& filePath)
 	directory = directory.substr(0, directory.find_last_of('\\') + 1);
 
 	// メッシュ作成
-	m_meshGroup.Create(pScene);
+	m_meshGroup.Create(pScene, loadType);
 
 	// マテリアル作成
 	CreateMaterials(pScene, directory);
+
+	// 読み込みタイプ毎の処理
+	switch (loadType) {
+	case ModelLoadType::OUTLINE:
+		break;
+
+	default:
+		break;
+	}
 
 	return true;
 }
