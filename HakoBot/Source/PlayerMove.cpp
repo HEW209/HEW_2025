@@ -45,6 +45,17 @@ float MoveTowardsAngle(float current, float target, float maxDelta)
 
 void PlayerMove::Start()
 {
+	// 上り坂の先にオブジェクトがあるとガクガクするのを防ぐための処理
+	GameObject* pObj = GetGameObject();
+	GetGameObject()->GetComponent<Collider>()->OnCollisionEnter = [pObj](GameObject* other) {
+		ColliderSystem::Ray ray = { pObj->GetTransform()->GetPosition() + Vector3(0.0f,0.5f,0.0f), pObj->GetTransform()->GetQuaternion() * Vector3(0.0f,0.0f,-1.0f)};
+		ColliderSystem::RaycastHit hit = {};
+		if (ColliderSystem::Instance().Raycast(ray, &hit, 0.38f))
+		{
+			pObj->GetTransform()->Translate(0.0f, -pObj->GetComponent<PlayerMove>()->m_gravity, 0.0f);
+			pObj->GetComponent<PlayerMove>()->m_velocity_y = 0.0f;
+		}
+	};
 }
 
 void PlayerMove::Update()
@@ -101,7 +112,7 @@ void PlayerMove::Update()
 	Vector3 pos = GetTransform()->GetPosition() + Vector3(0.0f,0.5f,0.0f);
 	ColliderSystem::Ray ray = {pos,Vector3(0.0f,-1.0f,0.0f)};
 	ColliderSystem::RaycastHit hit = {};
-	if (ColliderSystem::Instance().Raycast(ray, &hit, 0.59f))
+	if (ColliderSystem::Instance().Raycast(ray, &hit, 0.6f))
 	{
 		float dot = ColliderSystem::Instance().Dot(moveDir, hit.normal);
 

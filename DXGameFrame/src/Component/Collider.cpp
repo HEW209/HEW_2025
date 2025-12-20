@@ -26,6 +26,7 @@ Collider::~Collider()
 void Collider::Awake()
 {
 	renderer = GetGameObject()->AddComponent<MeshRenderer>();
+	renderer->SetEnabled(false);
 }
 #endif
 

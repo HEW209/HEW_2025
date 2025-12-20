@@ -285,7 +285,7 @@ void GameScene::CreateGridField() {
         transform->SetEulerAngle(0.0f, -45.0f, 0.0f);
         transform->Rotate(0.0f, 0.0f, -angle);
         auto collider = obj->AddComponent<Collider>();
-        collider->m_scale = { scaleX , 0.5f,  1.0f };
+        collider->m_scale = { 0.75f , 0.5f,  scaleX };
     }
 
     {
