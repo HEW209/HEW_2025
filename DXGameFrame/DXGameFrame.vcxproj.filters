@@ -445,6 +445,9 @@
     <FxCompile Include="HLSL\Sprite_VS.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
+    <FxCompile Include="HLSL\Anime_VS.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="HLSL\DXGameFrameShader.hlsli">

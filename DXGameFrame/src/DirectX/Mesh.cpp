@@ -71,6 +71,11 @@ UINT Mesh::GetMaterialID() const
 	return m_desc.materialID;
 }
 
+void Mesh::SetBones(const Bones& bones)
+{
+	m_desc.bones = bones;
+}
+
 HRESULT Mesh::CreateVertexBuffer(const std::vector<Vertex>& vtx, bool isWrite)
 {
 	HRESULT hr = S_OK;		// ŠÖ”‚ÌŒ‹‰Ê

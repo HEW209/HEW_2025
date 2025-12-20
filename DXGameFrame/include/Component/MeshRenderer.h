@@ -21,6 +21,8 @@ public:
 	MeshRenderer();
 	virtual ~MeshRenderer() = default;
 
+	void Update() override;
+
 	/**
 	 * @brief 描画処理
 	 */
@@ -31,6 +33,30 @@ public:
 	 * @param filePath モデルデータへのファイルパス
 	 */
 	virtual void LoadModel(const std::string& filePath);
+
+	/**
+	 * @brief アニメーションデータを読み込む
+	 * @param filePath アニメーションデータへのファイルパス
+	 * @return アニメーション操作に使用するアニメ番号
+	 */
+	MeshGroup::AnimeNo LoadAnimation(const std::string& filePath);
+
+	/*
+	 * @brief アニメーションの再生
+	 * @param no 再生するアニメーション番号
+	 * @param loop ループ再生フラグ
+	 * @param speed 再生速度
+	 */
+	void PlayAnime(MeshGroup::AnimeNo no, bool loop, float speed = 1.0f);
+
+	/*
+	 * @brief ブレンド再生
+	 * @param no アニメーション番号
+	 * @param blendTime ブレンドに掛ける時間
+	 * @param loop ループフラグ
+	 * @param speed 再生速度
+	 */
+	void PlayBlend(MeshGroup::AnimeNo no, float blendTime, bool loop, float speed = 1.0f);
 
 	/**
 	 * @brief マテリアル数を取得する

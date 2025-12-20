@@ -4,11 +4,17 @@
 #include <DirectX/ConstantBufferManager.h>
 #include <GameFrame/Transform.h>
 #include <DirectX/Geometry.h>
+#include <GameFrame/Time.h>
 
 MeshRenderer::MeshRenderer()
 {
 	m_pModel = Geometry::Instance().GetModel(Geometry::Type::BOX);
 	m_materials = m_pModel->GetMaterials();
+}
+
+void MeshRenderer::Update()
+{
+	m_pModel->StepAnime(Time::GetDeltaTime());
 }
 
 void MeshRenderer::Draw()
@@ -32,6 +38,21 @@ void MeshRenderer::LoadModel(const std::string& filePath)
 
 	// マテリアルをコピー
 	m_materials = m_pModel->GetMaterials();
+}
+
+MeshGroup::AnimeNo MeshRenderer::LoadAnimation(const std::string& filePath)
+{
+	return m_pModel->LoadAnimation(filePath);
+}
+
+void MeshRenderer::PlayAnime(MeshGroup::AnimeNo no, bool loop, float speed)
+{
+	m_pModel->PlayAnime(no, loop, speed);
+}
+
+void MeshRenderer::PlayBlend(MeshGroup::AnimeNo no, float blendTime, bool loop, float speed)
+{
+	m_pModel->PlayBlend(no, blendTime, loop, speed);
 }
 
 UINT MeshRenderer::GetMaterialNum()
