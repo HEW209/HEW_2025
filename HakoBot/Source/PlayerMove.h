@@ -10,7 +10,10 @@ public:
 	PlayerMove();
 	~PlayerMove() = default;
 
+	void Start()override;
 	void Update() override;
+
+	void SetVelocityY(float y) { m_velocity_y = y; }
 
 private:
 	float m_moveSpeed;

@@ -1,14 +1,14 @@
 #include "PlayerMove.h"
 
 #include "InputManager.h"
+#include <GameFrame/ColliderSystem.h>
 
 PlayerMove::PlayerMove() :
 	m_moveSpeed(0.10f),
 	m_jumpPower(0.5f),
-	m_gravity(0.05f),
+	m_gravity(0.04f),
 	m_velocity_y(0.0f),
 	m_rotateSpeed (1000.0f)
-
 {
 }
 
@@ -43,6 +43,10 @@ float MoveTowardsAngle(float current, float target, float maxDelta)
 	return current + (delta > 0.0f ? maxDelta : -maxDelta);
 }
 
+void PlayerMove::Start()
+{
+}
+
 void PlayerMove::Update()
 {
 	Vector3 input;
@@ -57,11 +61,11 @@ void PlayerMove::Update()
 	input.z = inputVec2.y;
 		
 
-	/*
-	//ジャンプ
-	if (Input::GetKeyDown(KeyCode::SPACE))
-		m_velocity_y = m_jumpPower;
-	*/
+	//
+	////ジャンプ
+	//if (Input::GetKeyDown(KeyCode::SPACE))
+	//	m_velocity_y = m_jumpPower;
+	//
 
 	//重力を加算
 	m_velocity_y -= m_gravity;
@@ -92,17 +96,25 @@ void PlayerMove::Update()
 
 		GetTransform()->SetEulerAngle(0.0f, newY, 0.0f);
 	}
-	
 
-	//実際の移動
-	GetTransform()->Translate(move);
-	if (GetTransform()->GetPosition().y < 0.0f)
+	// 接地判定チェック
+	Vector3 pos = GetTransform()->GetPosition() + Vector3(0.0f,0.5f,0.0f);
+	ColliderSystem::Ray ray = {pos,Vector3(0.0f,-1.0f,0.0f)};
+	ColliderSystem::RaycastHit hit = {};
+	if (ColliderSystem::Instance().Raycast(ray, &hit, 0.59f))
 	{
-		Vector3 pos = GetTransform()->GetPosition();
-		pos.y = 0.0f;
-		GetTransform()->SetPosition(pos);
+		float dot = ColliderSystem::Instance().Dot(moveDir, hit.normal);
+
+		// 斜面に沿った方向を算出
+		Vector3 slopeDir = moveDir - (hit.normal * dot);
+		slopeDir = slopeDir.Normalized();
+
+		// 投影後の方向にスピードを掛ける
+		move = slopeDir * inputVec2.Magnitude() * m_moveSpeed;
+
 		m_velocity_y = 0.0f;
 	}
 
-
+	//実際の移動
+	GetTransform()->Translate(move);
 }

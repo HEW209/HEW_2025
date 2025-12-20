@@ -19,6 +19,7 @@
 #include "GuideUIResultController.h"
 
 #include "ColliderDebug.h"
+#include <cmath>
 
 GameScene::GameScene(const std::string& levelName)
     : m_levelName(levelName) {
@@ -61,6 +62,7 @@ void GameScene::Init() {
     float startZ = 5.0f;
     float intervalZ = -3.0f;
 
+    // プレイヤーが動かすブロックを置く
     for (size_t i = 0; i < m_levelData.inventoryBlockFiles.size(); ++i) {
         std::string blockName = m_levelData.inventoryBlockFiles[i];
         std::string blockPath = "Assets/Level/Blocks/" + blockName + ".json";
@@ -94,16 +96,19 @@ void GameScene::Init() {
         }
     }
 
+    // ライト
     auto lightObj = CreateGameObject();
     auto light = lightObj->AddComponent<DirectionalLight>();
     lightObj->GetTransform()->SetEulerAngle(50.0f, -30.0f, 0.0f);
 
+    // クリア演出
     auto clearObj = CreateGameObject();
     clearObj->AddComponent<ClearProduce>();
 
     // BGM再生
     SoundManager::PlayBGM("Stage1", 0.2f, true);
 
+    // 当たり判定表示機能
 #ifdef _DEBUG
     auto obj = CreateGameObject();
     obj->AddComponent<ColliderDebug>();
@@ -197,6 +202,157 @@ void GameScene::CreateGridField() {
         obj->GetTransform()->SetPosition(pos);
         obj->GetTransform()->SetEulerAngle(0.0f, 90.0f - 90.0f * i, 0.0f);
     }
+
+    // 当たり判定
+    {
+        // 床スクリーン
+        auto obj = CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetPosition(0.0f, 0.0f, 0.0f);
+        transform->SetScale(size_x, 0.4f, size_z);
+        auto collider = obj->AddComponent<Collider>();
+        collider->m_scale = { float(size_x), 0.4f, float(size_z) };
+    }
+
+    float rad = atanf(0.2f);
+    float sin = sinf(rad);
+    float cos = cosf(rad);
+    float y = 0.1f - 0.25f * cos;
+    float xz = 0.5f - 0.25f * sin;
+    float scale = sqrt(1.0f + 0.04f);
+    float angle = Math::RadToDeg(rad);
+    {
+        // -z危険線
+        auto obj = CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetPosition(0.0f,y,- (size_z * 0.5f + xz));
+        transform->SetScale(size_x, 0.5f, scale);
+        transform->SetEulerAngle(-angle,0.0f,0.0f);
+        auto collider = obj->AddComponent<Collider>();
+        collider->m_scale = { float(size_x), 0.5f, scale };
+    }
+
+    {
+        // +z危険線
+        auto obj = CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetPosition(0.0f, y, size_z * 0.5f + xz);
+        transform->SetScale(size_x, 0.5f, scale);
+        transform->SetEulerAngle(angle, 0.0f, 0.0f);
+        auto collider = obj->AddComponent<Collider>();
+        collider->m_scale = { float(size_x), 0.5f, scale };
+    }
+    {
+        // -x危険線
+        auto obj = CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetPosition(-(size_z * 0.5f + xz), y,0.0f );
+        transform->SetScale(scale, 0.5f,size_z);
+        transform->SetEulerAngle(0.0f, 0.0f, angle);
+        auto collider = obj->AddComponent<Collider>();
+        collider->m_scale = {scale , 0.5f, float(size_z) };
+    }
+
+    {
+        // +x危険線
+        auto obj = CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetPosition(size_z * 0.5f + xz, y, 0.0f);
+        transform->SetScale(scale, 0.5f, size_z);
+        transform->SetEulerAngle(0.0f, 0.0f, -angle);
+        auto collider = obj->AddComponent<Collider>();
+        collider->m_scale = { scale , 0.5f, float(size_z) };
+    }
+
+    float scaleX = sqrt(2.04f);
+
+    // -z,+x角
+    {
+        auto obj = CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetPosition(size_x * 0.5f, y, -(size_z * 0.5f + xz));
+        transform->SetScale(scaleX, 0.5f, 0.75f);
+        transform->SetEulerAngle(0.0f, 45.0f, 0.0f);
+        transform->Rotate(-angle, 0.0f, 0.0f);
+        auto collider = obj->AddComponent<Collider>();
+        collider->m_scale = { scaleX, 0.5f,  0.75f};
+    }
+    {
+        auto obj = CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetPosition(size_x * 0.5f + xz, y, -size_z * 0.5f);
+        transform->SetScale(0.75f, 0.5f, scaleX);
+        transform->SetEulerAngle(0.0f, -45.0f, 0.0f);
+        transform->Rotate(0.0f, 0.0f, -angle);
+        auto collider = obj->AddComponent<Collider>();
+        collider->m_scale = { scaleX , 0.5f,  1.0f };
+    }
+
+    {
+        // -z,-x角
+        auto obj = CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetPosition(-size_x * 0.5f, y, -(size_z * 0.5f + xz));
+        transform->SetScale(scaleX, 0.5f, 0.75f);
+        transform->SetEulerAngle(0.0f, -45.0f, 0.0f);
+        transform->Rotate(-angle, 0.0f, 0.0f);
+        auto collider = obj->AddComponent<Collider>();
+        collider->m_scale = { scaleX, 0.5f, 0.75f };
+    }
+    {
+        auto obj = CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetPosition(-(size_x * 0.5f + xz), y, -size_z * 0.5f);
+        transform->SetScale(0.75f, 0.5f, scaleX);
+        transform->SetEulerAngle(0.0f, 45.0f, 0.0f);
+        transform->Rotate(0.0f, 0.0f, angle);
+        auto collider = obj->AddComponent<Collider>();
+        collider->m_scale = { 0.75f , 0.5f, scaleX };
+    }
+
+    {
+        // +z,+x角
+        auto obj = CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetPosition(size_x * 0.5f, y, (size_z * 0.5f + xz));
+        transform->SetScale(scaleX, 0.5f, 0.75f);
+        transform->SetEulerAngle(0.0f, 135.0f, 0.0f);
+        transform->Rotate(angle, 0.0f, 0.0f);
+        auto collider = obj->AddComponent<Collider>();
+        collider->m_scale = { scaleX, 0.5f, 0.75f };
+    }
+    {
+        auto obj = CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetPosition(size_x * 0.5f + xz, y, size_z * 0.5f);
+        transform->SetScale(0.75f, 0.5f, scaleX);
+        transform->SetEulerAngle(0.0f, 45.0f, 0.0f);
+        transform->Rotate(0.0f, 0.0f, -angle);
+        auto collider = obj->AddComponent<Collider>();
+        collider->m_scale = { 0.75f , 0.5f, scaleX };
+    }
+
+    {
+        // +z,-x角
+        auto obj = CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetPosition(-size_x * 0.5f, y, (size_z * 0.5f + xz));
+        transform->SetScale(scaleX, 0.5f, 0.75f);
+        transform->SetEulerAngle(0.0f, -135.0f, 0.0f);
+        transform->Rotate(angle, 0.0f, 0.0f);
+        auto collider = obj->AddComponent<Collider>();
+        collider->m_scale = { scaleX, 0.5f, 0.75f };
+    } 
+    {
+        auto obj = CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetPosition(-(size_x * 0.5f + xz), y, size_z * 0.5f);
+        transform->SetScale(0.75f, 0.5f, scaleX);
+        transform->SetEulerAngle(0.0f, -45.0f, 0.0f);
+        transform->Rotate(0.0f, 0.0f, angle);
+        auto collider = obj->AddComponent<Collider>();
+        collider->m_scale = { 0.75f , 0.5f, scaleX };
+    }
 }
 
 void GameScene::CreateStageSet() {
@@ -240,6 +396,52 @@ void GameScene::CreateStageSet() {
         }
     }
 
+    // 床当たり判定
+    {
+        auto obj = CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetPosition(0.0f, -0.5f, 0.0f);
+        transform->SetScale(stageSize_x, 1.0f, stageSize_z);
+        auto collider = obj->AddComponent<Collider>();
+        collider->m_scale = { float(stageSize_x) , 1.0f,float(stageSize_z) };
+    }
+
+    // +z壁当たり判定
+    {
+        auto obj = CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetPosition(0.0f, 5.0f, (stageSize_z * 0.5f));
+        transform->SetScale(stageSize_x, 10.0f, 1.0f);
+        auto collider = obj->AddComponent<Collider>();
+        collider->m_scale = { float(stageSize_x), 10.0f, 1.0f };
+    }
+    // -z壁当たり判定
+    {
+        auto obj = CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetPosition(0.0f, 5.0f, -(stageSize_z * 0.5f));
+        transform->SetScale(stageSize_x, 10.0f, 1.0f);
+        auto collider = obj->AddComponent<Collider>();
+        collider->m_scale = { float(stageSize_x), 10.0f, 1.0f };
+    }
+    // +x壁当たり判定
+    {
+        auto obj = CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetPosition((stageSize_x * 0.5f), 5.0f, 0.0f);
+        transform->SetScale(1.0f, 10.0f, stageSize_z);
+        auto collider = obj->AddComponent<Collider>();
+        collider->m_scale = { 1.0f, 10.0f, float(stageSize_z) };
+    }
+    // -x壁当たり判定
+    {
+        auto obj = CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetPosition(-(stageSize_x * 0.5f), 5.0f, 0.0f);
+        transform->SetScale(1.0f, 10.0f, stageSize_z);
+        auto collider = obj->AddComponent<Collider>();
+        collider->m_scale = { 1.0f, 10.0f, float(stageSize_z) };
+    }
     // UIオブジェクト
     CreateUIObject();
 }

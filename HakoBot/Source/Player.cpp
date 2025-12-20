@@ -13,6 +13,7 @@ void Player::Awake()
 	pObj->AddComponent<PlayerMove>();
 	auto collider = pObj->AddComponent<Collider>();
 	collider->m_scale = Vector3(0.7f, 1.0f, 0.7f);
+	collider->m_positionOffset = Vector3(0.0f, 0.5f, 0.0f);
 	collider->IsStatic = false;
 
 	// “ªì‚é	
