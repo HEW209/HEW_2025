@@ -65,7 +65,7 @@ void CalcSmoothNormals(std::vector<Mesh::Vertex>& vertices)
 void MeshGroup::Create(const aiScene* pScene, ModelLoadType loadType)
 {
 	CreateBones(pScene);
-	CreateMesh(pScene);
+	CreateMesh(pScene, loadType);
 }
 
 HRESULT MeshGroup::Create(const Mesh::Description& desc)
@@ -378,7 +378,7 @@ DirectX::XMMATRIX MeshGroup::GetBoneMatrix(BoneIndex index)
 	return DirectX::XMMatrixIdentity();
 }
 
-void MeshGroup::CreateMesh(const aiScene* pScene)
+void MeshGroup::CreateMesh(const aiScene* pScene, ModelLoadType loadType)
 {
 	// éñëOèÄîı
 	aiVector3D zero3(0.0f, 0.0f, 0.0f);

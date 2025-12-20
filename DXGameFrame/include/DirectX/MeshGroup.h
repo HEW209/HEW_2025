@@ -177,7 +177,7 @@ private:
 	 * @brief メッシュを作成する
 	 * @param pScene assimpシーンへのポインタ
 	 */
-	void CreateMesh(const aiScene* pScene);
+	void CreateMesh(const aiScene* pScene, ModelLoadType loadType);
 
 	/**
 	 * @brief ボーンを作成する
