@@ -30,6 +30,14 @@ public:
 		UINT index[4];					// 対応するボーンへのインデックス
 	};
 
+	// ボーン情報
+	struct Bone
+	{
+		int nodeIndex;	// 変形情報は階層情報に格納
+		DirectX::XMMATRIX invOffset;	// 逆行列
+	};
+	using Bones = std::vector<Bone>;
+
 	/// メッシュ情報
 	struct Description
 	{
@@ -37,6 +45,7 @@ public:
 		std::vector<UINT> idx;			// インデックスバッファのデータ
 		UINT materialID;				// 対応マテリアルID
 		bool isWrite;					// 動的な頂点の書き換え可能フラグ
+		Bones bones;					// 対応ボーン
 		D3D11_PRIMITIVE_TOPOLOGY topology;		// トポロジー設定
 	};
 
@@ -63,6 +72,9 @@ public:
 	 * @return このメッシュに使用するマテリアルのID
 	 */
 	UINT GetMaterialID() const;
+
+	// 対応ボーン設定
+	void SetBones(const Bones& bones);
 
 private:
 	/// メッシュ情報
