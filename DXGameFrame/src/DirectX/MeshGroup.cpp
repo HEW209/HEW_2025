@@ -2,6 +2,7 @@
 #include <DirectX/MeshGroup.h>
 #include <functional>
 #include <DirectX/ConstantBufferManager.h>
+#include <map>
 
 DirectX::XMMATRIX GetMatrixFromAssimpMatrix(aiMatrix4x4 M);
 
@@ -10,11 +11,10 @@ MeshGroup::MeshGroup() :
 	m_blendNo(ANIME_NONE),
 	m_blendTime(0.0f),
 	m_blendTotalTime(0.0f),
-	m_parametricBlend(0.0f)
+	m_parametricBlend(0.0f),
+	m_parametric(AnimePattern::MAIN)
 {
 }
-
-#include <map>
 
 // 頂点比較用
 struct Vec3Comparator {
@@ -673,7 +673,7 @@ void MeshGroup::StepAnime(float tick)
 	{
 		UpdateAnime(m_blendNo, tick);
 		m_blendTime += tick;
-		if (m_blendTime <= m_blendTime)
+		if (m_blendTotalTime <= m_blendTime)
 		{
 			// ブレンドアニメの自動終了
 			m_blendTime = 0.0f;

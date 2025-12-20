@@ -8,7 +8,7 @@
 #include "VecUtil.h"
 
 
-static const float g_blendTime = 0.5f;
+static const float g_blendTime = 0.1f;
 
 Vec2 CalcSpacedRectPos(const Vec2& rectSize, float distance, const Vec2& direction);
 
@@ -31,7 +31,7 @@ void PlayerBlockHandler::Awake()
 	}
 
 	m_pRenderer = GetGameObject()->GetComponent<MeshRenderer>();
-	m_okuAnime = m_pRenderer->LoadAnimation("Assets/Model/Player/fbx/orosi.fbx");
+	m_okuAnime = m_pRenderer->LoadAnimation("Assets/Model/Player/fbx/idle.fbx");
 	m_motuAnime = m_pRenderer->LoadAnimation("Assets/Model/Player/fbx/motiage.fbx");
 	auto materials = m_pRenderer->GetMaterials();
 	for (auto& material : *materials)
@@ -39,7 +39,7 @@ void PlayerBlockHandler::Awake()
 		material.SetVertexShader("Assets/Shader/Anime_VS.cso");
 	}
 
-	m_pRenderer->PlayAnime(m_motuAnime, true);
+	m_pRenderer->PlayAnime(m_okuAnime, true);
 }
 
 void PlayerBlockHandler::Update()
@@ -135,7 +135,7 @@ void PlayerBlockHandler::Update()
 
 					// SE再生
 					SoundManager::PlaySE("PutBox", 1.0f, false);
-					m_pRenderer->PlayBlend(m_motuAnime, g_blendTime, false);
+					m_pRenderer->PlayBlend(m_motuAnime, g_blendTime, true);
 				}
 
 			}
@@ -156,7 +156,7 @@ void PlayerBlockHandler::Update()
 
 						// SE再生
 						SoundManager::PlaySE("PutBox", 1.0f, false);
-						m_pRenderer->PlayBlend(m_motuAnime, g_blendTime, false);
+						m_pRenderer->PlayBlend(m_motuAnime, g_blendTime, true);
 
 						break;
 					}
@@ -181,7 +181,7 @@ void PlayerBlockHandler::Update()
 
 					// SE再生
 					SoundManager::PlaySE("PutBox", 1.0f, false);
-					m_pRenderer->PlayBlend(m_okuAnime, g_blendTime, false);
+					m_pRenderer->PlayBlend(m_okuAnime, g_blendTime, true);
 
 					SetBlockSet(BlockSetData{});
 					m_pBlockObject->SetModel("");
@@ -204,7 +204,7 @@ void PlayerBlockHandler::Update()
 
 				// SE再生
 				SoundManager::PlaySE("PutBox", 1.0f, false);
-				m_pRenderer->PlayBlend(m_okuAnime, g_blendTime, false);
+				m_pRenderer->PlayBlend(m_okuAnime, g_blendTime, true);
 				SetBlockSet(BlockSetData{});
 				m_pBlockObject->SetModel("");
 			}
