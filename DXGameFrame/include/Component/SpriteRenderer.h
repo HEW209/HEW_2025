@@ -143,6 +143,12 @@ public:
 	 */
 	Color GetColor();
 
+	/**
+	 * @brief ブレンドステートを設定する
+	 * @param blendState
+	 */
+	void SetBlendState(BlendState blendState);
+
 private:
 	/// スプライトのパラメータ
 	struct SpriteParameter

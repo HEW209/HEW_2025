@@ -11,6 +11,8 @@
 #include <DXGameFrame.h>
 #include "PlayerBlockHandler.h"
 
+constexpr float PlayerDefaultSize_y = 1.5f;
+
 class Player : public Component
 {
 public:

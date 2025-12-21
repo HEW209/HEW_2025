@@ -168,3 +168,8 @@ Color SpriteRenderer::GetColor()
 	return Color(m_parameter.color.x, m_parameter.color.y,
 		m_parameter.color.z, m_parameter.color.w);
 }
+
+void SpriteRenderer::SetBlendState(BlendState blendState)
+{
+	m_material.SetBlendState(blendState);
+}

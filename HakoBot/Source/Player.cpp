@@ -12,7 +12,7 @@ void Player::Awake()
 
 	auto playerMove = pObj->AddComponent<PlayerMove>();
 	auto collider = pObj->AddComponent<Collider>();
-	collider->m_scale = Vector3(0.7f, 1.0f, 0.7f);
+	collider->m_scale = Vector3(0.7f, PlayerDefaultSize_y, 0.7f);
 	collider->m_positionOffset = Vector3(0.0f, 0.5f, 0.0f);
 	collider->IsStatic = false;
 
@@ -24,6 +24,7 @@ void Player::Awake()
 	renderer1->LoadModel("Assets/Model/Player/fbx/jyoubu.fbx");
 	playerHead->GetTransform()->SetParent(pObj->GetTransform());
 	auto playerStretch = playerHead->AddComponent<PlayerStretch>();
+	playerStretch->SetPlayerCollider(collider);
 
 	//ブロック操作コンポーネントの追加
 	m_pBlockHandler = playerHead->AddComponent<PlayerBlockHandler>();
