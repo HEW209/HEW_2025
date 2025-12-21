@@ -130,7 +130,7 @@ float4 main(PS_IN pin) : SV_TARGET
     const float4 transparentColor = float4(baseColor.rgb, 0.5); // 透過色
     
     const float noiseScale = 1; // ノイズのスケール
-    const float noiseEmi = 10; // ノイズによる発光の強さ
+    const float noiseEmi = 15; // ノイズによる発光の強さ
     const float waveScale = -50; // 波のスケール
     const float scrollSpeed = 5; // 波のスクロール速度
     const float fresnelPower = 5; // フレネル効果の強さ
