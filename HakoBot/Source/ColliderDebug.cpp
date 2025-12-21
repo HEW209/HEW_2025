@@ -5,7 +5,9 @@
 ColliderDebug::ColliderDebug()
 {
 	m_IsDraw = false;
+#ifdef _DEBUG
 	ColliderSystem::Instance().SetDrawFlag(m_IsDraw);
+#endif // _DEBUG
 }
 
 void ColliderDebug::Update()
@@ -20,6 +22,8 @@ void ColliderDebug::Update()
 		{
 			m_IsDraw = true;
 		}
+#ifdef _DEBUG
 		ColliderSystem::Instance().SetDrawFlag(m_IsDraw);
+#endif // _DEBUG
 	}
 }

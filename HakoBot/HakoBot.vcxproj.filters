@@ -303,5 +303,8 @@
     <FxCompile Include="Source\HLSL\Outline_GS.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
+    <FxCompile Include="Source\HLSL\UVScroll_PS.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

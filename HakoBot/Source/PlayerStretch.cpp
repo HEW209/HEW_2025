@@ -1,5 +1,5 @@
 #include "PlayerStretch.h"
-
+#include "GameFrame/Time.h"
 #include "InputManager.h"
 
 constexpr float BLOCK_SIZE = 1.0f;
@@ -10,15 +10,12 @@ constexpr float PILLAR_OFFSET = 0.28f;
 
 PlayerStretch::PlayerStretch()
 	:m_targetY(0.0f)
-	,m_pillar(nullptr)
 {
 }
 
 void PlayerStretch::Update()
 {
 	Vector3 pos = GetTransform()->GetPosition(Space::LOCAL);
-	Vector3 scale = m_pillar->GetTransform()->GetScale();
-	Vector3 pillarPos = m_pillar->GetTransform()->GetPosition(Space::LOCAL);
 
 	//“ü—Í‚ðŽæ“¾
 	if (InputManager::CurrentInputSystem().GetButtonHold("Up"_hash))
@@ -36,17 +33,24 @@ void PlayerStretch::Update()
 	if (MAX_DELTA < abs(diff))
 	{
 		pos.y += copysignf(MAX_DELTA, diff);
-		scale.y += copysignf(MAX_DELTA, diff);
-		pillarPos.y -= PILLAR_OFFSET * copysignf(MAX_DELTA, diff);
 	}
 	else
 	{
 		pos.y = m_targetY;
-		scale.y = m_targetY + 1.0f;
-		pillarPos.y = PILLAR_OFFSET * -m_targetY;
 	}
 
-	GetTransform()->SetPosition(pos,Space::LOCAL);
-	m_pillar->GetTransform()->SetScale(scale);
-	m_pillar->GetTransform()->SetPosition(pillarPos, Space::LOCAL);
+	int pillerCount = pos.y * 5 + 2;
+	for (int i = 0; i < m_pillars.size(); i++)
+	{
+		if (i <= pillerCount)
+		{
+			m_pillars[i]->SetActive(true);
+		}
+		else
+		{
+			m_pillars[i]->SetActive(false);
+		}
+	}
+
+	GetTransform()->SetPosition(pos, Space::LOCAL);
 }

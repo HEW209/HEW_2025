@@ -10,7 +10,7 @@ void Player::Awake()
 	auto renderer2 = pObj->AddComponent<MeshRenderer>();
 	renderer2->LoadModel("Assets/Model/Player/fbx/kabu.fbx");
 
-	pObj->AddComponent<PlayerMove>();
+	auto playerMove = pObj->AddComponent<PlayerMove>();
 	auto collider = pObj->AddComponent<Collider>();
 	collider->m_scale = Vector3(0.7f, 1.0f, 0.7f);
 	collider->m_positionOffset = Vector3(0.0f, 0.5f, 0.0f);
@@ -29,14 +29,29 @@ void Player::Awake()
 	m_pBlockHandler = playerHead->AddComponent<PlayerBlockHandler>();
 
 	// Žx’Œì‚é
-	auto playerPillar = SceneManager::GetActiveScene()->CreateGameObject();
+	int max_gridStretch = 4;
+	int max_pillar = max_gridStretch * 5 + 2;
+	for (int i = 0; i < max_pillar; ++i)
+	{
+		auto playerPillar = SceneManager::GetActiveScene()->CreateGameObject();
+		playerPillar->SetActive(false);
 
-	// Žx’Œ‚ÉƒRƒ“ƒ|[ƒlƒ“ƒg‚Â‚¯‚é
-	auto renderer3 = playerPillar->AddComponent<MeshRenderer>();
-	renderer3->LoadModel("Assets/Model/Player/fbx/sityu.fbx");
-	playerPillar->GetTransform()->SetParent(pObj->GetTransform());
-	playerPillar->GetTransform()->SetScale(1.0f, 1.0f, 1.0f);
+		// Žx’Œ‚ÉƒRƒ“ƒ|[ƒlƒ“ƒg‚Â‚¯‚é
+		auto renderer3 = playerPillar->AddComponent<MeshRenderer>();
+		renderer3->LoadModel("Assets/Model/Player/fbx/sityu.fbx");
+		playerPillar->GetTransform()->SetParent(pObj->GetTransform());
+		playerPillar->GetTransform()->SetPosition(0.0f, i * 0.2f , 0.0f, Space::LOCAL);
+		playerPillar->GetTransform()->SetScale(1.0f, 1.0f, 1.0f);
 
-	// Žx’Œ‚ð“o˜^
-	playerStretch->SetPillarObject(playerPillar);
+		// Žx’Œ‚ð“o˜^
+		playerStretch->SetPillarObject(playerPillar);
+	}
+
+	// ƒLƒƒƒ^ƒsƒ‰
+	auto caterpillar = SceneManager::GetActiveScene()->CreateGameObject();
+	auto renderer4 = caterpillar->AddComponent<MeshRenderer>();
+	renderer4->LoadModel("Assets/Model/Player/fbx/kyatapira.fbx");
+	renderer4->GetMaterial(0)->SetPixelShader("Assets/Shader/UVScroll_PS.cso");
+	caterpillar->GetTransform()->SetParent(pObj->GetTransform());
+	playerMove->SetCaterpillar(renderer4);
 }

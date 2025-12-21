@@ -15,10 +15,13 @@ public:
 
 	PlayerStretch();
 	void Update() override;
-	void SetPillarObject(GameObject* pPillar) { m_pillar = pPillar; }
+	void SetPillarObject(GameObject* pPillar)
+	{
+		m_pillars.push_back(pPillar);
+	}
 
 private:
 
 	float m_targetY;
-	GameObject* m_pillar;
+	std::vector<GameObject*> m_pillars;
 };
