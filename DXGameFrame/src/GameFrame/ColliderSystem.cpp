@@ -75,6 +75,59 @@ void ColliderSystem::Check()
     }
 }
 
+bool ColliderSystem::Raycast(const Ray& ray, RaycastHit* outHit, float maxDistance)
+{
+    float closestT = maxDistance;
+    bool hitAnything = false;
+    Vector3 bestNormal;
+
+    // 現在の全てのOBBデータを取得（Check()内のロジックと同様に構築）
+    for (size_t i = 0; i < m_colliders.size(); ++i) {
+        // ObbDataを構築 (既存のCheck()関数内の計算を流用してください)
+        Collider::ObbData data;
+        // ... (data.axis, data.pos, data.scale の計算) ...
+
+        Vector3 vector;
+        Quaternion colliderQuaternion = m_colliders[i]->GetQuaternion();
+        Quaternion objectQuaternion = m_colliders[i]->GetTransform()->GetQuaternion();
+
+        // ローカルのx,y,z軸をワールドベクトルにする
+        vector = { 1.0f,0.0f,0.0f };
+        data.axis.x = (objectQuaternion * colliderQuaternion) * vector;
+        vector = { 0.0f,1.0f,0.0f };
+        data.axis.y = (objectQuaternion * colliderQuaternion) * vector;
+        vector = { 0.0f,0.0f,1.0f };
+        data.axis.z = (objectQuaternion * colliderQuaternion) * vector;
+
+        // ワールド座標に変える
+        data.pos = m_colliders[i]->GetTransform()->GetPosition() + (objectQuaternion * colliderQuaternion) * m_colliders[i]->GetPosition();
+
+        // スケールも移す
+        data.scale = m_colliders[i]->GetScale();
+
+        float tMin, tMax;
+        Vector3 normal;
+        if (IntersectRayObb(ray, data, tMin, tMax, normal)) {
+            // レイの進行方向で、かつ現在の最短距離より近ければ更新
+            if (tMin < closestT && tMin > 0.0f) {
+                closestT = tMin;
+                bestNormal = normal;
+                outHit->hitObj = m_colliders[i]->GetGameObject();
+                hitAnything = true;
+            }
+        }
+    }
+
+    // 返すデータ作る
+    if (hitAnything) {
+        outHit->distance = closestT;
+        outHit->point = ray.origin + ray.direction * closestT;
+        outHit->normal = bestNormal;
+    }
+
+    return hitAnything;
+}
+
 void ColliderSystem::Register(Collider* pCollider)
 {
     m_colliders.push_back(pCollider);
@@ -84,6 +137,17 @@ void ColliderSystem::Unregister(Collider* pCollider)
 {
     std::erase(m_colliders, pCollider);
 }
+
+#ifdef _DEBUG
+void ColliderSystem::SetDrawFlag(bool flag)
+{
+    std::vector<Collider*>::iterator colliderIt = m_colliders.begin();
+    for (; colliderIt != m_colliders.end(); ++colliderIt)
+    {
+        (*colliderIt)->renderer->SetEnabled(flag);
+    }
+}
+#endif
 
 double ColliderSystem::GetProjectionRadius(const Vector3 scale, const Vector3 axis, const Collider::Axis3 obbAxes)
 {
@@ -209,6 +273,48 @@ bool ColliderSystem::CheckCollisionOBB(Collider::ObbData data, Collider::ObbData
     }
     // 15軸すべてをテストしたが、分離軸は一つも見つからなかった
     // したがって、衝突している
+    return true;
+}
+
+bool ColliderSystem::IntersectRayObb(const Ray& ray, const Collider::ObbData& obb, float& tMin, float& tMax, Vector3& outNormal) 
+{
+    tMin = 0.0f;          // レイの開始位置
+    tMax = FLT_MAX;       // レイの最大射程
+
+    Vector3 p = obb.pos - ray.origin; // OBB中心へのベクトル
+    float half[3] = { obb.scale.x * 0.5f,obb.scale.y * 0.5f,obb.scale.z * 0.5f };     // ハーフエキステント（半辺長）
+
+    // OBBの3軸（x, y, z）に対してループ
+    Vector3 axes[3] = { obb.axis.x, obb.axis.y, obb.axis.z };
+
+    for (int i = 0; i < 3; ++i) 
+    {
+        float e = ColliderSystem::Dot(axes[i], p); // スラブ中心までの距離
+        float f = ColliderSystem::Dot(axes[i], ray.direction); // レイの方向成分
+
+        if (std::abs(f) > 0.0001f) // レイがスラブと平行でない場合
+        { 
+            float inTime = (e + half[i]) / f; // ここでのh.xは実際にはaxes[i]に対応するhの成分
+            float outTime = (e - half[i]) / f;
+
+            if (inTime > outTime) std::swap(inTime, outTime);
+
+            // tMinの更新（最も遅い進入時間）
+            if (inTime > tMin) {
+                tMin = inTime;
+                // 法線の記録（どの面から進入したか）
+                outNormal = axes[i] * (f > 0.0f ? -1.0f : 1.0f);
+            }
+            // tMaxの更新（最も早い退出時間）
+            if (outTime < tMax) tMax = outTime;
+
+            if (tMin > tMax) return false; // 重なりがない
+        }
+        else {
+            // レイがスラブと平行な場合、始点がスラブ内にないと当たらない
+            if (-e - half[i] > 0.0f || -e + half[i] < 0.0f) return false;
+        }
+    }
     return true;
 }
 

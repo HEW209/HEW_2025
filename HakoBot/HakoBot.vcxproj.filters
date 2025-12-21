@@ -132,6 +132,9 @@
     <ClCompile Include="Source\TitleUI.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ColliderDebug.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
     <ClCompile Include="Source\OutlineMeshRenderer.cpp">
       <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
@@ -265,6 +268,12 @@
     </ClInclude>
     <ClInclude Include="..\ThirdParty\Effekseer\Effekseer.SIMD.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TitleUI.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ColliderDebug.h">
+      <Filter>ヘッダー ファイル\Component</Filter>
     </ClInclude>
     <ClInclude Include="Source\TitleUI.h">
       <Filter>ヘッダー ファイル</Filter>
