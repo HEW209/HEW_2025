@@ -14,6 +14,7 @@ public:
 	void Update() override;
 
 	void SetVelocityY(float y) { m_velocity_y = y; }
+	void SetCaterpillar(MeshRenderer* renderer);
 
 private:
 	float m_moveSpeed;
@@ -22,4 +23,6 @@ private:
 	float m_velocity_y;
 	float m_rotateSpeed ; 
 
+	ObjPtr<MeshRenderer> m_pCaterpillar;
+	Vector2 m_uvOffset;
 };

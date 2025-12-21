@@ -1,4 +1,5 @@
 #include "GameState.h"
+#include <GameFrame/Time.h>
 
 GameState* GameState::s_pInstance = nullptr;
 
@@ -26,9 +27,14 @@ void GameState::Start()
 
 void GameState::Update()
 {
-	
-	
+#ifdef _DEBUG
+	float deltaTime = Time::GetDeltaTime();
+	int fps = 1.0f / deltaTime;
 
+	ImGui::Begin("Guide");
+	ImGui::Text("FPS : %d", fps);
+	ImGui::End();
+#endif // DEBUG
 }
 
 

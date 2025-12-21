@@ -86,7 +86,8 @@ void PlayerMove::Update()
 	Vector3 moveDir = cameraRotation * input;
 	moveDir.y = 0.0f;
 	moveDir = moveDir.Normalized();
-	move = moveDir * inputVec2.Magnitude() * m_moveSpeed;
+	float inputMagnitude = inputVec2.Magnitude();
+	move = moveDir * inputMagnitude * m_moveSpeed;
 	move.y = m_velocity_y;
 	Vector3 e = GetTransform()->GetEulerAngle();
 	float currentY = GetTransform()->GetEulerAngle().y;
@@ -128,4 +129,15 @@ void PlayerMove::Update()
 
 	//実際の移動
 	GetTransform()->Translate(move);
+
+
+	// キャタピラのUVアニメーション
+	m_uvOffset.y += inputMagnitude * 0.005f;
+	auto material = m_pCaterpillar->GetMaterial(0);
+	material->SetParameter(&m_uvOffset, sizeof(m_uvOffset));
+}
+
+void PlayerMove::SetCaterpillar(MeshRenderer* renderer)
+{
+	m_pCaterpillar = renderer;
 }
