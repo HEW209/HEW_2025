@@ -6,7 +6,7 @@
 #include "GameState.h"
 #include "TitleUI.h"
 #include "InputManager.h"
-
+#include "PlayerModelDraw.h"
 void TitleScene::Init()
 {
     InputManager::ChangeBindType(InputBindType::UI);
@@ -16,8 +16,11 @@ void TitleScene::Init()
     
     // カメラ
     {
+        
         auto obj = CreateGameObject();
-        obj->AddComponent<Camera>();
+        auto camera = obj->AddComponent<Camera>();
+        obj->GetTransform()->SetPosition(0.0f, 1.0f, -5.0f);
+
     }
 
     // タイトルUI
@@ -27,5 +30,14 @@ void TitleScene::Init()
         obj->AddComponent<TitleUI>();
     }
 
+    {
+        float scale = 0.8;
+        auto obj = CreateGameObject();
+        auto player = obj->AddComponent<PlayerModelDraw>();
+        auto transform = obj->GetTransform();
+        transform->SetScale(scale, scale, scale);
+        transform->SetPosition(0.5f, 0.0f, -4.0f);
+        transform->SetEulerAngle(Vector3(0.0f, 45.0f, 0.0f));
+    }
     
 }

@@ -12,7 +12,7 @@ void TitleUI::Start()
     m_pTitle->SetUI(true);
     m_pTitle->LoadTexture("Assets/Textures/title.png");
     m_pTitle->SetSize(800.0f);
-    m_pTitle->SetOffsetPos(0.0f, 5.0f);
+    m_pTitle->SetOffsetPos(-3.8f, 5.5f);
     m_defaultTitlePos = m_pTitle->GetOffsetPos();
 
     //‚Í‚¶‚ß‚é•¶Žš

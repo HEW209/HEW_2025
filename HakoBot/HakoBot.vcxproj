@@ -181,6 +181,7 @@
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\PlayerBlockHandler.cpp" />
     <ClCompile Include="source\PlayerCamera.cpp" />
+    <ClCompile Include="Source\PlayerModelDraw.cpp" />
     <ClCompile Include="Source\PlayerMove.cpp" />
     <ClCompile Include="Source\PlayerStretch.cpp" />
     <ClCompile Include="Source\SampleCamera.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\PlayerBlockHandler.h" />
     <ClInclude Include="source\PlayerCamera.h" />
+    <ClInclude Include="Source\PlayerModelDraw.h" />
     <ClInclude Include="Source\PlayerMove.h" />
     <ClInclude Include="Source\PlayerStretch.h" />
     <ClInclude Include="Source\SampleCamera.h" />
