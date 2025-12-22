@@ -8,7 +8,9 @@ PlayerMove::PlayerMove() :
 	m_jumpPower(0.5f),
 	m_gravity(0.04f),
 	m_velocity_y(0.0f),
-	m_rotateSpeed (1000.0f)
+	m_rotateSpeed (1000.0f),
+	m_IsDirLock(false),
+	m_pHead(nullptr)
 {
 }
 
@@ -48,7 +50,8 @@ void PlayerMove::Start()
 	// 上り坂の先にオブジェクトがあるとガクガクするのを防ぐための処理
 	GameObject* pObj = GetGameObject();
 	GetGameObject()->GetComponent<Collider>()->OnCollisionEnter = [pObj](GameObject* other) {
-		ColliderSystem::Ray ray = { pObj->GetTransform()->GetPosition() + Vector3(0.0f,0.5f,0.0f), pObj->GetTransform()->GetQuaternion() * Vector3(0.0f,0.0f,-1.0f)};
+		ColliderSystem::Ray ray = { pObj->GetTransform()->GetPosition() + pObj->GetTransform()->GetQuaternion() * Vector3(0.0f,0.5f,-0.35f),
+									pObj->GetTransform()->GetQuaternion() * Vector3(0.0f,0.0f,-1.0f)};
 		ColliderSystem::RaycastHit hit = {};
 		if (ColliderSystem::Instance().Raycast(ray, &hit, 0.38f))
 		{
@@ -70,7 +73,6 @@ void PlayerMove::Update()
 	Vector2 inputVec2 = InputManager::CurrentInputSystem().GetAxis("Move"_hash);
 	input.x = inputVec2.x;
 	input.z = inputVec2.y;
-		
 
 	//
 	////ジャンプ
@@ -110,10 +112,10 @@ void PlayerMove::Update()
 	}
 
 	// 接地判定チェック
-	Vector3 pos = GetTransform()->GetPosition() + Vector3(0.0f,0.5f,0.0f);
+	Vector3 pos = GetTransform()->GetPosition() + GetTransform()->GetQuaternion() * Vector3(0.0f,0.5f,-0.35f);
 	ColliderSystem::Ray ray = {pos,Vector3(0.0f,-1.0f,0.0f)};
 	ColliderSystem::RaycastHit hit = {};
-	if (ColliderSystem::Instance().Raycast(ray, &hit, 0.6f))
+	if (ColliderSystem::Instance().Raycast(ray, &hit, 0.7f))
 	{
 		float dot = ColliderSystem::Instance().Dot(moveDir, hit.normal);
 
@@ -135,6 +137,30 @@ void PlayerMove::Update()
 	m_uvOffset.y += inputMagnitude * 0.005f;
 	auto material = m_pCaterpillar->GetMaterial(0);
 	material->SetParameter(&m_uvOffset, sizeof(m_uvOffset));
+
+	// 向きロック
+	if (InputManager::CurrentInputSystem().InputSystem::GetButtonDown("LockRotation"_hash))
+	{
+		if (m_IsDirLock)	// ロック中
+		{
+			m_pHead->GetTransform()->SetQuaternion(Quaternion::identity,Space::LOCAL);
+			GetTransform()->SetQuaternion(m_HeadQuaternion);
+			m_IsDirLock = false;
+		}
+		else 
+		{
+			m_HeadQuaternion = GetTransform()->GetQuaternion();
+			m_IsDirLock = true;
+		}
+	}
+}
+
+void PlayerMove::LateUpdate()
+{
+	if (m_IsDirLock)	// ロック中
+	{
+		m_pHead->GetTransform()->SetQuaternion(m_HeadQuaternion, Space::WORLD);
+	}
 }
 
 void PlayerMove::SetCaterpillar(MeshRenderer* renderer)

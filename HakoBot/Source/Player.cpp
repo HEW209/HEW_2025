@@ -13,11 +13,14 @@ void Player::Awake()
 	auto playerMove = pObj->AddComponent<PlayerMove>();
 	auto collider = pObj->AddComponent<Collider>();
 	collider->m_scale = Vector3(0.7f, PlayerDefaultSize_y, 0.7f);
-	collider->m_positionOffset = Vector3(0.0f, 0.5f, 0.0f);
+	collider->m_positionOffset = Vector3(0.0f, PlayerDefaultSize_y * 0.5, -0.35f);
 	collider->IsStatic = false;
 
 	// “ªì‚é	
 	auto playerHead = SceneManager::GetActiveScene()->CreateGameObject();
+
+	// “ª“o˜^
+	playerMove->SetHead(playerHead);
 
 	//“ª‚ÉƒRƒ“ƒ|[ƒlƒ“ƒg‚ð’Ç‰Á
 	auto renderer1 = playerHead->AddComponent<MeshRenderer>();
@@ -40,8 +43,6 @@ void Player::Awake()
 		// Žx’Œ‚ÉƒRƒ“ƒ|[ƒlƒ“ƒg‚Â‚¯‚é
 		auto renderer3 = playerPillar->AddComponent<MeshRenderer>();
 		renderer3->LoadModel("Assets/Model/Player/fbx/sityu.fbx");
-		playerPillar->GetTransform()->SetParent(pObj->GetTransform());
-		playerPillar->GetTransform()->SetPosition(0.0f, i * 0.2f , 0.0f, Space::LOCAL);
 		playerPillar->GetTransform()->SetScale(1.0f, 1.0f, 1.0f);
 
 		// Žx’Œ‚ð“o˜^
