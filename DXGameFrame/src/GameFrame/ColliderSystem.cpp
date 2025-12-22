@@ -79,6 +79,8 @@ bool ColliderSystem::Raycast(const Ray& ray, RaycastHit* outHit, float maxDistan
 {
     float closestT = maxDistance;
     bool hitAnything = false;
+    Ray tmpRay = ray;
+    tmpRay.direction = ray.direction.Normalized();
     Vector3 bestNormal;
 
     // 現在の全てのOBBデータを取得（Check()内のロジックと同様に構築）
@@ -107,7 +109,7 @@ bool ColliderSystem::Raycast(const Ray& ray, RaycastHit* outHit, float maxDistan
 
         float tMin, tMax;
         Vector3 normal;
-        if (IntersectRayObb(ray, data, tMin, tMax, normal)) {
+        if (IntersectRayObb(tmpRay, data, tMin, tMax, normal)) {
             // レイの進行方向で、かつ現在の最短距離より近ければ更新
             if (tMin < closestT && tMin > 0.0f) {
                 closestT = tMin;
@@ -121,7 +123,7 @@ bool ColliderSystem::Raycast(const Ray& ray, RaycastHit* outHit, float maxDistan
     // 返すデータ作る
     if (hitAnything) {
         outHit->distance = closestT;
-        outHit->point = ray.origin + ray.direction * closestT;
+        outHit->point = ray.origin + tmpRay.direction * closestT;
         outHit->normal = bestNormal;
     }
 
@@ -300,7 +302,7 @@ bool ColliderSystem::IntersectRayObb(const Ray& ray, const Collider::ObbData& ob
             if (inTime > outTime) std::swap(inTime, outTime);
 
             // tMinの更新（最も遅い進入時間）
-            if (inTime > tMin) {
+            if (inTime > tMin) {    
                 tMin = inTime;
                 // 法線の記録（どの面から進入したか）
                 outNormal = axes[i] * (f > 0.0f ? -1.0f : 1.0f);
