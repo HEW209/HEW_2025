@@ -142,6 +142,10 @@ void GameScene::CreateGridField() {
         else {
             transform->SetPosition(0.0f, 0.0f, 3.0f + size_z * 0.5f);
         }
+ 
+        auto effect = obj->AddComponent<EffectRenderer>();
+        effect->Load("Assets/Effect/toueiki_efe.efkefc");
+        effect->Play();
     }
 
     // ŠëŒ¯ƒGƒŠƒA Z
