@@ -71,7 +71,6 @@ void PlayerMove::Update()
 	input.x = inputVec2.x;
 	input.z = inputVec2.y;
 		
-
 	//
 	////ƒWƒƒƒ“ƒv
 	//if (Input::GetKeyDown(KeyCode::SPACE))
