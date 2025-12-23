@@ -6,6 +6,8 @@
 #include "GameState.h"
 #include "InputManager.h"
 
+constexpr float MAX_MENUB = 2000.0f;//メニューボタンのサイズ
+
 void GuideUIResultController::Start()
 {
 	//メニュー画面
@@ -14,19 +16,21 @@ void GuideUIResultController::Start()
 	renderer->LoadTexture("Assets/Textures/menuban.png");
 	renderer->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
 	GetTransform()->SetScale(0.0f, 0.0f, 0.0f);
-
+	//メニュー画面ボタン
 	auto renderer1 = GetGameObject()->AddComponent<SpriteRenderer>();
 	renderer1->SetUI(true);
-	renderer1->LoadTexture("Assets/Textures/restart.png");
+	renderer1->LoadTexture("Assets/Textures/menub.png");
 	renderer1->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
-	renderer1->SetOffsetPos(0.0f,2.0f);
+	renderer1->SetOffsetPos(0.0f,0.0f);
+	renderer1->SetSize(MAX_MENUB);
 	m_rend = renderer1;
-
+	//メニュー画面選択
 	auto renderer2 = GetGameObject()->AddComponent<SpriteRenderer>();
 	renderer2->SetUI(true);
-	renderer2->LoadTexture("Assets/Textures/stageselectback.png");
+	renderer2->LoadTexture("Assets/Textures/menuselect.png");
 	renderer2->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
-	renderer2->SetOffsetPos(0.0f, -1.0f);
+	renderer2->SetOffsetPos(0.0f, 0.0f);
+	renderer2->SetSize(MAX_MENUB);
 	m_rend2 = renderer2;
 
 	m_defaultPosition = GetTransform()->GetPosition();
@@ -51,10 +55,9 @@ void GuideUIResultController::Update()
 		if (!gridfield->IsClear())
 		{
 			m_menu = true;
+			//ボタン受付をUIタイプに変更
 			InputManager::ChangeBindType(InputBindType::UI);
 		}
-		m_rend->SetColor(255.0f, 255.0f, 255.0f, 1.0f);
-		m_rend2->SetColor(255.0f, 255.0f, 255.0f, 1.0f);
 	}
 
 	//メニュー開いてるとき
@@ -75,14 +78,14 @@ void GuideUIResultController::Update()
 		//上を選択したとき、リスタートをオレンジに
 		if (InputManager::CurrentInputSystem().GetButtonDown("MenuUp"_hash))
 		{
-			m_rend->SetColor(255.0f, 165.0f, 0.0f, 1.0f);
-			m_rend2->SetColor(255.0f, 255.0f, 255.0f, 1.0f);
+			//m_rend->SetColor(255.0f, 165.0f, 0.0f, 1.0f);
+			//m_rend2->SetColor(255.0f, 255.0f, 255.0f, 1.0f);
 		}
 		//下を選択したとき、ステージ選択に戻るをオレンジに
 		if (InputManager::CurrentInputSystem().GetButtonDown("MenuDown"_hash))
 		{
-			m_rend2->SetColor(255.0f, 165.0f, 0.0f, 1.0f);
-			m_rend->SetColor(255.0f, 255.0f, 255.0f, 1.0f);
+			//m_rend2->SetColor(255.0f, 165.0f, 0.0f, 1.0f);
+			//m_rend->SetColor(255.0f, 255.0f, 255.0f, 1.0f);
 		}
 
 
