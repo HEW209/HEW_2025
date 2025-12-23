@@ -8,9 +8,10 @@
 
 void GuideUIResultController::Start()
 {
+	//ƒƒjƒ…[‰æ–Ê
 	auto renderer = GetGameObject()->AddComponent<SpriteRenderer>();
 	renderer->SetUI(true);
-	renderer->LoadTexture("Assets/Textures/menukiban.png");
+	renderer->LoadTexture("Assets/Textures/menuban.png");
 	renderer->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
 	GetTransform()->SetScale(0.0f, 0.0f, 0.0f);
 

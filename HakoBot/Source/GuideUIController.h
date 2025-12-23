@@ -22,5 +22,9 @@ private:
 	Vector3 m_defaultPosition;
 	bool m_motu;
 	SpriteRenderer* m_bRend;
-	bool m_bUV;
+	SpriteRenderer* m_rtRend;
+	SpriteRenderer* m_ltRend;
+	SpriteRenderer* m_kaitenRend;
+	SpriteRenderer* m_rbRend;
+	SpriteRenderer* m_lbRend;
 };
