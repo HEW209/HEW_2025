@@ -23,7 +23,7 @@
 class BlockObject : public Component
 {
 public:
-	BlockObject() :m_shouldUseCollider(true) {}
+	BlockObject() : m_shouldUseCollider(true) {}
 	~BlockObject() = default;
 
 	void Awake() override;
@@ -55,7 +55,9 @@ public:
 	 * @param worldPosition 判定したいワールド座標
 	 * @return いずれかのブロックの内側にあれば true
 	 */
-	bool IsInside(const Vector3& worldPosition);
+	bool IsInside(const Vector3& worldPosition, float inflationAmount = 0.0f) const;
+
+	std::vector<Vector3> GetBlockVertices();
 
 	void SetUseCollider(bool value) { m_shouldUseCollider = value; }
 

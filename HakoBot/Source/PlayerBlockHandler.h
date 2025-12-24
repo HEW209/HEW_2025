@@ -29,12 +29,17 @@ public:
 private:
 	void SetBlockSet(const BlockSetData& blockSet);
 
+	void PlaceBlockWorld(Vector3 placePos);
+
+	bool CanPlaceWorld(Vector3 placePos);
 
 	//持ってるブロックオブジェクト
 	ObjPtr<BlockObject> m_pBlockObject;
 
 	//ブロックの回転情報を持つ、親オブジェクト
 	ObjPtr<GameObject> m_pBlockHolder;
+
+	ObjPtr<PlaceCursor> m_pPlaceCursor;
 
 	ObjPtr<MeshRenderer> m_pRenderer;
 	MeshGroup::AnimeNo m_motuAnime;
