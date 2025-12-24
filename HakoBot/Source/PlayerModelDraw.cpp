@@ -9,13 +9,6 @@ void PlayerModelDraw::Awake()
 	//プレイヤールートにコンポーネントを追加
 	auto renderer2 = pObj->AddComponent<MeshRenderer>();
 	renderer2->LoadModel("Assets/Model/Player/fbx/kabu.fbx");
-
-	/*auto playerMove = pObj->AddComponent<PlayerMove>();*/
-	//auto collider = pObj->AddComponent<Collider>();
-	//collider->m_scale = Vector3(0.7f, PlayerDefaultSize_y, 0.7f);
-	//collider->m_positionOffset = Vector3(0.0f, 0.5f, 0.0f);
-	//collider->IsStatic = false;
-
 	// 頭作る	
 	auto playerHead = SceneManager::GetActiveScene()->CreateGameObject();
 
