@@ -188,6 +188,7 @@
     <ClCompile Include="Source\ShapeScreen.cpp" />
     <ClCompile Include="Source\TitleCamera.cpp" />
     <ClCompile Include="Source\TitleExit.cpp" />
+    <ClCompile Include="Source\TitlePlayerMove.cpp" />
     <ClCompile Include="Source\TitleScene.cpp" />
     <ClCompile Include="Source\SoundData.cpp" />
     <ClCompile Include="Source\SoundManager.cpp" />
@@ -233,6 +234,7 @@
     <ClInclude Include="Source\ShapeScreen.h" />
     <ClInclude Include="Source\TitleCamera.h" />
     <ClInclude Include="Source\TitleExit.h" />
+    <ClInclude Include="Source\TitlePlayerMove.h" />
     <ClInclude Include="Source\TitleScene.h" />
     <ClInclude Include="Source\SoundData.h" />
     <ClInclude Include="Source\SoundManager.h" />

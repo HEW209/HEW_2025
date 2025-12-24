@@ -16,8 +16,6 @@ void PlayerModelDraw::Awake()
 	auto renderer1 = playerHead->AddComponent<MeshRenderer>();
 	renderer1->LoadModel("Assets/Model/Player/fbx/jyoubu.fbx");
 	playerHead->GetTransform()->SetParent(pObj->GetTransform());
-	/*auto playerStretch = playerHead->AddComponent<PlayerStretch>();*/
-	/*playerStretch->SetPlayerCollider(collider);*/
 
 
 	// x’Œì‚é

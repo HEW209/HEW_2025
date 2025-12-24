@@ -7,6 +7,7 @@
 #include "TitleUI.h"
 #include "InputManager.h"
 #include "PlayerModelDraw.h"
+#include "TitlePlayerMove.h"
 
 void TitleScene::Init()
 {
@@ -24,8 +25,8 @@ void TitleScene::Init()
         offsetConfig.fovAngle = 10.0f;
         camera->SetConfig(offsetConfig);
         auto transform  = obj->GetTransform();
-        transform->SetPosition(10.0f, 6.5f, -10.0f);
-        transform->SetEulerAngle(15.0f,-28.0f,0.0f);
+        transform->SetPosition(10.0f, 6.0f, -10.5f);
+        transform->SetEulerAngle(13.0f,-25.2f,0.0f);
     }
 
     // É^ÉCÉgÉãUI
@@ -36,13 +37,19 @@ void TitleScene::Init()
     }
 
     {
-        float scale = 0.8f;
+        float scale = 0.5f;
         auto obj = CreateGameObject();
         auto player = obj->AddComponent<PlayerModelDraw>();
         auto transform = obj->GetTransform();
         transform->SetScale(scale, scale, scale);
-        transform->SetPosition(0.5f, 0.0f, -4.0f);
-        transform->SetEulerAngle(Vector3(0.0f, 45.0f, 0.0f));
+        transform->SetPosition(-5.0f, 0.0f, 7.0f);
+        transform->SetEulerAngle(Vector3(0.0f, -90.0f, 0.0f));
+
+        //à⁄ìÆ
+        auto renderer = obj->AddComponent<MeshRenderer>();
+        auto playerMove = obj->AddComponent<TitlePlayerMove>();
+        
+        playerMove->SetPlayer(obj->GetTransform());
     }
     
     {//è∞
