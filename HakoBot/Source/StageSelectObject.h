@@ -16,6 +16,7 @@ public:
 	void KeyEnter();
 	void SetStageID(int StageID);
 	void SetPosID();
+	
 	std::string SetModelID();
 private:
 
@@ -30,8 +31,11 @@ private:
 	float m_RotateY = 0.0f;          // Œ»İ‚ÌY‰ñ“]Šp
 	float m_RotateSpeed = 0.4f;     // ‰ñ“]supeed
 	bool  m_IsCenter = false;        // ’†‰›‚©‚Ç‚¤‚©
-
+	
+	bool m_bCoolCount = false;
+	float CountUPTimer = 0.0f;
 	int m_StageID = 0;
+\
 	SpriteRenderer* m_ObjectSprite;			//ŠeŒ…‚Ì•`‰æ—p
 	
 

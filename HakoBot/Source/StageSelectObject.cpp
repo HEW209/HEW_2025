@@ -9,6 +9,7 @@
 
 #define DEFAULT_POSY -3.5f
 #define CENTER_POSZ -1.8f
+
 void StageSelectObject::Start()
 {
 	//==========開始時に右から流れる演出の為Posを設定==========
@@ -99,19 +100,34 @@ void StageSelectObject::KeyEnter()
 	//============================================================================
 	//						  ステージセレクトINDEX
 	//============================================================================
-	if (Input::GetKeyDown(KeyCode::UP))
+	if (m_bCoolCount==false)
 	{
-		
-		m_selectIndex += 5;
-		if (m_selectIndex >= m_stageCount) { m_selectIndex = 0; }
+		if (Input::GetKeyDown(KeyCode::UP))
+		{
+
+			m_selectIndex += 5;
+			if (m_selectIndex >= m_stageCount) { m_selectIndex = 0; }
+			m_bCoolCount = true;
+		}
+		if (Input::GetKeyDown(KeyCode::DOWN))
+		{
+
+			m_selectIndex -= 5;
+			if (m_selectIndex < 0) { m_selectIndex = m_stageCount - 1; }
+			m_bCoolCount = true;
+		}
 	}
-	if (Input::GetKeyDown(KeyCode::DOWN))
+	else
 	{
-		
-		m_selectIndex-=5;
-		if (m_selectIndex < 0) { m_selectIndex = m_stageCount - 1; }
+		CountUPTimer++;
+		if (CountUPTimer > 90)
+		{
+			CountUPTimer = 0.0f;
+				m_bCoolCount = false;
+		}
 	}
 	
+
 
 	if (Input::GetKeyDown(KeyCode::LEFT))
 	{
@@ -127,7 +143,7 @@ void StageSelectObject::KeyEnter()
 	}
 	//============================================================================
 
-
+	
 }
 
 void StageSelectObject::SetStageID(int StageID)
@@ -166,9 +182,12 @@ void StageSelectObject::SetPosID()
 		if (m_IsCenter)
 		{
 			PosZ = CENTER_POSZ;
-			
-			//少し空中に浮かせる処理を追加予定
-			//PosY = DEFAULT_POSY+ 1.5f;
+			PosY = DEFAULT_POSY + 1.0f;
+			GetGameObject()->GetTransform()->SetScale(1.5f, 1.5f, 1.5f);
+		}
+		else
+		{
+			GetGameObject()->GetTransform()->SetScale(1.0f, 1.0f, 1.0f);
 		}
 		m_TargetPos = { PosX + Distance * diff,PosY,PosZ };
 	}
@@ -192,6 +211,9 @@ void StageSelectObject::SetPosID()
 	GetGameObject()->GetTransform()->SetPosition(m_Pos);
 
 }
+
+
+
 
 std::string StageSelectObject::SetModelID()
 {

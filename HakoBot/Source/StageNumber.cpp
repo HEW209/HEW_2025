@@ -61,16 +61,16 @@ void StageNumber::KeyEnter_Number()
 	if (Input::GetKeyDown(KeyCode::UP))
 	{
 		m_bAutoCountUp = true;
-		//m_selectIndex += 5;
+		m_selectIndex += 5;
 		if (m_selectIndex >= m_stageCount) { m_selectIndex = 0; }
 	}
 	if (Input::GetKeyDown(KeyCode::DOWN))
 	{
 		m_bAutoCountDown = true;
-		//m_selectIndex-=5;
+		m_selectIndex-=5;
 		if (m_selectIndex < 0) { m_selectIndex = m_stageCount - 1; }
 	}
-	AutoCount();
+	//AutoCount();
 
 	if (Input::GetKeyDown(KeyCode::LEFT))
 	{

@@ -34,17 +34,20 @@ void StageSelectScene::Init()
 	{
 		auto obj = CreateGameObject();
 		auto SelectNumber = obj->AddComponent<StageNumber>();
+		
 	}
-	
+	/*
 	{
 		auto obj = CreateGameObject();
 		auto mesh = obj->AddComponent<MeshRenderer>();
-		
+		auto a = obj->AddComponent<SpriteRenderer>();
 		mesh->LoadModel("Assets/Model/Stage/FBX/Conveyors.fbx");
 		
+		a->LoadTexture("Assets/Model/Stage/texture/Conveyors.png");
 		obj->GetTransform()->SetPosition(0.0f, -4.5f, 0.0f);
-	}
 
+	}
+	*/
 }
 
 
