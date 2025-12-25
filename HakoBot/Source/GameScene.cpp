@@ -233,6 +233,13 @@ void GameScene::CreateStageSet() {
         }
     }
 
+    //スクリーン
+    auto obj = CreateGameObject();
+    auto renderer = obj->AddComponent<MeshRenderer>();
+    renderer->LoadModel("Assets/Model/Stage/fbx/screen.fbx");
+    obj->GetTransform()->SetPosition(0.0f,5.0f,0.0f);
+    obj->GetTransform()->SetScale(1.0f, 1.0f, 1.0f);
+
     // UIオブジェクト
     CreateUIObject();
 }
