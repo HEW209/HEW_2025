@@ -89,7 +89,23 @@ void PlayerStretch::Update()
 
 	GetTransform()->SetPosition(pos, Space::LOCAL);
 
+	
 	//当たり判定サイズの更新
 	m_pCollider->m_scale.y = pos.y + PlayerDefaultSize_y;
 	m_pCollider->m_positionOffset.y = m_pCollider->m_scale.y * 0.5f;
+}
+
+void PlayerStretch::LateUpdate()
+{
+	// 頭に付随するようにする
+	Vector3 rootPos = m_pCollider->GetTransform()->GetPosition();
+	Quaternion quaternion = GetTransform()->GetQuaternion();
+	int max_gridStretch = 4;
+	int max_pillar = max_gridStretch * 5 + 2;
+	for (int i = 0; i < m_pillars.size(); ++i)
+	{
+		m_pillars[i]->GetTransform()->SetPosition(rootPos + Vector3(0.0f, i * 0.2f, 0.0f));
+		m_pillars[i]->GetTransform()->SetQuaternion(quaternion);
+	}
+
 }

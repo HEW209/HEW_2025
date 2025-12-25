@@ -15,6 +15,7 @@ public:
 
 	PlayerStretch();
 	void Update() override;
+	void LateUpdate()override;
 	void SetPillarObject(GameObject* pPillar)
 	{
 		m_pillars.push_back(pPillar);
