@@ -30,7 +30,7 @@ void GuideUIResultController::Start()
 	renderer2->LoadTexture("Assets/Textures/menuselect.png");
 	renderer2->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
 	renderer2->SetOffsetPos(0.0f, 0.0f);
-	renderer2->SetSize(MAX_MENUB);
+	renderer2->SetSize(0.0f);
 	m_rend2 = renderer2;
 
 	m_defaultPosition = GetTransform()->GetPosition();
@@ -41,6 +41,8 @@ void GuideUIResultController::Start()
 	m_closePhase = ClosePhase::None;
 	m_closeValue = 0.0f;
 	m_closeStartScale = Vector3::zero;
+	m_menuX = 0;
+	m_menuY = 0;
 }
 
 void GuideUIResultController::Update()
@@ -75,18 +77,29 @@ void GuideUIResultController::Update()
 			InputManager::ChangeBindType(InputBindType::GAMEPLAY);
 		}
 
-		//上を選択したとき、リスタートをオレンジに
 		if (InputManager::CurrentInputSystem().GetButtonDown("MenuUp"_hash))
 		{
-			//m_rend->SetColor(255.0f, 165.0f, 0.0f, 1.0f);
-			//m_rend2->SetColor(255.0f, 255.0f, 255.0f, 1.0f);
+			m_menuY = 0;
 		}
-		//下を選択したとき、ステージ選択に戻るをオレンジに
 		if (InputManager::CurrentInputSystem().GetButtonDown("MenuDown"_hash))
 		{
-			//m_rend2->SetColor(255.0f, 165.0f, 0.0f, 1.0f);
-			//m_rend->SetColor(255.0f, 255.0f, 255.0f, 1.0f);
+			m_menuY = 1;
 		}
+		if (InputManager::CurrentInputSystem().GetButtonDown("MenuLeft"_hash))
+		{
+			m_menuX = 0;
+		}
+		if (InputManager::CurrentInputSystem().GetButtonDown("MenuRight"_hash))
+		{
+			m_menuX = 1;
+		}
+
+		//メニュー選択用
+		MenuCell& cell = menuTable[m_menuY][m_menuX];
+		m_rend2->SetSize(MAX_MENUB / 2.0f, MAX_MENUB / 3.5f);
+		m_rend2->SetUVScale(0.5f, 0.5f);
+		m_rend2->SetUVOffsetPos(cell.uvX, cell.uvY);
+		m_rend2->SetOffsetPos(cell.posX, cell.posY);
 
 
 		//メニュー出現

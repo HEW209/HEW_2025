@@ -54,16 +54,22 @@ void InputManager::Init()
 		system.CreateButtonAction("MenuBack"_hash);
 		system.CreateAxisAction("MenuUp"_hash);
 		system.CreateAxisAction("MenuDown"_hash);
+		system.CreateAxisAction("MenuLeft"_hash);
+		system.CreateAxisAction("MenuRight"_hash);
 		system.CreateButtonAction("MenuInteract"_hash);
 
 		system.BindKey("MenuBack"_hash, KeyCode::Z);
 		system.BindKey("MenuUp"_hash, KeyCode::UP);
 		system.BindKey("MenuDown"_hash, KeyCode::DOWN);
+		system.BindKey("MenuLeft"_hash, KeyCode::LEFT);
+		system.BindKey("MenuRight"_hash, KeyCode::RIGHT);
 		system.BindKey("MenuInteract"_hash, KeyCode::ENTER);
 
 		system.BindPadButton("MenuBack"_hash, PadCode::A);
 		system.BindPadButton("MenuUp"_hash, PadCode::UP);
 		system.BindPadButton("MenuDown"_hash, PadCode::DOWN);
+		system.BindPadButton("MenuLeft"_hash, PadCode::LEFT);
+		system.BindPadButton("MenuRight"_hash, PadCode::RIGHT);
 		system.BindPadButton("MenuInteract"_hash, PadCode::B);
 	}
 }

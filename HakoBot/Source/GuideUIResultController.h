@@ -30,6 +30,28 @@ private:
 		Shrink,		//縮小
 	};
 
+	//メニュー用
+	int m_menuX = 0;
+	int m_menuY = 0;
+	struct MenuCell
+	{
+		float uvX;
+		float uvY;
+		float posX;
+		float posY;
+	};
+	MenuCell menuTable[2][2] =
+	{
+		{   
+			{ 0.0f, 0.0f, -5.0f,  2.8f }, 
+			{ 0.5f, 0.0f,  5.0f,  2.8f }, 
+		},
+		{   
+			{ 0.0f, 0.5f, -5.0f, -2.83f }, 
+			{ 0.5f, 0.5f,  5.0f, -2.83f }, 
+		}
+	};
+
 	ClosePhase m_closePhase;			//現在のメニュー閉じアニメーションの状態
 	Vector3 m_closeStartScale;			//メニュー閉じアニメーションが始まるまえののスケール
 	float m_closeValue;					//メニュー閉じアニメーションイージング用
