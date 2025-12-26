@@ -10,18 +10,24 @@
 void GuideUIController::Start()
 {
 	m_pRenderer = GetGameObject()->GetComponent<SpriteRenderer>();
+
+	//‚à‚ÂE‚¨‚­
+	m_pRenderer = GetGameObject()->AddComponent<SpriteRenderer>();
+	m_pRenderer->LoadTexture("Assets/Textures/Texts/oku.png");
+	m_pRenderer->SetUI(true);
+	m_pRenderer->SetSize(200);
 	//‚Ì‚Ñ‚é
 	auto renderer1 = GetGameObject()->AddComponent<SpriteRenderer>();
-	renderer1->LoadTexture("Assets/Textures/nobiruRT.png");
-	renderer1->SetOffsetPos(0.1f, -0.8f);
+	renderer1->LoadTexture("Assets/Textures/Texts/nobiru.png");
+	renderer1->SetOffsetPos(0.0f, -0.6f);
 	renderer1->SetUI(true);
-	renderer1->SetSize(MOZI_SIZE + 50.0f);
+	renderer1->SetSize(200);
 	//‚¿‚À‚Þ
 	auto renderer2 = GetGameObject()->AddComponent<SpriteRenderer>();
-	renderer2->LoadTexture("Assets/Textures/tidimuLT.png");
-	renderer2->SetOffsetPos(0.1f, -1.6f);
+	renderer2->LoadTexture("Assets/Textures/Texts/chijimu.png");
+	renderer2->SetOffsetPos(0.0f, -1.2f);
 	renderer2->SetUI(true);
-	renderer2->SetSize(MOZI_SIZE + 50.0f);
+	renderer2->SetSize(200);
 
 
 	//‰ŠúêŠŽæ“¾
@@ -39,17 +45,10 @@ void GuideUIController::Update()
 
 	if (m_motu)
 	{
-		m_pRenderer->LoadTexture("Assets/Textures/motuB.png");
-		m_pRenderer->SetSize(MOZI_SIZE + 70.0f);
+		m_pRenderer->LoadTexture("Assets/Textures/Texts/motu.png", false);
 	}
 	else
 	{
-		m_pRenderer->LoadTexture("Assets/Textures/okuB.png");
-		m_pRenderer->SetSize(MOZI_SIZE + 70.0f);
+		m_pRenderer->LoadTexture("Assets/Textures/Texts/oku.png", false);
 	}
-	
-	
-
-	
-	
 }

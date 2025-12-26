@@ -452,19 +452,15 @@ void GameScene::CreateUIObject() {
         auto obj = CreateGameObject();
         auto renderer = obj->AddComponent<SpriteRenderer>();
         renderer->SetUI(true);
-        renderer->LoadTexture("Assets/Textures/menu!.png");
-        renderer->GetTransform()->SetPosition(-5.3f, 3.2f, 0.20f);
+        renderer->LoadTexture("Assets/Textures/Texts/menu.png");
+        renderer->GetTransform()->SetPosition(-5.5f, 3.2f, 0.0f);
         renderer->SetSize(200.0f);
     }
 
     // ‚¨‚­
     {
         auto obj = CreateGameObject();
-        auto renderer = obj->AddComponent<SpriteRenderer>();
-        renderer->SetUI(true);
-        renderer->LoadTexture("Assets/Textures/okuB.png");
-        renderer->GetTransform()->SetPosition(5.6f, -1.6f, 0.0f);
-        renderer->SetSize(MOZI_SIZE + 70.0f, MOZI_SIZE + 20.0f);
+        obj->GetTransform()->SetPosition(5.6f, -1.8f, 0.0f);
         obj->AddComponent<GuideUIController>();
     }
 
