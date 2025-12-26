@@ -144,17 +144,151 @@ void GameScene::CreateGridField() {
         }
     }
 
-    // 危険エリア Z
+    //スクリーン
     for (int i = 0; i < 2; ++i) {
         float flip = i == 0 ? 1.0f : -1.0f;
         for (int x = 0; x < size_x; ++x) {
             auto obj = CreateGameObject();
             auto renderer = obj->AddComponent<MeshRenderer>();
-            renderer->LoadModel("Assets/Model/Stage/fbx/kiken.fbx");
+            renderer->LoadModel("Assets/Model/Stage/fbx/screen.fbx");
 
             Vector3 pos;
             pos.x = x - size_x * 0.5f + 0.5f;
-            pos.z = (size_z * 0.5f + 0.5f) * flip;
+            pos.z = (size_z * 0.5f + 0.71f) * flip;
+            obj->GetTransform()->SetPosition(pos);
+            obj->GetTransform()->SetEulerAngle(0.0f, 90.0f * flip, 0.0f);
+        }
+    }
+    for (int i = 0; i < 2; ++i) {
+        float flip = i == 0 ? 1.0f : -1.0f;
+        for (int z = 0; z < size_z; ++z) {
+            auto obj = CreateGameObject();
+            auto renderer = obj->AddComponent<MeshRenderer>();
+            renderer->LoadModel("Assets/Model/Stage/fbx/screen.fbx");
+
+            Vector3 pos;
+            pos.x = (size_x * 0.5f + 0.71f) * flip;
+            pos.z = z - size_z * 0.5f + 0.5f;
+            obj->GetTransform()->SetPosition(pos);
+            obj->GetTransform()->SetEulerAngle(0.0f, 90.0f + 90.0f * flip, 0.0f);
+        }
+    }
+    for (int i = 0; i < 4; ++i) {
+        Vector3 pos;
+        pos.x = size_x * 0.5f + 0.2f;
+        pos.z = size_z * 0.5f + 0.2f;
+        if (i == 1 || i == 2) pos.x *= -1;
+        if (i == 2 || i == 3) pos.z *= -1;
+
+        auto obj = CreateGameObject();
+        auto renderer = obj->AddComponent<MeshRenderer>();
+        renderer->LoadModel("Assets/Model/Stage/fbx/screen2.fbx");
+        obj->GetTransform()->SetPosition(pos);
+        obj->GetTransform()->SetEulerAngle(0.0f, 90.0f - 90.0f * i, 0.0f);
+    }
+
+    //土台
+    float halfX = size_x * 0.5f;
+    float halfZ = size_z * 0.5f;
+    float offset = 0.95f;
+    for (int x = 0; x < size_x + 1; ++x)
+    {
+        float px = x - halfX;
+
+        //北
+        {
+            auto obj = CreateGameObject();
+            auto r = obj->AddComponent<MeshRenderer>();
+            r->LoadModel("Assets/Model/Stage/fbx/dodai.fbx");
+
+            obj->GetTransform()->SetPosition({ px, 0.0f, halfZ + offset });
+            obj->GetTransform()->SetEulerAngle(0, 180, 0);
+        }
+
+        //南
+        {
+            auto obj = CreateGameObject();
+            auto r = obj->AddComponent<MeshRenderer>();
+            r->LoadModel("Assets/Model/Stage/fbx/dodai.fbx");
+
+            obj->GetTransform()->SetPosition({ px, 0.0f, -halfZ - offset });
+            obj->GetTransform()->SetEulerAngle(0, 0, 0);
+        }
+    }
+
+
+    for (int z = 0; z < size_z + 1; ++z)
+    {
+        float pz = z - halfZ;
+
+        //東
+        {
+            auto obj = CreateGameObject();
+            auto r = obj->AddComponent<MeshRenderer>();
+            r->LoadModel("Assets/Model/Stage/fbx/dodai.fbx");
+
+            obj->GetTransform()->SetPosition({ halfX + offset, 0.0f, pz });
+            obj->GetTransform()->SetEulerAngle(0, -90, 0);
+        }
+
+        //西
+        {
+            auto obj = CreateGameObject();
+            auto r = obj->AddComponent<MeshRenderer>();
+            r->LoadModel("Assets/Model/Stage/fbx/dodai.fbx");
+
+            obj->GetTransform()->SetPosition({ -halfX - offset, 0.0f, pz });
+            obj->GetTransform()->SetEulerAngle(0, 90, 0);
+        }
+    }
+
+
+    struct Corner
+    {
+        float x, z, rotY;
+    };
+
+    Corner corners[4] =
+    {
+        { -halfX - offset,  halfZ + offset,  90 },  //北西
+        {  halfX + offset,  halfZ + offset, 180 },  //北東
+        {  halfX + offset, -halfZ - offset, -90 },  //南東
+        { -halfX - offset, -halfZ - offset,   0 }   //南西
+    };
+
+    for (auto& c : corners)
+    {
+        auto obj = CreateGameObject();
+        auto r = obj->AddComponent<MeshRenderer>();
+        r->LoadModel("Assets/Model/Stage/fbx/dodai.fbx");
+
+        obj->GetTransform()->SetPosition({ c.x, 0.0f, c.z });
+        obj->GetTransform()->SetEulerAngle(0, c.rotY, 0);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // 危険エリア Z
+    for (int i = 0; i < 2; ++i) {
+        float flip = i == 0 ? 1.0f : -1.0f;
+        for (int x = 0; x < size_x + 3; ++x) {
+            auto obj = CreateGameObject();
+            auto renderer = obj->AddComponent<MeshRenderer>();
+            renderer->LoadModel("Assets/Model/Stage/fbx/kiken.fbx");
+
+            Vector3 pos;
+            pos.x = x - size_x * 0.5f - 0.95f;
+            pos.z = (size_z * 0.5f + 1.95f) * flip;
             obj->GetTransform()->SetPosition(pos);
             obj->GetTransform()->SetEulerAngle(0.0f, 90.0f * flip, 0.0f);
         }
@@ -163,14 +297,14 @@ void GameScene::CreateGridField() {
     // 危険エリア X
     for (int i = 0; i < 2; ++i) {
         float flip = i == 0 ? 1.0f : -1.0f;
-        for (int z = 0; z < size_z; ++z) {
+        for (int z = 0; z < size_z + 3; ++z) {
             auto obj = CreateGameObject();
             auto renderer = obj->AddComponent<MeshRenderer>();
             renderer->LoadModel("Assets/Model/Stage/fbx/kiken.fbx");
 
             Vector3 pos;
-            pos.x = (size_x * 0.5f + 0.5f) * flip;
-            pos.z = z - size_z * 0.5f + 0.5f;
+            pos.x = (size_x * 0.5f + 1.95f) * flip;
+            pos.z = z - size_z * 0.5f - 0.95f;
             obj->GetTransform()->SetPosition(pos);
             obj->GetTransform()->SetEulerAngle(0.0f, 90.0f + 90.0f * flip, 0.0f);
         }
@@ -179,8 +313,8 @@ void GameScene::CreateGridField() {
     // 危険エリア コーナー
     for (int i = 0; i < 4; ++i) {
         Vector3 pos;
-        pos.x = size_x * 0.5f + 0.5f;
-        pos.z = size_z * 0.5f + 0.5f;
+        pos.x = size_x * 0.5f + 1.95f;
+        pos.z = size_z * 0.5f + 1.95f;
         if (i == 1 || i == 2) pos.x *= -1;
         if (i == 2 || i == 3) pos.z *= -1;
 
@@ -233,12 +367,7 @@ void GameScene::CreateStageSet() {
         }
     }
 
-    //スクリーン
-    auto obj = CreateGameObject();
-    auto renderer = obj->AddComponent<MeshRenderer>();
-    renderer->LoadModel("Assets/Model/Stage/fbx/screen.fbx");
-    obj->GetTransform()->SetPosition(0.0f,5.0f,0.0f);
-    obj->GetTransform()->SetScale(1.0f, 1.0f, 1.0f);
+   
 
     // UIオブジェクト
     CreateUIObject();
