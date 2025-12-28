@@ -22,7 +22,7 @@ HRESULT SamplerStateManager::Init(ID3D11Device* pDevice, ID3D11DeviceContext* pC
 	// デフォルトステートをセット
 	SetState(SamplerState::DEFAULT);
 	SetState(SamplerState::SHADOW_COMPARISON, 8u);
-	SetState(SamplerState::POINT_WRAP, 9u);
+	SetState(SamplerState::POINT_BORDER_WHITE, 9u);
 
 	return hr;
 }
@@ -106,6 +106,21 @@ HRESULT SamplerStateManager::CreateAllState()
 			samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
 			samplerDesc.MinLOD = 0.0f;
 			samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+			break;
+
+		case SamplerState::POINT_BORDER_WHITE:
+			// 最近傍 + 枠外白
+			samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+			samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
+			samplerDesc.AddressV = samplerDesc.AddressU;
+			samplerDesc.AddressW = samplerDesc.AddressU;
+			samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+			samplerDesc.MinLOD = 0.0f;
+			samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+			samplerDesc.BorderColor[0] = 1.0f;
+			samplerDesc.BorderColor[1] = 1.0f;
+			samplerDesc.BorderColor[2] = 1.0f;
+			samplerDesc.BorderColor[3] = 1.0f;
 			break;
 
 		case SamplerState::ANISOTROPIC_WRAP:

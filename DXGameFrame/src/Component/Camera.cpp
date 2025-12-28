@@ -58,6 +58,18 @@ DirectX::XMMATRIX Camera::GetProjectionMatrix()
 	return projection;
 }
 
+DirectX::XMMATRIX Camera::GetShadowProjectionMatrix(float shadowDistance)
+{
+	DirectX::XMMATRIX projection;	// 計算用プロジェクション行列
+
+	// プロジェクション行列を求める
+	projection = DirectX::XMMatrixPerspectiveFovLH(
+		DirectX::XMConvertToRadians(m_config.fovAngle),
+		m_config.screenSize.x / m_config.screenSize.y, m_config.nearZ, shadowDistance
+	);
+	return projection;
+}
+
 DirectX::XMMATRIX Camera::GetOrthographicProjectionMatrix()
 {
 	DirectX::XMMATRIX projection;	// 計算用プロジェクション行列

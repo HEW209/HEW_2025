@@ -6,7 +6,7 @@
 Texture2D<float> shadowMap : register(t8);
 //Texture2D<float4> blueNoiseMap : register(t9);
 SamplerComparisonState shadowSamp : register(s8);
-SamplerState pointWrapSamp : register(s9);
+SamplerState pointSamp : register(s9);
 
 static const float PI = 3.14159265359;
 
@@ -25,11 +25,11 @@ float2 GetVogelDiskSample(int sampleIndex, int samplesCount)
 }
 
 // 平均ブロッカー深度の検索
-float FindBlocker(float2 uv, float zReceiver, float searchRegionRadiusUV)
+float FindBlocker(float2 uv, float zReceiver, float searchRegionRadiusUV, float bias)
 {
     float totalBlockerDepth = 0;
     int numBlockers = 0;
-    int numSearchSamples = 16; // 探索サンプル数
+    int numSearchSamples = 16;
 
     for (int i = 0; i < numSearchSamples; ++i)
     {
@@ -37,10 +37,9 @@ float FindBlocker(float2 uv, float zReceiver, float searchRegionRadiusUV)
         float2 sampleUV = uv + offset * searchRegionRadiusUV;
         
         // シャドウマップから深度をサンプリング
-        float zBlocker = shadowMap.SampleLevel(pointWrapSamp, sampleUV, 0);
-
-        // 遮蔽物があるか
-        if (zBlocker < zReceiver)
+        float zBlocker = shadowMap.SampleLevel(pointSamp, sampleUV, 0);
+        
+        if (zBlocker < zReceiver - bias)
         {
             totalBlockerDepth += zBlocker;
             numBlockers++;
@@ -50,7 +49,7 @@ float FindBlocker(float2 uv, float zReceiver, float searchRegionRadiusUV)
     if (numBlockers > 0)
         return totalBlockerDepth / numBlockers;
     else
-        return -1.0; // ブロッカーなし
+        return -1.0;
 }
 
 // PCSS計算
@@ -58,6 +57,7 @@ float CalcPCSS(float4 shadowCoord, float2 screenPos)
 {
     float2 uv = shadowCoord.xy;
     float zReceiver = shadowCoord.z;
+    float bias = 0;
     
     if (uv.x < 0 || uv.x > 1 || uv.y < 0 || uv.y > 1 || zReceiver > 1.0)
         return 1.0;
@@ -65,7 +65,7 @@ float CalcPCSS(float4 shadowCoord, float2 screenPos)
     // ブロッカー探索
     float searchRadius = lightSize * 0.05;
     
-    float avgBlockerDepth = FindBlocker(uv, zReceiver, searchRadius);
+    float avgBlockerDepth = FindBlocker(uv, zReceiver, searchRadius, bias);
 
     if (avgBlockerDepth == -1.0)
         return 1.0;
@@ -83,7 +83,7 @@ float CalcPCSS(float4 shadowCoord, float2 screenPos)
         float2 offset = GetVogelDiskSample(i, numPCFSamples);
         float2 sampleUV = uv + offset * penumbraWidth;
         
-        shadow += shadowMap.SampleCmpLevelZero(shadowSamp, sampleUV, zReceiver);
+        shadow += shadowMap.SampleCmpLevelZero(shadowSamp, sampleUV, zReceiver - bias);
     }
 
     return shadow / float(numPCFSamples);

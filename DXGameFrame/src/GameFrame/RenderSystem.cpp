@@ -122,11 +122,15 @@ void RenderSystem::DrawAll3D()
 	DirectX::XMMATRIX lightView;
 	DirectX::XMMATRIX lightProj;
 
-	DirectX::XMFLOAT3 lightDir = pDirLight->GetLightCB().lightDir;
+	Vector3 lightDirVec3 = pDirLight->GetTransform()->GetQuaternion() * Vector3::forward;
+
+	DirectX::XMFLOAT3 lightDir = { lightDirVec3.x, lightDirVec3.y, lightDirVec3.z };
+
+	DirectX::XMMATRIX shadowCameraProj = pMainCamera->GetShadowProjectionMatrix(50.0f);
 
 	CalcLightMatrices(
 		DirectX::XMLoadFloat3(&lightDir),
-		cameraView * cameraProj,
+		cameraView * shadowCameraProj,
 		lightView,
 		lightProj
 	);
@@ -325,10 +329,14 @@ void CalcLightMatrices(
 	}
 	center = DirectX::XMVectorScale(center, 1.0f / 8.0f);
 
-	// ライトビュー行列の作成
 	DirectX::XMVECTOR up = DirectX::XMVectorSet(0, 1, 0, 0);
-	if (DirectX::XMVector3NearEqual(up, lightDir, DirectX::XMVectorSet(0.01f, 0.01f, 0.01f, 0.01f)))
+
+	DirectX::XMVECTOR dot = DirectX::XMVector3Dot(lightDir, up);
+	float dotVal = DirectX::XMVectorGetX(dot);
+	if (std::abs(dotVal) > 0.99f)
+	{
 		up = DirectX::XMVectorSet(0, 0, 1, 0);
+	}
 
 	float shadowDistance = 200.0f;
 	DirectX::XMVECTOR lightOffset = DirectX::XMVectorScale(lightDir, shadowDistance);
@@ -355,11 +363,8 @@ void CalcLightMatrices(
 		minZ = min(minZ, z); maxZ = max(maxZ, z);
 	}
 
-	// プロジェクション行列 (Orthographic)
-	float width = maxX - minX;
-	float height = maxY - minY;
-
-	float nearPlane = 0.0f;
+	float shadowCasterMargin = 200.0f;
+	float nearPlane = minZ - shadowCasterMargin;
 	float farPlane = maxZ + 20.0f;
 
 	outLightProj = DirectX::XMMatrixOrthographicOffCenterLH(

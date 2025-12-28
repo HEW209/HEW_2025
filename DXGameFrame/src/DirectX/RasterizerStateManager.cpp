@@ -108,11 +108,11 @@ HRESULT RasterizerStateManager::CreateAllState()
 		case RasterizerState::SHADOW:
 			// シャドウマップ用 (前面描画、深度バイアス有り)
 			rasterizerDesc.FillMode = D3D11_FILL_SOLID;
-			rasterizerDesc.CullMode = D3D11_CULL_BACK;
+			rasterizerDesc.CullMode = D3D11_CULL_FRONT;
 			rasterizerDesc.FrontCounterClockwise = FALSE;
 			rasterizerDesc.DepthClipEnable = TRUE;
 			rasterizerDesc.MultisampleEnable = TRUE;
-			rasterizerDesc.DepthBias = 1000;
+			rasterizerDesc.DepthBias = 100;
 			rasterizerDesc.DepthBiasClamp = 0.0f;
 			rasterizerDesc.SlopeScaledDepthBias = 1.0f;
 			break;

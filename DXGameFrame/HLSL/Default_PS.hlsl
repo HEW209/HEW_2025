@@ -59,7 +59,12 @@ float4 main(PS_IN pin) : SV_TARGET
     shadowPos.xy = shadowPos.xy * float2(0.5, -0.5) + 0.5;
 
     // PCSS ŒvŽZ
-    float pcssShadow = CalcPCSS(shadowPos, pin.pos.xy);
+    float pcssShadow = 1.0;
+    
+    if (NdotL > 0.0)
+    {
+        pcssShadow = CalcPCSS(shadowPos, pin.pos.xy);
+    }
     
     float3 directLight = (diffuse + specular) * pcssShadow;
 

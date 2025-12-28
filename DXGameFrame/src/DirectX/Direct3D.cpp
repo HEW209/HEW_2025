@@ -68,6 +68,9 @@ HRESULT Direct3D::Resize(UINT width, UINT height)
 	m_pDSV.Reset();
 	m_pDepthBuffer.Reset();
 	m_pRTV.Reset();
+	m_pShadowDSV.Reset();
+	m_pShadowSRV.Reset();
+	m_pShadowMap.Reset();
 
 	// スワップチェインのサイズを変更
 	ResizeSwapChain(width, height);
@@ -136,22 +139,63 @@ ID3D11DeviceContext* Direct3D::GetContext() const
 	return m_pContext.Get();
 }
 
-void Direct3D::SetShadowMap()
+// シャドウマップデバッグ用
+static float g_DebugZoomLevel = 8.0f;
+
+void DrawShadowMapDebugWindow(ID3D11ShaderResourceView* pShadowSRV)
 {
-	if (ImGui::Begin("Shadow Map Debug View"))
+	if (ImGui::Begin("Shadow Map Inspector"))
 	{
-		// 表示サイズを指定 (例: 幅300px, 高さ300px)
-		ImVec2 imageSize(300, 300);
+		ImGui::Text("Options");
+		ImGui::SliderFloat("Zoom Level", &g_DebugZoomLevel, 1.0f, 32.0f);
 
-		// UV反転オプション (DirectXとImGuiの座標系の違いを吸収する場合)
-		ImVec2 uv0(0, 0);
-		ImVec2 uv1(1, 1); // 必要に応じて (1,0)などに変更
+		ImGui::Separator();
 
-		// 画像を表示
-		// (void*)キャストが必要です
-		ImGui::Image((void*)m_pShadowSRV.Get(), imageSize, uv0, uv1);
+		float contentWidth = ImGui::GetContentRegionAvail().x;
+		ImVec2 imageSize = ImVec2(contentWidth, contentWidth);
+
+		ImVec2 cursorScreenPos = ImGui::GetCursorScreenPos();
+
+		ImGui::Image((void*)pShadowSRV, imageSize);
+
+		if (ImGui::IsItemHovered())
+		{
+			ImGuiIO& io = ImGui::GetIO();
+
+			float my = (io.MousePos.y - cursorScreenPos.y) / imageSize.y;
+			float mx = (io.MousePos.x - cursorScreenPos.x) / imageSize.x;
+
+			if (mx >= 0.0f && mx <= 1.0f && my >= 0.0f && my <= 1.0f)
+			{
+				ImGui::BeginTooltip();
+
+				float regionSz = 1.0f / g_DebugZoomLevel;
+				float uv0_x = mx - regionSz * 0.5f;
+				float uv0_y = my - regionSz * 0.5f;
+				float uv1_x = mx + regionSz * 0.5f;
+				float uv1_y = my + regionSz * 0.5f;
+
+				if (uv0_x < 0.0f) { uv0_x = 0.0f; uv1_x = regionSz; }
+				if (uv0_y < 0.0f) { uv0_y = 0.0f; uv1_y = regionSz; }
+				if (uv1_x > 1.0f) { uv1_x = 1.0f; uv0_x = 1.0f - regionSz; }
+				if (uv1_y > 1.0f) { uv1_y = 1.0f; uv0_y = 1.0f - regionSz; }
+
+				ImGui::Text("Zoom: %.1fx | UV: (%.3f, %.3f)", g_DebugZoomLevel, mx, my);
+
+				float zoomViewSize = 256.0f;
+				ImGui::Image((void*)pShadowSRV, ImVec2(zoomViewSize, zoomViewSize),
+					ImVec2(uv0_x, uv0_y), ImVec2(uv1_x, uv1_y));
+
+				ImGui::EndTooltip();
+			}
+		}
 	}
 	ImGui::End();
+}
+
+void Direct3D::SetShadowMap()
+{
+	//DrawShadowMapDebugWindow(m_pShadowSRV.Get());
 
 	// ピクセルシェーダーのシェーダーリソースビューにシャドウマップをセット
 	m_pContext->PSSetShaderResources(

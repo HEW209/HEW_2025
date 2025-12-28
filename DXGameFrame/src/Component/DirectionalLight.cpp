@@ -38,7 +38,7 @@ LightConstantBuffer DirectionalLight::GetLightCB()
 {
 	// ライト定数バッファ用データを作成
 	LightConstantBuffer lightCB = {};
-	Vector3 lightDir = GetTransform()->GetQuaternion() * Vector3::forward;
+	Vector3 lightDir = GetTransform()->GetQuaternion() * Vector3::back;
 	lightCB.lightDir = { lightDir.x, lightDir.y, lightDir.z };
 	lightCB.lightIntensity = m_lightIntensity;
 	lightCB.lightColor = { m_lightColor.r, m_lightColor.g, m_lightColor.b };
