@@ -127,7 +127,7 @@ Vector3 BlockObject::GetGroundOffset()
 	return Vector3(0.0f, yOffset, 0.0f);
 }
 
-bool BlockObject::IsInside(const Vector3& worldPosition)
+bool BlockObject::IsInside(const Vector3& worldPosition, float inflationAmount) const
 {
 	Transform* pTransform = GetTransform();
 	if (!pTransform)
@@ -155,13 +155,15 @@ bool BlockObject::IsInside(const Vector3& worldPosition)
 		const float centerY = static_cast<float>(blockPos.y);
 		const float centerZ = static_cast<float>(blockPos.z);
 
+		float boxHalfSize = 0.5f + inflationAmount;
+
 		// AABB
-		const float minX = centerX - 0.5f;
-		const float maxX = centerX + 0.5f;
-		const float minY = centerY - 0.5f;
-		const float maxY = centerY + 0.5f;
-		const float minZ = centerZ - 0.5f;
-		const float maxZ = centerZ + 0.5f;
+		const float minX = centerX - boxHalfSize;
+		const float maxX = centerX + boxHalfSize;
+		const float minY = centerY - boxHalfSize;
+		const float maxY = centerY + boxHalfSize;
+		const float minZ = centerZ - boxHalfSize;
+		const float maxZ = centerZ + boxHalfSize;
 
 		// ローカル座標がAABBの内側にあるかチェック
 		if (localPosition.x >= minX && localPosition.x <= maxX &&
@@ -173,4 +175,32 @@ bool BlockObject::IsInside(const Vector3& worldPosition)
 	}
 
 	return false;
+}
+
+std::vector<Vector3> BlockObject::GetBlockVertices()
+{
+	std::vector<Vector3> vertices;
+
+	const std::vector<Vector3> cornerOffsets = {
+		{ -0.5f, -0.5f, -0.5f },
+		{  0.5f, -0.5f, -0.5f },
+		{ -0.5f,  0.5f, -0.5f },
+		{  0.5f,  0.5f, -0.5f },
+		{ -0.5f, -0.5f,  0.5f },
+		{  0.5f, -0.5f,  0.5f },
+		{ -0.5f,  0.5f,  0.5f },
+		{  0.5f,  0.5f,  0.5f }
+	};
+
+	for (auto&& block : m_blockSet.blocks) {
+		for (auto&& offset : cornerOffsets) {
+			Vector3 vtx = static_cast<Vector3>(block) + offset;
+			auto it = std::ranges::find(vertices, vtx);
+			if (it == vertices.end()) {
+				vertices.push_back(vtx);
+			}
+		}
+	}
+
+	return vertices;
 }

@@ -189,7 +189,23 @@ void GridField::SetRemoveCursor(const Vector3& position)
 			m_pPlacedBlocks[m_removeCursorBlockId - 1]->GetComponent<BlockObject>()->SetSelect(false);
 		}
 	}
-	m_removeCursorBlockId = m_gridData.GetId(CalcGridCoord(position));
+
+	if (!IsInside(position)) {
+		m_removeCursorBlockId = 0u;
+		return;
+	}
+
+	Vec3Int gridCoord = CalcGridCoord(position);
+	m_removeCursorBlockId = m_gridData.GetId(gridCoord);
+	const std::vector<Vec3Int> removeOffsets = {
+		{1, 0, 0},
+		{-1, 0, 0},
+		{0, 0, 1},
+		{0, 0, -1},
+	};
+	for (int i = 0; m_removeCursorBlockId == 0u && i < 4; ++i) {
+		m_removeCursorBlockId = m_gridData.GetId(gridCoord + removeOffsets[i]);
+	}
 	if (0u < m_removeCursorBlockId && m_removeCursorBlockId <= m_pPlacedBlocks.size()) {
 		if (m_pPlacedBlocks[m_removeCursorBlockId - 1]) {
 			m_pPlacedBlocks[m_removeCursorBlockId - 1]->GetComponent<BlockObject>()->SetSelect(true);
