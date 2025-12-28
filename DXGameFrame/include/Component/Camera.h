@@ -60,6 +60,13 @@ public:
 	DirectX::XMMATRIX GetProjectionMatrix();
 
 	/**
+	 * @brief このカメラからシャドウ用のプロジェクション行列を作成する
+	 * @param shadowDistance シャドウマップに映す距離
+	 * @return プロジェクション行列
+	 */
+	DirectX::XMMATRIX GetShadowProjectionMatrix(float shadowDistance);
+
+	/**
 	 * @brief このカメラから平行投影プロジェクション行列を作成する
 	 * @return プロジェクション行列
 	 */

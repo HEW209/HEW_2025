@@ -18,9 +18,11 @@ enum class SamplerState : UINT
 	LINEAR_CLAMP,			// 線形補間 + 端固定
 	POINT_WRAP,				// 最近傍 + 繰り返し（ドット絵向け）
 	POINT_CLAMP,			// 最近傍 + 端固定（UI向け）
+	POINT_BORDER_WHITE,		// 最近傍 + 枠外白（シャドウマップ向け）
 	ANISOTROPIC_WRAP,		// 異方性 + 繰り返し
 	ANISOTROPIC_CLAMP,		// 異方性 + 端固定
 	BORDER_BLACK,			// 枠外黒
+	SHADOW_COMPARISON,		// シャドウのハードウェアPCF用
 	COUNT
 };
 

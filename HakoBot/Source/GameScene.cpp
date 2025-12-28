@@ -99,6 +99,7 @@ void GameScene::Init() {
     // ライト
     auto lightObj = CreateGameObject();
     auto light = lightObj->AddComponent<DirectionalLight>();
+    light->SetLightSize(0.1f);
     lightObj->GetTransform()->SetEulerAngle(50.0f, -30.0f, 0.0f);
 
     // クリア演出
@@ -391,6 +392,7 @@ void GameScene::CreateStageSet() {
             auto obj = CreateGameObject();
             auto renderer = obj->AddComponent<MeshRenderer>();
             renderer->LoadModel("Assets/Model/Stage/fbx/saku.fbx");
+            renderer->SetShouldDrawShadow(true);
             obj->GetTransform()->SetPosition(pos);
             obj->GetTransform()->SetEulerAngle(rotateAngle);
         }

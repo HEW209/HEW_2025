@@ -107,6 +107,18 @@ void ConstantBufferManager::SetLight(const LightConstantBuffer& light)
 	m_frameCB.lightCB = light;
 }
 
+void ConstantBufferManager::SetLightViewProj(const DirectX::XMMATRIX& lightViewProj)
+{
+	if (m_pContext == nullptr)
+		return;
+
+	// ライトビュー・プロジェクション行列をセット
+	DirectX::XMStoreFloat4x4(
+		&m_frameCB.lightViewProj,
+		DirectX::XMMatrixTranspose(lightViewProj)
+	);
+}
+
 void ConstantBufferManager::SetTime(float time)
 {
 	m_frameCB.time = time;

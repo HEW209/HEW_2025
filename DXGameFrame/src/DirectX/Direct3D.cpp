@@ -8,13 +8,19 @@
 #include <DirectX/TextureManager.h>
 #include <DirectX/ModelManager.h>
 
+#include <../imgui/imgui.h>
+
 Direct3D::Direct3D() :
 	m_pDevice(nullptr),
 	m_pContext(nullptr),
 	m_pSwapChain(nullptr),
 	m_pRTV(nullptr),
 	m_pDSV(nullptr),
-	m_pDepthBuffer(nullptr)
+	m_pDepthBuffer(nullptr),
+	m_pShadowDSV(nullptr),
+	m_pShadowSRV(nullptr),
+	m_viewportSizeH(0),
+	m_viewportSizeW(0)
 {
 }
 
@@ -62,6 +68,9 @@ HRESULT Direct3D::Resize(UINT width, UINT height)
 	m_pDSV.Reset();
 	m_pDepthBuffer.Reset();
 	m_pRTV.Reset();
+	m_pShadowDSV.Reset();
+	m_pShadowSRV.Reset();
+	m_pShadowMap.Reset();
 
 	// スワップチェインのサイズを変更
 	ResizeSwapChain(width, height);
@@ -76,14 +85,36 @@ HRESULT Direct3D::Resize(UINT width, UINT height)
 	return hr;
 }
 
-void Direct3D::BeginDraw(const float clearColor[4])
+void Direct3D::ClearView(const float clearColor[4])
 {
-	//画面クリア
+	// 画面クリア
 	m_pContext->ClearRenderTargetView(m_pRTV.Get(), clearColor);
 
-	//ステンシルビュークリア
+	// ステンシルビュークリア
 	m_pContext->ClearDepthStencilView(m_pDSV.Get(),
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+	// シャドウ用DSVクリア
+	m_pContext->ClearDepthStencilView(m_pShadowDSV.Get(),
+		D3D11_CLEAR_DEPTH, 1.0f, 0);
+}
+
+void Direct3D::BeginDraw()
+{
+	// レンダーターゲットをセット
+	m_pContext->OMSetRenderTargets(1, m_pRTV.GetAddressOf(), m_pDSV.Get());
+
+	// ビューポートをセット
+	SetViewport(m_viewportSizeW, m_viewportSizeH);
+}
+
+void Direct3D::BeginDrawShadow()
+{
+	// シャドウ用レンダーターゲットをセット
+	m_pContext->OMSetRenderTargets(0, nullptr, m_pShadowDSV.Get());
+
+	// シャドウ用ビューポートをセット
+	SetViewport(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE, true);
 }
 
 void Direct3D::Present()
@@ -106,6 +137,72 @@ ID3D11Device* Direct3D::GetDevice() const
 ID3D11DeviceContext* Direct3D::GetContext() const
 {
 	return m_pContext.Get();
+}
+
+// シャドウマップデバッグ用
+static float g_DebugZoomLevel = 8.0f;
+
+void DrawShadowMapDebugWindow(ID3D11ShaderResourceView* pShadowSRV)
+{
+	if (ImGui::Begin("Shadow Map Inspector"))
+	{
+		ImGui::Text("Options");
+		ImGui::SliderFloat("Zoom Level", &g_DebugZoomLevel, 1.0f, 32.0f);
+
+		ImGui::Separator();
+
+		float contentWidth = ImGui::GetContentRegionAvail().x;
+		ImVec2 imageSize = ImVec2(contentWidth, contentWidth);
+
+		ImVec2 cursorScreenPos = ImGui::GetCursorScreenPos();
+
+		ImGui::Image((void*)pShadowSRV, imageSize);
+
+		if (ImGui::IsItemHovered())
+		{
+			ImGuiIO& io = ImGui::GetIO();
+
+			float my = (io.MousePos.y - cursorScreenPos.y) / imageSize.y;
+			float mx = (io.MousePos.x - cursorScreenPos.x) / imageSize.x;
+
+			if (mx >= 0.0f && mx <= 1.0f && my >= 0.0f && my <= 1.0f)
+			{
+				ImGui::BeginTooltip();
+
+				float regionSz = 1.0f / g_DebugZoomLevel;
+				float uv0_x = mx - regionSz * 0.5f;
+				float uv0_y = my - regionSz * 0.5f;
+				float uv1_x = mx + regionSz * 0.5f;
+				float uv1_y = my + regionSz * 0.5f;
+
+				if (uv0_x < 0.0f) { uv0_x = 0.0f; uv1_x = regionSz; }
+				if (uv0_y < 0.0f) { uv0_y = 0.0f; uv1_y = regionSz; }
+				if (uv1_x > 1.0f) { uv1_x = 1.0f; uv0_x = 1.0f - regionSz; }
+				if (uv1_y > 1.0f) { uv1_y = 1.0f; uv0_y = 1.0f - regionSz; }
+
+				ImGui::Text("Zoom: %.1fx | UV: (%.3f, %.3f)", g_DebugZoomLevel, mx, my);
+
+				float zoomViewSize = 256.0f;
+				ImGui::Image((void*)pShadowSRV, ImVec2(zoomViewSize, zoomViewSize),
+					ImVec2(uv0_x, uv0_y), ImVec2(uv1_x, uv1_y));
+
+				ImGui::EndTooltip();
+			}
+		}
+	}
+	ImGui::End();
+}
+
+void Direct3D::SetShadowMap()
+{
+	//DrawShadowMapDebugWindow(m_pShadowSRV.Get());
+
+	// ピクセルシェーダーのシェーダーリソースビューにシャドウマップをセット
+	m_pContext->PSSetShaderResources(
+		TextureSlot::ShadowMap,
+		1,
+		m_pShadowSRV.GetAddressOf()
+	);
 }
 
 HRESULT Direct3D::CreateDeviceAndSwapChain(HWND hWnd, UINT width, UINT height)
@@ -197,7 +294,11 @@ HRESULT Direct3D::CreateRenderTargets(UINT width, UINT height)
 	hr = CreateDepthStencilView(width, height);
 	if (FAILED(hr)) { return hr; }
 
-	// GPUの出力先設定
+	// シャドウマップを作成
+	hr = CreateShadowMap();
+	if (FAILED(hr)) { return hr; }
+
+	// レンダーターゲットビューと深度ステンシルビューをセット
 	m_pContext->OMSetRenderTargets(1, m_pRTV.GetAddressOf(), m_pDSV.Get());
 
 	return hr;
@@ -252,7 +353,43 @@ HRESULT Direct3D::CreateDepthStencilView(UINT width, UINT height)
 	return hr;
 }
 
-void Direct3D::SetViewport(UINT width, UINT height)
+HRESULT Direct3D::CreateShadowMap()
+{
+	HRESULT hr = S_OK;		// 関数の結果
+
+	// シャドウマップの定義
+	D3D11_TEXTURE2D_DESC texDesc = {};
+	texDesc.Width = SHADOW_MAP_SIZE;
+	texDesc.Height = SHADOW_MAP_SIZE;
+	texDesc.MipLevels = 1;
+	texDesc.ArraySize = 1;
+	texDesc.Format = DXGI_FORMAT_R32_TYPELESS;
+	texDesc.SampleDesc.Count = 1;
+	texDesc.Usage = D3D11_USAGE_DEFAULT;
+	texDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
+
+	hr = m_pDevice->CreateTexture2D(&texDesc, nullptr, m_pShadowMap.GetAddressOf());
+	if (FAILED(hr)) { return hr; }
+
+	// シャドウ用DSV (書き込み用)
+	D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
+	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
+	dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+	hr = m_pDevice->CreateDepthStencilView(m_pShadowMap.Get(), &dsvDesc, m_pShadowDSV.GetAddressOf());
+	if (FAILED(hr)) { return hr; }
+
+	// シャドウ用SRV (読み込み用)
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+	srvDesc.Format = DXGI_FORMAT_R32_FLOAT;
+	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.Texture2D.MipLevels = 1;
+	hr = m_pDevice->CreateShaderResourceView(m_pShadowMap.Get(), &srvDesc, m_pShadowSRV.GetAddressOf());
+	if (FAILED(hr)) { return hr; }
+
+	return hr;
+}
+
+void Direct3D::SetViewport(UINT width, UINT height, bool isTemp)
 {
 	// ビューポートの設定
 	D3D11_VIEWPORT vp = {};			// ビューポート設定情報
@@ -266,9 +403,11 @@ void Direct3D::SetViewport(UINT width, UINT height)
 	// ビューポートを設定
 	m_pContext->RSSetViewports(1, &vp);
 
-	// ビューポートの幅・高さを保存
-	m_viewportSizeW = width;
-	m_viewportSizeH = height;
+	if (!isTemp) {
+		// ビューポートの幅・高さを保存
+		m_viewportSizeW = width;
+		m_viewportSizeH = height;
+	}
 }
 
 HRESULT Direct3D::ResizeSwapChain(UINT width, UINT height)

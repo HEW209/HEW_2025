@@ -4,6 +4,8 @@
  *
  * @author 石田怜
  * @date   2025/11/24
+ * 
+ * @date   2025/12/28 [芝晃佑]	シャドウ描画対応
  *********************************************************************/
 #pragma once
 
@@ -19,7 +21,7 @@ class MeshRenderer : public Renderer
 {
 public:
 	MeshRenderer();
-	virtual ~MeshRenderer() = default;
+	virtual ~MeshRenderer();
 
 	void Update() override;
 
@@ -27,6 +29,11 @@ public:
 	 * @brief 描画処理
 	 */
 	virtual void Draw() override;
+
+	/**
+	 * @brief 影描画処理
+	 */
+	virtual void DrawShadow() override;
 
 	/**
 	 * @brief モデルデータを読み込む
@@ -77,10 +84,15 @@ public:
 	 */
 	std::vector<Material>* GetMaterials();
 
+	void SetShouldDrawShadow(bool shouldDrawShadow);
+
 protected:
 	/// モデルへのポインタ
 	std::shared_ptr<Model> m_pModel;
 
 	/// マテリアル配列
 	std::vector<Material> m_materials;
+
+	/// 影を描画するかどうかのフラグ
+	bool m_shouldDrawShadow;
 };

@@ -273,6 +273,12 @@
     <ClInclude Include="include\GameFrame\Time.h">
       <Filter>ヘッダー ファイル\GameFrame</Filter>
     </ClInclude>
+    <ClInclude Include="include\DirectX\DXTypes.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\GeometryShader.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\DirectX\Direct3D.cpp">
@@ -431,6 +437,9 @@
     <ClCompile Include="src\GameFrame\Time.cpp">
       <Filter>ソース ファイル\GameFrame</Filter>
     </ClCompile>
+    <ClCompile Include="src\DirectX\GeometryShader.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="HLSL\Default_PS.hlsl">
@@ -451,6 +460,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="HLSL\DXGameFrameShader.hlsli">
+      <Filter>HLSL</Filter>
+    </None>
+    <None Include="HLSL\Shadow.hlsli">
       <Filter>HLSL</Filter>
     </None>
   </ItemGroup>
