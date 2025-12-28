@@ -42,6 +42,17 @@ void GameScene::Init() {
 		obj->AddComponent<GameState>();
 	}
 
+ //   // DirectionalLightの設定
+ //   {
+ //       auto obj = CreateGameObject();
+ //       auto light = obj->AddComponent<DirectionalLight>();
+ //       //light->SetLightColor(Color(1.0f, 0.95f, 0.9f, 1.0f));
+	//	//light->SetAmbientColor(Color(0.3f, 0.3f, 0.35f, 1.0f));
+ //       //light->SetLightIntensity(1.0f);
+	//	//light->SetLightSize(1.0f);
+ //       obj->GetTransform()->SetEulerAngle(50.0f, -30.0f, 0.0f);
+	//}
+
 	//移動できるオブジェクト（プレイヤー）を作成	
 	//移動できるプレイヤーオブジェクトを作る
 	auto player = CreateGameObject();

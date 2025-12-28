@@ -52,8 +52,6 @@ float4 main(PS_IN pin) : SV_TARGET
 
     float rim = pow(1.0 - saturate(dot(N, V)), 2.0);
     float3 rimLight = rim * rimAmount;
-
-    float3 finalColor = ambient + diffuse + specular + reflection + rimLight;
     
     // シャドウマップ座標への変換
     float4 shadowPos = mul(pin.wPos, lightViewProj);
@@ -63,7 +61,9 @@ float4 main(PS_IN pin) : SV_TARGET
     // PCSS 計算
     float pcssShadow = CalcPCSS(shadowPos, pin.pos.xy);
     
-    finalColor *= pcssShadow;
+    float3 directLight = (diffuse + specular) * pcssShadow;
+
+    float3 finalColor = ambient + directLight + reflection + rimLight;
 
     // ★★★ 彩度アップ処理 ★★★
     finalColor = SaturationBoost(finalColor, 1.3); // ← 彩度1.3倍

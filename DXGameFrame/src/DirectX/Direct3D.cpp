@@ -8,6 +8,8 @@
 #include <DirectX/TextureManager.h>
 #include <DirectX/ModelManager.h>
 
+#include <../imgui/imgui.h>
+
 Direct3D::Direct3D() :
 	m_pDevice(nullptr),
 	m_pContext(nullptr),
@@ -136,6 +138,21 @@ ID3D11DeviceContext* Direct3D::GetContext() const
 
 void Direct3D::SetShadowMap()
 {
+	if (ImGui::Begin("Shadow Map Debug View"))
+	{
+		// 表示サイズを指定 (例: 幅300px, 高さ300px)
+		ImVec2 imageSize(300, 300);
+
+		// UV反転オプション (DirectXとImGuiの座標系の違いを吸収する場合)
+		ImVec2 uv0(0, 0);
+		ImVec2 uv1(1, 1); // 必要に応じて (1,0)などに変更
+
+		// 画像を表示
+		// (void*)キャストが必要です
+		ImGui::Image((void*)m_pShadowSRV.Get(), imageSize, uv0, uv1);
+	}
+	ImGui::End();
+
 	// ピクセルシェーダーのシェーダーリソースビューにシャドウマップをセット
 	m_pContext->PSSetShaderResources(
 		TextureSlot::ShadowMap,

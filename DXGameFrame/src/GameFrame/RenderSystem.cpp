@@ -158,6 +158,7 @@ void RenderSystem::DrawAll3D()
 	// --- オブジェクト描画処理 ---
 
 	Direct3D::Instance().BeginDraw();
+	Direct3D::Instance().SetShadowMap();
 
 	ConstantBufferManager::Instance().SetView(cameraView);
 	ConstantBufferManager::Instance().SetProjection(cameraProj);
@@ -329,7 +330,7 @@ void CalcLightMatrices(
 	if (DirectX::XMVector3NearEqual(up, lightDir, DirectX::XMVectorSet(0.01f, 0.01f, 0.01f, 0.01f)))
 		up = DirectX::XMVectorSet(0, 0, 1, 0);
 
-	float shadowDistance = 50.0f;
+	float shadowDistance = 200.0f;
 	DirectX::XMVECTOR lightOffset = DirectX::XMVectorScale(lightDir, shadowDistance);
 	DirectX::XMVECTOR lightPos = DirectX::XMVectorSubtract(center, lightOffset);
 
