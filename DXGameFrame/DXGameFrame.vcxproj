@@ -173,6 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="HLSL\DXGameFrameShader.hlsli" />
+    <None Include="HLSL\Shadow.hlsli" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

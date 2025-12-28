@@ -49,6 +49,12 @@ public:
 	 */
 	void SetLightIntensity(float intensity);
 
+	/**
+	 * @brief ライトの大きさを設定する（シャドウ用）
+	 * @param size ライトの大きさ (デフォルト1)
+	 */
+	void SetLightSize(float size);
+
 private:
 	/// 光源カラー
 	Color m_lightColor;
@@ -58,6 +64,9 @@ private:
 
 	/// ライトの強さ
 	float m_lightIntensity;
+
+	/// ライトの大きさ（シャドウ用）
+	float m_lightSize;
 
 public:
 	/**

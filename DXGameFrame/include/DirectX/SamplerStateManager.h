@@ -21,6 +21,7 @@ enum class SamplerState : UINT
 	ANISOTROPIC_WRAP,		// 異方性 + 繰り返し
 	ANISOTROPIC_CLAMP,		// 異方性 + 端固定
 	BORDER_BLACK,			// 枠外黒
+	SHADOW_COMPARISON,		// シャドウのハードウェアPCF用
 	COUNT
 };
 

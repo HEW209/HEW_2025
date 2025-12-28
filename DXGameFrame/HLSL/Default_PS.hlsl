@@ -1,4 +1,5 @@
 #include "DXGameFrameShader.hlsli"
+#include "Shadow.hlsli"
 
 struct PS_IN
 {
@@ -53,6 +54,16 @@ float4 main(PS_IN pin) : SV_TARGET
     float3 rimLight = rim * rimAmount;
 
     float3 finalColor = ambient + diffuse + specular + reflection + rimLight;
+    
+    // シャドウマップ座標への変換
+    float4 shadowPos = mul(pin.wPos, lightViewProj);
+    shadowPos.xyz /= shadowPos.w;
+    shadowPos.xy = shadowPos.xy * float2(0.5, -0.5) + 0.5;
+
+    // PCSS 計算
+    float pcssShadow = CalcPCSS(shadowPos, pin.pos.xy);
+    
+    finalColor *= pcssShadow;
 
     // ★★★ 彩度アップ処理 ★★★
     finalColor = SaturationBoost(finalColor, 1.3); // ← 彩度1.3倍

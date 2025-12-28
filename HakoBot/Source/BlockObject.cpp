@@ -10,6 +10,7 @@ void BlockObject::Awake()
 	m_pBlockMeshRenderer->SetShouldDrawOutline(false);
 	m_pBlockMeshRenderer->SetOutlineColor(Color{1.0f, 0.5f, 0.0f});
 	m_pBlockMeshRenderer->SetOutlineThickness(5.0f);
+	m_pBlockMeshRenderer->SetShouldDrawShadow(true);
 }
 
 void BlockObject::OnDestroy()

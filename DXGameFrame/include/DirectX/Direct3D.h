@@ -4,10 +4,14 @@
  * 
  * @author 石田怜
  * @date   2025/11/21
+ * 
+ * @date   2025/12/28 [芝晃佑]	シャドウ描画対応
  *********************************************************************/
 #pragma once
 
 #include "DirectXInclude.h"
+
+constexpr UINT SHADOW_MAP_SIZE = 2048;	// シャドウマップの解像度
 
 /**
  * @brief Direct3Dを扱う
@@ -38,10 +42,21 @@ public:
 	HRESULT Resize(UINT width, UINT height);
 
 	/**
+	 * @brief RTV, DSV, ShadowDSVをクリアする
+	 * @param clearColor 画面クリア色
+	 */
+	void ClearView(const float clearColor[4]);
+
+	/**
 	 * @brief 描画を開始する
 	 * @param clearColor 画面クリア色
 	 */
-	void BeginDraw(const float clearColor[4]);
+	void BeginDraw();
+
+	/**
+	 * @brief シャドウの描画を開始する
+	 */
+	void BeginDrawShadow();
 
 	/**
 	 * @brief 描画を終了する
@@ -77,6 +92,14 @@ public:
 	 */
 	UINT GetViewportSizeH() const { return m_viewportSizeH; }
 
+	/**
+	 * @brief シャドウ用のシェーダーリソースビューを取得する
+	 * @return シャドウ用のシェーダーリソースビューへのポインタ
+	 */
+	ID3D11ShaderResourceView* GetShadowSRV() const { return m_pShadowSRV.Get(); }
+
+	void SetShadowMap();
+
 private:
 	Direct3D();
 	~Direct3D() = default;
@@ -98,6 +121,15 @@ private:
 
 	/// 深度ステンシルバッファ
 	ComPtr<ID3D11Texture2D> m_pDepthBuffer;
+
+	///	シャドウ用の深度ステンシルビュー
+	ComPtr<ID3D11DepthStencilView> m_pShadowDSV;
+
+	///	シャドウ用のシェーダーリソースビュー
+	ComPtr<ID3D11ShaderResourceView> m_pShadowSRV;
+
+	/// シャドウマップ
+	ComPtr<ID3D11Texture2D> m_pShadowMap;
 
 	/// ビューポートの幅
 	UINT m_viewportSizeW;
@@ -136,11 +168,17 @@ private:
 	HRESULT CreateDepthStencilView(UINT width, UINT height);
 
 	/**
+	 * @brief シャドウマップを作成する
+	 * @return 成功したかを返す
+	 */
+	HRESULT CreateShadowMap();
+
+	/**
 	 * @brief ビューポート設定を行う
 	 * @param width クライアント領域の幅
 	 * @param height クライアント領域の高さ
 	 */
-	void SetViewport(UINT width, UINT height);
+	void SetViewport(UINT width, UINT height, bool isTemp = false);
 
 	/**
 	 * @brief スワップチェインのサイズを再設定する

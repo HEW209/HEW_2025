@@ -73,7 +73,7 @@ void ShaderManager::SetVertexShader(ID3D11VertexShader* pVS, ID3D11InputLayout* 
 
 void ShaderManager::SetPixelShader(ID3D11PixelShader* pPS)
 {
-	if (pPS == nullptr || pPS == m_pCurrentPS)
+	if (pPS == m_pCurrentPS)
 		return;
 
 	// シェーダーをセット

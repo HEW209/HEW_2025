@@ -42,6 +42,11 @@ public:
 	void SetPixelShader(const std::string& filePath);
 
 	/**
+	 * @brief ピクセルシェーダーをnullptrにする
+	 */
+	void ClearPixelShader();
+
+	/**
 	 * @brief テクスチャ画像を設定する
 	 * @param filePath テクスチャ画像へのファイルパス
 	 * @param slot 設定するスロット番号
