@@ -11,4 +11,4 @@ constexpr int ScreenWidth = 1280;
 constexpr int ScreenHeight = 720;
 
 /// “®ìFPS
-constexpr float FPS = 60.0f;
+constexpr float FPS = 300.0f;

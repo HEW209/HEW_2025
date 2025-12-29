@@ -47,10 +47,25 @@ public:
 	 */
 	bool IsUI();
 
+	/**
+	 * @brief ‚±‚ÌRenderer‚ğ”wŒi‚Æ‚µ‚Äˆµ‚¤‚©İ’è‚·‚é
+	 * @param isBackGround ”wŒiİ’èƒtƒ‰ƒO
+	 */
+	void SetBackGround(bool isBackGround);
+
+	/**
+	 * @brief ‚±‚ÌRenderer‚ª”wŒi‚©‚ğæ“¾‚·‚é
+	 * @return ”wŒi•`‰æ‚È‚çtrue‚ğ•Ô‚·
+	 */
+	bool IsBackGround();
+
 private:
 	/// •`‰æ—Dæ“x
 	int m_drawOrder;
 
 	/// UIƒtƒ‰ƒO
 	bool m_isUI;
+
+	/// ”wŒi•`‰æ
+	bool m_isBackGround;
 };
