@@ -90,7 +90,6 @@ void PlayerMove::Update()
 	moveDir = moveDir.Normalized();
 	float inputMagnitude = inputVec2.Magnitude();
 	move = moveDir * inputMagnitude * m_moveSpeed;
-	move.y = m_velocity_y;
 	Vector3 e = GetTransform()->GetEulerAngle();
 	float currentY = GetTransform()->GetEulerAngle().y;
 	if (moveDir != Vector3::zero)
@@ -117,18 +116,36 @@ void PlayerMove::Update()
 	ColliderSystem::RaycastHit hit = {};
 	if (ColliderSystem::Instance().Raycast(ray, &hit, 0.7f))
 	{
-		float dot = ColliderSystem::Instance().Dot(moveDir, hit.normal);
+		// 斜面かどうか調べるための内積
+		float dotSlope = ColliderSystem::Instance().Dot(Vector3(0.0f,1.0f,0.0f), hit.normal);
 
-		// 斜面に沿った方向を算出
-		Vector3 slopeDir = moveDir - (hit.normal * dot);
-		slopeDir = slopeDir.Normalized();
-
-		// 投影後の方向にスピードを掛ける
-		move = slopeDir * inputVec2.Magnitude() * m_moveSpeed;
-
+		if ((dotSlope > 0.95f) && inputMagnitude )
+		{
+			// 法線ベクトルと直行している場合、そのまま移動
+			//move.y = 0.0f;
+			// 重力かける
+			move.y = m_velocity_y;
+		}
+		else
+		{
+			// 斜面に沿った方向を算出
+			float dot = ColliderSystem::Instance().Dot(moveDir, hit.normal);
+			Vector3 slopeDir = moveDir - (hit.normal * dot);
+			slopeDir = slopeDir.Normalized();
+			
+			// 投影後の方向にスピードを掛ける
+			move = slopeDir * inputMagnitude * m_moveSpeed;
+		}
 		m_velocity_y = 0.0f;
 	}
+	else
+	{
+		// 重力かける
+		move.y = m_velocity_y;
+	}
 
+	
+	
 	//実際の移動
 	GetTransform()->Translate(move);
 
