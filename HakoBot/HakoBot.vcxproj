@@ -195,13 +195,13 @@
     <ClCompile Include="Source\VecUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\ThirdParty\Effekseer\Effekseer.h" />
+    <ClInclude Include="..\ThirdParty\Effekseer\Effekseer.Modules.h" />
+    <ClInclude Include="..\ThirdParty\Effekseer\Effekseer.SIMD.h" />
+    <ClInclude Include="..\ThirdParty\Effekseer\EffekseerRendererDX11.h" />
     <ClInclude Include="Source\BlockData.h" />
     <ClInclude Include="Source\BlockObject.h" />
     <ClInclude Include="Source\ClearProduce.h" />
-    <ClInclude Include="..\ThirdParty\Effekseer\Effekseer.SIMD.h" />
-    <ClInclude Include="..\ThirdParty\Effeksser\Effekseer.h" />
-    <ClInclude Include="..\ThirdParty\Effeksser\Effekseer.Modules.h" />
-    <ClInclude Include="..\ThirdParty\Effeksser\EffekseerRendererDX11.h" />
     <ClInclude Include="DebugEffectScene.h" />
     <ClInclude Include="source\ColliderDebug.h" />
     <ClInclude Include="Source\Config.h" />

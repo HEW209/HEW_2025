@@ -49,6 +49,13 @@ void RenderSystem::DrawAll()
 	// 時間設定
 	ConstantBufferManager::Instance().SetTime(Time::GetSceneTime());
 
+	// 2D描画順ソート
+	std::stable_sort(m_pRenderer2DComponents.begin(), m_pRenderer2DComponents.end(),
+		[](Renderer2D* a, Renderer2D* b) {
+			return a->GetOrder() > b->GetOrder();
+		});
+
+	DrawALL2DBackGround();
 	DrawAll3D();
 	DrawAll2D();
 	DrawDebugUI();
@@ -99,6 +106,40 @@ void RenderSystem::UnregisterShadow(Renderer* pRenderer)
 void RenderSystem::SetClearColor(Color color)
 {
 	m_clearColor = color;
+}
+
+void RenderSystem::DrawALL2DBackGround()
+{
+	Direct3D::Instance().BeginDraw();
+	PipelineStateManager::Instance().Refresh();
+
+	// カメラ設定
+	Camera* pMainCamera = Camera::GetMain();
+	if (pMainCamera != nullptr)
+	{
+		// UI用カメラのビュー行列を設定
+		DirectX::XMMATRIX view = Camera::GetDefaultViewMatrix();
+		ConstantBufferManager::Instance().SetView(view);
+
+		// 2Dカメラプロジェクション行列設定
+		DirectX::XMMATRIX projection = pMainCamera->GetOrthographicProjectionMatrix();
+		ConstantBufferManager::Instance().SetProjection(projection);
+	}
+
+	// フレーム定数バッファを更新
+	ConstantBufferManager::Instance().UpdateFrameConstantBuffer();
+
+	// UI描画処理
+	for (auto* renderer : m_pRenderer2DComponents)
+	{
+		if (renderer->IsEnabled() &&
+			renderer->IsStarted() &&
+			renderer->GetGameObject()->IsActiveHierarchy() &&
+			renderer->IsBackGround())
+		{
+			renderer->Draw();
+		}
+	}
 }
 
 void RenderSystem::DrawAll3D()
@@ -234,6 +275,7 @@ void RenderSystem::DrawAll3D()
 void RenderSystem::DrawAll2D()
 {
 	Direct3D::Instance().BeginDraw();
+	PipelineStateManager::Instance().Refresh();
 
 	// カメラ設定
 	Camera* pMainCamera = Camera::GetMain();
@@ -251,19 +293,14 @@ void RenderSystem::DrawAll2D()
 	// フレーム定数バッファを更新
 	ConstantBufferManager::Instance().UpdateFrameConstantBuffer();
 
-	// 2D描画順ソート
-	std::stable_sort(m_pRenderer2DComponents.begin(), m_pRenderer2DComponents.end(),
-		[](Renderer2D* a, Renderer2D* b) {
-			return a->GetOrder() > b->GetOrder();
-		});
-
 	// 2D描画処理
 	for (auto* renderer : m_pRenderer2DComponents)
 	{
 		if (renderer->IsEnabled() &&
 			renderer->IsStarted() &&
 			renderer->GetGameObject()->IsActiveHierarchy() &&
-			!renderer->IsUI())
+			!renderer->IsUI()&&
+			!renderer->IsBackGround())
 		{
 			renderer->Draw();
 		}
@@ -285,7 +322,8 @@ void RenderSystem::DrawAll2D()
 		if (renderer->IsEnabled() &&
 			renderer->IsStarted() &&
 			renderer->GetGameObject()->IsActiveHierarchy() &&
-			renderer->IsUI())
+			renderer->IsUI() &&
+			!renderer->IsBackGround())
 		{
 			renderer->Draw();
 		}
