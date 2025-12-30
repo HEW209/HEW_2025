@@ -99,7 +99,7 @@ void GameScene::Init() {
     // ライト
     auto lightObj = CreateGameObject();
     auto light = lightObj->AddComponent<DirectionalLight>();
-    light->SetLightSize(0.1f);
+    light->SetLightSize(0.15f);
     lightObj->GetTransform()->SetEulerAngle(50.0f, -30.0f, 0.0f);
 
     // クリア演出

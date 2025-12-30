@@ -72,6 +72,10 @@ public:
 		return offset;
 	}
 
+	void SetTransparent(bool transparent);
+
+	bool IsTransparent() const { return m_isTransparent; }
+
 private:
 	BlockSetData m_blockSet;
 	std::vector<ObjPtr<GameObject>> m_pBlocks;
@@ -80,4 +84,5 @@ private:
 	Vector3 m_size;
 	Vector3 m_center;
 	bool m_shouldUseCollider;
+	bool m_isTransparent;
 };

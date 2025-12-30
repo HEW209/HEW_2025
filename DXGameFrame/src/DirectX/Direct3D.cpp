@@ -71,6 +71,9 @@ HRESULT Direct3D::Resize(UINT width, UINT height)
 	m_pShadowDSV.Reset();
 	m_pShadowSRV.Reset();
 	m_pShadowMap.Reset();
+	m_pTransparentDSV.Reset();
+	m_pTransparentSRV.Reset();
+	m_pTransparentDepthBuffer.Reset();
 
 	// スワップチェインのサイズを変更
 	ResizeSwapChain(width, height);
@@ -97,6 +100,10 @@ void Direct3D::ClearView(const float clearColor[4])
 	// シャドウ用DSVクリア
 	m_pContext->ClearDepthStencilView(m_pShadowDSV.Get(),
 		D3D11_CLEAR_DEPTH, 1.0f, 0);
+
+	// グループ透過用DSVクリア
+	m_pContext->ClearDepthStencilView(m_pTransparentDSV.Get(),
+		D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
 void Direct3D::BeginDraw()
@@ -115,6 +122,15 @@ void Direct3D::BeginDrawShadow()
 
 	// シャドウ用ビューポートをセット
 	SetViewport(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE, true);
+}
+
+void Direct3D::BeginDrawTransparentDepth()
+{
+	// グループ透過用レンダーターゲットをセット
+	m_pContext->OMSetRenderTargets(0, nullptr, m_pTransparentDSV.Get());
+
+	// ビューポートをセット
+	SetViewport(m_viewportSizeW, m_viewportSizeH);
 }
 
 void Direct3D::Present()
@@ -202,6 +218,18 @@ void Direct3D::SetShadowMap()
 		TextureSlot::ShadowMap,
 		1,
 		m_pShadowSRV.GetAddressOf()
+	);
+}
+
+void Direct3D::SetTransparentDepthMap()
+{
+	//DrawShadowMapDebugWindow(m_pTransparentSRV.Get());
+
+	// ピクセルシェーダーのシェーダーリソースビューにグループ透過用深度マップをセット
+	m_pContext->PSSetShaderResources(
+		TextureSlot::TransparentDepthMap,
+		1,
+		m_pTransparentSRV.GetAddressOf()
 	);
 }
 
@@ -298,6 +326,10 @@ HRESULT Direct3D::CreateRenderTargets(UINT width, UINT height)
 	hr = CreateShadowMap();
 	if (FAILED(hr)) { return hr; }
 
+	// グループ透過用深度ステンシルビューを作成
+	hr = CreateTransparentDepthStencilView(width, height);
+	if (FAILED(hr)) { return hr; }
+
 	// レンダーターゲットビューと深度ステンシルビューをセット
 	m_pContext->OMSetRenderTargets(1, m_pRTV.GetAddressOf(), m_pDSV.Get());
 
@@ -363,7 +395,7 @@ HRESULT Direct3D::CreateShadowMap()
 	texDesc.Height = SHADOW_MAP_SIZE;
 	texDesc.MipLevels = 1;
 	texDesc.ArraySize = 1;
-	texDesc.Format = DXGI_FORMAT_R32_TYPELESS;
+	texDesc.Format = DXGI_FORMAT_R24G8_TYPELESS;
 	texDesc.SampleDesc.Count = 1;
 	texDesc.Usage = D3D11_USAGE_DEFAULT;
 	texDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
@@ -373,17 +405,59 @@ HRESULT Direct3D::CreateShadowMap()
 
 	// シャドウ用DSV (書き込み用)
 	D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
-	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
+	dsvDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 	dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	hr = m_pDevice->CreateDepthStencilView(m_pShadowMap.Get(), &dsvDesc, m_pShadowDSV.GetAddressOf());
 	if (FAILED(hr)) { return hr; }
 
 	// シャドウ用SRV (読み込み用)
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
-	srvDesc.Format = DXGI_FORMAT_R32_FLOAT;
+	srvDesc.Format = DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
 	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 	srvDesc.Texture2D.MipLevels = 1;
 	hr = m_pDevice->CreateShaderResourceView(m_pShadowMap.Get(), &srvDesc, m_pShadowSRV.GetAddressOf());
+	if (FAILED(hr)) { return hr; }
+
+	return hr;
+}
+
+HRESULT Direct3D::CreateTransparentDepthStencilView(UINT width, UINT height)
+{
+	HRESULT hr = S_OK;		// 関数の結果
+
+	// 深度ステンシルバッファの設定
+	D3D11_TEXTURE2D_DESC depthDesc = {};		// 深度ステンシルバッファの設定情報
+	depthDesc.Width = width;
+	depthDesc.Height = height;
+	depthDesc.MipLevels = 1;
+	depthDesc.ArraySize = 1;
+	depthDesc.Format = DXGI_FORMAT_R32_TYPELESS;
+	depthDesc.SampleDesc.Count = 1;
+	depthDesc.Usage = D3D11_USAGE_DEFAULT;
+	depthDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
+
+	// 深度ステンシルバッファを作成
+	hr = m_pDevice->CreateTexture2D(&depthDesc, nullptr, m_pTransparentDepthBuffer.GetAddressOf());
+	if (FAILED(hr)) { return hr; }
+
+	// 深度ステンシルビューの設定
+	D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};		// 深度ステンシルビューの設定情報
+	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
+	dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+	dsvDesc.Texture2D.MipSlice = 0;
+
+	// 深度ステンシルビューを作成
+	hr = m_pDevice->CreateDepthStencilView(m_pTransparentDepthBuffer.Get(), &dsvDesc, m_pTransparentDSV.GetAddressOf());
+	if (FAILED(hr)) { return hr; }
+
+	// シェーダーリソースビューの設定
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+	srvDesc.Format = DXGI_FORMAT_R32_FLOAT;
+	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.Texture2D.MipLevels = 1;
+
+	// シェーダーリソースビューを作成
+	hr = m_pDevice->CreateShaderResourceView(m_pTransparentDepthBuffer.Get(), &srvDesc, m_pTransparentSRV.GetAddressOf());
 	if (FAILED(hr)) { return hr; }
 
 	return hr;

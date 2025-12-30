@@ -134,6 +134,23 @@ HRESULT DepthStencilStateManager::CreateAllState()
 
 			dsDesc.BackFace = dsDesc.FrontFace;
 			break;
+
+		case DepthStencilState::OUTLINE_READONLY:
+			// アウトライン描画用（深度書き込みOFF）
+			dsDesc.DepthEnable = TRUE;
+			dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+			dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
+			dsDesc.StencilEnable = TRUE;
+			dsDesc.StencilReadMask = 0xFF;
+			dsDesc.StencilWriteMask = 0xFF;
+
+			dsDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+			dsDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+			dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+			dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_NOT_EQUAL;
+
+			dsDesc.BackFace = dsDesc.FrontFace;
+			break;
 		}
 
 		// 深度ステンシルステートの作成

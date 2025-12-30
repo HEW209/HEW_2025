@@ -1,5 +1,12 @@
 #include "DXGameFrameShader.hlsli"
 #include "Shadow.hlsli"
+#include "GroupTransparent.hlsli"
+
+cbuffer TransparentParam : register(b3)
+{
+    float transparency;
+    float3 pad;
+};
 
 struct PS_IN
 {
@@ -9,11 +16,6 @@ struct PS_IN
     float4 color : COLOR0;
     float4 wPos : POSITION0;
 };
-
-cbuffer uvOffset : register(b3)
-{
-    float2 uvOffset;
-}
 
 Texture2D tex : register(t0);
 SamplerState samp : register(s0);
@@ -30,6 +32,8 @@ static const float3 envColor = float3(0.75, 0.85, 1.0);
 
 float4 main(PS_IN pin) : SV_TARGET
 {
+    CheckDepth(pin.pos);
+    
     float gloss = 64; // ハイライトのシャープさ
     float specPower = 0.5; // スペキュラ
     float reflAmount = 0.3; // 
@@ -39,7 +43,7 @@ float4 main(PS_IN pin) : SV_TARGET
     float3 V = normalize(cameraPos - pin.wPos.xyz);
     float3 L = normalize(lightDir);
 
-    float3 albedo = tex.Sample(samp, pin.uv + uvOffset).rgb;
+    float3 albedo = tex.Sample(samp, pin.uv).rgb;
 
     float3 ambient = albedo * ambientColor * 0.8;
 
@@ -74,9 +78,11 @@ float4 main(PS_IN pin) : SV_TARGET
     float3 directLight = (diffuse + specular) * pcssShadow;
 
     float3 finalColor = ambient + directLight + reflection + rimLight;
+    
+    finalColor *= 0.85;
 
     // ★★★ 彩度アップ処理 ★★★
     finalColor = SaturationBoost(finalColor, 1.3); // ← 彩度1.3倍
 
-    return float4(finalColor, 1.0);
+    return float4(finalColor, transparency);
 }

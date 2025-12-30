@@ -22,13 +22,13 @@
 class ShapeScreen : public Component
 {
 public:
-	ShapeScreen() = default;
+	ShapeScreen();
 	~ShapeScreen() = default;
 
 	void OnDestroy() override;
 
 	/// @brief クリア形状を設定
-	void SetClearShape(const ShapeType& shape, bool isHorogram);
+	void SetClearShape(const ShapeType& shape);
 
 	/// @brief 現在の形状を設定
 	void SetCurrentShape(const ShapeType& shape);
@@ -36,8 +36,14 @@ public:
 	/// @brief クリアしているか
 	bool IsClear();
 
+	/// @brief 透過設定を行う
+	void SetTransparent(bool isHologram);
+
+	/// @brief 透過設定を取得する
+	bool IsTransparent() const { return m_isHologram; }
+
 private:
-	void UpdateClearShapeBlocks(bool isHorogram);
+	void UpdateClearShapeBlocks();
 	void UpdateCurrentShapeBlocks();
 
 	struct ShapeBlock
@@ -49,4 +55,6 @@ private:
 	std::vector<ShapeBlock> m_pShapeBlocks;
 	ShapeType m_clearShape;
 	ShapeType m_currentShape;
+
+	bool m_isHologram;
 };

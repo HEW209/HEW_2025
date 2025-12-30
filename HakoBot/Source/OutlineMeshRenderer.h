@@ -14,6 +14,11 @@ public:
 	virtual void Draw() override;
 
 	/**
+	 * @brief 影描画処理
+	 */
+	virtual void DrawDepth() override;
+
+	/**
 	 * @brief モデルデータを読み込む
 	 * @param filePath モデルデータへのファイルパス
 	 */

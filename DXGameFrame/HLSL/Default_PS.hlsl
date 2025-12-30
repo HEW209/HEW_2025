@@ -69,6 +69,8 @@ float4 main(PS_IN pin) : SV_TARGET
     float3 directLight = (diffuse + specular) * pcssShadow;
 
     float3 finalColor = ambient + directLight + reflection + rimLight;
+    
+    finalColor *= 0.85;
 
     // ★★★ 彩度アップ処理 ★★★
     finalColor = SaturationBoost(finalColor, 1.3); // ← 彩度1.3倍

@@ -4,10 +4,12 @@
 
 #include "BlockObject.h"
 #include "VecUtil.h"
+#include "InputManager.h"
 
 
 GridField::GridField()
 	: m_removeCursorBlockId(0u)
+	, m_isBlockTransparent(false)
 {
 
 }
@@ -34,6 +36,7 @@ void GridField::Awake()
 		transform->SetPosition(0.0f, -0.2f, 0.0f);
 		transform->SetEulerAngle(90.0f, 0.0f, 0.0f);
 		m_pShapeScreen[1] = obj->AddComponent<ShapeScreen>();
+		m_pShapeScreen[1]->SetTransparent(false);
 	}
 
 	{
@@ -50,6 +53,13 @@ void GridField::Start()
 {
 	m_pPlaceCursor = SceneManager::GetActiveScene()->CreateGameObject();
 	m_pPlaceCursorComponent = m_pPlaceCursor->AddComponent<PlaceCursor>();
+}
+
+void GridField::Update()
+{
+	if (InputManager::CurrentInputSystem().GetButtonDown("ChangeBlockTransparency"_hash)) {
+		SetBlockTransparent(!m_isBlockTransparent);
+	}
 }
 
 void GridField::OnDestroy()
@@ -159,6 +169,7 @@ bool GridField::PlaceBlock()
 	component->SetUseCollider(true);
 	component->SetBlockSet(blockSet);
 	component->SetModel(modelPath);
+	component->SetTransparent(m_isBlockTransparent);
 	auto transform = obj->GetTransform();
 	transform->SetPosition(pos);
 	transform->SetQuaternion(rot);
@@ -247,7 +258,7 @@ void GridField::SetClearShape(ShapeType shapeX, ShapeType shapeY, ShapeType shap
 	m_clearShape[2] = shapeZ;
 
 	for (int i = 0; i < 3; ++i) {
-		m_pShapeScreen[i]->SetClearShape(m_clearShape[i], i != 1);
+		m_pShapeScreen[i]->SetClearShape(m_clearShape[i]);
 	}
 }
 
@@ -278,6 +289,16 @@ bool GridField::IsInside(const Vector3& position)
 	}
 
 	return true;
+}
+
+void GridField::SetBlockTransparent(bool isTransparent)
+{
+	m_isBlockTransparent = isTransparent;
+	for (auto&& block : m_pPlacedBlocks) {
+		if (block) {
+			block->GetComponent<BlockObject>()->SetTransparent(isTransparent);
+		}
+	}
 }
 
 bool GridField::IsInside(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation)

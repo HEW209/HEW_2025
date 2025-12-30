@@ -1,6 +1,11 @@
 #include "ShapeScreen.h"
 
 
+ShapeScreen::ShapeScreen()
+	: m_isHologram(true)
+{
+}
+
 void ShapeScreen::OnDestroy()
 {
 	for (auto&& block : m_pShapeBlocks) {
@@ -10,7 +15,7 @@ void ShapeScreen::OnDestroy()
 	}
 }
 
-void ShapeScreen::SetClearShape(const ShapeType& shape, bool isHorogram)
+void ShapeScreen::SetClearShape(const ShapeType& shape)
 {
 	if (shape == m_clearShape) {
 		return;
@@ -18,7 +23,7 @@ void ShapeScreen::SetClearShape(const ShapeType& shape, bool isHorogram)
 
 	m_clearShape = shape;
 
-	UpdateClearShapeBlocks(isHorogram);
+	UpdateClearShapeBlocks();
 
 	if (m_clearShape.GetSize() != m_currentShape.GetSize()) {
 		m_currentShape = ShapeType(m_clearShape.GetSize());
@@ -46,7 +51,22 @@ bool ShapeScreen::IsClear()
 	return m_clearShape == m_currentShape;
 }
 
-void ShapeScreen::UpdateClearShapeBlocks(bool isHorogram)
+void ShapeScreen::SetTransparent(bool isHologram)
+{
+	m_isHologram = isHologram;
+	for (auto&& block : m_pShapeBlocks) {
+		if (block.pRenderer) {
+			block.pRenderer->SetTransparent(isHologram);
+			for (auto&& material : *block.pRenderer->GetMaterials()) {
+				material.SetBlendState(isHologram ? BlendState::ALPHA : BlendState::DEFAULT);
+				material.SetDepthStencilState(isHologram ? DepthStencilState::READ_ONLY : DepthStencilState::DEFAULT);
+				material.SetPixelShader(isHologram ? "Assets/Shader/Hologram_PS.cso" : "Assets/Shader/Screen_PS.cso");
+			}
+		}
+	}
+}
+
+void ShapeScreen::UpdateClearShapeBlocks()
 {
 	auto size = m_clearShape.GetSize();
 	Vector3 sizeFloat = static_cast<Vector3>(size);
@@ -69,13 +89,13 @@ void ShapeScreen::UpdateClearShapeBlocks(bool isHorogram)
 
 		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
 		auto renderer = obj->AddComponent<MeshRenderer>();
-		renderer->SetTransparent(true);
+		renderer->SetTransparent(m_isHologram);
 
 		Material* mat = renderer->GetMaterial(0);
-		mat->SetPixelShader("Assets/Shader/Hologram_PS.cso");
-		mat->SetDepthStencilState(DepthStencilState::READ_ONLY);
-		mat->SetBlendState(BlendState::ALPHA);
-		mat->SetRasterizerState(RasterizerState::NONE);
+		mat->SetPixelShader(m_isHologram ? "Assets/Shader/Hologram_PS.cso" : "Assets/Shader/Screen_PS.cso");
+		mat->SetDepthStencilState(m_isHologram ? DepthStencilState::READ_ONLY : DepthStencilState::DEFAULT);
+		mat->SetBlendState(m_isHologram ? BlendState::ALPHA : BlendState::DEFAULT);
+		mat->SetRasterizerState(m_isHologram ? RasterizerState::NONE : RasterizerState::DEFAULT);
 
 		auto transform = obj->GetTransform();
 		transform->SetParent(GetTransform());

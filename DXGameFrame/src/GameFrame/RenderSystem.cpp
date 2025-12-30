@@ -200,6 +200,23 @@ void RenderSystem::DrawAll3D()
 		cameraPos = pMainCamera->GetTransform()->GetPosition();
 	}
 
+	// 透過オブジェクト描画準備
+	Direct3D::Instance().BeginDrawTransparentDepth();
+	
+	for (auto* renderer : m_pRendererComponents)
+	{
+		if (renderer->IsEnabled() &&
+			renderer->IsStarted() &&
+			renderer->GetGameObject()->IsActiveHierarchy() &&
+			renderer->IsGroupTransparent())
+		{
+			renderer->DrawDepth();
+		}
+	}
+
+	Direct3D::Instance().BeginDraw();
+	Direct3D::Instance().SetTransparentDepthMap();
+
 	// 透過オブジェクト登録
 	for (auto* renderer : m_pRendererComponents)
 	{
@@ -234,6 +251,9 @@ void RenderSystem::DrawAll3D()
 void RenderSystem::DrawAll2D()
 {
 	Direct3D::Instance().BeginDraw();
+
+	// パイプラインステートをリセット
+	PipelineStateManager::Instance().Refresh();
 
 	// カメラ設定
 	Camera* pMainCamera = Camera::GetMain();

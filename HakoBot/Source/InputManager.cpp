@@ -16,11 +16,12 @@ void InputManager::Init()
 		system.CreateButtonAction("PlaceAndRemove"_hash);
 		system.CreateButtonAction("Up"_hash);
 		system.CreateButtonAction("Down"_hash);
+		system.CreateButtonAction("Clear"_hash);
+		system.CreateButtonAction("Menu"_hash);
 		system.CreateButtonAction("LockRotation"_hash);
+		system.CreateButtonAction("ChangeBlockTransparency"_hash);
 		system.CreateAxisAction("Move"_hash);
 		system.CreateAxisAction("CameraMove"_hash);
-		system.CreateAxisAction("Clear"_hash);
-		system.CreateAxisAction("Menu"_hash);
 
 		system.BindKey("RotateBlockUp"_hash, KeyCode::UP);
 		system.BindKey("RotateBlockDown"_hash, KeyCode::DOWN);
@@ -29,10 +30,11 @@ void InputManager::Init()
 		system.BindKey("PlaceAndRemove"_hash, KeyCode::SPACE);
 		system.BindKey("Up"_hash, KeyCode::E);
 		system.BindKey("Down"_hash, KeyCode::Q);
-		system.BindKey("LockRotation"_hash, KeyCode::L);
-
 		system.BindKey("Clear"_hash, KeyCode::X);
 		system.BindKey("Menu"_hash, KeyCode::ESC);
+		system.BindKey("LockRotation"_hash, KeyCode::SHIFT);
+		system.BindKey("ChangeBlockTransparency"_hash, KeyCode::R);
+
 		system.BindVectorKeys("Move"_hash, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
 		system.BindVectorKeys("CameraMove"_hash, KeyCode::I, KeyCode::K, KeyCode::MOUSE_LEFT, KeyCode::MOUSE_RIGHT);
 
@@ -46,6 +48,7 @@ void InputManager::Init()
 		system.BindPadButton("Clear"_hash, PadCode::X);
 		system.BindPadButton("Menu"_hash, PadCode::START);
 		system.BindPadButton("LockRotation"_hash, PadCode::Y);
+		system.BindPadButton("ChangeBlockTransparency"_hash, PadCode::A);
 		system.BindPadStick("Move"_hash, StickCode::LEFT);
 		system.BindPadStick("CameraMove"_hash, StickCode::RIGHT);
 	}
