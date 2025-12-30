@@ -142,18 +142,33 @@ void GameScene::CreateGridField() {
     }
 
     // “Š‰e‹@
-    for (int i = 0; i < 2; ++i) {
+    for (int i = 0; i < 4; ++i) {
         auto obj = CreateGameObject();
         auto renderer = obj->AddComponent<MeshRenderer>();
         renderer->LoadModel("Assets/Model/Stage/fbx/toueiki.fbx");
 
         Transform* transform = obj->GetTransform();
-        if (i == 0) {
+        switch (i)
+        {
+        case 0:
             transform->SetPosition(-(3.0f + size_x * 0.5f), 0.0f, 0.0f);
             transform->SetEulerAngle(0.0f, 90.0f, 0.0f);
-        }
-        else {
+            break;
+
+        case 1:
             transform->SetPosition(0.0f, 0.0f, 3.0f + size_z * 0.5f);
+            transform->SetEulerAngle(0.0f, 0.0f, 0.0f);
+            break;
+
+        case 2:
+            transform->SetPosition((3.0f + size_x * 0.5f), 0.0f, 0.0f);
+            transform->SetEulerAngle(0.0f, -90.0f, 0.0f);
+            break;
+
+        case 3:
+            transform->SetPosition(0.0f, 0.0f, -(3.0f + size_z * 0.5f));
+            transform->SetEulerAngle(0.0f, 180.0f, 0.0f);
+            break;
         }
     }
 

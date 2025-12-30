@@ -1,5 +1,9 @@
 #include "ShapeScreen.h"
 
+static const Color g_clearShapeColor(0.2f, 0.8f, 4.0f, 1.0f);
+static const Color g_defaultColor(0.0f, 0.2f, 1.0f, 1.0f);
+static const Color g_redColor(2.0f, 0.0f, 0.0f, 1.0f);
+static const Color g_greenColor(0.0f, 2.0f, 0.0f, 1.0f);
 
 void ShapeScreen::OnDestroy()
 {
@@ -10,7 +14,7 @@ void ShapeScreen::OnDestroy()
 	}
 }
 
-void ShapeScreen::SetClearShape(const ShapeType& shape, bool isHorogram)
+void ShapeScreen::SetClearShape(const ShapeType& shape, bool isFlip, bool isHorogram)
 {
 	if (shape == m_clearShape) {
 		return;
@@ -18,7 +22,7 @@ void ShapeScreen::SetClearShape(const ShapeType& shape, bool isHorogram)
 
 	m_clearShape = shape;
 
-	UpdateClearShapeBlocks(isHorogram);
+	UpdateClearShapeBlocks(isFlip, isHorogram);
 
 	if (m_clearShape.GetSize() != m_currentShape.GetSize()) {
 		m_currentShape = ShapeType(m_clearShape.GetSize());
@@ -46,7 +50,7 @@ bool ShapeScreen::IsClear()
 	return m_clearShape == m_currentShape;
 }
 
-void ShapeScreen::UpdateClearShapeBlocks(bool isHorogram)
+void ShapeScreen::UpdateClearShapeBlocks(bool isFlip, bool isHorogram)
 {
 	auto size = m_clearShape.GetSize();
 	Vector3 sizeFloat = static_cast<Vector3>(size);
@@ -69,6 +73,7 @@ void ShapeScreen::UpdateClearShapeBlocks(bool isHorogram)
 
 		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
 		auto renderer = obj->AddComponent<MeshRenderer>();
+		renderer->SetGeometry(Geometry::Type::PLANE);
 		renderer->SetTransparent(true);
 
 		Material* mat = renderer->GetMaterial(0);
@@ -76,19 +81,24 @@ void ShapeScreen::UpdateClearShapeBlocks(bool isHorogram)
 		mat->SetDepthStencilState(DepthStencilState::READ_ONLY);
 		mat->SetBlendState(BlendState::ALPHA);
 		mat->SetRasterizerState(RasterizerState::NONE);
-
+		
 		auto transform = obj->GetTransform();
 		transform->SetParent(GetTransform());
-		transform->SetScale(1.0f, 1.0f, 0.2f);
+		transform->SetScale(1.0f, 1.0f, 1.0f);
+		transform->SetEulerAngle(90.0f, 0.0f, 0.0f, Space::LOCAL);
+		if (isFlip)
+		{
+			transform->Rotate(0.0f, 180.0f, 0.0f);
+		}
 		transform->SetPosition(pos,Space::LOCAL);
 
 		Material* material = renderer->GetMaterial(0);
 		Color currentColor;
 		if (*it) {
-			currentColor = Color(0.2f, 0.8f, 4.0f, 0.6f);
+			currentColor = g_clearShapeColor;
 		}
 		else {
-			currentColor = Color(0.0f, 0.2f, 1.0f, 0.6f);
+			currentColor = g_defaultColor;
 		}
 		mat->SetParameter(&currentColor, sizeof(currentColor));
 
@@ -119,19 +129,19 @@ void ShapeScreen::UpdateCurrentShapeBlocks()
 		if (*it)
 		{
 			if (isInside) {
-				currentColor = Color(0.0f, 2.0f, 0.0f, 0.6f);
+				currentColor = g_greenColor;
 			}
 			else {
-				currentColor = Color(2.0f, 0.0f, 0.0f, 0.6f);
+				currentColor = g_redColor;
 			}
 		}
 		else
 		{
 			if (isInside) {
-				currentColor = Color(0.2f, 0.8f, 4.0f, 0.6f);
+				currentColor = g_clearShapeColor;
 			}
 			else {
-				currentColor = Color(0.0f, 0.2f, 1.0f, 0.6f);
+				currentColor = g_defaultColor;
 			}
 		}
 
