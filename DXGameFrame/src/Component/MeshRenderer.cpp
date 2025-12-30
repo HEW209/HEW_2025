@@ -61,6 +61,28 @@ void MeshRenderer::DrawShadow()
 	m_pModel->Draw(shadowMaterials);
 }
 
+void MeshRenderer::DrawDepth()
+{
+	if (m_pModel == nullptr)
+		return;
+
+	// Transformからワールド行列をセット
+	DirectX::XMMATRIX matrix;
+	matrix = GetTransform()->GetWorldMatrix();
+	ConstantBufferManager::Instance().SetWorld(matrix);
+
+	std::vector<Material> depthMaterials;
+	depthMaterials = m_materials;
+	for (auto itDepthMat = depthMaterials.begin(); itDepthMat != depthMaterials.end(); ++itDepthMat) {
+		itDepthMat->SetBlendState(BlendState::DISABLE);
+		itDepthMat->SetDepthStencilState(DepthStencilState::DEFAULT);
+		itDepthMat->ClearPixelShader();
+	}
+
+	// モデル描画処理
+	m_pModel->Draw(depthMaterials);
+}
+
 void MeshRenderer::LoadModel(const std::string& filePath)
 {
 	// モデル読み込み

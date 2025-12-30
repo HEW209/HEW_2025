@@ -31,6 +31,11 @@ public:
 	virtual void DrawShadow() = 0;
 
 	/**
+	 * @brief 深度描画処理
+	 */
+	virtual void DrawDepth() = 0;
+
+	/**
 	 * @brief 透過オブジェクトかを設定する
 	 * @param transparent 透過オブジェクトフラグ
 	 */
@@ -42,6 +47,20 @@ public:
 	 */
 	bool IsTransparent();
 
+	/**
+	 * @brief 透過オブジェクト（グループ）かを設定する
+	 * @brief グループ透過オブジェクト同士は互いを透過しない
+	 * @param transparent 透過オブジェクトフラグ
+	 */
+	void SetGroupTransparent(bool transparent);
+
+	/**
+	 * @brief グループ透過オブジェクト設定を取得する
+	 * @return グループ透過オブジェクトならtrueを返す
+	 */
+	bool IsGroupTransparent();
+
 private:
 	bool m_isTransparent;
+	bool m_isGroupTransparent;
 };

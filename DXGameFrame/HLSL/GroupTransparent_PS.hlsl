@@ -1,5 +1,12 @@
 #include "DXGameFrameShader.hlsli"
 #include "Shadow.hlsli"
+#include "GroupTransparent.hlsli"
+
+cbuffer TransparentParam : register(b3)
+{
+    float transparency;
+    float3 pad;
+};
 
 struct PS_IN
 {
@@ -25,10 +32,12 @@ static const float3 envColor = float3(0.75, 0.85, 1.0);
 
 float4 main(PS_IN pin) : SV_TARGET
 {
-    float gloss = 64;       // ハイライトのシャープさ
-    float specPower = 0.5;  // スペキュラ
+    CheckDepth(pin.pos);
+    
+    float gloss = 64; // ハイライトのシャープさ
+    float specPower = 0.5; // スペキュラ
     float reflAmount = 0.3; // 
-    float rimAmount = 0.2;  // リムライト
+    float rimAmount = 0.2; // リムライト
 
     float3 N = normalize(pin.normal);
     float3 V = normalize(cameraPos - pin.wPos.xyz);
@@ -70,5 +79,5 @@ float4 main(PS_IN pin) : SV_TARGET
     // ★★★ 彩度アップ処理 ★★★
     finalColor = SaturationBoost(finalColor, 1.3); // ← 彩度1.3倍
 
-    return float4(finalColor, 1.0);
+    return float4(finalColor, transparency);
 }

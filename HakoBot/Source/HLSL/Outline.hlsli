@@ -6,7 +6,7 @@ cbuffer OutlineParam : register(b3)
     float4 outlineColor;
     float outlineWidth;
     float2 viewportSize;
-    float pad;
+    float transparency;
 };
 
 struct GS_IN

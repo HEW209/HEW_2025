@@ -4,10 +4,12 @@
 
 #include "BlockObject.h"
 #include "VecUtil.h"
+#include "InputManager.h"
 
 
 GridField::GridField()
 	: m_removeCursorBlockId(0u)
+	, m_isBlockTransparent(false)
 {
 
 }
@@ -40,6 +42,7 @@ void GridField::Awake()
 		transform->SetParent(GetTransform());
 		transform->SetEulerAngle(90.0f, 0.0f, 0.0f);
 		m_pShapeScreen[2] = obj->AddComponent<ShapeScreen>();
+		m_pShapeScreen[2]->SetTransparent(false);
 	}
 
 	{
@@ -62,6 +65,13 @@ void GridField::Start()
 {
 	m_pPlaceCursor = SceneManager::GetActiveScene()->CreateGameObject();
 	m_pPlaceCursorComponent = m_pPlaceCursor->AddComponent<PlaceCursor>();
+}
+
+void GridField::Update()
+{
+	if (InputManager::CurrentInputSystem().GetButtonDown("ChangeBlockTransparency"_hash)) {
+		SetBlockTransparent(!m_isBlockTransparent);
+	}
 }
 
 void GridField::OnDestroy()
@@ -173,6 +183,7 @@ bool GridField::PlaceBlock()
 	component->SetUseCollider(true);
 	component->SetBlockSet(blockSet);
 	component->SetModel(modelPath);
+	component->SetTransparent(m_isBlockTransparent);
 	auto transform = obj->GetTransform();
 	transform->SetPosition(pos);
 	transform->SetQuaternion(rot);
@@ -298,6 +309,16 @@ bool GridField::IsInside(const Vector3& position)
 	}
 
 	return true;
+}
+
+void GridField::SetBlockTransparent(bool isTransparent)
+{
+	m_isBlockTransparent = isTransparent;
+	for (auto&& block : m_pPlacedBlocks) {
+		if (block) {
+			block->GetComponent<BlockObject>()->SetTransparent(isTransparent);
+		}
+	}
 }
 
 bool GridField::IsInside(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation)

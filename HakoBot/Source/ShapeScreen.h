@@ -22,7 +22,7 @@
 class ShapeScreen : public Component
 {
 public:
-	ShapeScreen() = default;
+	ShapeScreen();
 	~ShapeScreen() = default;
 
 	void OnDestroy() override;
@@ -35,6 +35,12 @@ public:
 
 	/// @brief ƒNƒŠƒA‚µ‚Ä‚¢‚é‚©
 	bool IsClear();
+
+	/// @brief “§‰ßİ’è‚ğs‚¤
+	void SetTransparent(bool isHologram);
+
+	/// @brief “§‰ßİ’è‚ğæ“¾‚·‚é
+	bool IsTransparent() const { return m_isHologram; }
 
 private:
 	void UpdateClearShapeBlocks(bool isFlip, bool isHorogram);
@@ -49,4 +55,6 @@ private:
 	std::vector<ShapeBlock> m_pShapeBlocks;
 	ShapeType m_clearShape;
 	ShapeType m_currentShape;
+
+	bool m_isHologram;
 };

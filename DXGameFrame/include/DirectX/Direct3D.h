@@ -11,7 +11,7 @@
 
 #include "DirectXInclude.h"
 
-constexpr UINT SHADOW_MAP_SIZE = 2048;	// シャドウマップの解像度
+constexpr UINT SHADOW_MAP_SIZE = 4096;	// シャドウマップの解像度
 
 /**
  * @brief Direct3Dを扱う
@@ -59,6 +59,11 @@ public:
 	void BeginDrawShadow();
 
 	/**
+	 * @brief グループ透過オブジェクトの深度描画を開始する
+	 */
+	void BeginDrawTransparentDepth();
+
+	/**
 	 * @brief 描画を終了する
 	 */
 	void Present();
@@ -98,7 +103,15 @@ public:
 	 */
 	ID3D11ShaderResourceView* GetShadowSRV() const { return m_pShadowSRV.Get(); }
 
+	/**
+	 * @brief シャドウマップをセットする
+	 */
 	void SetShadowMap();
+
+	/**
+	 * @brief グループ透過用の深度マップをセットする
+	 */
+	void SetTransparentDepthMap();
 
 private:
 	Direct3D();
@@ -130,6 +143,15 @@ private:
 
 	/// シャドウマップ
 	ComPtr<ID3D11Texture2D> m_pShadowMap;
+
+	///	グループ透過用の深度ステンシルビュー
+	ComPtr<ID3D11DepthStencilView> m_pTransparentDSV;
+
+	///	グループ透過用のシェーダーリソースビュー
+	ComPtr<ID3D11ShaderResourceView> m_pTransparentSRV;
+
+	/// グループ透過用の深度ステンシルバッファ
+	ComPtr<ID3D11Texture2D> m_pTransparentDepthBuffer;
 
 	/// ビューポートの幅
 	UINT m_viewportSizeW;
@@ -172,6 +194,14 @@ private:
 	 * @return 成功したかを返す
 	 */
 	HRESULT CreateShadowMap();
+
+	/**
+	 * @brief グループ透過用の深度ステンシルビューを作成する
+	 * @param width クライアント領域の幅
+	 * @param height クライアント領域の高さ
+	 * @return 成功したかを返す
+	 */
+	HRESULT CreateTransparentDepthStencilView(UINT width, UINT height);
 
 	/**
 	 * @brief ビューポート設定を行う

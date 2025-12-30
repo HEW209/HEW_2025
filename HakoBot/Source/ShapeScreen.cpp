@@ -5,6 +5,11 @@ static const Color g_defaultColor(0.0f, 0.2f, 1.0f, 1.0f);
 static const Color g_redColor(2.0f, 0.0f, 0.0f, 1.0f);
 static const Color g_greenColor(0.0f, 2.0f, 0.0f, 1.0f);
 
+ShapeScreen::ShapeScreen()
+	: m_isHologram(true)
+{
+}
+
 void ShapeScreen::OnDestroy()
 {
 	for (auto&& block : m_pShapeBlocks) {
@@ -50,6 +55,21 @@ bool ShapeScreen::IsClear()
 	return m_clearShape == m_currentShape;
 }
 
+void ShapeScreen::SetTransparent(bool isHologram)
+{
+	m_isHologram = isHologram;
+	for (auto&& block : m_pShapeBlocks) {
+		if (block.pRenderer) {
+			block.pRenderer->SetTransparent(isHologram);
+			for (auto&& material : *block.pRenderer->GetMaterials()) {
+				material.SetBlendState(isHologram ? BlendState::ALPHA : BlendState::DEFAULT);
+				material.SetDepthStencilState(isHologram ? DepthStencilState::READ_ONLY : DepthStencilState::DEFAULT);
+				material.SetPixelShader(isHologram ? "Assets/Shader/Hologram_PS.cso" : "Assets/Shader/Screen_PS.cso");
+			}
+		}
+	}
+}
+
 void ShapeScreen::UpdateClearShapeBlocks(bool isFlip, bool isHorogram)
 {
 	auto size = m_clearShape.GetSize();
@@ -74,14 +94,14 @@ void ShapeScreen::UpdateClearShapeBlocks(bool isFlip, bool isHorogram)
 		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
 		auto renderer = obj->AddComponent<MeshRenderer>();
 		renderer->SetGeometry(Geometry::Type::PLANE);
-		renderer->SetTransparent(true);
+		renderer->SetTransparent(m_isHologram);
 
 		Material* mat = renderer->GetMaterial(0);
-		mat->SetPixelShader("Assets/Shader/Hologram_PS.cso");
-		mat->SetDepthStencilState(DepthStencilState::READ_ONLY);
-		mat->SetBlendState(BlendState::ALPHA);
-		mat->SetRasterizerState(RasterizerState::NONE);
-		
+		mat->SetPixelShader(m_isHologram ? "Assets/Shader/Hologram_PS.cso" : "Assets/Shader/Screen_PS.cso");
+		mat->SetDepthStencilState(m_isHologram ? DepthStencilState::READ_ONLY : DepthStencilState::DEFAULT);
+		mat->SetBlendState(m_isHologram ? BlendState::ALPHA : BlendState::DEFAULT);
+		mat->SetRasterizerState(m_isHologram ? RasterizerState::NONE : RasterizerState::DEFAULT);
+
 		auto transform = obj->GetTransform();
 		transform->SetParent(GetTransform());
 		transform->SetScale(1.0f, 1.0f, 1.0f);

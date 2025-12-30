@@ -18,6 +18,7 @@ namespace TextureSlot
 	constexpr UINT Count = 8;		// 使用可能スロット数
 	constexpr UINT Main = 0;		// メインテクスチャ
 	constexpr UINT ShadowMap = 8;	// シャドウマップ
+	constexpr UINT TransparentDepthMap = 10;	// グループ透過オブジェクト用深度マップ
 }
 
 /**

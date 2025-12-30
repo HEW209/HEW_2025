@@ -289,6 +289,9 @@
     <None Include="Source\HLSL\Outline.hlsli">
       <Filter>HLSL</Filter>
     </None>
+    <None Include="Source\HLSL\GroupTransparent.hlsli">
+      <Filter>HLSL</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\HLSL\Hologram_PS.hlsl">
@@ -304,6 +307,9 @@
       <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="Source\HLSL\UVScroll_PS.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\HLSL\Screen_PS.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
   </ItemGroup>

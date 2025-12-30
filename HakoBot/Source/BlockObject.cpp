@@ -8,9 +8,15 @@ void BlockObject::Awake()
 	m_pBlockMeshRenderer = GetGameObject()->AddComponent<OutlineMeshRenderer>();
 	m_pBlockMeshRenderer->SetEnabled(false);
 	m_pBlockMeshRenderer->SetShouldDrawOutline(false);
-	m_pBlockMeshRenderer->SetOutlineColor(Color{1.0f, 0.5f, 0.0f});
+	m_pBlockMeshRenderer->SetOutlineColor(Color{1.0f, 0.5f, 0.0f, 1.0f});
 	m_pBlockMeshRenderer->SetOutlineThickness(5.0f);
 	m_pBlockMeshRenderer->SetShouldDrawShadow(true);
+
+	for (auto&& material : *m_pBlockMeshRenderer->GetMaterials()) {
+		material.SetPixelShader("Assets/Shader/Default_PS.cso");
+		material.SetBlendState(BlendState::DEFAULT);
+		material.SetDepthStencilState(DepthStencilState::DEFAULT);
+	}
 }
 
 void BlockObject::OnDestroy()
@@ -204,4 +210,32 @@ std::vector<Vector3> BlockObject::GetBlockVertices()
 	}
 
 	return vertices;
+}
+
+void BlockObject::SetTransparent(bool transparent)
+{
+	if (transparent) {
+		m_pBlockMeshRenderer->SetOutlineColor(Color{ 1.0f, 0.5f, 0.0f, 0.4f });
+		m_pBlockMeshRenderer->SetGroupTransparent(true);
+		for (auto&& material : *m_pBlockMeshRenderer->GetMaterials()) {
+			material.SetPixelShader("Assets/Shader/GroupTransparent_PS.cso");
+			material.SetBlendState(BlendState::ALPHA);
+			material.SetDepthStencilState(DepthStencilState::READ_ONLY);
+			struct TransparentParam
+			{
+				float transparency;
+				Vector3 pad;
+			} transparentParam = { 0.4f, Vector3::zero };
+			material.SetParameter(&transparentParam, sizeof(TransparentParam));
+		}
+	}
+	else {
+		m_pBlockMeshRenderer->SetOutlineColor(Color{ 1.0f, 0.5f, 0.0f, 1.0f });
+		m_pBlockMeshRenderer->SetTransparent(false);
+		for (auto&& material : *m_pBlockMeshRenderer->GetMaterials()) {
+			material.SetPixelShader("Assets/Shader/Default_PS.cso");
+			material.SetBlendState(BlendState::DEFAULT);
+			material.SetDepthStencilState(DepthStencilState::DEFAULT);
+		}
+	}
 }
