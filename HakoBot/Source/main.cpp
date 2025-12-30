@@ -20,6 +20,21 @@
 #include "SoundMaster.h"
 #include "SoundManager.h"
 
+static LARGE_INTEGER s_timeFreq;
+
+void InitTimer() {
+	QueryPerformanceFrequency(&s_timeFreq);
+	timeBeginPeriod(1);
+}
+
+double GetTimeSec() {
+	LARGE_INTEGER current;
+	QueryPerformanceCounter(&current);
+	return static_cast<double>(current.QuadPart) / static_cast<double>(s_timeFreq.QuadPart);
+}
+
+constexpr double MIN_FRAME_TIME = (FPS > 0.0) ? (1.0 / FPS) : 0.0;
+
 // ウィンドウプロシージャ
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
@@ -37,7 +52,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//----------------------------
 	WNDCLASSEX wcex;	// ウィンドウクラス
 	HWND hWnd;			// ウィンドウハンドル
-	MSG message;		// メッセージ
+	MSG message = { 0 };		// メッセージ
 
 	// ウィンドウクラス情報を設定
 	ZeroMemory(&wcex, sizeof(wcex));
@@ -139,43 +154,36 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//		その他の準備
 	//-------------------------
 	srand(time(0));
-	timeBeginPeriod(1);				//分解能 (１ミリ秒)
+	InitTimer();
 
-	int nExecLastTime;				//最終実行時間
-	int nCrrentTime;				//現在時間
-	nExecLastTime = nCrrentTime = timeGetTime();
+	double execLastTime;				//最終実行時間
+	double crrentTime;				//現在時間
+	execLastTime = crrentTime = GetTimeSec();
 
 
 	//----------------------------
 	//		メッセージループ
 	//----------------------------
-	while (1)
+	while (message.message != WM_QUIT)
 	{
-		if (PeekMessage(&message, NULL, 0, 0, PM_NOREMOVE))
+		if (PeekMessage(&message, NULL, 0, 0, PM_REMOVE))
 		{
-			if (!GetMessage(&message, NULL, 0, 0))
-			{
-				break;
-			}
-			else
-			{
-				TranslateMessage(&message);
-				DispatchMessage(&message);
-			}
+			TranslateMessage(&message);
+			DispatchMessage(&message);
 		}
 		else
 		{
 			// FPS固定
-			nCrrentTime = timeGetTime();
-			float deltaTime = (nCrrentTime - nExecLastTime) * 0.001f;
-			if (deltaTime < 1.0f / FPS)
+			crrentTime = GetTimeSec();
+			double deltaTime = crrentTime - execLastTime;
+			if (MIN_FRAME_TIME > 0.0 && deltaTime < MIN_FRAME_TIME)
 			{
 				continue;
 			}
-			nExecLastTime = nCrrentTime;
+			execLastTime = crrentTime;
 
 			// ゲームの処理
-			SceneManager::Execute(deltaTime);
+			SceneManager::Execute(static_cast<float>(deltaTime));
 			InputManager::Update();
 		}
 	}
@@ -187,6 +195,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SoundManager::StopAll();
 	SoundMaster::Instance().Uninit();
 	CoUninitialize();
+	timeEndPeriod(1);
 	return 0;
 }
 

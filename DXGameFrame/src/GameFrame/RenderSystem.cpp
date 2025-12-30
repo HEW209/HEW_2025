@@ -126,7 +126,7 @@ void RenderSystem::DrawAll3D()
 
 	DirectX::XMFLOAT3 lightDir = { lightDirVec3.x, lightDirVec3.y, lightDirVec3.z };
 
-	DirectX::XMMATRIX shadowCameraProj = pMainCamera->GetShadowProjectionMatrix(50.0f);
+	DirectX::XMMATRIX shadowCameraProj = pMainCamera->GetShadowProjectionMatrix(70.0f);
 
 	CalcLightMatrices(
 		DirectX::XMLoadFloat3(&lightDir),
@@ -385,7 +385,7 @@ void CalcLightMatrices(
 
 	float shadowCasterMargin = 200.0f;
 	float nearPlane = minZ - shadowCasterMargin;
-	float farPlane = maxZ + 20.0f;
+	float farPlane = maxZ + 5.0f;
 
 	outLightProj = DirectX::XMMatrixOrthographicOffCenterLH(
 		minX, maxX, minY, maxY, nearPlane, farPlane

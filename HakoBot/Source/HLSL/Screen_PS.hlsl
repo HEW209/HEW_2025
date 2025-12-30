@@ -103,10 +103,12 @@ float4 main(PS_IN pin) : SV_TARGET
     float3 glow = albedo * emitIntensity;
 
     float2 absUV = 1.0 - abs(pin.uv - 0.5f) * 2.0f;
-    float glowIntensity = smoothstep(0.0, 0.7, min(absUV.x, absUV.y));
+    float centerDist = min(absUV.x, absUV.y);
+    float glowIntensity = smoothstep(0.0, 0.7, centerDist) * 0.9 + 0.1;
 
     glow *= glowIntensity * emitFactor;
     
+    albedo *= centerDist * 0.5 + 0.5;
     // Œ³‚ÌF‚É‰ÁŽZ‚·‚é
     albedo += glow;
     
@@ -122,7 +124,7 @@ float4 main(PS_IN pin) : SV_TARGET
     float3 ambient = albedo * ambientColor * 0.8;
 
     float NdotL = saturate(dot(N, L));
-    float3 diffuse = albedo * lightColor * (NdotL * 0.7 + 0.3);
+    float3 diffuse = albedo * lightColor * NdotL;
 
     float3 H = normalize(L + V);
     float NdotH = max(dot(N, H), 0.0);
@@ -142,14 +144,7 @@ float4 main(PS_IN pin) : SV_TARGET
     shadowPos.xy = shadowPos.xy * float2(0.5, -0.5) + 0.5;
 
     // PCSS ŒvŽZ
-    float pcssShadow = 1.0;
-    
-    if (NdotL > 0.0)
-    {
-        pcssShadow = CalcPCSS(shadowPos, pin.pos.xy);
-    }
-    
-    pcssShadow = pcssShadow * 0.5 + 0.5;
+    float pcssShadow = CalcPCSS(shadowPos, pin.pos.xy);
     
     float3 directLight = (diffuse + specular) * pcssShadow;
 
