@@ -3,7 +3,6 @@
 #include <DirectX/ModelManager.h>
 #include <DirectX/ConstantBufferManager.h>
 #include <GameFrame/Transform.h>
-#include <DirectX/Geometry.h>
 #include <GameFrame/Time.h>
 #include <GameFrame/RenderSystem.h>
 
@@ -68,6 +67,12 @@ void MeshRenderer::LoadModel(const std::string& filePath)
 	m_pModel = ModelManager::Instance().Load(filePath);
 
 	// マテリアルをコピー
+	m_materials = m_pModel->GetMaterials();
+}
+
+void MeshRenderer::SetGeometry(Geometry::Type type)
+{
+	m_pModel = Geometry::Instance().GetModel(type);
 	m_materials = m_pModel->GetMaterials();
 }
 

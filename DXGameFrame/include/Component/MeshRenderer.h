@@ -13,6 +13,7 @@
 #include <DirectX/Material.h>
 #include <DirectX/Model.h>
 #include <memory>
+#include <DirectX/Geometry.h>
 
 /**
  * @brief メッシュの描画を行う
@@ -40,6 +41,12 @@ public:
 	 * @param filePath モデルデータへのファイルパス
 	 */
 	virtual void LoadModel(const std::string& filePath);
+
+	/**
+	 * @brief ジオメトリ図形をセットする
+	 * @param type ジオメトリ形状タイプ
+	 */
+	void SetGeometry(Geometry::Type type);
 
 	/**
 	 * @brief アニメーションデータを読み込む
