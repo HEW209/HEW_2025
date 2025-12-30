@@ -83,6 +83,11 @@ private:
 	Color m_clearColor;
 
 	/**
+	 * @brief 全ての背景2D描画コンポーネントを描画する
+	 */
+	void DrawALL2DBackGround();
+
+	/**
 	 * @brief 全ての3D描画コンポーネントを描画する
 	 */
 	void DrawAll3D();

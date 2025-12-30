@@ -4,7 +4,8 @@
 
 Renderer2D::Renderer2D() :
 	m_drawOrder(0),
-	m_isUI(false)
+	m_isUI(false),
+	m_isBackGround(false)
 {
 	RenderSystem::Instance().Register2D(this);
 }
@@ -32,4 +33,14 @@ void Renderer2D::SetUI(bool isUI)
 bool Renderer2D::IsUI()
 {
 	return m_isUI;
+}
+
+void Renderer2D::SetBackGround(bool isBackGround)
+{
+	m_isBackGround = isBackGround;
+}
+
+bool Renderer2D::IsBackGround()
+{
+	return m_isBackGround;
 }

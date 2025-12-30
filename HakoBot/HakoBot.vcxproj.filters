@@ -257,18 +257,6 @@
     <ClInclude Include="DebugEffectScene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="..\ThirdParty\Effeksser\Effekseer.Modules.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ThirdParty\Effeksser\EffekseerRendererDX11.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ThirdParty\Effeksser\Effekseer.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ThirdParty\Effekseer\Effekseer.SIMD.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Source\TitleUI.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -280,6 +268,18 @@
     </ClInclude>
     <ClInclude Include="Source\OutlineMeshRenderer.h">
       <Filter>ヘッダー ファイル\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Effekseer\Effekseer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Effekseer\Effekseer.Modules.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Effekseer\Effekseer.SIMD.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Effekseer\EffekseerRendererDX11.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
