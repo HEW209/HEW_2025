@@ -88,6 +88,6 @@ private:
 	ObjPtr<PlaceCursor> m_pPlaceCursorComponent;
 	uint8_t m_removeCursorBlockId;
 	ShapeType m_clearShape[3];
-	ObjPtr<ShapeScreen> m_pShapeScreen[3];
 	bool m_isBlockTransparent;
+	ObjPtr<ShapeScreen> m_pShapeScreen[5];
 };

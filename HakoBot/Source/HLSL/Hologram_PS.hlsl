@@ -158,12 +158,13 @@ float4 main(PS_IN pin) : SV_TARGET
     // 輪郭を発光させる
     outColor.rgb = Emission(outColor.rgb, (fresnel * fresnelEmi) + 1);
     
-    // 裏面チェック
+    // 向きチェック
     float ndot = dot(normalize(pin.normal), normalize(viewDir));
-    float backFace = step(ndot, 0.0);
+    ndot = ndot * 0.9 + 0.5;
+    ndot = saturate(ndot);
 
     // 裏面を薄くする
-    float brightness = lerp(1.0, 0.5, backFace);
+    float brightness = lerp(1, -0.4, ndot);
     outColor.a = outColor.a * brightness;
     
     // 色補正

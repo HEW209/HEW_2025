@@ -28,7 +28,7 @@ public:
 	void OnDestroy() override;
 
 	/// @brief クリア形状を設定
-	void SetClearShape(const ShapeType& shape);
+	void SetClearShape(const ShapeType& shape, bool isFlip, bool isHorogram);
 
 	/// @brief 現在の形状を設定
 	void SetCurrentShape(const ShapeType& shape);
@@ -43,7 +43,7 @@ public:
 	bool IsTransparent() const { return m_isHologram; }
 
 private:
-	void UpdateClearShapeBlocks();
+	void UpdateClearShapeBlocks(bool isFlip, bool isHorogram);
 	void UpdateCurrentShapeBlocks();
 
 	struct ShapeBlock

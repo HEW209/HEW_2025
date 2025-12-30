@@ -23,6 +23,7 @@ public:
 		BOX,		// ” 
 		CYLINDER,	// ‰~’Œ
 		SHPERE,		// ‹…
+		PLANE,		// ”Â
 		COUNT
 	};
 
@@ -65,6 +66,12 @@ private:
 	 * @return ¬Œ÷‚µ‚½‚©‚ğ•Ô‚·
 	 */
 	HRESULT CreateSphere();
+
+	/**
+	 * @brief ”Â‚ÌƒƒbƒVƒ…‚ğì¬‚·‚é
+	 * @return ¬Œ÷‚µ‚½‚©‚ğ•Ô‚·
+	 */
+	HRESULT CreatePlane();
 
 public:
 	/**
