@@ -4,14 +4,14 @@
 #include "Effekseer/EffekseerRendererDX11.h"
 
 #ifdef _DEBUG
-#pragma comment(lib, "Effekseer/Effekseer.lib")
+#pragma comment(lib, "Effekseer/Debug/Effekseer.lib")
 #else
-#pragma comment(lib, "Effekseer/Effekseer.lib")
+#pragma comment(lib, "Effekseer/Release/Effekseer.lib")
 #endif
 #ifdef _DEBUG
-#pragma comment(lib, "Effekseer/EffekseerRendererDX11.lib")
+#pragma comment(lib, "Effekseer/Debug/EffekseerRendererDX11.lib")
 #else
-#pragma comment(lib, "Effekseer/EffekseerRendererDX11.lib")
+#pragma comment(lib, "Effekseer/Release/EffekseerRendererDX11.lib")
 #endif
 
 class EffectManager {
