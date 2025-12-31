@@ -104,7 +104,7 @@ void GridField::SetSize(Vec3Int size)
 
 	m_pShapeScreen[0]->GetTransform()->SetPosition(-sizeHalf.x - space, sizeHalf.y + 0.6f, 0.0f);
 	m_pShapeScreen[1]->GetTransform()->SetPosition(sizeHalf.x + space, sizeHalf.y + 0.6f, 0.0f);
-	m_pShapeScreen[2]->GetTransform()->SetPosition(0.0f, -0.101f, 0.0f);
+	m_pShapeScreen[2]->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
 	m_pShapeScreen[3]->GetTransform()->SetPosition(0.0f, sizeHalf.y + 0.6f, sizeHalf.z + space);
 	m_pShapeScreen[4]->GetTransform()->SetPosition(0.0f, sizeHalf.y + 0.6f, -(sizeHalf.z + space));
 }
@@ -275,11 +275,11 @@ void GridField::SetClearShape(ShapeType shapeX, ShapeType shapeY, ShapeType shap
 	m_clearShape[1] = shapeY;
 	m_clearShape[2] = shapeZ;
 
-	m_pShapeScreen[0]->SetClearShape(m_clearShape[0], true, true);
-	m_pShapeScreen[1]->SetClearShape(m_clearShape[0], false, true);
-	m_pShapeScreen[2]->SetClearShape(m_clearShape[1], false, true);
-	m_pShapeScreen[3]->SetClearShape(m_clearShape[2], false, true);
-	m_pShapeScreen[4]->SetClearShape(m_clearShape[2], true, true);
+	m_pShapeScreen[0]->SetClearShape(m_clearShape[0], true);
+	m_pShapeScreen[1]->SetClearShape(m_clearShape[0], false);
+	m_pShapeScreen[2]->SetClearShape(m_clearShape[1], true);
+	m_pShapeScreen[3]->SetClearShape(m_clearShape[2], false);
+	m_pShapeScreen[4]->SetClearShape(m_clearShape[2], true);
 }
 
 bool GridField::IsClear()

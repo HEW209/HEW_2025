@@ -19,7 +19,7 @@ void ShapeScreen::OnDestroy()
 	}
 }
 
-void ShapeScreen::SetClearShape(const ShapeType& shape, bool isFlip, bool isHorogram)
+void ShapeScreen::SetClearShape(const ShapeType& shape, bool isFlip)
 {
 	if (shape == m_clearShape) {
 		return;
@@ -27,7 +27,7 @@ void ShapeScreen::SetClearShape(const ShapeType& shape, bool isFlip, bool isHoro
 
 	m_clearShape = shape;
 
-	UpdateClearShapeBlocks(isFlip, isHorogram);
+	UpdateClearShapeBlocks(isFlip);
 
 	if (m_clearShape.GetSize() != m_currentShape.GetSize()) {
 		m_currentShape = ShapeType(m_clearShape.GetSize());
@@ -70,7 +70,7 @@ void ShapeScreen::SetTransparent(bool isHologram)
 	}
 }
 
-void ShapeScreen::UpdateClearShapeBlocks(bool isFlip, bool isHorogram)
+void ShapeScreen::UpdateClearShapeBlocks(bool isFlip)
 {
 	auto size = m_clearShape.GetSize();
 	Vector3 sizeFloat = static_cast<Vector3>(size);
@@ -102,13 +102,14 @@ void ShapeScreen::UpdateClearShapeBlocks(bool isFlip, bool isHorogram)
 		mat->SetBlendState(m_isHologram ? BlendState::ALPHA : BlendState::DEFAULT);
 		mat->SetRasterizerState(m_isHologram ? RasterizerState::NONE : RasterizerState::DEFAULT);
 
+
 		auto transform = obj->GetTransform();
 		transform->SetParent(GetTransform());
 		transform->SetScale(1.0f, 1.0f, 1.0f);
 		transform->SetEulerAngle(90.0f, 0.0f, 0.0f, Space::LOCAL);
 		if (isFlip)
 		{
-			transform->Rotate(0.0f, 180.0f, 0.0f);
+			transform->Rotate(180.0f, 0.0f, 0.0f, Space::LOCAL);
 		}
 		transform->SetPosition(pos,Space::LOCAL);
 
