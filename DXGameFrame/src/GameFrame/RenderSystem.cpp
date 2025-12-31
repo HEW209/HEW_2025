@@ -117,7 +117,7 @@ void RenderSystem::DrawALL2DBackGround()
 	Camera* pMainCamera = Camera::GetMain();
 	if (pMainCamera != nullptr)
 	{
-		// UI用カメラのビュー行列を設定
+		// 背景用カメラのビュー行列を設定
 		DirectX::XMMATRIX view = Camera::GetDefaultViewMatrix();
 		ConstantBufferManager::Instance().SetView(view);
 
@@ -129,7 +129,7 @@ void RenderSystem::DrawALL2DBackGround()
 	// フレーム定数バッファを更新
 	ConstantBufferManager::Instance().UpdateFrameConstantBuffer();
 
-	// UI描画処理
+	// 背景描画処理
 	for (auto* renderer : m_pRenderer2DComponents)
 	{
 		if (renderer->IsEnabled() &&

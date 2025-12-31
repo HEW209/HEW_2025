@@ -31,7 +31,7 @@ void GameState::Update()
 	int fps = 1.0f / deltaTime;
 
 	ImGui::Begin("Guide");
-	ImGui::Text("FPS : %d", fps);
+	ImGui::Text("FPS : %3d", fps);
 	ImGui::End();
 
 #ifdef _DEBUG

@@ -117,6 +117,15 @@ void Direct3D::BeginDraw()
 
 void Direct3D::BeginDrawShadow()
 {
+	ID3D11ShaderResourceView* nullSRV[1] = { nullptr };
+
+	// シェーダーリソースから外す
+	m_pContext->PSSetShaderResources(
+		TextureSlot::ShadowMap,
+		1,
+		nullSRV
+	);
+
 	// シャドウ用レンダーターゲットをセット
 	m_pContext->OMSetRenderTargets(0, nullptr, m_pShadowDSV.Get());
 
@@ -126,6 +135,15 @@ void Direct3D::BeginDrawShadow()
 
 void Direct3D::BeginDrawTransparentDepth()
 {
+	ID3D11ShaderResourceView* nullSRV[1] = { nullptr };
+
+	// シェーダーリソースから外す
+	m_pContext->PSSetShaderResources(
+		TextureSlot::TransparentDepthMap,
+		1,
+		nullSRV
+	);
+
 	// グループ透過用レンダーターゲットをセット
 	m_pContext->OMSetRenderTargets(0, nullptr, m_pTransparentDSV.Get());
 
