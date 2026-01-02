@@ -10,20 +10,37 @@ constexpr float MAX_MENUB = 2000.0f;//メニューボタンのサイズ
 
 void GuideUIResultController::Start()
 {
+	//メニュー背景（menubanと同じサイズ・位置に配置）
+	auto renderer3 = GetGameObject()->AddComponent<SpriteRenderer>();
+	renderer3->SetUI(true);
+	renderer3->LoadTexture("Assets/Textures/menuhaikei.png");
+	renderer3->SetOffsetPos(0.0f, 0.0f);
+	// UVスケールを1.0に固定（枠内に収める）
+	renderer3->SetUVScale(1.0f, 1.0f);
 	//メニュー画面
 	auto renderer = GetGameObject()->AddComponent<SpriteRenderer>();
 	renderer->SetUI(true);
 	renderer->LoadTexture("Assets/Textures/menuban.png");
 	renderer->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
 	GetTransform()->SetScale(0.0f, 0.0f, 0.0f);
+	m_baseRend = renderer;
+
+	
+	renderer3->GetTransform()->SetPosition(
+		m_baseRend->GetTransform()->GetPosition()
+	);
+	renderer3->SetSize(m_baseRend->GetSize());
+	m_rend3 = renderer3;
+
 	//メニュー画面ボタン
 	auto renderer1 = GetGameObject()->AddComponent<SpriteRenderer>();
 	renderer1->SetUI(true);
 	renderer1->LoadTexture("Assets/Textures/menub.png");
 	renderer1->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
-	renderer1->SetOffsetPos(0.0f,0.0f);
+	renderer1->SetOffsetPos(0.0f, 0.0f);
 	renderer1->SetSize(MAX_MENUB);
 	m_rend = renderer1;
+
 	//メニュー画面選択
 	auto renderer2 = GetGameObject()->AddComponent<SpriteRenderer>();
 	renderer2->SetUI(true);
@@ -43,6 +60,9 @@ void GuideUIResultController::Start()
 	m_closeStartScale = Vector3::zero;
 	m_menuX = 0;
 	m_menuY = 0;
+
+	m_bgScrollY = 0.0f;
+	m_bgScrollSpeed = 0.0005f;
 }
 
 void GuideUIResultController::Update()
@@ -50,7 +70,6 @@ void GuideUIResultController::Update()
 	//メニューをひらく
 	if (InputManager::CurrentInputSystem().GetButtonDown("Menu"_hash))
 	{
-		
 		m_value2 = 0.0f;
 		GridField* gridfield = GameState::GetInstance()->GetGridField();
 		//クリアしてたらメニュー表示できない
@@ -65,15 +84,43 @@ void GuideUIResultController::Update()
 	//メニュー開いてるとき
 	if (m_menu)
 	{
+		// 位置追従
+		m_rend3->GetTransform()->SetPosition(
+			m_baseRend->GetTransform()->GetPosition()
+		);
+
+		// スケール追従
+		m_rend3->GetTransform()->SetScale(
+			m_baseRend->GetTransform()->GetScale()
+		);
+
+		// サイズ
+		m_rend3->SetSize(m_baseRend->GetSize());
+
+		// 背景スクロール（0.01.0の範囲でループ）
+		m_bgScrollY += m_bgScrollSpeed;
+
+		// ループ処理：1.0を超えたら0.0に戻す
+		while (m_bgScrollY >= 1.0f)
+		{
+			m_bgScrollY -= 1.0f;
+		}
+		while (m_bgScrollY < 0.0f)
+		{
+			m_bgScrollY += 1.0f;
+		}
+
+		// UVオフセットでスクロール（UVScaleは1.0固定なので枠内に収まる）
+		m_rend3->SetUVOffsetPos(0.0f, m_bgScrollY);
+
 		//メニューを閉じるボタン押したとき
 		if (InputManager::CurrentInputSystem().GetButtonDown("MenuBack"_hash))
 		{
 			m_closeStartScale = GetTransform()->GetScale();
-			m_menu2 = true;		//でかくするイージングoff
+			m_menu2 = true;
 			m_closePhase = ClosePhase::Pop;
 			m_closeValue = 0.0f;
-			m_value1 = 0.0f;	//初期化
-		
+			m_value1 = 0.0f;
 			InputManager::ChangeBindType(InputBindType::GAMEPLAY);
 		}
 
@@ -101,17 +148,14 @@ void GuideUIResultController::Update()
 		m_rend2->SetUVOffsetPos(cell.uvX, cell.uvY);
 		m_rend2->SetOffsetPos(cell.posX, cell.posY);
 
-
 		//メニュー出現
 		if (!m_menu2)
 		{
 			m_value1 += EASING * 2.0f;
-			//メニュー拡大
 			Vector3 scale;
 			scale.x = Easing::InSine(m_value1, EASING_MAX, m_targetScale.x, 0.0f);
 			scale.y = Easing::InSine(m_value1, EASING_MAX, m_targetScale.y, 0.0f);
 			scale.z = 1.0f;
-
 			GetTransform()->SetScale(scale);
 
 			if (m_value1 >= EASING_MAX)
@@ -129,29 +173,26 @@ void GuideUIResultController::Update()
 			if (m_closePhase == ClosePhase::Pop)
 			{
 				Vector3 scale;
-				scale.x = Easing::OutSine(m_closeValue,EASING_MAX / 2.0f,m_closeStartScale.x * 1.15f,m_closeStartScale.x);
-				scale.y = Easing::OutSine(m_closeValue,EASING_MAX / 2.0f,m_closeStartScale.y * 1.15f,m_closeStartScale.y);
+				scale.x = Easing::OutSine(m_closeValue, EASING_MAX / 2.0f, m_closeStartScale.x * 1.15f, m_closeStartScale.x);
+				scale.y = Easing::OutSine(m_closeValue, EASING_MAX / 2.0f, m_closeStartScale.y * 1.15f, m_closeStartScale.y);
 				scale.z = 1.0f;
 				GetTransform()->SetScale(scale);
 
-				//マックスになったら
 				if (m_closeValue >= EASING_MAX / 2.0f)
 				{
-					m_closePhase = ClosePhase::Shrink;	//縮小開始
-					m_closeValue = 0.0f;				//イージングの値を初期化
+					m_closePhase = ClosePhase::Shrink;
+					m_closeValue = 0.0f;
 				}
 			}
-
 			//Shrink:縮小
 			else if (m_closePhase == ClosePhase::Shrink)
 			{
 				Vector3 scale;
-				scale.x = Easing::OutSine(m_closeValue,EASING_MAX,0.0f,m_closeStartScale.x * 1.15f);
-				scale.y = Easing::OutSine(m_closeValue,EASING_MAX,0.0f,m_closeStartScale.y * 1.15f);
+				scale.x = Easing::OutSine(m_closeValue, EASING_MAX, 0.0f, m_closeStartScale.x * 1.15f);
+				scale.y = Easing::OutSine(m_closeValue, EASING_MAX, 0.0f, m_closeStartScale.y * 1.15f);
 				scale.z = 1.0f;
 				GetTransform()->SetScale(scale);
 
-				//メニュー画面のサイズが0.1fを下回ったらサイズをゼロに
 				if (scale.x <= 0.1f)
 				{
 					GetTransform()->SetScale(0.0f, 0.0f, 0.0f);
@@ -160,19 +201,11 @@ void GuideUIResultController::Update()
 					m_closePhase = ClosePhase::None;
 				}
 			}
-
 		}
-
-		
 	}
-
-	
-
-
 }
 
 bool GuideUIResultController::GetMenuBool()
 {
 	return m_menu;
 }
-

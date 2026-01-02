@@ -21,6 +21,9 @@ private:
 	Vector3 m_targetScale;
 	SpriteRenderer* m_rend;
 	SpriteRenderer* m_rend2;
+	SpriteRenderer* m_rend3;
+	SpriteRenderer* m_rend4;
+	SpriteRenderer* m_baseRend;
 
 	//メニュー閉じるときのアニメーション管理
 	enum class ClosePhase
@@ -55,5 +58,7 @@ private:
 	ClosePhase m_closePhase;			//現在のメニュー閉じアニメーションの状態
 	Vector3 m_closeStartScale;			//メニュー閉じアニメーションが始まるまえののスケール
 	float m_closeValue;					//メニュー閉じアニメーションイージング用
+	float m_bgScrollY;
+	float m_bgScrollSpeed;
 };
 
