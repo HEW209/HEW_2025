@@ -66,7 +66,13 @@ void PlayerMove::Start()
 			}
 		}
 
-		ray.origin.y = posY + 0.5f;
+		ray.origin.y = pHead->GetPosition().y + 0.5f;
+		if (ColliderSystem::Instance().Raycast(ray, &hit, 0.38f))
+		{
+			isHit = true;
+		}
+
+		ray.origin.y += 0.7f;
 		if (ColliderSystem::Instance().Raycast(ray, &hit, 0.38f))
 		{
 			isHit = true;
