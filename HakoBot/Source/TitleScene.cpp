@@ -33,7 +33,7 @@ void TitleScene::Init()
     {
         auto obj = CreateGameObject();
         obj->AddComponent<TitleExit>();
-        obj->AddComponent<TitleUI>();
+        //obj->AddComponent<TitleUI>();
     }
 
     {
@@ -42,11 +42,10 @@ void TitleScene::Init()
         auto player = obj->AddComponent<PlayerModelDraw>();
         auto transform = obj->GetTransform();
         transform->SetScale(scale, scale, scale);
-        transform->SetPosition(-5.0f, 0.0f, 7.0f);
+        transform->SetPosition(0.0f, 0.0f, 7.0f);
         transform->SetEulerAngle(Vector3(0.0f, -90.0f, 0.0f));
 
         //ˆÚ“®
-        auto renderer = obj->AddComponent<MeshRenderer>();
         auto playerMove = obj->AddComponent<TitlePlayerMove>();
         
         playerMove->SetPlayer(obj->GetTransform());

@@ -15,7 +15,6 @@ public:
     TitlePlayerMove();
     ~TitlePlayerMove() = default;
 
-    void Awake()override;
     void SetPlayer(Transform* pPlayerTransform) { m_pPlayerTransform = pPlayerTransform; }
     //更新処理
     void Update()override;
@@ -27,11 +26,5 @@ private:
     //プレイヤーの移動量
     float m_fPlayerMoveSpeed;
     Transform* m_pPlayerTransform;
-    //プレイヤーのアニメーション
-    MeshGroup::AnimeNo m_motuAnime;
-    //アニメーション用
-    ObjPtr<MeshRenderer> m_pRenderer;
-
-
 };
 

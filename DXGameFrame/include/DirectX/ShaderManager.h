@@ -64,6 +64,15 @@ public:
 	 */
 	void Clear();
 
+	/**
+	 * @brief シェーダーのキャッシュをリセットする
+	 */
+	void Reflesh()
+	{
+		m_pCurrentPS = nullptr;
+		m_pCurrentVS = nullptr;
+		m_pCurrentGS = nullptr;
+	}
 private:
 	ShaderManager();
 

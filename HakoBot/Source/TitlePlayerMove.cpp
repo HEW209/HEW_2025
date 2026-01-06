@@ -3,33 +3,18 @@
 TitlePlayerMove::TitlePlayerMove() :
 	m_pPlayerTransform(nullptr),
 	m_bComeBack(true),//最初は帰ってくるためtureを入れておく
-	m_fPlayerMoveSpeed(0.05f),
-	m_motuAnime(MeshGroup::ANIME_NONE)
+	m_fPlayerMoveSpeed(0.05f)
 {
 
 
 }
 
-void TitlePlayerMove::Awake()
-{
-
-	//アニメーション
-	m_pRenderer = GetGameObject()->GetComponent<MeshRenderer>();
-	m_motuAnime = m_pRenderer->LoadAnimation("Assets/Model/Player/fbx/motiage.fbx");
-	auto materials = m_pRenderer->GetMaterials();
-	for (auto& material : *materials)
-	{
-		material.SetVertexShader("Assets/Shader/Anime_VS.cso");
-	}
-	m_pRenderer->PlayAnime(m_motuAnime, true);
-	
-}
 
 void TitlePlayerMove::Update()
 {
 	//プレイヤーが戻ってきて入れば
 	if (m_bComeBack) {
-		//手前にも出ってくる処理
+		//奥に行く処理
 		auto transform = m_pPlayerTransform->GetPosition();
 		m_pPlayerTransform->SetPosition(transform.x + m_fPlayerMoveSpeed, transform.y, transform.z );
 		//回転処理
@@ -50,7 +35,7 @@ void TitlePlayerMove::Update()
 	}
 	else {
 		//奥に進処理
-		//手前にも出ってくる処理
+		//手前にもどってくる処理
 		auto transform = m_pPlayerTransform->GetPosition();
 		m_pPlayerTransform->SetPosition(transform.x - m_fPlayerMoveSpeed, transform.y, transform.z);
 

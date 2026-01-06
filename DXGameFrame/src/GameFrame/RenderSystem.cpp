@@ -11,6 +11,7 @@
 #include <../imgui/ImguiManager.h>
 #include <algorithm>
 #include <GameFrame/EffectManager.h>
+#include <DirectX/ShaderManager.h>
 RenderSystem::RenderSystem() :
 	m_clearColor(0.4f, 0.4f, 1.0f, 1.0f)
 {
@@ -100,7 +101,7 @@ void RenderSystem::DrawAll3D()
 	EffectManager::Instance().BeginDraw();
 
 	PipelineStateManager::Instance().Refresh();
-
+	ShaderManager::Instance().Reflesh();
 	// 3D•`‰æˆ—
 	for (auto* renderer : m_pRendererComponents)
 	{
