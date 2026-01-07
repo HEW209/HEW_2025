@@ -31,20 +31,23 @@ void PlayerStretch::Update()
 	};
 	const float rayWeight = 0.5f;
 
-	for (int i = 0; i < 5; ++i)
+	if (pos.y < m_targetY)	// L‚Ñ‚æ‚¤‚Æ‚µ‚Ä‚¢‚éê‡
 	{
-		ColliderSystem::Ray ray;
-		ray.origin = m_pCollider->GetTransform()->GetPosition(Space::WORLD) + rayOffset[i];
-		ray.origin.y += m_pCollider->m_scale.y - rayWeight;
-		ray.direction = Vector3::up;
-		ColliderSystem::RaycastHit hit;
-		if (ColliderSystem::Instance().Raycast(ray, &hit, MAX_DELTA + rayWeight))
+		for (int i = 0; i < 5; ++i)
 		{
-			if (0.0f < m_targetY)
+			ColliderSystem::Ray ray;
+			ray.origin = m_pCollider->GetTransform()->GetPosition(Space::WORLD) + rayOffset[i];
+			ray.origin.y += m_pCollider->m_scale.y - rayWeight;
+			ray.direction = Vector3::up;
+			ColliderSystem::RaycastHit hit;
+			if (ColliderSystem::Instance().Raycast(ray, &hit, MAX_DELTA + rayWeight))
 			{
-				m_targetY = round(ceil(pos.y) - BLOCK_SIZE);
-				m_targetLock = true;
-				break;
+				if (0.0f < m_targetY)
+				{
+					m_targetY = round(ceil(pos.y) - BLOCK_SIZE);
+					m_targetLock = true;
+					break;
+				}
 			}
 		}
 	}

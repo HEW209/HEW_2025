@@ -49,11 +49,36 @@ void PlayerMove::Start()
 {
 	// 上り坂の先にオブジェクトがあるとガクガクするのを防ぐための処理
 	GameObject* pObj = GetGameObject();
-	GetGameObject()->GetComponent<Collider>()->OnCollisionEnter = [pObj](GameObject* other) {
+	Transform* pHead = m_pHead->GetTransform();
+	GetGameObject()->GetComponent<Collider>()->OnCollisionEnter = [pHead, pObj](GameObject* other) {
 		ColliderSystem::Ray ray = { pObj->GetTransform()->GetPosition() + pObj->GetTransform()->GetQuaternion() * Vector3(0.0f,0.5f,-0.35f),
 									pObj->GetTransform()->GetQuaternion() * Vector3(0.0f,0.0f,-1.0f)};
 		ColliderSystem::RaycastHit hit = {};
+		bool isHit = false;
+		float posY = pHead->GetPosition(Space::LOCAL).y;
+		for (int i = 0; i < posY; ++i)	// 高さ分レイをずらして当たり判定を見る
+		{
+			ray.origin.y = i + 0.5f;
+			if (ColliderSystem::Instance().Raycast(ray, &hit, 0.38f))
+			{
+				isHit = true;
+				break;
+			}
+		}
+
+		ray.origin.y = pHead->GetPosition().y + 0.5f;
 		if (ColliderSystem::Instance().Raycast(ray, &hit, 0.38f))
+		{
+			isHit = true;
+		}
+
+		ray.origin.y += 0.7f;
+		if (ColliderSystem::Instance().Raycast(ray, &hit, 0.38f))
+		{
+			isHit = true;
+		}
+
+		if (isHit)
 		{
 			pObj->GetTransform()->Translate(0.0f, -pObj->GetComponent<PlayerMove>()->m_gravity, 0.0f);
 			pObj->GetComponent<PlayerMove>()->m_velocity_y = 0.0f;
@@ -119,7 +144,7 @@ void PlayerMove::Update()
 		// 斜面かどうか調べるための内積
 		float dotSlope = ColliderSystem::Instance().Dot(Vector3(0.0f,1.0f,0.0f), hit.normal);
 
-		if ((dotSlope > 0.95f) && inputMagnitude )
+		if ((dotSlope > 0.99f) && inputMagnitude )
 		{
 			// 法線ベクトルと直行している場合、そのまま移動
 			//move.y = 0.0f;
@@ -144,8 +169,6 @@ void PlayerMove::Update()
 		move.y = m_velocity_y;
 	}
 
-	
-	
 	//実際の移動
 	GetTransform()->Translate(move);
 
