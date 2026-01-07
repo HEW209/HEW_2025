@@ -10,6 +10,7 @@
 #include "Direct3D.h"
 #include "Debug.h"
 #include "ConfigManager.h"
+#include "ModelManager.h"
 #include "PipelineStateManager.h"
 #include "ShaderManager.h"
 #include "TextureManager.h"

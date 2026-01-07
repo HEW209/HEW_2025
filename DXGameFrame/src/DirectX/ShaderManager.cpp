@@ -43,6 +43,23 @@ std::shared_ptr<PixelShader> ShaderManager::LoadPixelShader(const std::string& f
 	return newPS;
 }
 
+std::shared_ptr<GeometryShader> ShaderManager::LoadGeometryShader(const std::string& filePath)
+{
+	// ジオメトリシェーダー検索
+	auto it = m_pGeometryShaders.find(filePath);
+	if (it != m_pGeometryShaders.end())
+	{
+		// 既存のシェーダーを返す
+		return it->second;
+	}
+
+	// 新規シェーダー読み込み・追加
+	auto newGS = std::make_shared<GeometryShader>();
+	newGS->Load(filePath);
+	m_pGeometryShaders[filePath] = newGS;
+	return newGS;
+}
+
 void ShaderManager::SetVertexShader(ID3D11VertexShader* pVS, ID3D11InputLayout* pInputLayout)
 {
 	if (pVS == nullptr || pInputLayout == nullptr || pVS == m_pCurrentVS)
@@ -56,12 +73,22 @@ void ShaderManager::SetVertexShader(ID3D11VertexShader* pVS, ID3D11InputLayout* 
 
 void ShaderManager::SetPixelShader(ID3D11PixelShader* pPS)
 {
-	if (pPS == nullptr || pPS == m_pCurrentPS)
+	if (pPS == m_pCurrentPS)
 		return;
 
 	// シェーダーをセット
 	m_pCurrentPS = pPS;
 	Direct3D::Instance().GetContext()->PSSetShader(pPS, nullptr, 0);
+}
+
+void ShaderManager::SetGeometryShader(ID3D11GeometryShader* pGS)
+{
+	if (pGS == m_pCurrentGS)
+		return;
+
+	// シェーダーをセット
+	m_pCurrentGS = pGS;
+	Direct3D::Instance().GetContext()->GSSetShader(pGS, nullptr, 0);
 }
 
 void ShaderManager::Clear()

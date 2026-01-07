@@ -30,6 +30,7 @@ public:
 
 	void Awake() override;
 	void Start() override;
+	void Update() override;
 	void OnDestroy() override;
 
 	void SetSize(Vec3Int size);
@@ -66,6 +67,12 @@ public:
 	//グリッド内判定
 	bool IsInside(const Vector3& position);
 
+	// ブロックの透明化設定
+	void SetBlockTransparent(bool isTransparent);
+
+	// ブロックの透明化設定取得
+	bool IsBlockTransparent() const { return m_isBlockTransparent; }
+
 private:
 	bool IsInside(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation);
 	bool CanPlace(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation);
@@ -81,5 +88,6 @@ private:
 	ObjPtr<PlaceCursor> m_pPlaceCursorComponent;
 	uint8_t m_removeCursorBlockId;
 	ShapeType m_clearShape[3];
-	ObjPtr<ShapeScreen> m_pShapeScreen[3];
+	bool m_isBlockTransparent;
+	ObjPtr<ShapeScreen> m_pShapeScreen[5];
 };

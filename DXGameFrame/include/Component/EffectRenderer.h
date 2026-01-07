@@ -18,6 +18,8 @@ public:
 	EffectRenderer() = default;
 	~EffectRenderer();
 	void Draw() override;
+	void DrawShadow() override;
+	void DrawDepth() override;
 	void Load(const std::string& fileName);
 	void Play();
 	void Stop();

@@ -14,6 +14,7 @@
 #include <DXGameFrame.h>
 
 #include "BlockData.h"
+#include "OutlineMeshRenderer.h"
 
 
 /**
@@ -22,7 +23,7 @@
 class BlockObject : public Component
 {
 public:
-	BlockObject() :m_shouldUseCollider(true) {}
+	BlockObject() : m_shouldUseCollider(true) {}
 	~BlockObject() = default;
 
 	void Awake() override;
@@ -33,7 +34,7 @@ public:
 	void SetModel(const std::string& modelPath);
 	const std::string& GetModelPath() const { return m_modelPath; }
 
-	void SetSelect(bool value);
+	void SetSelect(bool isSelected);
 
 	/**
 	 * @brief ブロックが地面に設置した際の原点のY軸オフセットを取得する
@@ -54,7 +55,9 @@ public:
 	 * @param worldPosition 判定したいワールド座標
 	 * @return いずれかのブロックの内側にあれば true
 	 */
-	bool IsInside(const Vector3& worldPosition);
+	bool IsInside(const Vector3& worldPosition, float inflationAmount = 0.0f) const;
+
+	std::vector<Vector3> GetBlockVertices();
 
 	void SetUseCollider(bool value) { m_shouldUseCollider = value; }
 
@@ -69,12 +72,17 @@ public:
 		return offset;
 	}
 
+	void SetTransparent(bool transparent);
+
+	bool IsTransparent() const { return m_isTransparent; }
+
 private:
 	BlockSetData m_blockSet;
 	std::vector<ObjPtr<GameObject>> m_pBlocks;
-	ObjPtr<MeshRenderer> m_pBlockMeshRenderer;
+	ObjPtr<OutlineMeshRenderer> m_pBlockMeshRenderer;
 	std::string m_modelPath;
 	Vector3 m_size;
 	Vector3 m_center;
 	bool m_shouldUseCollider;
+	bool m_isTransparent;
 };

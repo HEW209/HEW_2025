@@ -4,10 +4,12 @@
 
 #include "BlockObject.h"
 #include "VecUtil.h"
+#include "InputManager.h"
 
 
 GridField::GridField()
 	: m_removeCursorBlockId(0u)
+	, m_isBlockTransparent(false)
 {
 
 }
@@ -22,7 +24,6 @@ void GridField::Awake()
 		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
 		auto transform = obj->GetTransform();
 		transform->SetParent(GetTransform());
-		transform->SetPosition(-sizeHalf.x - 2.0f, sizeHalf.y, 0.0f);
 		transform->SetEulerAngle(0.0f, 90.0f, 90.0f);
 		m_pShapeScreen[0] = obj->AddComponent<ShapeScreen>();
 	}
@@ -31,8 +32,7 @@ void GridField::Awake()
 		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
 		auto transform = obj->GetTransform();
 		transform->SetParent(GetTransform());
-		transform->SetPosition(0.0f, -0.2f, 0.0f);
-		transform->SetEulerAngle(90.0f, 0.0f, 0.0f);
+		transform->SetEulerAngle(0.0f, 90.0f, 90.0f);
 		m_pShapeScreen[1] = obj->AddComponent<ShapeScreen>();
 	}
 
@@ -40,9 +40,24 @@ void GridField::Awake()
 		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
 		auto transform = obj->GetTransform();
 		transform->SetParent(GetTransform());
-		transform->SetPosition(0.0f, sizeHalf.y, sizeHalf.z + 2.0f);
-		transform->SetEulerAngle(0.0f, 0.0f, 0.0f);
+		transform->SetEulerAngle(90.0f, 0.0f, 0.0f);
 		m_pShapeScreen[2] = obj->AddComponent<ShapeScreen>();
+		m_pShapeScreen[2]->SetTransparent(false);
+	}
+
+	{
+		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
+		auto transform = obj->GetTransform();
+		transform->SetParent(GetTransform());
+		transform->SetEulerAngle(0.0f, 0.0f, 0.0f);
+		m_pShapeScreen[3] = obj->AddComponent<ShapeScreen>();
+	}
+	{
+		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
+		auto transform = obj->GetTransform();
+		transform->SetParent(GetTransform());
+		transform->SetEulerAngle(0.0f, 0.0f, 0.0f);
+		m_pShapeScreen[4] = obj->AddComponent<ShapeScreen>();
 	}
 }
 
@@ -50,6 +65,13 @@ void GridField::Start()
 {
 	m_pPlaceCursor = SceneManager::GetActiveScene()->CreateGameObject();
 	m_pPlaceCursorComponent = m_pPlaceCursor->AddComponent<PlaceCursor>();
+}
+
+void GridField::Update()
+{
+	if (InputManager::CurrentInputSystem().GetButtonDown("ChangeBlockTransparency"_hash)) {
+		SetBlockTransparent(!m_isBlockTransparent);
+	}
 }
 
 void GridField::OnDestroy()
@@ -64,7 +86,7 @@ void GridField::OnDestroy()
 		m_pPlaceCursor->Destroy();
 	}
 
-	for (int i = 0; i < 3; ++i) {
+	for (int i = 0; i < 5; ++i) {
 		if (m_pShapeScreen[i]) {
 			m_pShapeScreen[i]->GetGameObject()->Destroy();
 		}
@@ -81,8 +103,10 @@ void GridField::SetSize(Vec3Int size)
 	const float space = 3.0f;
 
 	m_pShapeScreen[0]->GetTransform()->SetPosition(-sizeHalf.x - space, sizeHalf.y + 0.6f, 0.0f);
-	m_pShapeScreen[1]->GetTransform()->SetPosition(0.0f, -0.1f, 0.0f);
-	m_pShapeScreen[2]->GetTransform()->SetPosition(0.0f, sizeHalf.y + 0.6f, sizeHalf.z + space);
+	m_pShapeScreen[1]->GetTransform()->SetPosition(sizeHalf.x + space, sizeHalf.y + 0.6f, 0.0f);
+	m_pShapeScreen[2]->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
+	m_pShapeScreen[3]->GetTransform()->SetPosition(0.0f, sizeHalf.y + 0.6f, sizeHalf.z + space);
+	m_pShapeScreen[4]->GetTransform()->SetPosition(0.0f, sizeHalf.y + 0.6f, -(sizeHalf.z + space));
 }
 
 bool GridField::IsOverlap(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation)
@@ -159,6 +183,7 @@ bool GridField::PlaceBlock()
 	component->SetUseCollider(true);
 	component->SetBlockSet(blockSet);
 	component->SetModel(modelPath);
+	component->SetTransparent(m_isBlockTransparent);
 	auto transform = obj->GetTransform();
 	transform->SetPosition(pos);
 	transform->SetQuaternion(rot);
@@ -175,9 +200,11 @@ bool GridField::PlaceBlock()
 	m_pPlaceCursorComponent->SetBlockSet(BlockSetData{});
 	m_pPlaceCursorComponent->SetModelPath("");
 
-	for (int i = 0; i < 3; ++i) {
-		m_pShapeScreen[i]->SetCurrentShape(m_gridData.GetShape(i));
-	}
+	m_pShapeScreen[0]->SetCurrentShape(m_gridData.GetShape(0));
+	m_pShapeScreen[1]->SetCurrentShape(m_gridData.GetShape(0));
+	m_pShapeScreen[2]->SetCurrentShape(m_gridData.GetShape(1));
+	m_pShapeScreen[3]->SetCurrentShape(m_gridData.GetShape(2));
+	m_pShapeScreen[4]->SetCurrentShape(m_gridData.GetShape(2));
 
 	return true;
 }
@@ -189,7 +216,23 @@ void GridField::SetRemoveCursor(const Vector3& position)
 			m_pPlacedBlocks[m_removeCursorBlockId - 1]->GetComponent<BlockObject>()->SetSelect(false);
 		}
 	}
-	m_removeCursorBlockId = m_gridData.GetId(CalcGridCoord(position));
+
+	if (!IsInside(position)) {
+		m_removeCursorBlockId = 0u;
+		return;
+	}
+
+	Vec3Int gridCoord = CalcGridCoord(position);
+	m_removeCursorBlockId = m_gridData.GetId(gridCoord);
+	const std::vector<Vec3Int> removeOffsets = {
+		{1, 0, 0},
+		{-1, 0, 0},
+		{0, 0, 1},
+		{0, 0, -1},
+	};
+	for (int i = 0; m_removeCursorBlockId == 0u && i < 4; ++i) {
+		m_removeCursorBlockId = m_gridData.GetId(gridCoord + removeOffsets[i]);
+	}
 	if (0u < m_removeCursorBlockId && m_removeCursorBlockId <= m_pPlacedBlocks.size()) {
 		if (m_pPlacedBlocks[m_removeCursorBlockId - 1]) {
 			m_pPlacedBlocks[m_removeCursorBlockId - 1]->GetComponent<BlockObject>()->SetSelect(true);
@@ -217,9 +260,11 @@ std::optional<BlockData> GridField::RemoveBlock()
 	}
 	m_removeCursorBlockId = 0u;
 
-	for (int i = 0; i < 3; ++i) {
-		m_pShapeScreen[i]->SetCurrentShape(m_gridData.GetShape(i));
-	}
+	m_pShapeScreen[0]->SetCurrentShape(m_gridData.GetShape(0));
+	m_pShapeScreen[1]->SetCurrentShape(m_gridData.GetShape(0));
+	m_pShapeScreen[2]->SetCurrentShape(m_gridData.GetShape(1));
+	m_pShapeScreen[3]->SetCurrentShape(m_gridData.GetShape(2));
+	m_pShapeScreen[4]->SetCurrentShape(m_gridData.GetShape(2));
 
 	return data;
 }
@@ -230,9 +275,11 @@ void GridField::SetClearShape(ShapeType shapeX, ShapeType shapeY, ShapeType shap
 	m_clearShape[1] = shapeY;
 	m_clearShape[2] = shapeZ;
 
-	for (int i = 0; i < 3; ++i) {
-		m_pShapeScreen[i]->SetClearShape(m_clearShape[i], i != 1);
-	}
+	m_pShapeScreen[0]->SetClearShape(m_clearShape[0], true);
+	m_pShapeScreen[1]->SetClearShape(m_clearShape[0], false);
+	m_pShapeScreen[2]->SetClearShape(m_clearShape[1], true);
+	m_pShapeScreen[3]->SetClearShape(m_clearShape[2], false);
+	m_pShapeScreen[4]->SetClearShape(m_clearShape[2], true);
 }
 
 bool GridField::IsClear()
@@ -262,6 +309,16 @@ bool GridField::IsInside(const Vector3& position)
 	}
 
 	return true;
+}
+
+void GridField::SetBlockTransparent(bool isTransparent)
+{
+	m_isBlockTransparent = isTransparent;
+	for (auto&& block : m_pPlacedBlocks) {
+		if (block) {
+			block->GetComponent<BlockObject>()->SetTransparent(isTransparent);
+		}
+	}
 }
 
 bool GridField::IsInside(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation)

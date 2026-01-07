@@ -4,6 +4,8 @@
  *
  * @author 石田怜
  * @date   2025/11/24
+ * 
+ * @date   2025/12/28 [芝晃佑]	シャドウ描画対応
  *********************************************************************/
 #pragma once
 
@@ -48,6 +50,18 @@ public:
 	void Unregister2D(Renderer2D* pRenderer2D);
 
 	/**
+	 * @brief 3D描画コンポーネントの影描画を登録する
+	 * @param pRenderer 登録する3D描画コンポーネント
+	 */
+	void RegisterShadow(Renderer* pRenderer);
+
+	/**
+	 * @brief 3D描画コンポーネントの影描画の登録を削除する
+	 * @param pRenderer 登録削除する3D描画コンポーネント
+	 */
+	void UnregisterShadow(Renderer* pRenderer);
+
+	/**
 	 * @brief 画面クリア色を設定する
 	 * @param color 画面クリア色
 	 */
@@ -62,8 +76,16 @@ private:
 	/// 2D描画コンポーネントのリスト
 	std::vector<Renderer2D*> m_pRenderer2DComponents;
 
+	/// 3D描画コンポーネントのリスト
+	std::vector<Renderer*> m_pShadowRendererComponents;
+
 	/// 画面クリア色
 	Color m_clearColor;
+
+	/**
+	 * @brief 全ての背景2D描画コンポーネントを描画する
+	 */
+	void DrawALL2DBackGround();
 
 	/**
 	 * @brief 全ての3D描画コンポーネントを描画する

@@ -4,7 +4,9 @@
  * 
  * @author 石田怜
  * @date   2025/11/22
- *********************************************************************/
+ * 
+ * @date   2025/12/28 [芝晃佑]	TextureSlotにShadowMapを追加
+ */
 #pragma once
 
 #include "DirectXInclude.h"
@@ -15,6 +17,8 @@ namespace TextureSlot
 {
 	constexpr UINT Count = 8;		// 使用可能スロット数
 	constexpr UINT Main = 0;		// メインテクスチャ
+	constexpr UINT ShadowMap = 8;	// シャドウマップ
+	constexpr UINT TransparentDepthMap = 10;	// グループ透過オブジェクト用深度マップ
 }
 
 /**

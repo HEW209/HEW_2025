@@ -16,10 +16,12 @@ void InputManager::Init()
 		system.CreateButtonAction("PlaceAndRemove"_hash);
 		system.CreateButtonAction("Up"_hash);
 		system.CreateButtonAction("Down"_hash);
+		system.CreateButtonAction("Clear"_hash);
+		system.CreateButtonAction("Menu"_hash);
+		system.CreateButtonAction("LockRotation"_hash);
+		system.CreateButtonAction("ChangeBlockTransparency"_hash);
 		system.CreateAxisAction("Move"_hash);
 		system.CreateAxisAction("CameraMove"_hash);
-		system.CreateAxisAction("Clear"_hash);
-		system.CreateAxisAction("Menu"_hash);
 
 		system.BindKey("RotateBlockUp"_hash, KeyCode::UP);
 		system.BindKey("RotateBlockDown"_hash, KeyCode::DOWN);
@@ -28,9 +30,11 @@ void InputManager::Init()
 		system.BindKey("PlaceAndRemove"_hash, KeyCode::SPACE);
 		system.BindKey("Up"_hash, KeyCode::E);
 		system.BindKey("Down"_hash, KeyCode::Q);
-
 		system.BindKey("Clear"_hash, KeyCode::X);
 		system.BindKey("Menu"_hash, KeyCode::ESC);
+		system.BindKey("LockRotation"_hash, KeyCode::SHIFT);
+		system.BindKey("ChangeBlockTransparency"_hash, KeyCode::R);
+
 		system.BindVectorKeys("Move"_hash, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
 		system.BindVectorKeys("CameraMove"_hash, KeyCode::I, KeyCode::K, KeyCode::MOUSE_LEFT, KeyCode::MOUSE_RIGHT);
 
@@ -43,6 +47,8 @@ void InputManager::Init()
 		system.BindPadButton("Down"_hash, PadCode::LEFT_TRIGGER);
 		system.BindPadButton("Clear"_hash, PadCode::X);
 		system.BindPadButton("Menu"_hash, PadCode::START);
+		system.BindPadButton("LockRotation"_hash, PadCode::Y);
+		system.BindPadButton("ChangeBlockTransparency"_hash, PadCode::A);
 		system.BindPadStick("Move"_hash, StickCode::LEFT);
 		system.BindPadStick("CameraMove"_hash, StickCode::RIGHT);
 	}
@@ -52,8 +58,8 @@ void InputManager::Init()
 		InputSystem& system = m_inputSystems[static_cast<size_t>(InputBindType::UI)];
 
 		system.CreateButtonAction("MenuBack"_hash);
-		system.CreateAxisAction("MenuUp"_hash);
-		system.CreateAxisAction("MenuDown"_hash);
+		system.CreateButtonAction("MenuUp"_hash);
+		system.CreateButtonAction("MenuDown"_hash);
 		system.CreateButtonAction("MenuInteract"_hash);
 
 		system.BindKey("MenuBack"_hash, KeyCode::Z);

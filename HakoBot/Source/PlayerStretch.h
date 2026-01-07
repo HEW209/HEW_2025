@@ -15,10 +15,20 @@ public:
 
 	PlayerStretch();
 	void Update() override;
-	void SetPillarObject(GameObject* pPillar) { m_pillar = pPillar; }
+	void LateUpdate()override;
+	void SetPillarObject(GameObject* pPillar)
+	{
+		m_pillars.push_back(pPillar);
+	}
+	void SetPlayerCollider(Collider* pCollider)
+	{
+		m_pCollider = pCollider;
+	}
 
 private:
 
 	float m_targetY;
-	GameObject* m_pillar;
+	bool m_targetLock;
+	std::vector<GameObject*> m_pillars;
+	ObjPtr<Collider> m_pCollider;
 };

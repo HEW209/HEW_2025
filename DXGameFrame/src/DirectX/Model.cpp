@@ -24,7 +24,7 @@
 #endif
 #endif
 
-bool Model::Load(const std::string& filePath)
+bool Model::Load(const std::string& filePath, ModelLoadType loadType)
 {
 	// モデル読み込み設定
 	Assimp::Importer importer;
@@ -54,12 +54,80 @@ bool Model::Load(const std::string& filePath)
 	directory = directory.substr(0, directory.find_last_of('\\') + 1);
 
 	// メッシュ作成
-	m_meshGroup.Create(pScene);
+	m_meshGroup.Create(pScene, loadType);
 
 	// マテリアル作成
 	CreateMaterials(pScene, directory);
 
+	// 読み込みタイプ毎の処理
+	switch (loadType) {
+	case ModelLoadType::OUTLINE:
+		break;
+
+	default:
+		break;
+	}
+
 	return true;
+}
+
+bool Model::LoadAnimation(const std::string& filePath)
+{
+	// モデル読み込み設定
+	Assimp::Importer importer;
+	UINT flag = 0;
+	flag |= aiProcess_Triangulate;
+	flag |= aiProcess_FlipUVs;
+	flag |= aiProcess_MakeLeftHanded;
+
+	// モデルデータ読み込み
+	const aiScene* pScene = importer.ReadFile(filePath, flag);
+	if (pScene == nullptr)
+	{
+#ifdef _DEBUG
+		Debug::ErrorMessage(importer.GetErrorString());
+#endif
+		return false;
+	}
+
+	auto it = m_animeNoMap.find(filePath);
+	if (it != m_animeNoMap.end())
+	{
+		return it->second;
+	}
+
+	MeshGroup::AnimeNo animeNo;
+	animeNo = m_meshGroup.AddAnimation(pScene);
+	if (animeNo != MeshGroup::ANIME_NONE)
+	{
+		m_animeNoMap[filePath] = animeNo;
+	}
+	return animeNo;
+}
+
+void Model::PlayAnime(MeshGroup::AnimeNo no, bool loop, float speed)
+{
+	m_meshGroup.PlayAnime(no, loop, speed);
+}
+
+void Model::PlayBlend(MeshGroup::AnimeNo no, float blendTime, bool loop, float speed)
+{
+	m_meshGroup.PlayBlend(no, blendTime, loop, speed);
+}
+
+void Model::SetParametric(MeshGroup::AnimeNo no1, MeshGroup::AnimeNo no2)
+{
+	m_meshGroup.SetParametric(no1, no2);
+}
+
+void Model::SetParametricBlend(float blendRate)
+{
+	m_meshGroup.SetParametricBlend(blendRate);
+}
+
+void Model::SetAnimeTime(MeshGroup::AnimeNo no, float time)
+{
+	m_meshGroup.SetAnimeTime(no, time);
 }
 
 HRESULT Model::CreateMesh(const Mesh::Description& desc)
@@ -72,6 +140,11 @@ HRESULT Model::CreateMesh(const Mesh::Description& desc)
 void Model::Draw(const std::vector<Material>& materials)
 {
 	m_meshGroup.Draw(materials);
+}
+
+void Model::StepAnime(float tick)
+{
+	m_meshGroup.StepAnime(tick);
 }
 
 const std::vector<Material>& Model::GetMaterials()

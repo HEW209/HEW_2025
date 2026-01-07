@@ -22,7 +22,7 @@ struct LightConstantBuffer
 	DirectX::XMFLOAT3 lightDir;				// ライト方向
 	float lightIntensity;					// ライトの強さ
 	DirectX::XMFLOAT3 lightColor;			// ライト色
-	float pad1;
+	float lightSize;						// ライトの大きさ（シャドウ用）
 	DirectX::XMFLOAT3 ambientColor;			// 環境光
 	float pad2;
 };
@@ -83,6 +83,12 @@ public:
 	void SetLight(const LightConstantBuffer& light);
 
 	/**
+	 * @brief ライトビュー・プロジェクション行列を設定する
+	 * @param lightViewProj ライトビュー・プロジェクション行列
+	 */
+	void SetLightViewProj(const DirectX::XMMATRIX& lightViewProj);
+
+	/**
 	 * @brief 現在の経過時間を設定する
 	 * @param time ゲーム開始から現在の経過時間
 	 */
@@ -136,6 +142,7 @@ private:
 		DirectX::XMFLOAT3 cameraPos;			// カメラ位置
 		float time;								// 経過時間
 
+		DirectX::XMFLOAT4X4 lightViewProj;		// ライトビュー・プロジェクション行列
 		LightConstantBuffer lightCB;			// ライト定数バッファ
 	};
 

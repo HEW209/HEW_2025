@@ -46,7 +46,9 @@
     <ClInclude Include="include\DirectX\Direct3D.h" />
     <ClInclude Include="include\DirectX\DirectX.h" />
     <ClInclude Include="include\DirectX\DirectXInclude.h" />
+    <ClInclude Include="include\DirectX\DXTypes.h" />
     <ClInclude Include="include\DirectX\Geometry.h" />
+    <ClInclude Include="include\DirectX\GeometryShader.h" />
     <ClInclude Include="include\DirectX\Material.h" />
     <ClInclude Include="include\DirectX\Mesh.h" />
     <ClInclude Include="include\DirectX\MeshGroup.h" />
@@ -105,6 +107,7 @@
     <ClCompile Include="src\DirectX\DepthStencilStateManager.cpp" />
     <ClCompile Include="src\DirectX\Direct3D.cpp" />
     <ClCompile Include="src\DirectX\Geometry.cpp" />
+    <ClCompile Include="src\DirectX\GeometryShader.cpp" />
     <ClCompile Include="src\DirectX\Material.cpp" />
     <ClCompile Include="src\DirectX\Mesh.cpp" />
     <ClCompile Include="src\DirectX\MeshGroup.cpp" />
@@ -137,6 +140,12 @@
     <ClCompile Include="src\Utility\Vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="HLSL\Anime_VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
     <FxCompile Include="HLSL\Default_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -161,9 +170,17 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
+    <FxCompile Include="HLSL\GroupTransparent_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="HLSL\DXGameFrameShader.hlsli" />
+    <None Include="HLSL\GroupTransparent.hlsli" />
+    <None Include="HLSL\Shadow.hlsli" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

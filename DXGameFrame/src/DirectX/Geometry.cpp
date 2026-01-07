@@ -8,6 +8,8 @@ HRESULT Geometry::Init()
 	// ジオメトリ図形を作成
 	hr = CreateBox();
 	if (FAILED(hr)) { return hr; }
+	hr = CreatePlane();
+	if (FAILED(hr)) { return hr; }
 
 	return hr;
 }
@@ -111,6 +113,59 @@ HRESULT Geometry::CreateCylinder()
 HRESULT Geometry::CreateSphere()
 {
 	return E_NOTIMPL;
+}
+
+HRESULT Geometry::CreatePlane()
+{
+	HRESULT hr = S_OK;		// 関数の結果
+
+	struct Vtx
+	{
+		DirectX::XMFLOAT3 pos;			// 頂点座標
+		DirectX::XMFLOAT2 uv;			// UV座標
+	};
+
+	Vtx vtx[4]
+	{
+		{{-0.5f, 0.0f,-0.5f}, {0.0f,0.0f} },
+		{{-0.5f, 0.0f, 0.5f}, {0.0f,1.0f} },
+		{{ 0.5f, 0.0f,-0.5f}, {1.0f,0.0f} },
+		{{ 0.5f, 0.0f, 0.5f}, {1.0f,1.0f} }
+	};
+
+	int idx[6] = { 0,1,2,1,3,2 };
+
+	// バッファの作成
+	Mesh::Description desc = {};
+
+	//頂点データを作成
+	desc.vtx.resize(4);
+	for (UINT i = 0; i < 4; i++)
+	{
+		desc.vtx[i].pos = vtx[i].pos;
+		desc.vtx[i].normal = { 0.0f, 1.0f, 0.0f };
+		desc.vtx[i].uv = vtx[i].uv;
+		desc.vtx[i].color = { 1.0f, 1.0f, 1.0f, 1.0f };
+	}
+
+	//インデックスデータを作成
+	desc.idx.resize(6);
+	for (UINT i = 0; i < 6; i++)
+	{
+		desc.idx[i] = idx[i];
+	}
+
+	//その他のデータを設定
+	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+
+	// モデルを作成
+	auto model = std::make_shared<Model>();
+	hr = model->CreateMesh(desc);
+	if (FAILED(hr)) { return hr; };
+
+	m_pModels[Type::PLANE] = model;
+
+	return hr;
 }
 
 Geometry& Geometry::Instance()

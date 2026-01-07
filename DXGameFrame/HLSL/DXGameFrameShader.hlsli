@@ -31,10 +31,11 @@ cbuffer PerFrame : register(b1)
     float4x4 projection; // プロジェクション行列
     float3 cameraPos; // カメラ座標
     float time; // 経過時間
+    float4x4 lightViewProj; // ライトビュー・プロジェクション行列
     float3 lightDir; // ライト方向
     float lightIntensity; // ライトの強さ
     float3 lightColor; // ライト色
-    float pad1;
+    float lightSize; // ライトサイズ（ソフトシャドウ用）
     float3 ambientColor; // 環境光
     float pad2;
 };

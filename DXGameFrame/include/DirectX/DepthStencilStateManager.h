@@ -17,6 +17,9 @@ enum class DepthStencilState : UINT
 	READ_ONLY,		// 深度テストON 書き込みOFF (半透明用)
 	DISABLE,		// 深度テストOFF (UI・2D用)
 	STENCIL,		// ステンシルON
+	DISABLE_STENCIL,// 深度テストOFF、ステンシルON
+	OUTLINE,		// アウトライン描画用
+	OUTLINE_READONLY,	// アウトライン描画用（深度書き込みOFF）
 	COUNT
 };
 

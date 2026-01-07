@@ -30,6 +30,14 @@ void EffectRenderer::Draw()
 
 }
 
+void EffectRenderer::DrawShadow()
+{
+}
+
+void EffectRenderer::DrawDepth()
+{
+}
+
 void EffectRenderer::Load(const std::string& fileName)
 {
     // UTF-8 Å® wchar_t (UTF-16)

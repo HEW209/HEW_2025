@@ -15,10 +15,33 @@
 class ColliderSystem
 {
 public:
+
+	// レイ用構造体
+	struct Ray {
+		Vector3 origin;
+		Vector3 direction;
+	};
+
+	// レイが当たった時の情報
+	struct RaycastHit {
+		Vector3 point;    // 当たった座標
+		float distance;   // 距離
+		Vector3 normal;   // 当たった面の法線
+		GameObject* hitObj;// 当たったオブジェクト
+	};
+
 	/**
-	 * @brief 全ての当たり判定コンポーネントの描画処理を呼び出す
+	 * @brief 全ての当たり判定コンポーネントを当たってるかチェック
 	 */
 	void Check();
+
+	/**
+	 * @brief 全ての当たり判定コンポーネントとレイが当たってるかチェック
+	 * @param ray チェックするレイ
+	 * @param RaycastHit 当たった時に情報を入れる構造体のポインター
+	 * @param maxDistance レイの長さ
+	 */
+	bool Raycast(const Ray& ray, RaycastHit* outHit, float maxDistance);
 
 	/**
 	 * @brief 3D当たり判定コンポーネントを登録する
@@ -31,6 +54,12 @@ public:
 	 * @param pCollider 登録削除する3D当たり判定コンポーネント
 	 */
 	void Unregister(Collider* pCollider);
+
+#ifdef _DEBUG
+
+	void SetDrawFlag(bool flag);
+
+#endif
 
 private:
 
@@ -54,6 +83,14 @@ private:
 	bool CheckCollisionOBB(Collider::ObbData data, Collider::ObbData otherData, Vector3* pMtv);
 
 	/**
+	 * @brief OBBとrayの当たり判定
+	 * @return 衝突していれば true
+	 */
+	bool IntersectRayObb(const Ray& ray, const Collider::ObbData& obb, float& tMin, float& tMax, Vector3& outNormal);
+
+public:
+
+	/**
 	 * @brief Vector3の内積
 	 * @param Vector3
 	 * @param Vector3
@@ -68,6 +105,8 @@ private:
 	 * @return Vector3 外積
 	 */
 	Vector3 Cross(Vector3 v, Vector3 other);
+
+private:
 
 	/// 3D描画コンポーネントのリスト
 	std::vector<Collider*> m_colliders;

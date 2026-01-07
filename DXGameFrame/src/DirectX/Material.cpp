@@ -38,6 +38,9 @@ void Material::Bind() const
 	{
 		m_pPS->Bind();
 	}
+	else {
+		ShaderManager::Instance().SetPixelShader(nullptr);
+	}
 
 	// 定数バッファをセット
 	ConstantBufferManager::Instance().SetCustomData(m_customParameter);
@@ -54,6 +57,11 @@ void Material::SetVertexShader(const std::string& filePath)
 void Material::SetPixelShader(const std::string& filePath)
 {
 	m_pPS = ShaderManager::Instance().LoadPixelShader(filePath);
+}
+
+void Material::ClearPixelShader()
+{
+	m_pPS = nullptr;
 }
 
 void Material::SetTexture(const std::string& filePath, UINT slot)
