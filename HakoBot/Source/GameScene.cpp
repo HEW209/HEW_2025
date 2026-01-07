@@ -51,7 +51,7 @@ void GameScene::Init() {
     auto cameraObj = CreateGameObject();
     auto playerCamera = cameraObj->AddComponent<PlayerCamera>();
     playerCamera->SetPlayer(player->GetTransform());
-    playerCamera->SetCameraDistance(5.0f+m_levelData.gridSize.y * 3.0f);
+    playerCamera->SetCameraDistance(5.0f + m_levelData.gridSize.y * 3.0f);
 
 	
 
