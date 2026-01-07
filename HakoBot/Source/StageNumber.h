@@ -37,8 +37,11 @@ private:
 	
 	float m_totalTime;
 	bool m_bAutoCountUp=false;
+	
 	bool m_bAutoCountDown = false;
 	int m_StegeNumberdigit =0;
-
+	bool m_bCoolCount = false;
+	float CountUPTimer = 0.0f;
+	
 
 };

@@ -8,58 +8,12 @@
 
 
 #define DEFAULT_POSY -3.5f
+#define DEFAULT_POSZ -1.0f
 #define CENTER_POSZ -1.8f
 
 void StageSelectObject::Start()
 {
-	//==========開始時に右から流れる演出の為Posを設定==========
-	switch (m_StageID)
-	{
 
-	case 0:
-		m_Pos = { 20.0f,DEFAULT_POSY ,0.0f };
-		break;
-	case 1:
-		m_Pos = { 24.0f,DEFAULT_POSY ,0.0f };
-		break;
-	case 2:
-		m_Pos = { 28.0f,DEFAULT_POSY ,0.0f };
-		break;
-	case 3:
-		m_Pos = { 32.0f,DEFAULT_POSY ,0.0f };
-		break;
-	case 23:
-		m_Pos = { -9.0f,DEFAULT_POSY ,0.0f };
-		break;
-	case 24:
-		m_Pos = { -5.0f,DEFAULT_POSY ,0.0f };
-		break;
-	case 25:
-		m_Pos = { -1.0f,DEFAULT_POSY ,0.0f };
-		break;
-	case 26:
-		m_Pos = { 3.0f,DEFAULT_POSY ,0.0f };
-		break;
-	case 27:
-		m_Pos = { 7.0f,DEFAULT_POSY ,0.0f };
-		break;
-	case 28:
-		m_Pos = { 11.0f,DEFAULT_POSY ,0.0f };
-		break;
-	case 29:
-		m_Pos = { 15.0f,DEFAULT_POSY ,0.0f };
-		break;
-	case 30:
-		m_Pos = { 18.0f,DEFAULT_POSY ,0.0f };
-		break;
-	default:
-		m_Pos = { 20.0f,DEFAULT_POSY ,0.0f };
-		break;
-	}
-	
-	m_TargetPos = m_Pos;
-	//=========================================================
-	
 }
 
 
@@ -91,6 +45,26 @@ void StageSelectObject::Update()
 
 
 	GetGameObject()->GetTransform()->SetEulerAngle(0.0f, m_RotateY, 0.0f);
+	if (m_farst == true)
+	{
+		float PosX = 0.0f;
+		float PosY = DEFAULT_POSY;
+		float PosZ = 0.0f;
+		float Distance = 9.0f;
+
+
+		int diff = m_StageID - m_selectIndex;
+		if (diff > m_stageCount / 2)
+			diff -= m_stageCount;
+		else if (diff < -m_stageCount / 2)
+			diff += m_stageCount;
+
+
+		m_Pos = { PosX + Distance * diff,PosY,PosZ };
+		GetGameObject()->GetTransform()->SetPosition(m_Pos);
+		m_TargetPos = m_Pos;
+		m_farst = false;
+	}
 
 }
 
@@ -156,7 +130,7 @@ void StageSelectObject::SetPosID()
 
 	float PosX = 0.0f;
 	float PosY = DEFAULT_POSY;
-	float PosZ = 0.0f;
+	float PosZ = DEFAULT_POSZ;
 	float Distance = 9.0f;
 
 	m_TargetPos = m_Pos;
@@ -172,7 +146,7 @@ void StageSelectObject::SetPosID()
 	m_IsCenter = (diff == 0);
 
 	// 表示範囲外
-	if (diff <= -8 || diff >= 8)
+	if (diff <= -(m_stageCount / 2 - 7) || diff >= (m_stageCount / 2 - 7))
 	{
 		m_Pos = { PosX + Distance * diff,PosY,PosZ };
 		return;
@@ -181,8 +155,8 @@ void StageSelectObject::SetPosID()
 	{
 		if (m_IsCenter)
 		{
-			PosZ = CENTER_POSZ;
-			PosY = DEFAULT_POSY + 1.0f;
+			/*PosZ = CENTER_POSZ;
+			PosY = DEFAULT_POSY + 1.0f;*/
 			GetGameObject()->GetTransform()->SetScale(1.5f, 1.5f, 1.5f);
 		}
 		else

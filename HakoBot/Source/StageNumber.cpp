@@ -4,7 +4,7 @@
 #include "InputManager.h"
 
 #define STAGE_FILE "Assets/Stage/Level%d.json"
-#define FONT_SIZE (450.0f)
+#define FONT_SIZE (700.0f)
 
 
 int digitIndex[10] =
@@ -24,9 +24,9 @@ int digitIndex[10] =
 
 void StageNumber::Start()
 {
-	float PosX = -4.2f;
-	float PosY = 1.3f;
-	float PosInterval = 0.3f * (FONT_SIZE / 100);	//文字間隔　＊　文字サイズによる間隔補正
+	float PosX = -5.0f;
+	float PosY = 1.0f;
+	float PosInterval = 0.3f * (FONT_SIZE /130);	//文字間隔　＊　文字サイズによる間隔補正
 
 	for (int x = 0; x < 3; ++x)
 	{
@@ -58,19 +58,34 @@ void StageNumber::KeyEnter_Number()
 	//============================================================================
 	//						  ステージセレクトINDEX
 	//============================================================================
-	if (Input::GetKeyDown(KeyCode::UP))
+	if (m_bCoolCount == false)
 	{
-		m_bAutoCountUp = true;
-		m_selectIndex += 5;
-		if (m_selectIndex >= m_stageCount) { m_selectIndex = 0; }
+		if (Input::GetKeyDown(KeyCode::UP))
+		{
+
+			m_selectIndex += 5;
+			if (m_selectIndex >= m_stageCount) { m_selectIndex = 0; }
+			m_bCoolCount = true;
+		}
+		if (Input::GetKeyDown(KeyCode::DOWN))
+		{
+
+			m_selectIndex -= 5;
+			if (m_selectIndex < 0) { m_selectIndex = m_stageCount - 1; }
+			m_bCoolCount = true;
+		}
 	}
-	if (Input::GetKeyDown(KeyCode::DOWN))
+	else
 	{
-		m_bAutoCountDown = true;
-		m_selectIndex-=5;
-		if (m_selectIndex < 0) { m_selectIndex = m_stageCount - 1; }
+		CountUPTimer++;
+		if (CountUPTimer > 90)
+		{
+			CountUPTimer = 0.0f;
+			m_bCoolCount = false;
+		}
 	}
-	//AutoCount();
+
+
 
 	if (Input::GetKeyDown(KeyCode::LEFT))
 	{
@@ -85,8 +100,6 @@ void StageNumber::KeyEnter_Number()
 		if (m_selectIndex >= m_stageCount) { m_selectIndex = 0; }
 	}
 	//============================================================================
-
-
 
 
 	if ((Input::GetKeyDown(KeyCode::ENTER)&&(m_bAutoCountUp!=true&& m_bAutoCountDown != true )))
