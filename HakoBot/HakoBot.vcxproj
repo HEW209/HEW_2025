@@ -184,6 +184,7 @@
     <ClCompile Include="Source\PlayerMove.cpp" />
     <ClCompile Include="Source\PlayerStretch.cpp" />
     <ClCompile Include="Source\SampleCamera.cpp" />
+    <ClCompile Include="Source\SaveData.cpp" />
     <ClCompile Include="Source\ShapeScreen.cpp" />
     <ClCompile Include="Source\StageSelectConveyors.cpp" />
     <ClCompile Include="Source\TitleExit.cpp" />
@@ -196,7 +197,7 @@
     <ClCompile Include="Source\SoundPlayer.cpp" />
     <ClCompile Include="Source\TitleUI.cpp" />
     <ClCompile Include="Source\VecUtil.cpp" />
-    <ClCompile Include="Source\SampleStageSelectScene.cpp" />
+    <ClCompile Include="Source\StageSelectScene.cpp" />
     <ClCompile Include="Source\StageSelectObject.cpp" />
     <ClCompile Include="Source\StageNumber.cpp" />
   </ItemGroup>
@@ -233,6 +234,7 @@
     <ClInclude Include="Source\PlayerMove.h" />
     <ClInclude Include="Source\PlayerStretch.h" />
     <ClInclude Include="Source\SampleCamera.h" />
+    <ClInclude Include="Source\SaveData.h" />
     <ClInclude Include="Source\ShapeScreen.h" />
     <ClInclude Include="Source\StageSelectConveyors.h" />
     <ClInclude Include="Source\TitleExit.h" />
@@ -285,6 +287,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
+    <FxCompile Include="Source\HLSL\OneColor_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
     <FxCompile Include="Source\HLSL\Screen_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
@@ -297,7 +305,7 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
-    <ClInclude Include="Source\SampleStageSelectScene.h" />
+    <ClInclude Include="Source\StageSelectScene.h" />
     <ClInclude Include="Source\StageSelectObject.h" />
     <ClInclude Include="Source\StageNumber.h" />
   </ItemGroup>

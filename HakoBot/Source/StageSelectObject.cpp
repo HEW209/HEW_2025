@@ -1,300 +1,226 @@
 #include "GameScene.h"
 #include "StageSelectObject.h"
 #include "LevelSerializer.h"
+#include "SaveData.h"
 
+static const Vector3 g_defaultPos(0.0f, -3.5f, -1.0f);
+static const Vector3 g_centerPos(0.0f, -2.5f, -1.0f);
+static const Vector3 g_defaultConveyerPos(0.0f, -6.6f, 0.0f);
+static const float g_blockDistance = 7.0f;
+static const float g_conveyerDistance = 20.0f;
+static const float g_defaultMoveSpeed = 5.0f;
+static const float g_minMoveSpeed = 1.0f;
+static const float g_rotateSpeed = 60.0f;
 
-
-#include <memory>
-
-
-#define DEFAULT_POSY -3.5f
-#define DEFAULT_POSZ -1.0f
-#define CENTER_POSZ -1.8f
+static const char* g_blockNames[StageCount] =
+{
+	"1masu",
+	"Lji1",
+	"tate2masu",
+	"tate3masu",
+	"yoko2masu",
+	"yoko3masu",
+	"1masu",
+	"1masu",
+	"1masu",
+	"1masu",
+	"1masu",
+	"1masu",
+	"1masu",
+	"1masu",
+	"1masu",
+	"1masu",
+	"1masu",
+	"1masu",
+	"1masu",
+	"1masu",
+	"1masu",
+	"1masu",
+	"1masu",
+	"1masu",
+	"1masu",
+	"1masu",
+	"1masu",
+	"1masu",
+	"1masu",
+	"1masu"
+};
 
 void StageSelectObject::Start()
 {
-
-}
-
-
-void StageSelectObject::Update()
-{
-
-	KeyEnter();
-	SetPosID();
-	// 回転処理
-	if (m_IsCenter)
+	int clearStage = SaveData::GetClearLevel();
+	for (int i = 0; i < StageCount; i++)
 	{
-		m_RotateY += m_RotateSpeed;
+		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
+		obj->GetTransform()->SetParent(GetTransform());
+		Vector3 pos = g_defaultPos + Vector3::right * g_blockDistance * i;
+		obj->GetTransform()->SetPosition(pos, Space::LOCAL);
 
-		if (m_RotateY >= 360.0f)
-			m_RotateY -= 360.0f;
-	}
-	else
-	{
-		// 現在角度から徐々に0へ戻す
-		float returnSpeed = 0.1f; 
-		float Lerp = m_RotateY + (0.0f - m_RotateY) * returnSpeed;	//Leap=a+(b-a)*t
-		
-		m_RotateY = Lerp;
+		std::string filePath = "Assets/Model/Blocks/FBX/";
+		filePath += g_blockNames[i];
+		filePath += ".fbx";
 
-		// ぶれ防止
-		if (std::fabs(m_RotateY) < 0.01f)
-			m_RotateY = 0.0f;
-	}
-
-
-	GetGameObject()->GetTransform()->SetEulerAngle(0.0f, m_RotateY, 0.0f);
-	if (m_farst == true)
-	{
-		float PosX = 0.0f;
-		float PosY = DEFAULT_POSY;
-		float PosZ = 0.0f;
-		float Distance = 9.0f;
-
-
-		int diff = m_StageID - m_selectIndex;
-		if (diff > m_stageCount / 2)
-			diff -= m_stageCount;
-		else if (diff < -m_stageCount / 2)
-			diff += m_stageCount;
-
-
-		m_Pos = { PosX + Distance * diff,PosY,PosZ };
-		GetGameObject()->GetTransform()->SetPosition(m_Pos);
-		m_TargetPos = m_Pos;
-		m_farst = false;
-	}
-
-}
-
-void StageSelectObject::KeyEnter()
-{
-
-	//============================================================================
-	//						  ステージセレクトINDEX
-	//============================================================================
-	if (m_bCoolCount==false)
-	{
-		if (Input::GetKeyDown(KeyCode::UP))
+		if (clearStage < i)
 		{
-
-			m_selectIndex += 5;
-			if (m_selectIndex >= m_stageCount) { m_selectIndex = 0; }
-			m_bCoolCount = true;
-		}
-		if (Input::GetKeyDown(KeyCode::DOWN))
-		{
-
-			m_selectIndex -= 5;
-			if (m_selectIndex < 0) { m_selectIndex = m_stageCount - 1; }
-			m_bCoolCount = true;
-		}
-	}
-	else
-	{
-		CountUPTimer++;
-		if (CountUPTimer > 90)
-		{
-			CountUPTimer = 0.0f;
-				m_bCoolCount = false;
-		}
-	}
-	
-
-
-	if (Input::GetKeyDown(KeyCode::LEFT))
-	{
-		m_selectIndex--;
-		if (m_selectIndex < 0) { m_selectIndex = m_stageCount - 1; }
-
-	}
-
-	if (Input::GetKeyDown(KeyCode::RIGHT))
-	{
-		m_selectIndex++;
-		if (m_selectIndex >= m_stageCount) { m_selectIndex = 0; }
-	}
-	//============================================================================
-
-	
-}
-
-void StageSelectObject::SetStageID(int StageID)
-{
-	m_StageID = StageID;	//呼び出された順番にステージIDをセット
-}
-
-void StageSelectObject::SetPosID()
-{
-
-	float PosX = 0.0f;
-	float PosY = DEFAULT_POSY;
-	float PosZ = DEFAULT_POSZ;
-	float Distance = 9.0f;
-
-	m_TargetPos = m_Pos;
-
-	int diff = m_StageID - m_selectIndex;
-	if (diff > m_stageCount / 2)
-		diff -= m_stageCount;
-	else if (diff < -m_stageCount / 2)
-		diff += m_stageCount;
-
-
-
-	m_IsCenter = (diff == 0);
-
-	// 表示範囲外
-	if (diff <= -(m_stageCount / 2 - 7) || diff >= (m_stageCount / 2 - 7))
-	{
-		m_Pos = { PosX + Distance * diff,PosY,PosZ };
-		return;
-	}
-	else
-	{
-		if (m_IsCenter)
-		{
-			/*PosZ = CENTER_POSZ;
-			PosY = DEFAULT_POSY + 1.0f;*/
-			GetGameObject()->GetTransform()->SetScale(1.5f, 1.5f, 1.5f);
+			auto mesh = obj->AddComponent<MeshRenderer>();
+			mesh->LoadModel(filePath);
+			Material* material = mesh->GetMaterial(0);
+			material->SetPixelShader("Assets/Shader/OneColor_PS.cso");
+			Color color(0.1f, 0.1f, 0.1f, 1.0f);
+			material->SetParameter(&color, sizeof(color));
 		}
 		else
 		{
-			GetGameObject()->GetTransform()->SetScale(1.0f, 1.0f, 1.0f);
+			auto mesh = obj->AddComponent<OutlineMeshRenderer>();
+			mesh->LoadModel(filePath);
+			mesh->SetShouldDrawOutline(false);
+			mesh->SetOutlineColor(Color(1.0f, 0.5f, 0.0f, 1.0f));
+			mesh->SetOutlineThickness(5.0f);
+			m_blockRenderers.push_back(mesh);
 		}
-		m_TargetPos = { PosX + Distance * diff,PosY,PosZ };
+
+		m_blocks[i] = obj;
 	}
 
-	Vector3 toTarget = m_TargetPos - m_Pos;
-	float distance = toTarget.Magnitude();
-	if (distance < 0.001f)return;
-
-	Vector3 dir = toTarget.Normalized();
-	float move = m_MoveSpeed;
-
-	if (move >= distance)
+	for (int i = -1; i < 13; i++)
 	{
-		m_Pos = m_TargetPos; // 行き過ぎ防止
+		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
+		auto mesh = obj->AddComponent<MeshRenderer>();
+		mesh->LoadModel("Assets/Model/Stage/FBX/Conveyors.fbx");
+		obj->GetTransform()->SetParent(GetTransform());
+		Vector3 pos = g_defaultConveyerPos + Vector3::right * g_conveyerDistance * i;
+		obj->GetTransform()->SetPosition(pos, Space::LOCAL);
+		obj->GetTransform()->SetScale(0.89f, 1.0f, 2.0f);
+	}
+}
+
+void StageSelectObject::Update()
+{
+	Move();
+	BlockMove();
+	BlockRotate();
+
+#ifdef _DEBUG
+	float deltaTime = Time::GetDeltaTime();
+	int fps = 1.0f / deltaTime;
+
+	ImGui::Begin("Guide");
+	ImGui::Text("FPS : %3d", fps);
+	ImGui::End();
+#endif // DEBUG
+}
+
+void StageSelectObject::SetStageNumber(StageNumber* stageNumber)
+{
+	m_stageNumber = stageNumber;
+}
+
+void StageSelectObject::Move()
+{
+	// 目標位置計算
+	Vector3 pos = GetTransform()->GetPosition();
+	int selectIndex = m_stageNumber->GetSelectIndex();
+	Vector3 targetPos = Vector3::zero + Vector3::left * g_blockDistance * (selectIndex - 1);
+
+	Vector3 toTarget = targetPos - pos;
+	float distance = toTarget.Magnitude();
+	if (distance < 0.001f) return;
+
+	// 移動
+	Vector3 move = toTarget * g_defaultMoveSpeed;
+	float mag = move.Magnitude();
+	if (mag < g_minMoveSpeed)
+	{
+		move = move.Normalized() * g_minMoveSpeed;
+	}
+
+	if (distance < g_minMoveSpeed * Time::GetDeltaTime())
+	{
+		pos = targetPos; // 行き過ぎ防止
 	}
 	else
 	{
-		m_Pos = m_Pos + dir * move;
+		pos += move * Time::GetDeltaTime();
 	}
-
-	GetGameObject()->GetTransform()->SetPosition(m_Pos);
-
+	GetGameObject()->GetTransform()->SetPosition(pos);
 }
 
-
-
-
-std::string StageSelectObject::SetModelID()
+void StageSelectObject::BlockMove()
 {
-	std::string blockName = "tate3masu";
-	switch (m_StageID)
+	const float moveSpeed = 5.0f;
+
+	// ブロックごとの移動
+	int selectIndex = m_stageNumber->GetSelectIndex() - 1;
+	for (int x = 0; x < StageCount; ++x)
 	{
-		case 0:
-			blockName = "1masu";
-			break;
-		case 1:
-			blockName = "Lji1";
-			break;
-		case 2:
-			blockName = "tate2masu";
-			break;
-		case 3:
-			blockName = "tate3masu";
-			break;
-		case 4:
-			blockName = "yoko2masu";
-			break;
-		case 5:
-			blockName = "yoko3masu";
-			break;
-		case 6:
-			blockName = "1masu";
-			break;
-		case 7:
-			blockName = "Lji1";
-			break;
-		case 8:
-			blockName = "tate2masu";
-			break;
-		case 9:
-			blockName = "tate3masu";
-			break;
-		case 10:
-			blockName = "yoko2masu";
-			break;
-		case 11:
-			blockName = "yoko3masu";
-			break;
-		case 12:
-			blockName = "1masu";
-			break;
-		case 13:
-			blockName = "Lji1";
-			break;
-		case 14:
-			blockName = "tate2masu";
-			break;
-		case 15:
-			blockName = "tate3masu";
-			break;
-		case 16:
-			blockName = "yoko2masu";
-			break;
-		case 17:
-			blockName = "yoko3masu";
-			break;
-		case 18:
-			blockName = "1masu";
-			break;
-		case 19:
-			blockName = "Lji1";
-			break;
-		case 20:
-			blockName = "tate2masu";
-			break;
-		case 21:
-			blockName = "tate3masu";
-			break;
-		case 22:
-			blockName = "yoko2masu";
-			break;
-		case 23:
-			blockName = "yoko3masu";
-			break;
-		case 24:
-			blockName = "1masu";
-			break;
-		case 25:
-			blockName = "Lji1";
-			break;
-		case 26:
-			blockName = "tate2masu";
-			break;
-		case 27:
-			blockName = "tate3masu";
-			break;
-		case 28:
-			blockName = "yoko2masu";
-			break;
-		case 29:
-			blockName = "yoko3masu";
-			break;
-		case 30:
-			blockName = "1masu";
-			break;
-	default:
-		    blockName = "tate3masu";
-		break;
+		Vector3 pos_yz = m_blocks[x]->GetTransform()->GetPosition(Space::LOCAL);
+		float pos_x = pos_yz.x;
+		pos_yz.x = 0.0f;
+
+		Vector3 target;
+		if (x == selectIndex)
+		{
+			target = g_centerPos;
+			if (x < m_blockRenderers.size())
+				m_blockRenderers[x]->SetShouldDrawOutline(true);
+		}
+		else
+		{
+			target = g_defaultPos;
+			if (x < m_blockRenderers.size())
+				m_blockRenderers[x]->SetShouldDrawOutline(false);
+		}
+
+		Vector3 toTarget = target - pos_yz;
+		Vector3 move = toTarget.Normalized() * moveSpeed;
+
+		// 移動
+		if (toTarget.Magnitude() < moveSpeed * Time::GetDeltaTime())
+		{
+			pos_yz = target; // 行き過ぎ防止
+		}
+		else
+		{
+			pos_yz += move * Time::GetDeltaTime();
+		}
+		m_blocks[x]->GetTransform()->SetPosition(pos_x, pos_yz.y, pos_yz.z, Space::LOCAL);
+
+		// スケーリング
+		float toCenter = (g_centerPos - pos_yz).Magnitude();
+		float moveDistance = (g_centerPos - g_defaultPos).Magnitude();
+		float centerRatio = 1.0f - toCenter / moveDistance;
+		float scale = centerRatio * 0.5f + 1.0f;
+		m_blocks[x]->GetTransform()->SetScale(scale, scale, scale);
 	}
-	
-	std::string blockPath = "Assets/Model/Blocks/FBX/" + blockName + ".fbx";
-	return blockPath;
 }
 
+void StageSelectObject::BlockRotate()
+{
+	// ブロックごとの回転
+	int selectIndex = m_stageNumber->GetSelectIndex() - 1;
+	for (int x = 0; x < StageCount; ++x)
+	{
+		float angle_y = m_blocks[x]->GetTransform()->GetEulerAngle().y;
 
+		if (x == selectIndex)
+		{
+			angle_y += g_rotateSpeed * Time::GetDeltaTime();
 
+			if (angle_y >= 360.0f)
+				angle_y -= 360.0f;
+		}
+		else
+		{
+			// 現在角度から徐々に0へ戻す
+			float returnSpeed = 0.1f;
+			float Lerp = angle_y + (0.0f - angle_y) * returnSpeed;	//Leap=a+(b-a)*t
+
+			angle_y = Lerp;
+
+			// ぶれ防止
+			if (std::fabs(angle_y) < 0.01f)
+				angle_y = 0.0f;
+		}
+		m_blocks[x]->GetTransform()->SetEulerAngle(0.0f, angle_y, 0.0f);
+	}
+}

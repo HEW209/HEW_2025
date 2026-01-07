@@ -2,12 +2,12 @@
 #include <memory>
 #include "GameScene.h"
 #include "InputManager.h"
+#include "SaveData.h"
 
 #define STAGE_FILE "Assets/Stage/Level%d.json"
-#define FONT_SIZE (700.0f)
+#define FONT_SIZE (250.0f)
 
-
-int digitIndex[10] =
+static const int digitIndex[10] =
 {
 0,  // 0の位置
 1,  // 1
@@ -22,140 +22,51 @@ int digitIndex[10] =
 };
 
 
+StageNumber::StageNumber() :
+	m_NumberSprite(),
+	m_selectIndex(1),
+	m_lastInput(0),
+	m_keyHold(false),
+	m_holdTimer(0.0f),
+	m_repeatTimer(0.0f)
+{
+}
+
 void StageNumber::Start()
 {
 	float PosX = -5.0f;
 	float PosY = 1.0f;
-	float PosInterval = 0.3f * (FONT_SIZE /130);	//文字間隔　＊　文字サイズによる間隔補正
+	float PosInterval = FONT_SIZE / 100.0f;	//文字間隔　＊　文字サイズによる間隔補正
 
-	for (int x = 0; x < 3; ++x)
+	for (int x = 0; x < 2; ++x)
 	{
 		m_NumberSprite[x] = GetGameObject()->AddComponent<SpriteRenderer>();
 		m_NumberSprite[x]->SetUI(true);
-		m_NumberSprite[x]->LoadTexture("Assets/Textures/newSprite.png");
+		m_NumberSprite[x]->LoadTexture("Assets/Textures/Texts/Number.png");
 		m_NumberSprite[x]->SetOffsetPos(PosX, PosY);
 		PosX += PosInterval;
 
 		m_NumberSprite[x]->SetUVScale(1.0f / 6.0f, 1.0f / 2.0f);
-		m_NumberSprite[x]->SetSize(FONT_SIZE + 50.0f, FONT_SIZE + 50.0f);
+		m_NumberSprite[x]->SetSize(FONT_SIZE, FONT_SIZE);
 	}
-
 }
 
 void StageNumber::Update()
 {
-	
+	StageSelect();
+	SetDigitUV();
 
-	KeyEnter_Number();
-		SetStegeNumberdigit();
-		SetDigitUV();
+	if (Input::GetKeyDown(KeyCode::ENTER) ||
+		Input::GetButtonDown(PadCode::B))
+	{
+		LoadGame(m_selectIndex);
+	}
 }
 
-
-void StageNumber::KeyEnter_Number()
+int StageNumber::GetSelectIndex()
 {
-
-	//============================================================================
-	//						  ステージセレクトINDEX
-	//============================================================================
-	if (m_bCoolCount == false)
-	{
-		if (Input::GetKeyDown(KeyCode::UP))
-		{
-
-			m_selectIndex += 5;
-			if (m_selectIndex >= m_stageCount) { m_selectIndex = 0; }
-			m_bCoolCount = true;
-		}
-		if (Input::GetKeyDown(KeyCode::DOWN))
-		{
-
-			m_selectIndex -= 5;
-			if (m_selectIndex < 0) { m_selectIndex = m_stageCount - 1; }
-			m_bCoolCount = true;
-		}
-	}
-	else
-	{
-		CountUPTimer++;
-		if (CountUPTimer > 90)
-		{
-			CountUPTimer = 0.0f;
-			m_bCoolCount = false;
-		}
-	}
-
-
-
-	if (Input::GetKeyDown(KeyCode::LEFT))
-	{
-		m_selectIndex--;
-		if (m_selectIndex < 0) { m_selectIndex = m_stageCount - 1; }
-
-	}
-
-	if (Input::GetKeyDown(KeyCode::RIGHT))
-	{
-		m_selectIndex++;
-		if (m_selectIndex >= m_stageCount) { m_selectIndex = 0; }
-	}
-	//============================================================================
-
-
-	if ((Input::GetKeyDown(KeyCode::ENTER)&&(m_bAutoCountUp!=true&& m_bAutoCountDown != true )))
-	{
-		LoadGame(m_selectIndex+1);
-	}
+	return m_selectIndex;
 }
-
-void StageNumber::AutoCount()
-{
-	if (m_bAutoCountUp)
-	{
-		static int count = 0;
-		if (m_totalTime >= 3)
-		{
-			m_totalTime = 0;
-			m_selectIndex++;
-			count++;
-			if (m_selectIndex >= m_stageCount) { m_selectIndex = 0; }
-		}
-		else
-		{
-			m_totalTime++;
-		}
-		if (count > 4)
-		{
-			m_bAutoCountUp = false;
-			count = 0;
-		}
-
-
-	}
-	if (m_bAutoCountDown)
-	{
-		static int count = 0;
-		if (m_totalTime >= 3)
-		{
-			m_totalTime = 0;
-			m_selectIndex--;
-			count++;
-			if (m_selectIndex < 0) { m_selectIndex = m_stageCount - 1; }
-		}
-		else
-		{
-			m_totalTime++;
-		}
-		if (count > 4)
-		{
-			m_bAutoCountDown = false;
-			count = 0;
-		}
-	}
-}
-
-
-
 
 void StageNumber::LoadGame(int StageID)
 {
@@ -169,23 +80,22 @@ void StageNumber::LoadGame(int StageID)
 	InputManager::ChangeBindType(InputBindType::GAMEPLAY);
 	SceneManager::ChangeScene(std::make_unique<GameScene>(path));//ステージ読み込むやつ
 
-
 	//SceneManager::ChangeScene(std::make_unique<GameScene>("TestLevel01"));
-
-
-
 }
-
 
 void StageNumber::SetDigitUV()
 {
+	int number[2];
+	number[0] = m_selectIndex / 10;
+	number[1] = m_selectIndex % 10;
+
 	// 1マスのUVサイズ
 	const float uSize = 1.0f / 6.0f;
 	const float vSize = 1.0f / 2.0f;
 
-	for (int x = 0; x < 3; ++x)
+	for (int x = 0; x < 2; ++x)
 	{
-		int index = digitIndex[digit[x]];
+		int index = number[x];
 
 		float u = (index % 6) * uSize;
 		float v = (index / 6) * vSize;
@@ -194,16 +104,58 @@ void StageNumber::SetDigitUV()
 	}
 }
 
-void StageNumber::SetStegeNumberdigit()
+void StageNumber::StageSelect()
 {
+	// 入力取得
+	int inputSide = 0;
+	if (Input::GetLeftStick().x < 0.0f || Input::GetKeyDown(KeyCode::LEFT))
+	{
+		inputSide--;
+	}
+	if (Input::GetLeftStick().x > 0.0f || Input::GetKeyDown(KeyCode::RIGHT))
+	{
+		inputSide++;
+	}
 
-	int totalSeconds = m_selectIndex+1;
+	// 選択移動
+	if (m_lastInput == inputSide)
+	{
+		const float holdMoveWait = 0.7f;		// 長押し移動が始まるまでの時間
+		const float holdMoveInterval = 0.1f;	// 長押し移動の時間間隔
 
-	int Hundred = totalSeconds / 100;
-	int Ten = (totalSeconds / 10);
-	int One = totalSeconds % 10;
+		// 長押し処理
+		m_holdTimer += Time::GetDeltaTime();
+		if (m_holdTimer > holdMoveWait)
+		{
+			m_repeatTimer += Time::GetDeltaTime();
+			if (m_repeatTimer > holdMoveInterval)
+			{
+				m_repeatTimer = 0.0f;
+				m_selectIndex += inputSide;
+			}
+		}
+	}
+	else
+	{
+		// 押した瞬間の処理
+		m_holdTimer = 0.0f;
+		m_repeatTimer = 0.0f;
+		m_selectIndex += inputSide;
+	}
+	m_lastInput = inputSide;
 
-	digit[0] = Hundred ;
-	digit[1] = Ten;//1が一桁目、2が二桁目
-	digit[2] = One;
+	// クランプ
+	int maxStageNum = SaveData::GetClearLevel() + 1;
+	if (maxStageNum > StageCount)
+	{
+		maxStageNum = StageCount;
+	}
+	if (m_selectIndex > maxStageNum)
+	{
+		m_selectIndex = maxStageNum;
+	}
+	if (m_selectIndex < 1)
+	{
+		m_selectIndex = 1;
+	}
 }

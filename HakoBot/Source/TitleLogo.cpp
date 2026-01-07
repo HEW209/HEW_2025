@@ -76,7 +76,7 @@ void TitleLogo::Update()
 	}
 	if (m_leftMoveTimer > g_moveCycle)
 	{
-		m_leftMoveTimer = 0.0f;
+		m_leftMoveTimer -= g_moveCycle;
 	}
 
 	if (m_RightMoveTimer > moveTime)
@@ -90,6 +90,6 @@ void TitleLogo::Update()
 	}
 	if (m_RightMoveTimer > g_moveCycle)
 	{
-		m_RightMoveTimer = 0.0f;
+		m_RightMoveTimer -= g_moveCycle;
 	}
 }

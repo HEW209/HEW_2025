@@ -7,7 +7,7 @@
 #include "Effekseer/Effekseer.h"
 #include "Effekseer/EffekseerRendererDX11.h"
 #include "Config.h"
-#include "SampleStageSelectScene.h"
+#include "StageSelectScene.h"
 #include <DXGameFrame.h>
 #include "GameScene.h"
 #include "../DebugEffectScene.h"

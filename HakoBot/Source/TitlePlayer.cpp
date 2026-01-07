@@ -33,6 +33,7 @@ void TitlePlayer::Start()
 	m_caterpillar->GetMaterial(0)->SetPixelShader("Assets/Shader/UVScroll_PS.cso");
 	m_caterpillar->SetShouldDrawShadow(true);
 
+	GetTransform()->SetPosition(g_startPos);
 	GetTransform()->SetEulerAngle(0.0f, -90.0f, 0.0f);
 
 	// ƒuƒƒbƒN“o˜^

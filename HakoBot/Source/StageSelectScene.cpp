@@ -1,4 +1,4 @@
-#include"SampleStageSelectScene.h"
+#include"StageSelectScene.h"
 #include"StageNumber.h"
 #include"StageSelectObject.h"
 #include"StageSelectConveyors.h"
@@ -13,54 +13,26 @@ void StageSelectScene::Init()
 		auto camera = obj->AddComponent<Camera>();
 		obj->GetTransform()->SetPosition(0.0f, 0.0f, -10.0f);
 	}
-
-	for (int i = 0; i < 30; i++)
-	{
-
-		{
-			auto obj = CreateGameObject();
-			auto SelectObject = obj->AddComponent<StageSelectObject>();
-			SelectObject->SetStageID(i);
-
-			auto mesh = obj->AddComponent<MeshRenderer>();
-			mesh->LoadModel(SelectObject->SetModelID());
-			obj->GetTransform()->SetPosition(20.0f, -2.0f, 0.0f);
-		}
-
-	}
-	
-	for (int i = 0; i < 30; i++)
-	{
-		{
-			auto obj = CreateGameObject();
-			auto Conveyors = obj->AddComponent<StageSelectConveyors>();
-			Conveyors->SetConveyorsID(i);
-
-			auto mesh = obj->AddComponent<MeshRenderer>();
-			mesh->LoadModel("Assets/Model/Stage/FBX/Conveyors.fbx");
-			obj->GetTransform()->SetScale(0.89f, 1.0f, 2.0f);
-
-		}
-	}
-	{
-		auto obj = CreateGameObject();
-
-
-		auto mesh = obj->AddComponent<MeshRenderer>();
-		mesh->LoadModel("Assets/Model/Stage/FBX/Conveyor_frame.fbx");
-		obj->GetTransform()->SetPosition(0.0f, -6.3f, 0.0f);
-		obj->GetTransform()->SetScale(1.5f, 1.0f, 2.1f);
-
-	}
 	{
 		auto lightObj = CreateGameObject();
 		auto light = lightObj->AddComponent<DirectionalLight>();
 		lightObj->GetTransform()->SetEulerAngle(50.0f, -30.0f, 0.0f);
 	}
 
+	auto numberObj = CreateGameObject();
+	auto stageNumber = numberObj->AddComponent<StageNumber>();
 	{
 		auto obj = CreateGameObject();
-		auto SelectNumber = obj->AddComponent<StageNumber>();
+		auto selectObject = obj->AddComponent<StageSelectObject>();
+		selectObject->SetStageNumber(stageNumber);
+	}
+	{
+		auto obj = CreateGameObject();
+
+		auto mesh = obj->AddComponent<MeshRenderer>();
+		mesh->LoadModel("Assets/Model/Stage/FBX/Conveyor_frame.fbx");
+		obj->GetTransform()->SetPosition(0.0f, -6.3f, 0.0f);
+		obj->GetTransform()->SetScale(1.5f, 1.0f, 2.1f);
 
 	}
 
