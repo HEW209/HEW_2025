@@ -14,8 +14,15 @@ class TitleExit :public Component
 {
 public:
 
-	TitleExit() {};
+	TitleExit();
 	~TitleExit() = default;
 
-	void Update()override;
+	void Start() override;
+	void Update() override;
+
+private:
+	SpriteRenderer* m_newGameText;
+	SpriteRenderer* m_continueText;
+	Vector2 m_lastInput;
+	bool m_isNewGame;
 };

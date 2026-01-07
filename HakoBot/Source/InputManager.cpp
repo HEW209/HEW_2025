@@ -58,8 +58,8 @@ void InputManager::Init()
 		InputSystem& system = m_inputSystems[static_cast<size_t>(InputBindType::UI)];
 
 		system.CreateButtonAction("MenuBack"_hash);
-		system.CreateAxisAction("MenuUp"_hash);
-		system.CreateAxisAction("MenuDown"_hash);
+		system.CreateButtonAction("MenuUp"_hash);
+		system.CreateButtonAction("MenuDown"_hash);
 		system.CreateButtonAction("MenuInteract"_hash);
 
 		system.BindKey("MenuBack"_hash, KeyCode::Z);

@@ -52,7 +52,7 @@ void RenderSystem::DrawAll()
 	// 2D•`‰æ‡ƒ\[ƒg
 	std::stable_sort(m_pRenderer2DComponents.begin(), m_pRenderer2DComponents.end(),
 		[](Renderer2D* a, Renderer2D* b) {
-			return a->GetOrder() > b->GetOrder();
+			return a->GetOrder() < b->GetOrder();
 		});
 
 	DrawALL2DBackGround();
