@@ -34,7 +34,22 @@ void SpriteRenderer::Draw()
 	matrix = GetTransform()->GetWorldMatrix();
 	ConstantBufferManager::Instance().SetWorld(matrix);
 
-	m_material.SetParameter(&m_parameter, sizeof(m_parameter));
+	if (m_customData.empty())
+	{
+		m_material.SetParameter(&m_parameter, sizeof(m_parameter));
+	}
+	else
+	{
+		std::vector<BYTE> data;
+		const UINT parameterSize = sizeof(SpriteParameter);
+		data.resize(parameterSize + m_customData.size());
+
+		// データを連結してコピー
+		memcpy(data.data(), &m_parameter, parameterSize);
+		memcpy(data.data() + parameterSize, m_customData.data(), m_customData.size());
+
+		m_material.SetParameter(data.data(), data.size());
+	}
 	SpriteDrawer::Instance().Draw(m_material);
 }
 
@@ -172,4 +187,20 @@ Color SpriteRenderer::GetColor()
 void SpriteRenderer::SetBlendState(BlendState blendState)
 {
 	m_material.SetBlendState(blendState);
+}
+
+void SpriteRenderer::SetCustomData(void* data, UINT size)
+{
+	if (data == nullptr || size > CustomCBSize - sizeof(SpriteParameter))
+		return;
+
+	// データコピー
+	m_customData.clear();
+	m_customData.resize(size);
+	memcpy(m_customData.data(), data, size);
+}
+
+Material* SpriteRenderer::GetMaterial()
+{
+	return &m_material;
 }

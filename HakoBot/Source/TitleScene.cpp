@@ -6,6 +6,7 @@
 #include "TitleLogo.h"
 #include "InputManager.h"
 #include "TitlePlayer.h"
+#include "Fade.h"
 
 void TitleScene::Init()
 {
@@ -35,6 +36,12 @@ void TitleScene::Init()
         auto light = lightObj->AddComponent<DirectionalLight>();
         light->SetLightSize(0.1f);
         lightObj->GetTransform()->SetEulerAngle(50.0f, -30.0f, 0.0f);
+    }
+
+    // フェード
+    {
+        auto obj = CreateGameObject();
+        auto fade = obj->AddComponent<Fade>();
     }
 
     // 地形

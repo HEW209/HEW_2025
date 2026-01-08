@@ -3,6 +3,7 @@
 #include"StageSelectObject.h"
 #include "BlockObject.h"
 #include "StageInfo.h"
+#include "Fade.h"
 
 void StageSelectScene::Init()
 {
@@ -17,6 +18,12 @@ void StageSelectScene::Init()
 		auto lightObj = CreateGameObject();
 		auto light = lightObj->AddComponent<DirectionalLight>();
 		lightObj->GetTransform()->SetEulerAngle(50.0f, -30.0f, 0.0f);
+	}
+	// フェード
+	{
+		auto obj = CreateGameObject();
+		auto fade = obj->AddComponent<Fade>();
+		Fade::StartIrisIn();
 	}
 
 	// ステージ番号
