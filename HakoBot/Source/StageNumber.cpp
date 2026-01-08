@@ -4,6 +4,7 @@
 #include "InputManager.h"
 #include "SaveData.h"
 #include "Fade.h"
+#include "GameState.h"
 
 #define STAGE_FILE "Assets/Stage/Level%d.json"
 #define FONT_SIZE (200.0f)
@@ -51,6 +52,10 @@ void StageNumber::Start()
 		m_NumberSprite[x]->SetUVScale(1.0f / 6.0f, 1.0f / 2.0f);
 		m_NumberSprite[x]->SetSize(FONT_SIZE, FONT_SIZE);
 	}
+
+	m_selectIndex = SaveData::GetClearLevel() + 1;
+	if (m_selectIndex > StageCount)
+		m_selectIndex = StageCount;
 }
 
 void StageNumber::Update()
@@ -60,6 +65,7 @@ void StageNumber::Update()
 		if (Fade::IsActive())
 			return;
 
+		GameState::SetCurrentStegaNo(m_selectIndex);
 		LoadGame();
 	}
 	else
@@ -74,6 +80,13 @@ void StageNumber::Update()
 			Fade::StartIrisOut();
 		}
 	}
+
+#ifdef _DEBUG
+	if (Input::GetKeyDown(KeyCode::KEY_0)) {
+		SaveData::SetClearLevel(std::min(SaveData::GetClearLevel() + 1, StageCount));
+	}
+#endif // _DEBUG
+
 }
 
 int StageNumber::GetSelectIndex()

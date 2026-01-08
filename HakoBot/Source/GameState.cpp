@@ -3,6 +3,7 @@
 #include <GameFrame/Time.h>
 
 GameState* GameState::s_pInstance = nullptr;
+int GameState::s_currentStageNo = 0;
 
 
 GameState::GameState()

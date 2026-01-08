@@ -48,7 +48,7 @@ void PlayerBlockHandler::Awake()
 	m_pRenderer->PlayAnime(m_okuAnime, true);
 }
 
-void PlayerBlockHandler::Update()
+void PlayerBlockHandler::LateUpdate()
 {
 	auto blockTransform = m_pBlockObject->GetTransform();
 	auto playerTransform = GetTransform();

@@ -11,7 +11,7 @@
 
 #include "DirectXInclude.h"
 
-constexpr UINT SHADOW_MAP_SIZE = 4096;	// シャドウマップの解像度
+constexpr UINT SHADOW_MAP_SIZE = 8192;	// シャドウマップの解像度
 
 /**
  * @brief Direct3Dを扱う

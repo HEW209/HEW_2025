@@ -42,10 +42,13 @@ public:
 	bool IsBlockTransparent();
 
 	static GameState* GetInstance() { return s_pInstance; }
+	static void SetCurrentStegaNo(int no) { s_currentStageNo = no; }
+	static int GetCurrentStegaNo() { return s_currentStageNo; };
 
 private:
 	
 	static GameState* s_pInstance;
+	static int s_currentStageNo;
 	ObjPtr<GridField> m_pGridField;
 	//ワールド空間（グリッド外）に存在するすべてのブロック
 	std::vector<ObjPtr<BlockObject>> m_pWorldBlocks;

@@ -32,6 +32,11 @@ void ClearProduce::Update()
 		{
 			m_pCamera->SetMain();
 			m_isActive = true;
+			Player* player = GameState::GetInstance()->GetPlayer(); 
+			//player->GetGameObject()->SetActive(false);
+			
+			// アウトライン対策
+			player->GetTransform()->SetPosition(1000.0f, 0.0f, 0.0f);
 		}
 		return;
 	}

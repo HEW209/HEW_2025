@@ -42,7 +42,14 @@ void TitlePlayer::Start()
 	m_blocks.push_back({ "Assets/Model/Blocks/FBX/tate2masu.fbx", {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} });
 	m_blocks.push_back({ "Assets/Model/Blocks/FBX/tate3masu.fbx", {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} });
 	m_blocks.push_back({ "Assets/Model/Blocks/FBX/yoko2masu.fbx", {0.5f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} });
-	m_blocks.push_back({ "Assets/Model/Blocks/FBX/yoko3masu.fbx", {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} });
+	m_blocks.push_back({ "Assets/Model/Blocks/FBX/yoko3masu.fbx", {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} });
+	m_blocks.push_back({ "Assets/Model/Blocks/FBX/teto.fbx", {-0.5f, 0.0f, 0.5f}, {0.0f, 0.0f, 0.0f} });
+	m_blocks.push_back({ "Assets/Model/Blocks/FBX/ebi.fbx", {0.5f, 0.0f, 0.5f}, {0.0f, 0.0f, 0.0f} });
+	m_blocks.push_back({ "Assets/Model/Blocks/FBX/Barrel.fbx", {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} });
+	m_blocks.push_back({ "Assets/Model/Blocks/FBX/Tree.fbx", {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} });
+	m_blocks.push_back({ "Assets/Model/Blocks/FBX/FirePlace.fbx", {-0.5f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} });
+	m_blocks.push_back({ "Assets/Model/Blocks/FBX/Kotatu.fbx", {-0.5f, 0.0f, -0.5f}, {0.0f, 0.0f, 0.0f} });
+	m_blocks.push_back({ "Assets/Model/Blocks/FBX/Shachihoko.fbx", {-0.5f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} });
 
 	auto blockObj = SceneManager::GetActiveScene()->CreateGameObject();
 	blockObj->GetTransform()->SetParent(GetTransform());
@@ -57,16 +64,17 @@ void TitlePlayer::Update()
 	// ˆÚ“®
 	Vector3 pos = GetTransform()->GetPosition();
 	bool goal = false;
+	float moveSpeed = 5.0f;
 
 	if (m_isStart)
 	{
-		pos.x = Math::MoveTowards(pos.x, g_endPos.x, 5.0f * Time::GetDeltaTime());
+		pos.x = Math::MoveTowards(pos.x, g_endPos.x, moveSpeed * Time::GetDeltaTime());
 		if (pos.x == g_endPos.x)
 			goal = true;
 	}
 	else
 	{
-		pos.x = Math::MoveTowards(pos.x, g_startPos.x, 5.0f * Time::GetDeltaTime());
+		pos.x = Math::MoveTowards(pos.x, g_startPos.x, moveSpeed * Time::GetDeltaTime());
 		if (pos.x == g_startPos.x)
 			goal = true;
 	}

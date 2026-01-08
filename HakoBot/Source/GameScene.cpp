@@ -47,6 +47,8 @@ void GameScene::Init() {
     //移動できるオブジェクト（プレイヤー）を作成	
     //移動できるプレイヤーオブジェクトを作る
     auto player = CreateGameObject();
+    player->GetTransform()->SetPosition(6.0f, 0.0f, -8.0f);
+    player->GetTransform()->SetEulerAngle(0.0f, 180.0f, 0.0f);
     auto playerComp = player->AddComponent<Player>();
     GameState::GetInstance()->SetPlayer(playerComp);
 
@@ -60,9 +62,10 @@ void GameScene::Init() {
     CreateStageSet();
     CreateGridField();
 
-    float startX = 8.0f;
-    float startZ = 5.0f;
-    float intervalZ = -3.0f;
+    const Vector3 defaultPos(10.0f, 0.0f, 0.0f);
+    const int maxCountZ = 5;
+    const float intervalZ = -4.0f;
+    const float intervalX = 4.0f;
 
     // プレイヤーが動かすブロックを置く
     for (size_t i = 0; i < m_levelData.inventoryBlockFiles.size(); ++i) {
@@ -87,10 +90,24 @@ void GameScene::Init() {
                 blockComp->SetModel(blockData.modelPath);
             }
 
-            Vector3 pos;
-            pos.x = startX;
+            float index_z = i % maxCountZ;
+            float index_x = i / maxCountZ;
+            int count_z;
+            if (i < (m_levelData.inventoryBlockFiles.size() / maxCountZ) * maxCountZ)
+            {
+                count_z = maxCountZ;
+            }
+            else
+            {
+                count_z = m_levelData.inventoryBlockFiles.size() % maxCountZ;
+            }
+
+            index_z -= (count_z - 1) * 0.5f;
+
+            Vector3 pos = defaultPos;
+            pos.x += index_x * intervalX;
             pos.y = 0.0f;
-            pos.z = startZ + (i * intervalZ);
+            pos.z += index_z * intervalZ;
 
             obj->GetTransform()->SetPosition(pos + blockComp->GetGroundOffset());
 
@@ -383,6 +400,7 @@ void GameScene::CreateStageSet() {
     // 床
     int stageSize_x = 25;
     int stageSize_z = 25;
+    Vector3 posOffset(3.0f, 0.0f, 0.0f);
     float blockScale = 1.0f;
     for (int z = 0; z < stageSize_z; ++z) {
         for (int x = 0; x < stageSize_x; ++x) {
@@ -392,7 +410,7 @@ void GameScene::CreateStageSet() {
             auto obj = CreateGameObject();
             auto renderer = obj->AddComponent<MeshRenderer>();
             renderer->LoadModel("Assets/Model/Stage/fbx/yuka.fbx");
-            obj->GetTransform()->SetPosition(pos);
+            obj->GetTransform()->SetPosition(pos + posOffset);
             obj->GetTransform()->SetScale(0.25f, 0.25f, 0.25f);
         }
     }
@@ -416,7 +434,7 @@ void GameScene::CreateStageSet() {
             auto renderer = obj->AddComponent<MeshRenderer>();
             renderer->LoadModel("Assets/Model/Stage/fbx/saku.fbx");
             renderer->SetShouldDrawShadow(true);
-            obj->GetTransform()->SetPosition(pos);
+            obj->GetTransform()->SetPosition(pos + posOffset);
             obj->GetTransform()->SetEulerAngle(rotateAngle);
         }
     }
@@ -425,7 +443,7 @@ void GameScene::CreateStageSet() {
     {
         auto obj = CreateGameObject();
         auto transform = obj->GetTransform();
-        transform->SetPosition(0.0f, -0.5f, 0.0f);
+        transform->SetPosition(Vector3(0.0f, -0.5f, 0.0f) + posOffset);
         transform->SetScale(stageSize_x, 1.0f, stageSize_z);
         auto collider = obj->AddComponent<Collider>();
         collider->m_scale = { float(stageSize_x) , 1.0f,float(stageSize_z) };
@@ -435,7 +453,7 @@ void GameScene::CreateStageSet() {
     {
         auto obj = CreateGameObject();
         auto transform = obj->GetTransform();
-        transform->SetPosition(0.0f, 5.0f, (stageSize_z * 0.5f));
+        transform->SetPosition(Vector3(0.0f, 5.0f, stageSize_z * 0.5f) + posOffset);
         transform->SetScale(stageSize_x, 10.0f, 1.0f);
         auto collider = obj->AddComponent<Collider>();
         collider->m_scale = { float(stageSize_x), 10.0f, 1.0f };
@@ -444,7 +462,7 @@ void GameScene::CreateStageSet() {
     {
         auto obj = CreateGameObject();
         auto transform = obj->GetTransform();
-        transform->SetPosition(0.0f, 5.0f, -(stageSize_z * 0.5f));
+        transform->SetPosition(Vector3(0.0f, 5.0f, -stageSize_z * 0.5f) + posOffset);
         transform->SetScale(stageSize_x, 10.0f, 1.0f);
         auto collider = obj->AddComponent<Collider>();
         collider->m_scale = { float(stageSize_x), 10.0f, 1.0f };
@@ -453,7 +471,7 @@ void GameScene::CreateStageSet() {
     {
         auto obj = CreateGameObject();
         auto transform = obj->GetTransform();
-        transform->SetPosition((stageSize_x * 0.5f), 5.0f, 0.0f);
+        transform->SetPosition(Vector3(stageSize_x * 0.5f, 5.0f, 0.0f) + posOffset);
         transform->SetScale(1.0f, 10.0f, stageSize_z);
         auto collider = obj->AddComponent<Collider>();
         collider->m_scale = { 1.0f, 10.0f, float(stageSize_z) };
@@ -462,7 +480,7 @@ void GameScene::CreateStageSet() {
     {
         auto obj = CreateGameObject();
         auto transform = obj->GetTransform();
-        transform->SetPosition(-(stageSize_x * 0.5f), 5.0f, 0.0f);
+        transform->SetPosition(Vector3(-stageSize_x * 0.5f, 5.0f, 0.0f) + posOffset);
         transform->SetScale(1.0f, 10.0f, stageSize_z);
         auto collider = obj->AddComponent<Collider>();
         collider->m_scale = { 1.0f, 10.0f, float(stageSize_z) };
@@ -519,7 +537,7 @@ void GameScene::CreateUIObject() {
         auto renderer = obj->AddComponent<SpriteRenderer>();
         renderer->SetUI(true);
         renderer->LoadTexture("Assets/Textures/result!.png");
-        renderer->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
+        renderer->GetTransform()->SetPosition(0.0f, 1.5f, 0.0f);
         obj->GetTransform()->SetScale(0.0f, 0.0f, 0.0f);
         obj->AddComponent<GuideUITimeController2>();
     }

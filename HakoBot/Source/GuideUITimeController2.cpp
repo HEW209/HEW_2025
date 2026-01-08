@@ -39,6 +39,13 @@ void GuideUITimeController2::Update()
 		if (Fade::IsActive())
 			return;
 
+		int stageNo = GameState::GetCurrentStegaNo();
+		if (stageNo > SaveData::GetClearLevel())
+		{
+			SaveData::SetClearLevel(stageNo);
+			SaveData::Save();
+		}
+
 		if (m_curcirPos == 0)
 		{
 			std::string levelName = GameState::GetInstance()->GetLevelName();

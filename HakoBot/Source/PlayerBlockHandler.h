@@ -18,7 +18,7 @@ public:
 	PlayerBlockHandler();
 	
 	void Awake() override;
-	void Update() override;
+	void LateUpdate() override;
 
 
 	bool HasBlock()
