@@ -7,29 +7,31 @@
 #include "InputManager.h"
 
 constexpr float MAX_MENUB = 2000.0f;//メニューボタンのサイズ
+constexpr float MAX_MENU = 5000.0f;
 
 void GuideUIResultController::Start()
 {
-	//メニュー背景（menubanと同じサイズ・位置に配置）
+	//メニュー背景
 	auto renderer3 = GetGameObject()->AddComponent<SpriteRenderer>();
 	renderer3->SetUI(true);
 	renderer3->LoadTexture("Assets/Textures/menuhaikei.png");
 	renderer3->SetOffsetPos(0.0f, 0.0f);
-	// UVスケールを1.0に固定（枠内に収める）
 	renderer3->SetUVScale(1.0f, 1.0f);
+	renderer3->SetSize(MAX_MENU / 2.0f);
 	//メニュー画面
 	auto renderer = GetGameObject()->AddComponent<SpriteRenderer>();
 	renderer->SetUI(true);
 	renderer->LoadTexture("Assets/Textures/menuban.png");
 	renderer->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
 	GetTransform()->SetScale(0.0f, 0.0f, 0.0f);
+	renderer->SetSize(MAX_MENU);
 	m_baseRend = renderer;
 
 	
 	renderer3->GetTransform()->SetPosition(
 		m_baseRend->GetTransform()->GetPosition()
 	);
-	renderer3->SetSize(m_baseRend->GetSize());
+	//renderer3->SetSize(m_baseRend->GetSize());
 	m_rend3 = renderer3;
 
 	//メニュー画面ボタン
@@ -62,7 +64,7 @@ void GuideUIResultController::Start()
 	m_menuY = 0;
 
 	m_bgScrollY = 0.0f;
-	m_bgScrollSpeed = 0.0005f;
+	m_bgScrollSpeed = 0.001f;
 }
 
 void GuideUIResultController::Update()
@@ -84,23 +86,19 @@ void GuideUIResultController::Update()
 	//メニュー開いてるとき
 	if (m_menu)
 	{
-		// 位置追従
+		//位置追従
 		m_rend3->GetTransform()->SetPosition(
 			m_baseRend->GetTransform()->GetPosition()
 		);
 
-		// スケール追従
-		m_rend3->GetTransform()->SetScale(
-			m_baseRend->GetTransform()->GetScale()
-		);
+		
 
-		// サイズ
-		m_rend3->SetSize(m_baseRend->GetSize());
+		
 
-		// 背景スクロール（0.01.0の範囲でループ）
-		m_bgScrollY += m_bgScrollSpeed;
+		//背景スクロール
+		m_bgScrollY -= m_bgScrollSpeed;
 
-		// ループ処理：1.0を超えたら0.0に戻す
+		//ループ処理
 		while (m_bgScrollY >= 1.0f)
 		{
 			m_bgScrollY -= 1.0f;
@@ -110,7 +108,7 @@ void GuideUIResultController::Update()
 			m_bgScrollY += 1.0f;
 		}
 
-		// UVオフセットでスクロール（UVScaleは1.0固定なので枠内に収まる）
+		//UVオフセットでスクロール
 		m_rend3->SetUVOffsetPos(0.0f, m_bgScrollY);
 
 		//メニューを閉じるボタン押したとき

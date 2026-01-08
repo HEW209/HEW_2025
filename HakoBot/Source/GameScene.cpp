@@ -150,7 +150,7 @@ void GameScene::CreateGridField() {
         for (int x = 0; x < size_x; ++x) {
             auto obj = CreateGameObject();
             auto renderer = obj->AddComponent<MeshRenderer>();
-            renderer->LoadModel("Assets/Model/Stage/fbx/screen.fbx");
+            renderer->LoadModel("Assets/Model/Stage/fbx/Frame.fbx");
 
             Vector3 pos;
             pos.x = x - size_x * 0.5f + 0.5f;
@@ -164,7 +164,7 @@ void GameScene::CreateGridField() {
         for (int z = 0; z < size_z; ++z) {
             auto obj = CreateGameObject();
             auto renderer = obj->AddComponent<MeshRenderer>();
-            renderer->LoadModel("Assets/Model/Stage/fbx/screen.fbx");
+            renderer->LoadModel("Assets/Model/Stage/fbx/Frame.fbx");
 
             Vector3 pos;
             pos.x = (size_x * 0.5f + 0.71f) * flip;
@@ -182,7 +182,7 @@ void GameScene::CreateGridField() {
 
         auto obj = CreateGameObject();
         auto renderer = obj->AddComponent<MeshRenderer>();
-        renderer->LoadModel("Assets/Model/Stage/fbx/screen2.fbx");
+        renderer->LoadModel("Assets/Model/Stage/fbx/Frame_Corner.fbx");
         obj->GetTransform()->SetPosition(pos);
         obj->GetTransform()->SetEulerAngle(0.0f, 90.0f - 90.0f * i, 0.0f);
     }
@@ -250,10 +250,10 @@ void GameScene::CreateGridField() {
 
     Corner corners[4] =
     {
-        { -halfX - offset,  halfZ + offset,  90 },  //ñkêº
-        {  halfX + offset,  halfZ + offset, 180 },  //ñkìå
-        {  halfX + offset, -halfZ - offset, -90 },  //ìÏìå
-        { -halfX - offset, -halfZ - offset,   0 }   //ìÏêº
+        { -halfX - offset,  halfZ + offset,  180.0f },  //ñkêº
+        {  halfX + offset,  halfZ + offset, -90.0f },  //ñkìå
+        {  halfX + offset, -halfZ - offset, 0.0f },  //ìÏìå
+        { -halfX - offset, -halfZ - offset,   90.0f }   //ìÏêº
     };
 
     for (auto& c : corners)
