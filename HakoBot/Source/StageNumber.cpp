@@ -5,7 +5,7 @@
 #include "SaveData.h"
 
 #define STAGE_FILE "Assets/Stage/Level%d.json"
-#define FONT_SIZE (250.0f)
+#define FONT_SIZE (200.0f)
 
 static const int digitIndex[10] =
 {
@@ -34,7 +34,7 @@ StageNumber::StageNumber() :
 
 void StageNumber::Start()
 {
-	float PosX = -5.0f;
+	float PosX = -5.2f;
 	float PosY = 1.0f;
 	float PosInterval = FONT_SIZE / 100.0f;	//文字間隔　＊　文字サイズによる間隔補正
 
@@ -59,7 +59,7 @@ void StageNumber::Update()
 	if (Input::GetKeyDown(KeyCode::ENTER) ||
 		Input::GetButtonDown(PadCode::B))
 	{
-		LoadGame(m_selectIndex);
+		LoadGame();
 	}
 }
 
@@ -68,13 +68,16 @@ int StageNumber::GetSelectIndex()
 	return m_selectIndex;
 }
 
-void StageNumber::LoadGame(int StageID)
+std::string StageNumber::GetStageFilePath()
 {
-	char filePath[256];
-	sprintf_s(filePath, STAGE_FILE, StageID);
+	std::string StageIDstr = std::to_string(m_selectIndex);
+	std::string path = "Assets/Level/Stages/Level" + StageIDstr + ".json";
+	return path;
+}
 
-	std::string StageIDstr = std::to_string(StageID);
-
+void StageNumber::LoadGame()
+{
+	std::string StageIDstr = std::to_string(m_selectIndex);
 	std::string path = "Level" + StageIDstr + "";
 
 	InputManager::ChangeBindType(InputBindType::GAMEPLAY);

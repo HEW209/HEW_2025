@@ -13,6 +13,7 @@ public:
 	void Update() override;
 
 	int GetSelectIndex();
+	std::string GetStageFilePath();
 
 private:
 	SpriteRenderer* m_NumberSprite[2];			//各桁の描画用
@@ -23,6 +24,6 @@ private:
 	float m_repeatTimer;	// 長押し移動用タイマー
 
 	void StageSelect();
-	void LoadGame(int StageID);			//ステージ読み出し	
+	void LoadGame();					//ステージ読み出し	
 	void SetDigitUV();					//UV座標を設定
 };

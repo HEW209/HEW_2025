@@ -36,27 +36,27 @@ void GameScene::Init() {
 
     KeyBind();
 
-	// ゲームステート
-	{
-		auto obj = CreateGameObject();
-		obj->AddComponent<GameState>();
-	}
+    // ゲームステート
+    {
+        auto obj = CreateGameObject();
+        obj->AddComponent<GameState>();
+    }
 
-	//移動できるオブジェクト（プレイヤー）を作成	
-	//移動できるプレイヤーオブジェクトを作る
-	auto player = CreateGameObject();
-	auto playerComp = player->AddComponent<Player>();
-	GameState::GetInstance()->SetPlayer(playerComp);
+    //移動できるオブジェクト（プレイヤー）を作成	
+    //移動できるプレイヤーオブジェクトを作る
+    auto player = CreateGameObject();
+    auto playerComp = player->AddComponent<Player>();
+    GameState::GetInstance()->SetPlayer(playerComp);
 
     auto cameraObj = CreateGameObject();
     auto playerCamera = cameraObj->AddComponent<PlayerCamera>();
     playerCamera->SetPlayer(player->GetTransform());
     playerCamera->SetCameraDistance(5.0f + m_levelData.gridSize.y * 3.0f);
 
-	
 
-	CreateStageSet();
-	CreateGridField();
+
+    CreateStageSet();
+    CreateGridField();
 
     float startX = 8.0f;
     float startZ = 5.0f;
@@ -241,9 +241,9 @@ void GameScene::CreateGridField() {
         // -z危険線
         auto obj = CreateGameObject();
         auto transform = obj->GetTransform();
-        transform->SetPosition(0.0f,y,- (size_z * 0.5f + xz));
+        transform->SetPosition(0.0f, y, -(size_z * 0.5f + xz));
         transform->SetScale(size_x, 0.5f, scale);
-        transform->SetEulerAngle(-angle,0.0f,0.0f);
+        transform->SetEulerAngle(-angle, 0.0f, 0.0f);
         auto collider = obj->AddComponent<Collider>();
         collider->m_scale = { float(size_x), 0.5f, scale };
     }
@@ -262,11 +262,11 @@ void GameScene::CreateGridField() {
         // -x危険線
         auto obj = CreateGameObject();
         auto transform = obj->GetTransform();
-        transform->SetPosition(-(size_z * 0.5f + xz), y,0.0f );
-        transform->SetScale(scale, 0.5f,size_z);
+        transform->SetPosition(-(size_z * 0.5f + xz), y, 0.0f);
+        transform->SetScale(scale, 0.5f, size_z);
         transform->SetEulerAngle(0.0f, 0.0f, angle);
         auto collider = obj->AddComponent<Collider>();
-        collider->m_scale = {scale , 0.5f, float(size_z) };
+        collider->m_scale = { scale , 0.5f, float(size_z) };
     }
 
     {
@@ -291,7 +291,7 @@ void GameScene::CreateGridField() {
         transform->SetEulerAngle(0.0f, 45.0f, 0.0f);
         transform->Rotate(-angle, 0.0f, 0.0f);
         auto collider = obj->AddComponent<Collider>();
-        collider->m_scale = { scaleX, 0.5f,  0.75f};
+        collider->m_scale = { scaleX, 0.5f,  0.75f };
     }
     {
         auto obj = CreateGameObject();
@@ -358,7 +358,7 @@ void GameScene::CreateGridField() {
         transform->Rotate(angle, 0.0f, 0.0f);
         auto collider = obj->AddComponent<Collider>();
         collider->m_scale = { scaleX, 0.5f, 0.75f };
-    } 
+    }
     {
         auto obj = CreateGameObject();
         auto transform = obj->GetTransform();
@@ -505,16 +505,14 @@ void GameScene::CreateUIObject() {
         obj->AddComponent<GuideUITimeController>();
     }
 
-	//リザルト
-	{
-		auto obj = CreateGameObject();
-		auto renderer = obj->AddComponent<SpriteRenderer>();
-		renderer->SetUI(true);
-		renderer->LoadTexture("Assets/Textures/result!.png");
-		renderer->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
-		obj->GetTransform()->SetScale(0.0f, 0.0f, 0.0f);
-		obj->AddComponent<GuideUITimeController2>();
-	}
+    // リザルト
+    {
+        auto obj = CreateGameObject();
+        auto renderer = obj->AddComponent<SpriteRenderer>();
+        renderer->SetUI(true);
+        renderer->LoadTexture("Assets/Textures/result!.png");
+        renderer->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
+        obj->GetTransform()->SetScale(0.0f, 0.0f, 0.0f);
+        obj->AddComponent<GuideUITimeController2>();
+    }
 }
-	
-

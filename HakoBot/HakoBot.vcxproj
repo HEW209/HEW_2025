@@ -163,6 +163,7 @@
     <ClCompile Include="Source\ClearProduce.cpp" />
     <ClCompile Include="DebugEffectScene.cpp" />
     <ClCompile Include="Source\ColliderDebug.cpp" />
+    <ClCompile Include="Source\Fade.cpp" />
     <ClCompile Include="Source\GameScene.cpp" />
     <ClCompile Include="Source\GameState.cpp" />
     <ClCompile Include="Source\GridBlockData.cpp" />
@@ -186,7 +187,7 @@
     <ClCompile Include="Source\SampleCamera.cpp" />
     <ClCompile Include="Source\SaveData.cpp" />
     <ClCompile Include="Source\ShapeScreen.cpp" />
-    <ClCompile Include="Source\StageSelectConveyors.cpp" />
+    <ClCompile Include="Source\StageInfo.cpp" />
     <ClCompile Include="Source\TitleExit.cpp" />
     <ClCompile Include="Source\TitleLogo.cpp" />
     <ClCompile Include="Source\TitlePlayer.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="Source\DynamicDimensionalArray.h" />
     <ClInclude Include="Source\Easing.h" />
     <ClInclude Include="Source\EditorTypes.h" />
+    <ClInclude Include="Source\Fade.h" />
     <ClInclude Include="Source\GameScene.h" />
     <ClInclude Include="Source\GameState.h" />
     <ClInclude Include="Source\GameTypes.h" />
@@ -236,7 +238,7 @@
     <ClInclude Include="Source\SampleCamera.h" />
     <ClInclude Include="Source\SaveData.h" />
     <ClInclude Include="Source\ShapeScreen.h" />
-    <ClInclude Include="Source\StageSelectConveyors.h" />
+    <ClInclude Include="Source\StageInfo.h" />
     <ClInclude Include="Source\TitleExit.h" />
     <ClInclude Include="Source\TitleLogo.h" />
     <ClInclude Include="Source\TitlePlayer.h" />

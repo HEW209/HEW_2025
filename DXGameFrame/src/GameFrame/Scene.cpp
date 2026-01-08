@@ -72,6 +72,12 @@ void Scene::UpdateAllGameObject()
 
 		obj->LateUpdateAllComponent();
 	}
+
+	// オブジェクトの遅延更新処理
+	for (auto* obj : objBuffer)
+	{
+		obj->ApplyRemoveComponent();
+	}
 }
 
 void Scene::ApplyDestroyGameObject()
