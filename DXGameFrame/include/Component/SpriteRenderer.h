@@ -149,6 +149,19 @@ public:
 	 */
 	void SetBlendState(BlendState blendState);
 
+	/**
+	 * @brief 定数バッファ用追加データ
+	 * @param data 追加データ
+	 * @param size データサイズ
+	 */
+	void SetCustomData(void* data, UINT size);
+
+	/**
+	 * @brief マテリアルを取得する
+	 * @return マテリアルへのポインタ
+	 */
+	Material* GetMaterial();
+
 private:
 	/// スプライトのパラメータ
 	struct SpriteParameter
@@ -165,4 +178,7 @@ private:
 
 	/// 描画に使用するマテリアル
 	Material m_material;
+
+	/// 定数バッファ用追加データ
+	std::vector<BYTE> m_customData;
 };

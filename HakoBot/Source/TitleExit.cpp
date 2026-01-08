@@ -3,11 +3,13 @@
 #include "StageSelectScene.h"
 #include "InputManager.h"
 #include "SaveData.h"
+#include "Fade.h"
 
 TitleExit::TitleExit():
 	m_newGameText(nullptr),
 	m_continueText(nullptr),
-	m_isNewGame(true)
+	m_isNewGame(true),
+	m_startFlag(false)
 {
 }
 
@@ -28,39 +30,11 @@ void TitleExit::Start()
 
 void TitleExit::Update()
 {
-	if (InputManager::CurrentInputSystem().GetButtonDown("MenuUp"_hash))
+	if (m_startFlag)
 	{
-		m_isNewGame = !m_isNewGame;
-	}
-	if (InputManager::CurrentInputSystem().GetButtonDown("MenuDown"_hash))
-	{
-		m_isNewGame = !m_isNewGame;
-	}
+		if (Fade::IsActive())
+			return;
 
-	Vector2 currentInput = Input::GetLeftStick(0.5f);
-	if (currentInput.y > 0.0f && m_lastInput.y <= 0.0f)
-	{
-		m_isNewGame = !m_isNewGame;
-	}
-	if (currentInput.y < 0.0f && m_lastInput.y >= 0.0f)
-	{
-		m_isNewGame = !m_isNewGame;
-	}
-	m_lastInput = currentInput;
-
-	if (m_isNewGame)
-	{
-		m_newGameText->LoadTexture("Assets/Textures/Texts/hajimekara.png", false);
-		m_continueText->LoadTexture("Assets/Textures/Texts/tudukikara_hide.png", false);
-	}
-	else
-	{
-		m_newGameText->LoadTexture("Assets/Textures/Texts/hajimekara_hide.png", false);
-		m_continueText->LoadTexture("Assets/Textures/Texts/tudukikara.png", false);
-	}
-
-	if (InputManager::CurrentInputSystem().GetButtonDown("MenuInteract"_hash))
-	{
 		if (m_isNewGame)
 		{
 			SaveData::Reset();
@@ -73,6 +47,45 @@ void TitleExit::Update()
 			SaveData::Load();
 			InputManager::ChangeBindType(InputBindType::GAMEPLAY);
 			SceneManager::ChangeScene(std::make_unique<StageSelectScene>());
+		}
+	}
+	else
+	{
+		if (InputManager::CurrentInputSystem().GetButtonDown("MenuUp"_hash))
+		{
+			m_isNewGame = !m_isNewGame;
+		}
+		if (InputManager::CurrentInputSystem().GetButtonDown("MenuDown"_hash))
+		{
+			m_isNewGame = !m_isNewGame;
+		}
+
+		Vector2 currentInput = Input::GetLeftStick(0.5f);
+		if (currentInput.y > 0.0f && m_lastInput.y <= 0.0f)
+		{
+			m_isNewGame = !m_isNewGame;
+		}
+		if (currentInput.y < 0.0f && m_lastInput.y >= 0.0f)
+		{
+			m_isNewGame = !m_isNewGame;
+		}
+		m_lastInput = currentInput;
+
+		if (m_isNewGame)
+		{
+			m_newGameText->LoadTexture("Assets/Textures/Texts/hajimekara.png", false);
+			m_continueText->LoadTexture("Assets/Textures/Texts/tudukikara_hide.png", false);
+		}
+		else
+		{
+			m_newGameText->LoadTexture("Assets/Textures/Texts/hajimekara_hide.png", false);
+			m_continueText->LoadTexture("Assets/Textures/Texts/tudukikara.png", false);
+		}
+
+		if (InputManager::CurrentInputSystem().GetButtonDown("MenuInteract"_hash))
+		{
+			m_startFlag = true;
+			Fade::StartIrisOut();
 		}
 	}
 }

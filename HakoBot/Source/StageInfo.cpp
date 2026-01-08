@@ -109,13 +109,14 @@ void StageInfo::CreateClearShape()
 					break;
 				}
 
+				renderer->LoadTexture("Assets/Textures/White.png");
 				if (levelData.targetShapes[i](shape_x, shape_y))
 				{
-					renderer->LoadTexture("Assets/Textures/White.png");
+					renderer->SetColor(0.1f, 0.9f, 1.0f, 1.0f);
 				}
 				else
 				{
-					renderer->LoadTexture("Assets/Textures/Red.png");
+					renderer->SetColor(0.4f, 0.4f, 0.4f, 1.0f);
 				}
 				renderer->SetSize(scale);
 				renderer->SetOffsetPos(pos);
