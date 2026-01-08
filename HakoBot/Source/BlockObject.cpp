@@ -1,6 +1,7 @@
 // BlockObject.cpp
 
 #include "BlockObject.h"
+#include "GameState.h"
 #include <Component/Collider.h>
 
 void BlockObject::Awake()
@@ -16,6 +17,15 @@ void BlockObject::Awake()
 		material.SetPixelShader("Assets/Shader/Default_PS.cso");
 		material.SetBlendState(BlendState::DEFAULT);
 		material.SetDepthStencilState(DepthStencilState::DEFAULT);
+	}
+}
+
+void BlockObject::Update()
+{
+	if (GameState::GetInstance()->IsBlockTransparent() != m_isTransparent)
+	{
+		m_isTransparent = !m_isTransparent;
+		SetTransparent(m_isTransparent);
 	}
 }
 

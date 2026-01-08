@@ -2,7 +2,7 @@
 #include "GuideUITimeController.h"
 #include "GameState.h"
 #include "InputManager.h"
-#include "GuideUIResultController.h"
+#include "GuideUIMenuController.h"
 
 static const float g_spriteSize = 48.0f;
 

@@ -29,7 +29,7 @@ void SaveData::Load()
 
 void SaveData::Reset()
 {
-	s_data.clearStage = 30;
+	s_data.clearStage = 0;
 }
 
 void SaveData::SetClearLevel(int clearStage)

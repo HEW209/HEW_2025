@@ -12,7 +12,7 @@
 
 #include "PlayerBlockHandler.h"
 #include "Player.h"
-#include "GuideUIResultController.h"
+#include "GuideUIMenuController.h"
 
 class GameState : public Component
 {
@@ -23,6 +23,8 @@ public:
 	void Start() override;
 	void Update() override;
 
+	void SetLevelName(const std::string& levelName);
+	std::string GetLevelName();
 
 	void SetGridField(GridField* pGridField);
 	GridField* GetGridField() { return m_pGridField.Get(); }
@@ -33,13 +35,11 @@ public:
 	{
 		m_pPlayer = pPlayer;
 	}
-
 	Player* GetPlayer()
 	{
 		return m_pPlayer.Get();
 	}
-
-	
+	bool IsBlockTransparent();
 
 	static GameState* GetInstance() { return s_pInstance; }
 
@@ -51,4 +51,6 @@ private:
 	std::vector<ObjPtr<BlockObject>> m_pWorldBlocks;
 	
 	ObjPtr<Player> m_pPlayer;
+	std::string m_levelName;
+	bool m_isBlockTransparent;
 };

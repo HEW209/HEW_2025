@@ -69,9 +69,6 @@ void GridField::Start()
 
 void GridField::Update()
 {
-	if (InputManager::CurrentInputSystem().GetButtonDown("ChangeBlockTransparency"_hash)) {
-		SetBlockTransparent(!m_isBlockTransparent);
-	}
 }
 
 void GridField::OnDestroy()
@@ -309,16 +306,6 @@ bool GridField::IsInside(const Vector3& position)
 	}
 
 	return true;
-}
-
-void GridField::SetBlockTransparent(bool isTransparent)
-{
-	m_isBlockTransparent = isTransparent;
-	for (auto&& block : m_pPlacedBlocks) {
-		if (block) {
-			block->GetComponent<BlockObject>()->SetTransparent(isTransparent);
-		}
-	}
 }
 
 bool GridField::IsInside(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation)

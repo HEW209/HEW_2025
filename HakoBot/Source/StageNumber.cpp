@@ -3,6 +3,7 @@
 #include "GameScene.h"
 #include "InputManager.h"
 #include "SaveData.h"
+#include "Fade.h"
 
 #define STAGE_FILE "Assets/Stage/Level%d.json"
 #define FONT_SIZE (200.0f)
@@ -28,7 +29,8 @@ StageNumber::StageNumber() :
 	m_lastInput(0),
 	m_keyHold(false),
 	m_holdTimer(0.0f),
-	m_repeatTimer(0.0f)
+	m_repeatTimer(0.0f),
+	m_isSceneChange(false)
 {
 }
 
@@ -53,13 +55,24 @@ void StageNumber::Start()
 
 void StageNumber::Update()
 {
-	StageSelect();
-	SetDigitUV();
-
-	if (Input::GetKeyDown(KeyCode::ENTER) ||
-		Input::GetButtonDown(PadCode::B))
+	if (m_isSceneChange)
 	{
+		if (Fade::IsActive())
+			return;
+
 		LoadGame();
+	}
+	else
+	{
+		StageSelect();
+		SetDigitUV();
+
+		if (Input::GetKeyDown(KeyCode::ENTER) ||
+			Input::GetButtonDown(PadCode::B))
+		{
+			m_isSceneChange = true;
+			Fade::StartIrisOut();
+		}
 	}
 }
 

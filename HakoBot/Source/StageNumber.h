@@ -22,6 +22,7 @@ private:
 	bool m_keyHold;			// 長押しフラグ
 	float m_holdTimer;		// 長押し時間
 	float m_repeatTimer;	// 長押し移動用タイマー
+	bool m_isSceneChange;	// シーン遷移中フラグ
 
 	void StageSelect();
 	void LoadGame();					//ステージ読み出し	

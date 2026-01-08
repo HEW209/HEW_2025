@@ -67,9 +67,6 @@ public:
 	//グリッド内判定
 	bool IsInside(const Vector3& position);
 
-	// ブロックの透明化設定
-	void SetBlockTransparent(bool isTransparent);
-
 	// ブロックの透明化設定取得
 	bool IsBlockTransparent() const { return m_isBlockTransparent; }
 

@@ -117,7 +117,7 @@
     <ClCompile Include="Source\InputManager.cpp">
       <Filter>ソース ファイル\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GuideUIResultController.cpp">
+    <ClCompile Include="Source\GuideUIMenuController.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Source\TitleScene.cpp">
@@ -269,7 +269,7 @@
     <ClInclude Include="Source\InputManager.h">
       <Filter>ヘッダー ファイル\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GuideUIResultController.h">
+    <ClInclude Include="Source\GuideUIMenuController.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Source\TitleScene.h">

@@ -5,6 +5,9 @@
 
 class GuideUITimeController2 : public Component
 {
+public:
+	GuideUITimeController2();
+
 	void Start() override;
 	void Update() override;
 
@@ -15,5 +18,6 @@ private:
 	SpriteRenderer* m_stageSelect;
 	int m_curcirPos;
 	bool isActive;
+	bool m_sceneChangeFlag;
 };
 

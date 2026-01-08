@@ -27,6 +27,7 @@ public:
 	~BlockObject() = default;
 
 	void Awake() override;
+	void Update() override;
 	void OnDestroy() override;
 
 	void SetBlockSet(const BlockSetData& blockSet);

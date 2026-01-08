@@ -168,7 +168,7 @@
     <ClCompile Include="Source\GameState.cpp" />
     <ClCompile Include="Source\GridBlockData.cpp" />
     <ClCompile Include="Source\GridField.cpp" />
-    <ClCompile Include="Source\GuideUIResultController.cpp" />
+    <ClCompile Include="Source\GuideUIMenuController.cpp" />
     <ClCompile Include="Source\InputSystem.cpp" />
     <ClCompile Include="Source\GuideUIController.cpp" />
     <ClCompile Include="Source\GuideUIController2.cpp" />
@@ -222,7 +222,7 @@
     <ClInclude Include="Source\GameTypes.h" />
     <ClInclude Include="Source\GridBlockData.h" />
     <ClInclude Include="Source\GridField.h" />
-    <ClInclude Include="Source\GuideUIResultController.h" />
+    <ClInclude Include="Source\GuideUIMenuController.h" />
     <ClInclude Include="Source\HashUtil.h" />
     <ClInclude Include="Source\IDGenerator.h" />
     <ClInclude Include="Source\InputSystem.h" />
