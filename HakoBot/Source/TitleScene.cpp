@@ -95,4 +95,11 @@ void TitleScene::Init()
         obj->AddComponent<TitleExit>();
         obj->GetTransform()->SetPosition(0.0f, -2.0f, 0.0f);
     }
+
+    {
+        auto obj = CreateGameObject();
+        auto renderer = obj->AddComponent<SpriteRenderer>();
+        renderer->LoadTexture("Assets/Textures/StageSelect/BackGround.png");
+        renderer->SetBackGround(true);
+    }
 }

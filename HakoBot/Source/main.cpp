@@ -7,6 +7,7 @@
 #include "Effekseer/Effekseer.h"
 #include "Effekseer/EffekseerRendererDX11.h"
 #include "Config.h"
+#include "StageSelectScene.h"
 #include <DXGameFrame.h>
 #include "GameScene.h"
 #include "../DebugEffectScene.h"
@@ -149,6 +150,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	// シーンの作成
 	SceneManager::Init(std::make_unique<TitleScene>());
+
 
 	//-------------------------
 	//		その他の準備

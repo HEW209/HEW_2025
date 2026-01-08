@@ -1,7 +1,8 @@
 #include "TitleExit.h"
 #include <memory>
-#include "GameScene.h"
+#include "StageSelectScene.h"
 #include "InputManager.h"
+#include "SaveData.h"
 
 TitleExit::TitleExit():
 	m_newGameText(nullptr),
@@ -62,12 +63,16 @@ void TitleExit::Update()
 	{
 		if (m_isNewGame)
 		{
+			SaveData::Reset();
 			InputManager::ChangeBindType(InputBindType::GAMEPLAY);
-			SceneManager::ChangeScene(std::make_unique<GameScene>("TestLevel01"));
+			SceneManager::ChangeScene(std::make_unique<StageSelectScene>());
 		}
 		else
 		{
 			// ‚Â‚Ã‚«‚©‚ç
+			SaveData::Load();
+			InputManager::ChangeBindType(InputBindType::GAMEPLAY);
+			SceneManager::ChangeScene(std::make_unique<StageSelectScene>());
 		}
 	}
 }

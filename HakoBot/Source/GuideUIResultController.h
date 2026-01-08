@@ -13,6 +13,7 @@ public:
 	Vector3 m_defaultPosition;
 	Vector3 m_defaultScale;
 	bool m_menu;
+
 private:
 	float m_value = 0;
 	

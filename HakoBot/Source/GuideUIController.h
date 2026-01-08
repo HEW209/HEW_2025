@@ -8,12 +8,8 @@
 
 class GuideUIController : public Component 
 {
-
-
 	void Start() override;
 	void Update() override;
-
-	
 
 private:
 	ObjPtr<SpriteRenderer> m_pRenderer;

@@ -33,11 +33,12 @@ void TitlePlayer::Start()
 	m_caterpillar->GetMaterial(0)->SetPixelShader("Assets/Shader/UVScroll_PS.cso");
 	m_caterpillar->SetShouldDrawShadow(true);
 
+	GetTransform()->SetPosition(g_startPos);
 	GetTransform()->SetEulerAngle(0.0f, -90.0f, 0.0f);
 
 	// ÉuÉçÉbÉNìoò^
 	m_blocks.push_back({ "Assets/Model/Blocks/FBX/1masu.fbx", {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} });
-	m_blocks.push_back({ "Assets/Model/Blocks/FBX/Lji1.fbx", {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} });
+	m_blocks.push_back({ "Assets/Model/Blocks/FBX/Lji1.fbx", {0.5f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} });
 	m_blocks.push_back({ "Assets/Model/Blocks/FBX/tate2masu.fbx", {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} });
 	m_blocks.push_back({ "Assets/Model/Blocks/FBX/tate3masu.fbx", {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} });
 	m_blocks.push_back({ "Assets/Model/Blocks/FBX/yoko2masu.fbx", {0.5f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} });

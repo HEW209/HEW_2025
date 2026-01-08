@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -163,6 +163,7 @@
     <ClCompile Include="Source\ClearProduce.cpp" />
     <ClCompile Include="DebugEffectScene.cpp" />
     <ClCompile Include="Source\ColliderDebug.cpp" />
+    <ClCompile Include="Source\Fade.cpp" />
     <ClCompile Include="Source\GameScene.cpp" />
     <ClCompile Include="Source\GameState.cpp" />
     <ClCompile Include="Source\GridBlockData.cpp" />
@@ -184,7 +185,9 @@
     <ClCompile Include="Source\PlayerMove.cpp" />
     <ClCompile Include="Source\PlayerStretch.cpp" />
     <ClCompile Include="Source\SampleCamera.cpp" />
+    <ClCompile Include="Source\SaveData.cpp" />
     <ClCompile Include="Source\ShapeScreen.cpp" />
+    <ClCompile Include="Source\StageInfo.cpp" />
     <ClCompile Include="Source\TitleExit.cpp" />
     <ClCompile Include="Source\TitleLogo.cpp" />
     <ClCompile Include="Source\TitlePlayer.cpp" />
@@ -195,6 +198,9 @@
     <ClCompile Include="Source\SoundPlayer.cpp" />
     <ClCompile Include="Source\TitleUI.cpp" />
     <ClCompile Include="Source\VecUtil.cpp" />
+    <ClCompile Include="Source\StageSelectScene.cpp" />
+    <ClCompile Include="Source\StageSelectObject.cpp" />
+    <ClCompile Include="Source\StageNumber.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ThirdParty\Effekseer\Effekseer.h" />
@@ -210,6 +216,7 @@
     <ClInclude Include="Source\DynamicDimensionalArray.h" />
     <ClInclude Include="Source\Easing.h" />
     <ClInclude Include="Source\EditorTypes.h" />
+    <ClInclude Include="Source\Fade.h" />
     <ClInclude Include="Source\GameScene.h" />
     <ClInclude Include="Source\GameState.h" />
     <ClInclude Include="Source\GameTypes.h" />
@@ -229,7 +236,9 @@
     <ClInclude Include="Source\PlayerMove.h" />
     <ClInclude Include="Source\PlayerStretch.h" />
     <ClInclude Include="Source\SampleCamera.h" />
+    <ClInclude Include="Source\SaveData.h" />
     <ClInclude Include="Source\ShapeScreen.h" />
+    <ClInclude Include="Source\StageInfo.h" />
     <ClInclude Include="Source\TitleExit.h" />
     <ClInclude Include="Source\TitleLogo.h" />
     <ClInclude Include="Source\TitlePlayer.h" />
@@ -280,6 +289,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
+    <FxCompile Include="Source\HLSL\OneColor_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
     <FxCompile Include="Source\HLSL\Screen_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
@@ -292,6 +307,9 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
+    <ClInclude Include="Source\StageSelectScene.h" />
+    <ClInclude Include="Source\StageSelectObject.h" />
+    <ClInclude Include="Source\StageNumber.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

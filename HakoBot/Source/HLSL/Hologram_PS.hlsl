@@ -139,6 +139,7 @@ float4 main(PS_IN pin) : SV_TARGET
     // fBmパーリンノイズを求める
     float noiseVal = fBmPerlin3D(pin.wPos.xyz * noiseScale, 4, 1.2, 0.2);
     noiseVal = (noiseVal + 1) * 0.5;
+    noiseVal = noiseVal * 0.5 + 0.5;
     
     // ノイズで発光させる
     outColor.rgb = Emission(outColor.rgb, noiseVal * noiseEmi);

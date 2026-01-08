@@ -4,8 +4,9 @@
 #include "InputManager.h"
 #include "GuideUIResultController.h"
 
+static const float g_spriteSize = 48.0f;
 
-int digitToIndex[10] =
+static const int digitToIndex[10] =
 {
 0,  // 0の位置
 1,  // 1
@@ -27,7 +28,7 @@ void GuideUITimeController::Start()
 	{
 		sprite[x] = GetGameObject()->AddComponent<SpriteRenderer>();
 		sprite[x]->SetUI(true);
-		sprite[x]->LoadTexture("Assets/Textures/newSprite.png");
+		sprite[x]->LoadTexture("Assets/Textures/Texts/Number.png");
 		sprite[x]->SetOffsetPos(PosX,0.0f);
 		PosX += 0.3f;
 		if (x % 2)
@@ -35,38 +36,38 @@ void GuideUITimeController::Start()
 			PosX += 0.2f;
 		}
 		sprite[x]->SetUVScale(1.0f / 6.0f, 1.0f / 2.0f);
-		sprite[x]->SetSize(MOZI_SIZE + 50.0f, MOZI_SIZE + 50.0f);
+		sprite[x]->SetSize(g_spriteSize, g_spriteSize);
 	}
 
 	
 	//時計マーク
 	auto renderer1 = GetGameObject()->AddComponent<SpriteRenderer>();
-	renderer1->LoadTexture("Assets/Textures/newSprite.png");
-	renderer1->SetOffsetPos(-0.5f, 0.01f);
+	renderer1->LoadTexture("Assets/Textures/Texts/Number.png");
+	renderer1->SetOffsetPos(-0.5f, 0.0f);
 	renderer1->SetUI(true);
 	renderer1->SetUVScale(1.0f / 6.0f, 1.0f / 2.0f);
 	renderer1->SetUVOffsetPos(5.0f / 6.0f, 1.0f / 2.0f);
-	renderer1->SetSize(MOZI_SIZE, MOZI_SIZE);
+	renderer1->SetSize(g_spriteSize * 1.2f, g_spriteSize * 1.2f);
 	sprite1[0] = renderer1;
 
 	//点１
 	auto renderer2 = GetGameObject()->AddComponent<SpriteRenderer>();
-	renderer2->LoadTexture("Assets/Textures/newSprite.png");
+	renderer2->LoadTexture("Assets/Textures/Texts/Number.png");
 	renderer2->SetOffsetPos(0.55f, 0.0f);
 	renderer2->SetUI(true);
 	renderer2->SetUVScale(1.0f / 6.0f, 1.0f / 2.0f);
 	renderer2->SetUVOffsetPos(4.0f / 6.0f, 1.0f / 2.0f);
-	renderer2->SetSize(MOZI_SIZE + 40.0f, MOZI_SIZE + 40.0f);
+	renderer2->SetSize(g_spriteSize, g_spriteSize);
 	sprite1[1] = renderer2;
 
 	//点２
 	auto renderer3 = GetGameObject()->AddComponent<SpriteRenderer>();
-	renderer3->LoadTexture("Assets/Textures/newSprite.png");
+	renderer3->LoadTexture("Assets/Textures/Texts/Number.png");
 	renderer3->SetOffsetPos(1.35f, 0.0f);
 	renderer3->SetUI(true);
 	renderer3->SetUVScale(1.0f / 6.0f, 1.0f / 2.0f);
 	renderer3->SetUVOffsetPos(4.0f / 6.0f, 1.0f / 2.0f);
-	renderer3->SetSize(MOZI_SIZE + 40.0f, MOZI_SIZE + 40.0f);
+	renderer3->SetSize(g_spriteSize, g_spriteSize);
 	sprite1[2] = renderer3;
 
 	m_totalTime = 0;
