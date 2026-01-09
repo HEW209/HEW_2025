@@ -6,7 +6,8 @@ GameState* GameState::s_pInstance = nullptr;
 int GameState::s_currentStageNo = 0;
 
 
-GameState::GameState()
+GameState::GameState() :
+	m_isBlockTransparent(false)
 {
 	if (s_pInstance == nullptr) {
 

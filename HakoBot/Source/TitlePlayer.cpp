@@ -20,6 +20,19 @@ void TitlePlayer::Start()
 	auto animeNo = upper->LoadAnimation("Assets/Model/Player/fbx/motiage.fbx");
 	upper->PlayAnime(animeNo, true);
 
+	// –Ú
+	auto eyeObj = SceneManager::GetActiveScene()->CreateGameObject();
+	eyeObj->GetTransform()->SetParent(GetTransform());
+	eyeObj->GetTransform()->SetPosition(0.0f, 0.0f, -0.3f, Space::LOCAL);
+	auto eye = eyeObj->AddComponent<MeshRenderer>();
+	eye->LoadModel("Assets/Model/Player/fbx/eye.fbx");
+	auto eyeAnimeNo = eye->LoadAnimation("Assets/Model/Player/fbx/eye.fbx");
+	eye->GetMaterial(0)->SetVertexShader("Assets/Shader/Anime_VS.cso");
+	eye->GetMaterial(0)->SetPixelShader("Assets/Shader/OneColor_PS.cso");
+	Color eyeColor(0.0f, 0.5f, 0.8f, 1.0f);
+	eye->GetMaterial(0)->SetParameter(&eyeColor, sizeof(eyeColor));
+	eye->PlayAnime(eyeAnimeNo, true);
+
 	auto pillar = GetGameObject()->AddComponent<MeshRenderer>();
 	pillar->LoadModel("Assets/Model/Player/fbx/sityu.fbx");
 	pillar->SetShouldDrawShadow(true);

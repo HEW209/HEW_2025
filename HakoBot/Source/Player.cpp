@@ -10,7 +10,6 @@ void Player::Awake()
 	auto renderer2 = pObj->AddComponent<MeshRenderer>();
 	renderer2->LoadModel("Assets/Model/Player/fbx/kabu.fbx");
 	renderer2->SetShouldDrawShadow(true);
-
 	auto playerMove = pObj->AddComponent<PlayerMove>();
 	auto collider = pObj->AddComponent<Collider>();
 	collider->m_scale = Vector3(0.7f, PlayerDefaultSize_y, 0.7f);
@@ -30,6 +29,19 @@ void Player::Awake()
 	playerHead->GetTransform()->SetParent(pObj->GetTransform());
 	auto playerStretch = playerHead->AddComponent<PlayerStretch>();
 	playerStretch->SetPlayerCollider(collider);
+
+	// 目
+	auto eyeObj = SceneManager::GetActiveScene()->CreateGameObject();
+	eyeObj->GetTransform()->SetParent(playerHead);
+	eyeObj->GetTransform()->SetPosition(0.0f, 0.0f, -0.3f, Space::LOCAL);
+	auto eye = eyeObj->AddComponent<MeshRenderer>();
+	eye->LoadModel("Assets/Model/Player/fbx/eye.fbx");
+	auto eyeAnimeNo = eye->LoadAnimation("Assets/Model/Player/fbx/eye.fbx");
+	eye->GetMaterial(0)->SetVertexShader("Assets/Shader/Anime_VS.cso");
+	eye->GetMaterial(0)->SetPixelShader("Assets/Shader/OneColor_PS.cso");
+	Color eyeColor(0.0f, 0.5f, 0.8f, 1.0f);
+	eye->GetMaterial(0)->SetParameter(&eyeColor, sizeof(eyeColor));
+	eye->PlayAnime(eyeAnimeNo, true);
 
 	//ブロック操作コンポーネントの追加
 	m_pBlockHandler = playerHead->AddComponent<PlayerBlockHandler>();

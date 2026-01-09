@@ -23,7 +23,7 @@
 class BlockObject : public Component
 {
 public:
-	BlockObject() : m_shouldUseCollider(true) {}
+	BlockObject() : m_shouldUseCollider(true), m_isTransparent(false) {}
 	~BlockObject() = default;
 
 	void Awake() override;
