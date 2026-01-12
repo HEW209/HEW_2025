@@ -10,6 +10,7 @@
 
 #include "BlockObject.h"
 #include "GridField.h"
+#include "GameStart.h"
 #include "ClearProduce.h"
 
 #include "GuideUIController.h"
@@ -126,6 +127,10 @@ void GameScene::Init() {
         auto fade = obj->AddComponent<Fade>();
         Fade::StartIrisIn();
     }
+
+    // 開始演出
+    auto StartObj = CreateGameObject();
+    StartObj->AddComponent<StartUI>();
 
     // クリア演出
     auto clearObj = CreateGameObject();
