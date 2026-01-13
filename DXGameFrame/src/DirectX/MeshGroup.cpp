@@ -12,7 +12,7 @@ MeshGroup::MeshGroup() :
 	m_blendTime(0.0f),
 	m_blendTotalTime(0.0f),
 	m_parametricBlend(0.0f),
-	m_parametric(AnimePattern::MAIN)
+	m_parametric()
 {
 }
 

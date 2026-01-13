@@ -8,6 +8,8 @@
 #include "TitlePlayer.h"
 #include "Fade.h"
 
+bool TitleScene::s_isFirst = true;
+
 void TitleScene::Init()
 {
     InputManager::ChangeBindType(InputBindType::UI);
@@ -42,6 +44,14 @@ void TitleScene::Init()
     {
         auto obj = CreateGameObject();
         auto fade = obj->AddComponent<Fade>();
+        if (!s_isFirst)
+        {
+            s_isFirst = false;
+        }
+        else
+        {
+            Fade::StartIrisIn();
+        }
     }
 
     // ínå`

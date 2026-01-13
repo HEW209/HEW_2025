@@ -99,15 +99,6 @@ void StageSelectObject::Update()
 	Move();
 	BlockMove();
 	BlockRotate();
-
-#ifdef _DEBUG
-	float deltaTime = Time::GetDeltaTime();
-	int fps = 1.0f / deltaTime;
-
-	ImGui::Begin("Guide");
-	ImGui::Text("FPS : %3d", fps);
-	ImGui::End();
-#endif // DEBUG
 }
 
 void StageSelectObject::SetStageNumber(StageNumber* stageNumber)

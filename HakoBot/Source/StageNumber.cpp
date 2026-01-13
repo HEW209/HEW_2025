@@ -5,6 +5,8 @@
 #include "SaveData.h"
 #include "Fade.h"
 #include "GameState.h"
+#include "TitleScene.h"
+#include "StageSelectScene.h"
 
 #define STAGE_FILE "Assets/Stage/Level%d.json"
 #define FONT_SIZE (200.0f)
@@ -31,7 +33,8 @@ StageNumber::StageNumber() :
 	m_keyHold(false),
 	m_holdTimer(0.0f),
 	m_repeatTimer(0.0f),
-	m_isSceneChange(false)
+	m_isSceneChange(false),
+	m_targetScene(TargetScene::GAME)
 {
 }
 
@@ -62,11 +65,21 @@ void StageNumber::Update()
 {
 	if (m_isSceneChange)
 	{
-		if (Fade::IsActive())
-			return;
+		if (!Fade::IsActive())
+		{
+			switch (m_targetScene)
+			{
+			case StageNumber::GAME:
+				GameState::SetCurrentStegaNo(m_selectIndex);
+				LoadGame();
+				return;
+				break;
 
-		GameState::SetCurrentStegaNo(m_selectIndex);
-		LoadGame();
+			case StageNumber::TITLE:
+				SceneManager::ChangeScene(std::make_unique<TitleScene>());
+				break;
+			}
+		}
 	}
 	else
 	{
@@ -77,9 +90,36 @@ void StageNumber::Update()
 			Input::GetButtonDown(PadCode::B))
 		{
 			m_isSceneChange = true;
+			m_targetScene = TargetScene::GAME;
+			Fade::StartIrisOut();
+		}
+		else if (Input::GetKeyDown(KeyCode::ESC) ||
+			Input::GetButtonDown(PadCode::BACK))
+		{
+			m_isSceneChange = true;
+			m_targetScene = TargetScene::TITLE;
 			Fade::StartIrisOut();
 		}
 	}
+
+#ifdef _DEBUG
+	float deltaTime = Time::GetDeltaTime();
+	int fps = 1.0f / deltaTime;
+
+	ImGui::Begin("StageSelect");
+	ImGui::Text("FPS : %3d", fps);
+
+	int clearLevel = SaveData::GetClearLevel();
+	ImGui::SliderInt("ClearLevel", &clearLevel, 0, StageCount);
+	SaveData::SetClearLevel(clearLevel);
+
+	if (ImGui::Button("Reload"))
+	{
+		SceneManager::ChangeScene(std::make_unique<StageSelectScene>());
+	}
+
+	ImGui::End();
+#endif // DEBUG
 
 #ifdef _DEBUG
 	if (Input::GetKeyDown(KeyCode::KEY_0)) {

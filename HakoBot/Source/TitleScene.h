@@ -9,4 +9,7 @@ public:
     ~TitleScene() override = default;
 
     void Init() override;
+
+private:
+    static bool s_isFirst;      // ‰‰ñƒtƒ‰ƒO
 };
