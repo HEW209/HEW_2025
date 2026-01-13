@@ -16,8 +16,9 @@ public:
 private:
 	bool m_HalfProcessed;
 	bool m_IsVisible;
+	bool m_SEFlag;
 	float m_Timer;		
-
+	
 	SpriteRenderer* m_StartSprite;
 
 	// フェード用

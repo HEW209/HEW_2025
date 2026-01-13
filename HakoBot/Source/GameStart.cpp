@@ -1,11 +1,14 @@
 #include "GameStart.h"
-
-#define DRAW_TIME 90.0f
+// サウンド
+#include "SoundMaster.h"
+#include "SoundManager.h"
+#define DRAW_TIME 90.0f     //再生時間（フレーム）
 StartUI::StartUI()
 {
     m_Timer = 0.0f;
     m_HalfProcessed = false;
     m_IsVisible = true;
+    m_SEFlag = false;
     m_Alpha = 0.0f;
 
     // サイズ
@@ -22,9 +25,10 @@ void StartUI::Start()
     m_StartSprite->LoadTexture("Assets/Textures/Texts/Start.png");
     m_StartSprite->SetOffsetPos(0.0f, 0.0f);
     
-
-    
     m_StartSprite->SetSize(m_StartSize.x, m_StartSize.y);
+    SoundManager::StopAll();
+    SoundManager::Load();
+    
 }
 
 void StartUI::Update()
@@ -40,6 +44,7 @@ void StartUI::Update()
         // フェードアウト処理
         if (m_Timer >= (DRAW_TIME-halfTime) && m_Timer < DRAW_TIME)
         {
+
             // 0.0f ～ 1.0f の進行率
             float s = (m_Timer - (DRAW_TIME - halfTime)) / halfTime;
             s = std::clamp(s, 0.0f, 1.0f);
@@ -67,6 +72,15 @@ void StartUI::Update()
             m_CurrentSize.x = Lerp(m_StartSize.x, m_EndSize.x, t);
             m_CurrentSize.y = Lerp(m_StartSize.y, m_EndSize.y, t);
         }
+        
+        //＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝「音の処理」＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝仮置き中！！！！
+        if (m_Timer >= halfTime*1.5f && m_Timer < DRAW_TIME&& m_SEFlag==false)
+        {
+
+            SoundManager::PlaySE("TitleLanding", 1.0f, false);
+            m_SEFlag = true;
+        }
+        //========================================================================================
 
 
 
