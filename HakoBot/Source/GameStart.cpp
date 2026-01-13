@@ -1,5 +1,6 @@
 #include "GameStart.h"
-#define DRAW_TIME 120.0f
+
+#define DRAW_TIME 90.0f
 StartUI::StartUI()
 {
     m_Timer = 0.0f;
@@ -8,7 +9,7 @@ StartUI::StartUI()
     m_Alpha = 0.0f;
 
     // サイズ
-    m_StartSize={ 400.0f, 200.0f };  // フェード開始時サイズ
+    m_StartSize={ 1200.0f, 600.0f };  // フェード開始時サイズ
     m_EndSize={ 300.0f, 150.0f };    // 最終表示サイズ
     m_CurrentSize = m_StartSize;
 
@@ -31,17 +32,33 @@ void StartUI::Update()
 
     if (!m_IsVisible)
         return;
-
+    
         m_Timer +=1.0f;
 
-        float halfTime = DRAW_TIME * 0.5f;
+        float halfTime = DRAW_TIME * 0.15f;
 
+        // フェードアウト処理
+        if (m_Timer >= (DRAW_TIME-halfTime) && m_Timer < DRAW_TIME)
+        {
+            // 0.0f ～ 1.0f の進行率
+            float s = (m_Timer - (DRAW_TIME - halfTime)) / halfTime;
+            s = std::clamp(s, 0.0f, 1.0f);
+
+            // Alpha補間
+            m_Alpha = Lerp(1.0f, 0.0f, s);
+            
+
+            // Size補間
+            m_CurrentSize.x = Lerp(m_EndSize.x, m_StartSize.x, s);
+            m_CurrentSize.y = Lerp(m_EndSize.y, m_StartSize.y, s);
+        }
         // フェードイン処理
-        if (m_Timer >= halfTime && m_Timer < DRAW_TIME)
+        else if (m_Timer >= halfTime && m_Timer < DRAW_TIME)
         {
             // 0.0f ～ 1.0f の進行率
             float t = (m_Timer - halfTime) / halfTime;
             t = std::clamp(t, 0.0f, 1.0f);
+
 
             // Alpha補間
             m_Alpha = Lerp(0.0f, 1.0f, t);
@@ -51,17 +68,19 @@ void StartUI::Update()
             m_CurrentSize.y = Lerp(m_StartSize.y, m_EndSize.y, t);
         }
 
-        // 終了処理
-        if (m_Timer >= DRAW_TIME)
-        {
-			// 非表示にする
-			m_StartSprite->SetColor(1.0f, 1.0f, 1.0f, 0.0f);
-			m_IsVisible = false;
-        }
+
 
 		// スプライト更新
 		m_StartSprite->SetColor(1.0f, 1.0f, 1.0f, m_Alpha);
 		m_StartSprite->SetSize(m_CurrentSize.x, m_CurrentSize.y);
+
+        // 終了処理
+        if (m_Timer >= DRAW_TIME)
+        {
+
+            m_StartSprite->SetColor(1.0f, 1.0f, 1.0f, 0.0f);
+            m_IsVisible = false;
+        }
 }
 
 float  StartUI::Lerp(float a, float b, float t)
