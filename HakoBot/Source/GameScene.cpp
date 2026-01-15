@@ -11,6 +11,8 @@
 #include "BlockObject.h"
 #include "GridField.h"
 #include "ClearProduce.h"
+#include "ResultController.h"
+#include "DebugResult.h"
 
 #include "GuideUIController.h"
 #include "GuideUIController2.h"
@@ -131,6 +133,8 @@ void GameScene::Init() {
     auto clearObj = CreateGameObject();
     clearObj->AddComponent<ClearProduce>();
 
+    
+
     // BGM再生
     SoundManager::PlayBGM("Stage1", 0.2f, true);
 
@@ -138,6 +142,8 @@ void GameScene::Init() {
 #ifdef _DEBUG
     auto obj = CreateGameObject();
     obj->AddComponent<ColliderDebug>();
+    //リザルトの表示用
+    CreateResultDebug();
 #endif
 }
 
@@ -542,3 +548,12 @@ void GameScene::CreateUIObject() {
         obj->AddComponent<GuideUITimeController2>();
     }
 }
+
+
+
+void GameScene::CreateResultDebug()
+{
+    auto obj = CreateGameObject();
+    obj->AddComponent<DebugResult>();
+}
+
