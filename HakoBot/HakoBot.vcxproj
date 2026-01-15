@@ -165,6 +165,7 @@
     <ClCompile Include="Source\ColliderDebug.cpp" />
     <ClCompile Include="Source\Fade.cpp" />
     <ClCompile Include="Source\GameScene.cpp" />
+    <ClCompile Include="Source\GameStart.cpp" />
     <ClCompile Include="Source\GameState.cpp" />
     <ClCompile Include="Source\GridBlockData.cpp" />
     <ClCompile Include="Source\GridField.cpp" />
@@ -218,6 +219,7 @@
     <ClInclude Include="Source\EditorTypes.h" />
     <ClInclude Include="Source\Fade.h" />
     <ClInclude Include="Source\GameScene.h" />
+    <ClInclude Include="Source\GameStart.h" />
     <ClInclude Include="Source\GameState.h" />
     <ClInclude Include="Source\GameTypes.h" />
     <ClInclude Include="Source\GridBlockData.h" />
