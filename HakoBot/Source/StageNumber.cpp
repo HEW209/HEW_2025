@@ -9,7 +9,7 @@
 #include "StageSelectScene.h"
 
 #define STAGE_FILE "Assets/Stage/Level%d.json"
-#define FONT_SIZE (200.0f)
+#define FONT_SIZE (220.0f)
 
 static const int digitIndex[10] =
 {
@@ -28,6 +28,7 @@ static const int digitIndex[10] =
 
 StageNumber::StageNumber() :
 	m_NumberSprite(),
+	m_NumberSpriteBack(),
 	m_selectIndex(1),
 	m_lastInput(0),
 	m_keyHold(false),
@@ -40,20 +41,38 @@ StageNumber::StageNumber() :
 
 void StageNumber::Start()
 {
-	float PosX = -5.2f;
-	float PosY = 1.0f;
-	float PosInterval = FONT_SIZE / 100.0f;	//文字間隔　＊　文字サイズによる間隔補正
+	float PosInterval = FONT_SIZE / 150.0f;	//文字間隔　＊　文字サイズによる間隔補正
 
-	for (int x = 0; x < 2; ++x)
+	float PosX = -4.85f;
+	float PosY = 0.9f;
+
+	for (int x = 0; x < 3; ++x)
+	{
+		m_NumberSpriteBack[x] = GetGameObject()->AddComponent<SpriteRenderer>();
+		m_NumberSpriteBack[x]->SetBackGround(true);
+		m_NumberSpriteBack[x]->LoadTexture("Assets/Textures/Texts/Number.png");
+		m_NumberSpriteBack[x]->SetOffsetPos(PosX, PosY);
+		PosX += PosInterval;
+
+		m_NumberSpriteBack[x]->SetUVScale(1.0f / 6.0f, 1.0f / 2.0f);
+		m_NumberSpriteBack[x]->SetSize(FONT_SIZE, FONT_SIZE);
+		m_NumberSpriteBack[x]->SetColor(0.9f, 0.5f, 0.0f, 1.0f);
+	}
+
+	PosX = -5.0f;
+	PosY = 1.0f;
+
+	for (int x = 0; x < 3; ++x)
 	{
 		m_NumberSprite[x] = GetGameObject()->AddComponent<SpriteRenderer>();
-		m_NumberSprite[x]->SetUI(true);
+		m_NumberSprite[x]->SetBackGround(true);
 		m_NumberSprite[x]->LoadTexture("Assets/Textures/Texts/Number.png");
 		m_NumberSprite[x]->SetOffsetPos(PosX, PosY);
 		PosX += PosInterval;
 
 		m_NumberSprite[x]->SetUVScale(1.0f / 6.0f, 1.0f / 2.0f);
 		m_NumberSprite[x]->SetSize(FONT_SIZE, FONT_SIZE);
+		m_NumberSprite[x]->SetColor(0.9f, 0.9f, 0.9f, 1.0f);
 	}
 
 	m_selectIndex = SaveData::GetClearLevel() + 1;
@@ -154,15 +173,19 @@ void StageNumber::LoadGame()
 
 void StageNumber::SetDigitUV()
 {
-	int number[2];
-	number[0] = m_selectIndex / 10;
-	number[1] = m_selectIndex % 10;
+	int number[3];
+	int selectIndexTemp = m_selectIndex;
+	for (int i = 2; i >= 0; --i)
+	{
+		number[i] = selectIndexTemp % 10;
+		selectIndexTemp /= 10;
+	}
 
 	// 1マスのUVサイズ
 	const float uSize = 1.0f / 6.0f;
 	const float vSize = 1.0f / 2.0f;
 
-	for (int x = 0; x < 2; ++x)
+	for (int x = 0; x < 3; ++x)
 	{
 		int index = number[x];
 
@@ -170,6 +193,7 @@ void StageNumber::SetDigitUV()
 		float v = (index / 6) * vSize;
 
 		m_NumberSprite[x]->SetUVOffsetPos(u, v);
+		m_NumberSpriteBack[x]->SetUVOffsetPos(u, v);
 	}
 }
 
