@@ -18,6 +18,9 @@ void BlockObject::Awake()
 		material.SetBlendState(BlendState::DEFAULT);
 		material.SetDepthStencilState(DepthStencilState::DEFAULT);
 	}
+
+	m_isTransparent = GameState::GetInstance()->IsBlockTransparent();
+	SetTransparent(m_isTransparent);
 }
 
 void BlockObject::Update()
@@ -89,6 +92,9 @@ void BlockObject::SetModel(const std::string& modelPath)
 		m_pBlockMeshRenderer->LoadModel(modelPath);
 		m_pBlockMeshRenderer->SetEnabled(true);
 	}
+
+	m_isTransparent = GameState::GetInstance()->IsBlockTransparent();
+	SetTransparent(m_isTransparent);
 }
 
 void BlockObject::SetSelect(bool isSelected)
