@@ -9,7 +9,7 @@
 #include "StageSelectScene.h"
 
 #define STAGE_FILE "Assets/Stage/Level%d.json"
-#define FONT_SIZE (220.0f)
+#define FONT_SIZE (180.0f)
 
 static const int digitIndex[10] =
 {
@@ -28,7 +28,6 @@ static const int digitIndex[10] =
 
 StageNumber::StageNumber() :
 	m_NumberSprite(),
-	m_NumberSpriteBack(),
 	m_selectIndex(1),
 	m_lastInput(0),
 	m_keyHold(false),
@@ -41,38 +40,31 @@ StageNumber::StageNumber() :
 
 void StageNumber::Start()
 {
-	float PosInterval = FONT_SIZE / 150.0f;	//文字間隔　＊　文字サイズによる間隔補正
+	float PosInterval = FONT_SIZE / 130.0f;	//文字間隔　＊　文字サイズによる間隔補正
 
-	float PosX = -4.85f;
-	float PosY = 0.9f;
+	float PosX = -5.2f;
+	float PosY = 1.3f;
 
-	for (int x = 0; x < 3; ++x)
-	{
-		m_NumberSpriteBack[x] = GetGameObject()->AddComponent<SpriteRenderer>();
-		m_NumberSpriteBack[x]->SetBackGround(true);
-		m_NumberSpriteBack[x]->LoadTexture("Assets/Textures/Texts/Number.png");
-		m_NumberSpriteBack[x]->SetOffsetPos(PosX, PosY);
-		PosX += PosInterval;
-
-		m_NumberSpriteBack[x]->SetUVScale(1.0f / 6.0f, 1.0f / 2.0f);
-		m_NumberSpriteBack[x]->SetSize(FONT_SIZE, FONT_SIZE);
-		m_NumberSpriteBack[x]->SetColor(0.9f, 0.5f, 0.0f, 1.0f);
-	}
-
-	PosX = -5.0f;
-	PosY = 1.0f;
+	m_line = GetGameObject()->AddComponent<SpriteRenderer>();
+	m_line->SetBackGround(true);
+	m_line->LoadTexture("Assets/Textures/StageSelect/StageNumberLine.png");
+	m_line->SetOffsetPos(-6.0f, 0.5f);
+	m_line->SetUVScale(1.0f, 1.0f);
+	m_line->SetUVOffsetPos(0.0f, 0.0f);
+	m_line->SetSize(1200, 70);
+	m_line->SetColor(1.0f, 1.0f, 1.0f, 0.2f);
 
 	for (int x = 0; x < 3; ++x)
 	{
 		m_NumberSprite[x] = GetGameObject()->AddComponent<SpriteRenderer>();
 		m_NumberSprite[x]->SetBackGround(true);
-		m_NumberSprite[x]->LoadTexture("Assets/Textures/Texts/Number.png");
+		m_NumberSprite[x]->LoadTexture("Assets/Textures/StageSelect/StageNumber.png");
 		m_NumberSprite[x]->SetOffsetPos(PosX, PosY);
 		PosX += PosInterval;
 
-		m_NumberSprite[x]->SetUVScale(1.0f / 6.0f, 1.0f / 2.0f);
+		m_NumberSprite[x]->SetUVScale(1.0f / 5.0f, 1.0f / 2.0f);
 		m_NumberSprite[x]->SetSize(FONT_SIZE, FONT_SIZE);
-		m_NumberSprite[x]->SetColor(0.9f, 0.9f, 0.9f, 1.0f);
+		m_NumberSprite[x]->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 
 	m_selectIndex = SaveData::GetClearLevel() + 1;
@@ -182,18 +174,17 @@ void StageNumber::SetDigitUV()
 	}
 
 	// 1マスのUVサイズ
-	const float uSize = 1.0f / 6.0f;
+	const float uSize = 1.0f / 5.0f;
 	const float vSize = 1.0f / 2.0f;
 
 	for (int x = 0; x < 3; ++x)
 	{
 		int index = number[x];
 
-		float u = (index % 6) * uSize;
-		float v = (index / 6) * vSize;
+		float u = (index % 5) * uSize;
+		float v = (index / 5) * vSize;
 
 		m_NumberSprite[x]->SetUVOffsetPos(u, v);
-		m_NumberSpriteBack[x]->SetUVOffsetPos(u, v);
 	}
 }
 

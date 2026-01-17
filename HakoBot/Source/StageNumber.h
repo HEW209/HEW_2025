@@ -23,7 +23,7 @@ private:
 	};
 
 	SpriteRenderer* m_NumberSprite[3];			//各桁の描画用
-	SpriteRenderer* m_NumberSpriteBack[3];
+	SpriteRenderer* m_line;
 	int m_selectIndex;
 	int m_lastInput;			// 左で-1 右で1
 	bool m_keyHold;				// 長押しフラグ
