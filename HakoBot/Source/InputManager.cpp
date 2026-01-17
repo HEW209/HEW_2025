@@ -41,8 +41,8 @@ void InputManager::Init()
 		system.BindPadButton("Down"_hash, PadCode::DOWN);
 		system.BindPadButton("Clear"_hash, PadCode::X);
 		system.BindPadButton("Menu"_hash, PadCode::START);
-		system.BindPadButton("LockRotation"_hash, PadCode::Y);
-		system.BindPadButton("ChangeBlockTransparency"_hash, PadCode::A);
+		system.BindPadButton("LockRotation"_hash, PadCode::RIGHT_TRIGGER);
+		system.BindPadButton("ChangeBlockTransparency"_hash, PadCode::LEFT_TRIGGER);
 		system.BindPadStick("Move"_hash, StickCode::LEFT);
 		system.BindPadStick("CameraMove"_hash, StickCode::RIGHT);
 	}

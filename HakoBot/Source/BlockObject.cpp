@@ -19,8 +19,6 @@ void BlockObject::Awake()
 		material.SetDepthStencilState(DepthStencilState::DEFAULT);
 	}
 
-	m_isTransparent = GameState::GetInstance()->IsBlockTransparent();
-	SetTransparent(m_isTransparent);
 }
 
 void BlockObject::Update()

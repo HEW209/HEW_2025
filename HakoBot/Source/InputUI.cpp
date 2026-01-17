@@ -4,7 +4,7 @@
 
 static const Vector2 g_buttonOffset(-1.25f, 0.0f);  // ボタン位置
 static const Vector2 g_menuUIPos(-4.8f, 3.3f);      // メニュー位置
-static const Vector2 g_basicUIPos(5.7f, -3.2f);     // 基本操作位置
+static const Vector2 g_basicUIPos(6.0f, -3.2f);     // 基本操作位置
 static const Vector2 g_specialUIPos(-4.8f, -3.2f);  // 特殊操作位置
 static const float g_offsetDistance = 0.5f;         // UIの間隔
 static const float g_textSize = 200.0f;             // テキストサイズ
@@ -209,5 +209,23 @@ void InputUI::PushScaling()
     else
     {
         m_buttonLB->SetSize(g_buttonSize);
+    }
+    
+    if (InputManager::CurrentInputSystem().GetButtonHold("LockRotation"_hash))
+    {
+        m_specialButtons[(UINT)Special::ROTATE_LOCK]->SetSize(g_buttonSize * g_pushScale);
+    }
+    else
+    {
+        m_specialButtons[(UINT)Special::ROTATE_LOCK]->SetSize(g_buttonSize);
+    }
+
+    if (InputManager::CurrentInputSystem().GetButtonHold("ChangeBlockTransparency"_hash))
+    {
+        m_specialButtons[(UINT)Special::BLOCK_GHOST]->SetSize(g_buttonSize * g_pushScale);
+    }
+    else
+    {
+        m_specialButtons[(UINT)Special::BLOCK_GHOST]->SetSize(g_buttonSize);
     }
 }

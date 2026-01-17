@@ -65,7 +65,7 @@ void GameScene::Init() {
 
     const Vector3 defaultPos(10.0f, 0.0f, 0.0f);
     const int maxCountZ = 5;
-    const float intervalZ = -4.0f;
+    const float intervalZ = -3.5f;
     const float intervalX = 4.0f;
 
     // プレイヤーが動かすブロックを置く
