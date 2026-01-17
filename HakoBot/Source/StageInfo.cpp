@@ -16,7 +16,7 @@ void StageInfo::Start()
 	auto window = GetGameObject()->AddComponent<SpriteRenderer>();
 	window->LoadTexture("Assets/Textures/StageSelect/StageInfoWindow.png");
 	window->SetSize(g_windowSize);
-	window->IsUI();
+	window->SetBackGround(true);
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -27,7 +27,7 @@ void StageInfo::Start()
 		m_clearShapePos[i].x *= -1.0f;
 		m_clearShapePos[i].y = -0.3f;
 		back->SetOffsetPos(m_clearShapePos[i]);
-		back->IsUI();
+		back->SetBackGround(true);
 	}
 }
 
@@ -120,6 +120,7 @@ void StageInfo::CreateClearShape()
 				}
 				renderer->SetSize(scale);
 				renderer->SetOffsetPos(pos);
+				renderer->SetBackGround(true);
 
 				m_clearShapes[i][y][x] = renderer;
 			}

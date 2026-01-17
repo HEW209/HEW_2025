@@ -22,7 +22,7 @@ void BlockObject::Awake()
 
 void BlockObject::Update()
 {
-	if (GameState::GetInstance()->IsBlockTransparent() != m_isTransparent)
+	if (GameState::GetInstance() && GameState::GetInstance()->IsBlockTransparent() != m_isTransparent)
 	{
 		m_isTransparent = !m_isTransparent;
 		SetTransparent(m_isTransparent);
