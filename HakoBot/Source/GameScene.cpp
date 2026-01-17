@@ -407,41 +407,110 @@ void GameScene::CreateStageSet() {
     int stageSize_z = 25;
     Vector3 posOffset(3.0f, 0.0f, 0.0f);
     float blockScale = 1.0f;
-    for (int z = 0; z < stageSize_z; ++z) {
-        for (int x = 0; x < stageSize_x; ++x) {
-            Vector3 pos(x - stageSize_x * 0.5f + 0.5f, 0.0f, z - stageSize_z * 0.5f + 0.5f);
-            pos *= blockScale;
+    //for (int z = 0; z < stageSize_z; ++z) {
+    //    for (int x = 0; x < stageSize_x; ++x) {
+    //        Vector3 pos(x - stageSize_x * 0.5f + 0.5f, 0.0f, z - stageSize_z * 0.5f + 0.5f);
+    //        pos *= blockScale;
 
-            auto obj = CreateGameObject();
-            auto renderer = obj->AddComponent<MeshRenderer>();
-            renderer->LoadModel("Assets/Model/Stage/fbx/yuka.fbx");
-            obj->GetTransform()->SetPosition(pos + posOffset);
-            obj->GetTransform()->SetScale(0.25f, 0.25f, 0.25f);
-        }
+    //        auto obj = CreateGameObject();
+    //        auto renderer = obj->AddComponent<MeshRenderer>();
+    //        renderer->LoadModel("Assets/Model/Stage/fbx/yuka.fbx");
+    //        obj->GetTransform()->SetPosition(pos + posOffset);
+    //        obj->GetTransform()->SetScale(0.25f, 0.25f, 0.25f);
+    //    }
+    //}
+
+    //// çÚ
+    //for (int z = 0; z < stageSize_z; ++z) {
+    //    for (int x = 0; x < stageSize_x; ++x) {
+    //        Vector3 rotateAngle = Vector3::zero;
+    //        if (x == 0) rotateAngle.y = 180.0f;
+    //        else if (x == stageSize_x - 1) rotateAngle.y = 0.0f;
+    //        else if (z == 0) rotateAngle.y = 90.0f;
+    //        else if (z == stageSize_z - 1) rotateAngle.y = 270.0f;
+    //        else continue;
+
+    //        if (x % 2 == 0 && z % 2 == 0) continue;
+
+    //        Vector3 pos(x - stageSize_x * 0.5f + 0.5f, 0.0f, z - stageSize_z * 0.5f + 0.5f);
+    //        pos *= blockScale;
+
+    //        auto obj = CreateGameObject();
+    //        auto renderer = obj->AddComponent<MeshRenderer>();
+    //        renderer->LoadModel("Assets/Model/Stage/fbx/saku.fbx");
+    //        renderer->SetShouldDrawShadow(true);
+    //        obj->GetTransform()->SetPosition(pos + posOffset);
+    //        obj->GetTransform()->SetEulerAngle(rotateAngle);
+    //    }
+    //}
+
+    {
+		auto obj = CreateGameObject();
+		auto renderer = obj->AddComponent<MeshRenderer>();
+		renderer->LoadModel("Assets/Model/StageSet/fbx/Boundary.fbx");
     }
 
-    // çÚ
-    for (int z = 0; z < stageSize_z; ++z) {
-        for (int x = 0; x < stageSize_x; ++x) {
-            Vector3 rotateAngle = Vector3::zero;
-            if (x == 0) rotateAngle.y = 180.0f;
-            else if (x == stageSize_x - 1) rotateAngle.y = 0.0f;
-            else if (z == 0) rotateAngle.y = 90.0f;
-            else if (z == stageSize_z - 1) rotateAngle.y = 270.0f;
-            else continue;
+    {
+        auto obj = CreateGameObject();
+		auto transform = obj->GetTransform();
+		transform->SetPosition(-16.8f, -1.0f, 1.3f);
+		transform->SetEulerAngle(0.0f, 270.0f, 0.0f);
+        auto renderer = obj->AddComponent<MeshRenderer>();
+		renderer->LoadModel("Assets/Model/Stage/fbx/Conveyor_frame.fbx");
+    }
 
-            if (x % 2 == 0 && z % 2 == 0) continue;
+    {
+		auto obj = CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetPosition(-16.8f, -1.0f, 1.3f);
+        transform->SetEulerAngle(0.0f, 270.0f, 0.0f);
+		auto renderer = obj->AddComponent<MeshRenderer>();
+		renderer->LoadModel("Assets/Model/Stage/fbx/Conveyors.fbx");
+    }
 
-            Vector3 pos(x - stageSize_x * 0.5f + 0.5f, 0.0f, z - stageSize_z * 0.5f + 0.5f);
-            pos *= blockScale;
+    {
+        auto obj = CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetPosition(-16.8f, -1.0f, 1.3f);
+        transform->SetEulerAngle(0.0f, 270.0f, 0.0f);
+        auto renderer = obj->AddComponent<MeshRenderer>();
+        renderer->LoadModel("Assets/Model/StageSet/fbx/outlet.fbx");
+    }
 
-            auto obj = CreateGameObject();
-            auto renderer = obj->AddComponent<MeshRenderer>();
-            renderer->LoadModel("Assets/Model/Stage/fbx/saku.fbx");
-            renderer->SetShouldDrawShadow(true);
-            obj->GetTransform()->SetPosition(pos + posOffset);
-            obj->GetTransform()->SetEulerAngle(rotateAngle);
-        }
+    {
+        auto obj = CreateGameObject();
+        auto renderer = obj->AddComponent<MeshRenderer>();
+		renderer->LoadModel("Assets/Model/StageSet/fbx/Floor.fbx");
+    }
+
+    {
+		auto obj = CreateGameObject();
+		auto renderer = obj->AddComponent<MeshRenderer>();
+		renderer->LoadModel("Assets/Model/StageSet/fbx/LeftWall.fbx");
+    }
+
+    {
+		auto obj = CreateGameObject();
+		auto renderer = obj->AddComponent<MeshRenderer>();
+		renderer->LoadModel("Assets/Model/StageSet/fbx/RightWall.fbx");
+    }
+
+    {
+		auto obj = CreateGameObject();
+		auto renderer = obj->AddComponent<MeshRenderer>();
+		renderer->LoadModel("Assets/Model/StageSet/fbx/MiddleWall.fbx");
+    }
+
+    {
+        auto obj = CreateGameObject();
+		auto renderer = obj->AddComponent<MeshRenderer>();
+		renderer->LoadModel("Assets/Model/StageSet/fbx/pin.fbx");
+    }
+
+    {
+		auto obj = CreateGameObject();
+		auto renderer = obj->AddComponent<MeshRenderer>();
+		renderer->LoadModel("Assets/Model/StageSet/fbx/sheet.fbx");
     }
 
     // è∞ìñÇΩÇËîªíË
