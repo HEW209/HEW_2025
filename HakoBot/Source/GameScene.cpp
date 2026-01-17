@@ -513,6 +513,12 @@ void GameScene::CreateStageSet() {
 		renderer->LoadModel("Assets/Model/StageSet/fbx/sheet.fbx");
     }
 
+    {
+        auto obj = CreateGameObject();
+        auto renderer = obj->AddComponent<MeshRenderer>();
+        renderer->LoadModel("Assets/Model/StageSet/fbx/Pillar.fbx");
+    }
+
     // °“–‚½‚è”»’è
     {
         auto obj = CreateGameObject();
