@@ -74,7 +74,7 @@ void GuideUITimeController2::Update()
 				m_time2++;
 			}
 
-			if (m_time2 / 60 > 4)
+			if (m_time2 > 110)
 			{
 				isActive = true;
 				GetTransform()->SetScale(0.2f, 0.2f, 0.0f);

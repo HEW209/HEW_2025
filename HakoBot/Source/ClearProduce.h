@@ -13,22 +13,17 @@ class ClearProduce : public Component
 {
 public:
 
-	enum State
-	{
-		MAE,
-		MIGI,
-		UE,
-		FINAL
-	};
-
 	ClearProduce();
 	void Start() override;
 	void Update() override;
 
 private:
 
-	State m_state;
 	bool m_isActive;
 	Camera* m_pCamera;
 	int m_count;
+
+	float m_startCameraDistance;
+	float m_midCameraDistance;
+	float m_endCameraDistance;
 };

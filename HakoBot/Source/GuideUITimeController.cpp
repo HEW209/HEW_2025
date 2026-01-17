@@ -102,7 +102,7 @@ void GuideUITimeController::Update()
 		m_time++;
 	}
 
-	if (m_time / 60 > 4)
+	if (m_time > 110)
 	{
 		m_b = false;
 		for (int x = 0; x < 6; ++x)
