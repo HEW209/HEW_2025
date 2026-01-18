@@ -3,8 +3,6 @@
 #include <DXGameFrame.h>
 #include <Vector>
 #include "Easing.h"
-#include "GuideUIController.h"
-
 
 
 class GuideUITimeController : public Component

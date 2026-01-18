@@ -54,7 +54,7 @@ void MeshRenderer::DrawShadow()
 	for (auto itShadowMat = shadowMaterials.begin(); itShadowMat != shadowMaterials.end(); ++itShadowMat) {
 		itShadowMat->SetBlendState(BlendState::DISABLE);
 		itShadowMat->SetRasterizerState(RasterizerState::SHADOW);
-		itShadowMat->ClearPixelShader();
+		//itShadowMat->ClearPixelShader();
 	}
 
 	// ƒ‚ƒfƒ‹•`‰æˆ—
@@ -76,7 +76,7 @@ void MeshRenderer::DrawDepth()
 	for (auto itDepthMat = depthMaterials.begin(); itDepthMat != depthMaterials.end(); ++itDepthMat) {
 		itDepthMat->SetBlendState(BlendState::DISABLE);
 		itDepthMat->SetDepthStencilState(DepthStencilState::DEFAULT);
-		itDepthMat->ClearPixelShader();
+		//itDepthMat->ClearPixelShader();
 	}
 
 	// ƒ‚ƒfƒ‹•`‰æˆ—

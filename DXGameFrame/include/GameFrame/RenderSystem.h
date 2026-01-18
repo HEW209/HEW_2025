@@ -12,6 +12,7 @@
 #include <vector>
 #include <Component/Renderer.h>
 #include <Component/Renderer2D.h>
+#include <Component/EffectRenderer.h>
 #include <Utility/Color.h>
 
  /**
@@ -62,6 +63,18 @@ public:
 	void UnregisterShadow(Renderer* pRenderer);
 
 	/**
+	 * @brief エフェクト描画コンポーネントを登録する
+	 * @param pRenderer 登録するエフェクト描画コンポーネント
+	 */
+	void RegisterEffect(EffectRenderer* pRenderer);
+
+	/**
+	 * @brief エフェクト描画コンポーネントの登録を削除する
+	 * @param pRenderer 登録削除するエフェクト描画コンポーネント
+	 */
+	void UnregisterEffect(EffectRenderer* pRenderer);
+
+	/**
 	 * @brief 画面クリア色を設定する
 	 * @param color 画面クリア色
 	 */
@@ -76,8 +89,11 @@ private:
 	/// 2D描画コンポーネントのリスト
 	std::vector<Renderer2D*> m_pRenderer2DComponents;
 
-	/// 3D描画コンポーネントのリスト
+	/// 3D影描画コンポーネントのリスト
 	std::vector<Renderer*> m_pShadowRendererComponents;
+
+	/// エフェクト描画コンポーネントのリスト
+	std::vector<EffectRenderer*> m_pEffectRendererComponents;
 
 	/// 画面クリア色
 	Color m_clearColor;
@@ -96,6 +112,11 @@ private:
 	 * @brief 全ての2D描画コンポーネントを描画する
 	 */
 	void DrawAll2D();
+
+	/**
+	 * @brief 全てのエフェクト描画コンポーネントを描画する
+	 */
+	void DrawAllEffect();
 
 	/**
 	 * @brief 全てのデバック機能の描画を行う
