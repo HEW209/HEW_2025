@@ -36,6 +36,24 @@ void ClearProduce::Start()
 	Camera::Config cameraConfig;
 	cameraConfig.fovAngle = 30.0f;
 	m_pCamera->SetConfig(cameraConfig);
+
+	{
+		auto effectObj = SceneManager::GetActiveScene()->CreateGameObject();
+		effectObj->GetTransform()->SetParent(obj);
+		effectObj->GetTransform()->SetPosition(4.0f, -3.0f, 3.0f);
+		effectObj->GetTransform()->SetEulerAngle(0.0f, 0.0f, 30.0f);
+		m_effectRenderers[0] = effectObj->AddComponent<EffectRenderer>();
+		m_effectRenderers[0]->Load("Assets/Effect/Cracker/Cracker.efkefc");
+	}
+
+	{
+		auto effectObj = SceneManager::GetActiveScene()->CreateGameObject();
+		effectObj->GetTransform()->SetParent(obj);
+		effectObj->GetTransform()->SetPosition(-4.0f, -3.0f, 3.0f);
+		effectObj->GetTransform()->SetEulerAngle(0.0f, 0.0f, -30.0f);
+		m_effectRenderers[1] = effectObj->AddComponent<EffectRenderer>();
+		m_effectRenderers[1]->Load("Assets/Effect/Cracker/Cracker.efkefc");
+	}
 }
 
 
@@ -82,5 +100,10 @@ void ClearProduce::Update()
 		m_pCamera->GetTransform()->SetPosition(cameraLocalPos, Space::LOCAL);
 
 		++m_count;
+	}
+	else if (m_count < 91) {
+		for (auto&& r : m_effectRenderers) {
+			r->Play();
+		}
 	}
 }

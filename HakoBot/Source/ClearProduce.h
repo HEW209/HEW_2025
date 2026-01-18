@@ -21,6 +21,7 @@ private:
 
 	bool m_isActive;
 	Camera* m_pCamera;
+	std::array<ObjPtr<EffectRenderer>, 2> m_effectRenderers;
 	int m_count;
 
 	float m_startCameraDistance;
