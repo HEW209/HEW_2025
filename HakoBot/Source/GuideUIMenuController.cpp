@@ -1,6 +1,5 @@
 //GuideUIMenuController.cpp
 #include "GuideUIMenuController.h"
-#include "GuideUIController.h"
 #include "Easing.h"
 #include "GridField.h"
 #include "GameState.h"

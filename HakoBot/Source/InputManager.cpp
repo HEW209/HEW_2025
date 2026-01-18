@@ -9,8 +9,6 @@ void InputManager::Init()
 	{
 		InputSystem& system = m_inputSystems[static_cast<size_t>(InputBindType::GAMEPLAY)];
 
-		system.CreateButtonAction("RotateBlockUp"_hash);
-		system.CreateButtonAction("RotateBlockDown"_hash);
 		system.CreateButtonAction("RotateBlockLeft"_hash);
 		system.CreateButtonAction("RotateBlockRight"_hash);
 		system.CreateButtonAction("PlaceAndRemove"_hash);
@@ -23,8 +21,6 @@ void InputManager::Init()
 		system.CreateAxisAction("Move"_hash);
 		system.CreateAxisAction("CameraMove"_hash);
 
-		system.BindKey("RotateBlockUp"_hash, KeyCode::UP);
-		system.BindKey("RotateBlockDown"_hash, KeyCode::DOWN);
 		system.BindKey("RotateBlockLeft"_hash, KeyCode::LEFT);
 		system.BindKey("RotateBlockRight"_hash, KeyCode::RIGHT);
 		system.BindKey("PlaceAndRemove"_hash, KeyCode::SPACE);
@@ -38,17 +34,15 @@ void InputManager::Init()
 		system.BindVectorKeys("Move"_hash, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
 		system.BindVectorKeys("CameraMove"_hash, KeyCode::I, KeyCode::K, KeyCode::MOUSE_LEFT, KeyCode::MOUSE_RIGHT);
 
-		system.BindPadButton("RotateBlockUp"_hash, PadCode::UP);
-		system.BindPadButton("RotateBlockDown"_hash, PadCode::DOWN);
 		system.BindPadButton("RotateBlockLeft"_hash, PadCode::LEFT_SHOULDER);
 		system.BindPadButton("RotateBlockRight"_hash, PadCode::RIGHT_SHOULDER);
 		system.BindPadButton("PlaceAndRemove"_hash, PadCode::B);
-		system.BindPadButton("Up"_hash, PadCode::RIGHT_TRIGGER);
-		system.BindPadButton("Down"_hash, PadCode::LEFT_TRIGGER);
+		system.BindPadButton("Up"_hash, PadCode::UP);
+		system.BindPadButton("Down"_hash, PadCode::DOWN);
 		system.BindPadButton("Clear"_hash, PadCode::X);
 		system.BindPadButton("Menu"_hash, PadCode::START);
-		system.BindPadButton("LockRotation"_hash, PadCode::Y);
-		system.BindPadButton("ChangeBlockTransparency"_hash, PadCode::A);
+		system.BindPadButton("LockRotation"_hash, PadCode::RIGHT_TRIGGER);
+		system.BindPadButton("ChangeBlockTransparency"_hash, PadCode::LEFT_TRIGGER);
 		system.BindPadStick("Move"_hash, StickCode::LEFT);
 		system.BindPadStick("CameraMove"_hash, StickCode::RIGHT);
 	}

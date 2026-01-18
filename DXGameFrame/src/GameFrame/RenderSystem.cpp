@@ -11,6 +11,7 @@
 #include <../imgui/ImguiManager.h>
 #include <algorithm>
 #include <GameFrame/EffectManager.h>
+#include <DirectX/ShaderManager.h>
 
 void CalcLightMatrices(
 	DirectX::XMVECTOR lightDir,          // ライト方向
@@ -57,6 +58,7 @@ void RenderSystem::DrawAll()
 
 	DrawALL2DBackGround();
 	DrawAll3D();
+	DrawAllEffect();
 	DrawAll2D();
 	DrawDebugUI();
 
@@ -101,6 +103,19 @@ void RenderSystem::UnregisterShadow(Renderer* pRenderer)
 	// 削除対象コンポーネントを検索して削除する
 	auto it = std::remove(m_pShadowRendererComponents.begin(), m_pShadowRendererComponents.end(), pRenderer);
 	m_pShadowRendererComponents.erase(it, m_pShadowRendererComponents.end());
+}
+
+void RenderSystem::RegisterEffect(EffectRenderer* pRenderer)
+{
+	// コンポーネントを追加
+	m_pEffectRendererComponents.emplace_back(pRenderer);
+}
+
+void RenderSystem::UnregisterEffect(EffectRenderer* pRenderer)
+{
+	// 削除対象コンポーネントを検索して削除する
+	auto it = std::remove(m_pEffectRendererComponents.begin(), m_pEffectRendererComponents.end(), pRenderer);
+	m_pEffectRendererComponents.erase(it, m_pEffectRendererComponents.end());
 }
 
 void RenderSystem::SetClearColor(Color color)
@@ -210,7 +225,6 @@ void RenderSystem::DrawAll3D()
 
 	// フレーム定数バッファを更新
 	ConstantBufferManager::Instance().UpdateFrameConstantBuffer();
-	EffectManager::Instance().BeginDraw();
 
 	// パイプラインステートをリセット
 	PipelineStateManager::Instance().Refresh();
@@ -286,7 +300,6 @@ void RenderSystem::DrawAll3D()
 	{
 		rendererInfo.pRenderer->Draw();
 	}
-	EffectManager::Instance().EndDraw();
 }
 
 void RenderSystem::DrawAll2D()
@@ -350,10 +363,36 @@ void RenderSystem::DrawAll2D()
 	}
 }
 
+void RenderSystem::DrawAllEffect()
+{
+	EffectManager::Instance().BeginDraw();
+
+	// エフェクト描画処理
+	for (auto* renderer : m_pEffectRendererComponents)
+	{
+		if (renderer->IsEnabled() &&
+			renderer->IsStarted() &&
+			renderer->GetGameObject()->IsActiveHierarchy())
+		{
+			renderer->Draw();
+		}
+	}
+
+	EffectManager::Instance().EndDraw();
+
+	// キャッシュリセット
+	ShaderManager::Instance().Refresh();
+	PipelineStateManager::Instance().Refresh();
+}
+
 void RenderSystem::DrawDebugUI()
 {
 	// ImGuiの描画
 	ImGuiManager::Instance().Draw();
+
+	// キャッシュリセット
+	ShaderManager::Instance().Refresh();
+	PipelineStateManager::Instance().Refresh();
 }
 
 RenderSystem& RenderSystem::Instance()

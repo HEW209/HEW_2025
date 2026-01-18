@@ -30,9 +30,7 @@ void GameState::Start()
 
 void GameState::Update()
 {
-	if (InputManager::CurrentInputSystem().GetButtonDown("ChangeBlockTransparency"_hash)) {
-		m_isBlockTransparent = !m_isBlockTransparent;
-	}
+	m_isBlockTransparent = InputManager::CurrentInputSystem().GetButtonHold("ChangeBlockTransparency"_hash);
 
 #ifdef _DEBUG
 	float deltaTime = Time::GetDeltaTime();

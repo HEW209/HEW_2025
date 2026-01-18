@@ -12,14 +12,12 @@
 */
 Effekseer::Matrix43 ConvertXMMatrixToEffekseerMatrix43(const DirectX::XMMATRIX& dxMatrix);
 Effekseer::Matrix44 ConvertXMMatrixToEffekseerMatrix44(const DirectX::XMMATRIX& dxMatrix);
-class EffectRenderer :public Renderer
+class EffectRenderer : public Component
 {
 public:
-	EffectRenderer() = default;
+	EffectRenderer();
 	~EffectRenderer();
-	void Draw() override;
-	void DrawShadow() override;
-	void DrawDepth() override;
+	void Draw();
 	void Load(const std::string& fileName);
 	void Play();
 	void Stop();
