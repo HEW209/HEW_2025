@@ -165,6 +165,9 @@
     <ClCompile Include="Source\InputUI.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Source\LifeTime.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Config.h">
@@ -336,6 +339,9 @@
       <Filter>ヘッダー ファイル\Component</Filter>
     </ClInclude>
     <ClInclude Include="Source\InputUI.h">
+      <Filter>ヘッダー ファイル\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LifeTime.h">
       <Filter>ヘッダー ファイル\Component</Filter>
     </ClInclude>
   </ItemGroup>

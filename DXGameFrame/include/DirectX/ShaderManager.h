@@ -64,6 +64,13 @@ public:
 	 */
 	void Clear();
 
+	void Refresh()
+	{
+		m_pCurrentGS = nullptr;
+		m_pCurrentVS = nullptr;
+		m_pCurrentPS = nullptr;
+	}
+
 private:
 	ShaderManager();
 

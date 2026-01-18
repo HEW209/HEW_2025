@@ -3,12 +3,18 @@
 #include <Component/Camera.h>
 #include <string>
 #include <Windows.h>
+#include <GameFrame/RenderSystem.h>
 
 
 
+EffectRenderer::EffectRenderer()
+{
+    RenderSystem::Instance().RegisterEffect(this);
+}
 
 EffectRenderer::~EffectRenderer()
 {
+    RenderSystem::Instance().UnregisterEffect(this);
     Stop();
 }
 
@@ -28,14 +34,6 @@ void EffectRenderer::Draw()
     drawParameter.ViewProjectionMatrix = renderer->GetCameraProjectionMatrix();
     manager->Draw(drawParameter);
 
-}
-
-void EffectRenderer::DrawShadow()
-{
-}
-
-void EffectRenderer::DrawDepth()
-{
 }
 
 void EffectRenderer::Load(const std::string& fileName)

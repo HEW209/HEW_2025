@@ -77,6 +77,8 @@ public:
 
 	bool IsTransparent() const { return m_isTransparent; }
 
+	void CreatePlaceEffect();
+
 private:
 	BlockSetData m_blockSet;
 	std::vector<ObjPtr<GameObject>> m_pBlocks;

@@ -60,6 +60,11 @@ public:
 
 	// クリア判定の形状を登録する関数
 	void SetClearShape(ShapeType shapeX , ShapeType shapeY , ShapeType shapeZ);
+	
+	ShapeType GetClearShape(int index)
+	{
+		return m_clearShape[index];
+	}
 
 	// クリア判定
 	bool IsClear();
@@ -67,13 +72,11 @@ public:
 	//グリッド内判定
 	bool IsInside(const Vector3& position);
 
-	// ブロックの透明化設定取得
-	bool IsBlockTransparent() const { return m_isBlockTransparent; }
+	Vec3Int CalcGridCoord(const Vector3& position);
 
 private:
 	bool IsInside(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation);
 	bool CanPlace(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation);
-	Vec3Int CalcGridCoord(const Vector3& position);
 	Vector3 SnapGrid(const Vector3& position);
 	Vector3 GetGridOrigin();
 	bool IsOverlapBlockImpl(const Vec3& pos, const Vec3& start, const Vec3& end);
@@ -85,6 +88,5 @@ private:
 	ObjPtr<PlaceCursor> m_pPlaceCursorComponent;
 	uint8_t m_removeCursorBlockId;
 	ShapeType m_clearShape[3];
-	bool m_isBlockTransparent;
 	ObjPtr<ShapeScreen> m_pShapeScreen[5];
 };

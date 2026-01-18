@@ -9,7 +9,6 @@
 
 GridField::GridField()
 	: m_removeCursorBlockId(0u)
-	, m_isBlockTransparent(false)
 {
 
 }
@@ -180,7 +179,6 @@ bool GridField::PlaceBlock()
 	component->SetUseCollider(true);
 	component->SetBlockSet(blockSet);
 	component->SetModel(modelPath);
-	component->SetTransparent(m_isBlockTransparent);
 	auto transform = obj->GetTransform();
 	transform->SetPosition(pos);
 	transform->SetQuaternion(rot);
@@ -202,6 +200,8 @@ bool GridField::PlaceBlock()
 	m_pShapeScreen[2]->SetCurrentShape(m_gridData.GetShape(1));
 	m_pShapeScreen[3]->SetCurrentShape(m_gridData.GetShape(2));
 	m_pShapeScreen[4]->SetCurrentShape(m_gridData.GetShape(2));
+
+	component->CreatePlaceEffect();
 
 	return true;
 }

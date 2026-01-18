@@ -177,6 +177,7 @@
     <ClCompile Include="Source\InputManager.cpp" />
     <ClCompile Include="Source\InputUI.cpp" />
     <ClCompile Include="Source\LevelSerializer.cpp" />
+    <ClCompile Include="Source\LifeTime.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\OutlineMeshRenderer.cpp" />
     <ClCompile Include="Source\PlaceCursor.cpp" />
@@ -231,6 +232,7 @@
     <ClInclude Include="Source\InputManager.h" />
     <ClInclude Include="Source\InputUI.h" />
     <ClInclude Include="Source\LevelSerializer.h" />
+    <ClInclude Include="Source\LifeTime.h" />
     <ClInclude Include="Source\OutlineMeshRenderer.h" />
     <ClInclude Include="Source\PlaceCursor.h" />
     <ClInclude Include="Source\Player.h" />
