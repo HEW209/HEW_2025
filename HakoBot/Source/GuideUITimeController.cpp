@@ -88,11 +88,7 @@ void GuideUITimeController::Update()
 
 	}
 
-	
-
-	GridField* gridfield = GameState::GetInstance()->GetGridField();
-
-	if (gridfield->IsClear() && InputManager::CurrentInputSystem().GetButtonDown("Clear"_hash))
+	if (GameState::GetInstance()->IsClear() && InputManager::CurrentInputSystem().GetButtonDown("Clear"_hash))
 	{
 		m_b2 = true;
 	}

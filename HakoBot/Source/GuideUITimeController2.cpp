@@ -60,10 +60,8 @@ void GuideUITimeController2::Update()
 	{
 		if (!isActive)
 		{
-			GridField* gridfield = GameState::GetInstance()->GetGridField();
-
 			//if(Input::GetKeyDown(KeyCode::ENTER))
-			if (gridfield->IsClear() && InputManager::CurrentInputSystem().GetButtonDown("Clear"_hash))
+			if (GameState::GetInstance()->IsClear() && InputManager::CurrentInputSystem().GetButtonDown("Clear"_hash))
 			{
 				m_b3 = true;
 

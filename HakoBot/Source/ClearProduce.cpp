@@ -40,8 +40,8 @@ void ClearProduce::Start()
 	{
 		auto effectObj = SceneManager::GetActiveScene()->CreateGameObject();
 		effectObj->GetTransform()->SetParent(obj);
-		effectObj->GetTransform()->SetPosition(4.0f, -3.0f, 3.0f);
-		effectObj->GetTransform()->SetEulerAngle(0.0f, 0.0f, 30.0f);
+		effectObj->GetTransform()->SetPosition(8.0f, -17.0f, 10.0f);
+		effectObj->GetTransform()->SetEulerAngle(0.0f, 0.0f, 25.0f);
 		m_effectRenderers[0] = effectObj->AddComponent<EffectRenderer>();
 		m_effectRenderers[0]->Load("Assets/Effect/Cracker/Cracker.efkefc");
 	}
@@ -49,8 +49,8 @@ void ClearProduce::Start()
 	{
 		auto effectObj = SceneManager::GetActiveScene()->CreateGameObject();
 		effectObj->GetTransform()->SetParent(obj);
-		effectObj->GetTransform()->SetPosition(-4.0f, -3.0f, 3.0f);
-		effectObj->GetTransform()->SetEulerAngle(0.0f, 0.0f, -30.0f);
+		effectObj->GetTransform()->SetPosition(-8.0f, -17.0f, 10.0f);
+		effectObj->GetTransform()->SetEulerAngle(0.0f, 0.0f, -25.0f);
 		m_effectRenderers[1] = effectObj->AddComponent<EffectRenderer>();
 		m_effectRenderers[1]->Load("Assets/Effect/Cracker/Cracker.efkefc");
 	}
@@ -63,7 +63,7 @@ void ClearProduce::Update()
 	GridField* gridField = GameState::GetInstance()->GetGridField();
 	if (!m_isActive)
 	{
-		if (gridField->IsClear() && InputManager::CurrentInputSystem().GetButtonDown("Clear"_hash))
+		if (GameState::GetInstance()->IsClear() && InputManager::CurrentInputSystem().GetButtonDown("Clear"_hash))
 		{
 			m_pCamera->SetMain();
 			m_isActive = true;
@@ -93,17 +93,18 @@ void ClearProduce::Update()
 	}
 	else if (m_count < 90)
 	{
+		if (m_count == 60) {
+			for (auto&& r : m_effectRenderers) {
+				r->Play();
+			}
+		}
+
 		float t = static_cast<float>(m_count - 60.0f) / 30.0f;
-		float e = Easing::OutCubic(t, 1.0f);
+		float e = Easing::OutQuart(t, 1.0f);
 		float distance = Math::Lerp(m_midCameraDistance, m_endCameraDistance, e);
 		Vector3 cameraLocalPos = Quaternion::Euler(CAMERA_ANGLE_X, 0.0f, 0.0f) * Vector3 { 0.0f, 0.0f, -distance } + Vector3{ 0.0f, gridField->GetSize().y * 0.5f, 0.0f };
 		m_pCamera->GetTransform()->SetPosition(cameraLocalPos, Space::LOCAL);
 
 		++m_count;
-	}
-	else if (m_count < 91) {
-		for (auto&& r : m_effectRenderers) {
-			r->Play();
-		}
 	}
 }

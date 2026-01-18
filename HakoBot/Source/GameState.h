@@ -41,6 +41,8 @@ public:
 	}
 	bool IsBlockTransparent();
 
+	bool IsClear();
+
 	static GameState* GetInstance() { return s_pInstance; }
 	static void SetCurrentStegaNo(int no) { s_currentStageNo = no; }
 	static int GetCurrentStegaNo() { return s_currentStageNo; };

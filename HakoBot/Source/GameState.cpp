@@ -81,3 +81,26 @@ bool GameState::IsBlockTransparent()
 	return m_isBlockTransparent;
 }
 
+bool GameState::IsClear()
+{
+	GridField* gridField = GetGridField();
+	if (!gridField)
+	{
+		return false;
+	}
+	
+	Player* player = GetPlayer();
+	if (!player)
+	{
+		return false;
+	}
+
+	bool isClear = gridField->IsClear();
+
+	isClear &= !player->GetBlockHandler()->HasBlock();
+
+	isClear &= m_pWorldBlocks.empty();
+
+	return isClear;
+}
+

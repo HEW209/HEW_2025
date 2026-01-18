@@ -16,7 +16,7 @@ void GuideUIController2::Update()
 {
 	GridField* gridfield = GameState::GetInstance()->GetGridField();
 
-	if (gridfield->IsClear())
+	if (GameState::GetInstance()->IsClear())
 	{
 		m_value += 0.1f;
 
