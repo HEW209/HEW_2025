@@ -143,6 +143,11 @@ void InputUI::Update()
 {
     SwitchButton();
     PushScaling();
+
+    if (GameState::GetInstance()->IsClearEnter())
+    {
+        GetGameObject()->SetActive(false);
+    }
 }
 
 void InputUI::SwitchButton()

@@ -13,11 +13,9 @@
 #include "GameStart.h"
 #include "ClearProduce.h"
 #include "ResultController.h"
-#include "DebugResult.h"
 
 #include "GuideUIController2.h"
 #include "GuideUITimeController.h"
-#include "GuideUITimeController2.h"
 #include "GuideUIMenuController.h"
 #include "InputUI.h"
 #include "Fade.h"
@@ -150,8 +148,6 @@ void GameScene::Init() {
 #ifdef _DEBUG
     auto obj = CreateGameObject();
     obj->AddComponent<ColliderDebug>();
-    //リザルトの表示用
-    CreateResultDebug();
 #endif
 }
 
@@ -514,11 +510,7 @@ void GameScene::CreateUIObject() {
     // 完成 
     {
         auto obj = CreateGameObject();
-        auto renderer = obj->AddComponent<SpriteRenderer>();
-        renderer->SetUI(true);
-        renderer->LoadTexture("Assets/Textures/kanbansei.png");
-        renderer->GetTransform()->SetPosition(4.3f, -4.6f, 0.0f);
-        renderer->SetSize(250.0f, 200.0f);
+        obj->GetTransform()->SetPosition(7.8f, -4.6f, 0.0f);
         obj->AddComponent<GuideUIController2>();
     }
 
@@ -534,24 +526,5 @@ void GameScene::CreateUIObject() {
         obj->GetTransform()->SetPosition(4.1f, 3.2f, 0.0f);
         obj->AddComponent<GuideUITimeController>();
     }
-
-    // リザルト
-    {
-        auto obj = CreateGameObject();
-        auto renderer = obj->AddComponent<SpriteRenderer>();
-        renderer->SetUI(true);
-        renderer->LoadTexture("Assets/Textures/result!.png");
-        renderer->GetTransform()->SetPosition(0.0f, 1.5f, 0.0f);
-        obj->GetTransform()->SetScale(0.0f, 0.0f, 0.0f);
-        obj->AddComponent<GuideUITimeController2>();
-    }
-}
-
-
-
-void GameScene::CreateResultDebug()
-{
-    auto obj = CreateGameObject();
-    obj->AddComponent<DebugResult>();
 }
 

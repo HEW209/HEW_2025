@@ -14,6 +14,7 @@ public:
 	void Start() override;
 	void Update() override;
 private:
+	ObjPtr<SpriteRenderer> m_screenFade;
 	ObjPtr<SpriteRenderer> m_kuroDown;
 	ObjPtr<SpriteRenderer> m_kuroUp;
 	ObjPtr<SpriteRenderer> m_result;

@@ -11,10 +11,10 @@
 
 //黒
 constexpr float KURO_SIZE = 1350.0f;
-constexpr float KURO_POS_X_END = -9.0f;
-constexpr float KURO_POS_Y_END = 0.071f;
-constexpr float KURO_POS_X_START = 3.65f;
-constexpr float KURO_POS_Y_START = 4.1f;
+constexpr float KURO_POS_X_END = 0.0f;
+constexpr float KURO_POS_Y_END = 3.9f;
+constexpr float KURO_POS_X_START = 0.0f;
+constexpr float KURO_POS_Y_START = 7.0f;
 
 ////リザルト　右バージョン
 //constexpr float RESULT_SIZE = 500.0f;
@@ -56,7 +56,7 @@ constexpr float ILLUST_SIZE = 900.0f;
 constexpr float ILLUST_POS_X_END = -3.7f;
 constexpr float ILLUST_POS_Y_END = -1.1f;
 constexpr float ILLUST_POS_X_START = -3.7f;
-constexpr float ILLUST_POS_Y_START = -5.4f;
+constexpr float ILLUST_POS_Y_START = -5.2f;
 
 
 ResultController::ResultController():
@@ -67,6 +67,12 @@ ResultController::ResultController():
 
 void ResultController::Start()
 {
+	//フェード
+	auto fade = GetGameObject()->AddComponent<SpriteRenderer>();
+	fade->SetUI(true);
+	fade->SetSize(1280, 720);
+	fade->SetColor(0.0f, 0.0f, 0.0f, 0.5f);
+	m_screenFade = fade;
 
 	//リザルトイラスト
 	auto illust = GetGameObject()->AddComponent<SpriteRenderer>();
@@ -171,15 +177,15 @@ void ResultController::MoveUpdate()
 
 	//リザルトイラストの移動
 	m_illust->SetOffsetPos(Easing::InSine(m_resultTime, 10.0f, ILLUST_POS_X_END, ILLUST_POS_X_START),
-		Easing::InSine(m_resultTime, 5.0f, ILLUST_POS_Y_END, ILLUST_POS_Y_START));
+		Easing::OutBack(m_resultTime, 5.0f, 1.7f, ILLUST_POS_Y_END, ILLUST_POS_Y_START));
 
 	//黒下の移動
 	m_kuroDown->SetOffsetPos(Easing::InSine(m_resultTime, 10.0f, -KURO_POS_X_END, -KURO_POS_X_START),
-		Easing::InSine(m_resultTime, 5.0f, -KURO_POS_Y_END, -KURO_POS_Y_START));
+		Easing::OutBack(m_resultTime, 5.0f, 1.7f, -KURO_POS_Y_END, -KURO_POS_Y_START));
 
 	//黒上の移動
 	m_kuroUp->SetOffsetPos(Easing::InSine(m_resultTime, 10.0f, KURO_POS_X_END, KURO_POS_X_START),
-		Easing::InSine(m_resultTime, 5.0f, KURO_POS_Y_END, KURO_POS_Y_START));
+		Easing::OutBack(m_resultTime, 5.0f, 1.7f, KURO_POS_Y_END, KURO_POS_Y_START));
 
 	//リザルトの移動
 	m_result->SetOffsetPos(Easing::InSine(m_resultTime, 10.0f, RESULT_POS_X_END, RESULT_POS_X_START),
@@ -237,11 +243,11 @@ void ResultController::SelectUpdate()
 	{
 		if (m_currentSelect == i)
 		{
-			m_selectText[i]->LoadTexture(activeText[i]);
+			m_selectText[i]->LoadTexture(activeText[i], false);
 		}
 		else
 		{
-			m_selectText[i]->LoadTexture(defaultText[i]);
+			m_selectText[i]->LoadTexture(defaultText[i], false);
 		}
 	}
 

@@ -7,12 +7,13 @@
 class GuideUIController2 : public Component
 {
 public:
+	GuideUIController2();
 
 	void Start() override;
 	void Update() override;
+
 private:
-	float m_value;
-	Vector3 m_defaultPosition;
-	Vector3 m_defaultScale;
+	SpriteRenderer* m_renderer;
+	float m_easeTime;
 };
 

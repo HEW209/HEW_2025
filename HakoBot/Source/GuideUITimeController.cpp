@@ -78,35 +78,15 @@ void GuideUITimeController::Start()
 void GuideUITimeController::Update()
 {
 	if (m_b == true)
-	{
-	
-		
+	{	
 			m_totalTime++;
 			SetTimer();
 			SetDigitUV();
-		
-
 	}
 
-	if (GameState::GetInstance()->IsClear() && InputManager::CurrentInputSystem().GetButtonDown("Clear"_hash))
+	if (GameState::GetInstance()->IsClearEnter())
 	{
-		m_b2 = true;
-	}
-
-	if (m_b2)
-	{
-		m_time++;
-	}
-
-	if (m_time > 110)
-	{
-		m_b = false;
-		for (int x = 0; x < 6; ++x)
-		{
-			// y -0.15f‚Å‚µ‚½
-			sprite[x]->GetTransform()->SetPosition(-1.5f + x * 0.1f, 1.75f, 0.0f);
-			sprite[x]->GetTransform()->SetScale(1.5f, 1.5f, 0.0f);
-		}
+		GetGameObject()->SetActive(false);
 	}
 }
 

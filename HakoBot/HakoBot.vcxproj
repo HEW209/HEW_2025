@@ -163,7 +163,6 @@
     <ClCompile Include="Source\ClearProduce.cpp" />
     <ClCompile Include="DebugEffectScene.cpp" />
     <ClCompile Include="Source\ColliderDebug.cpp" />
-    <ClCompile Include="Source\DebugResult.cpp" />
     <ClCompile Include="Source\Fade.cpp" />
     <ClCompile Include="Source\GameScene.cpp" />
     <ClCompile Include="Source\GameStart.cpp" />
@@ -174,7 +173,6 @@
     <ClCompile Include="Source\InputSystem.cpp" />
     <ClCompile Include="Source\GuideUIController2.cpp" />
     <ClCompile Include="Source\GuideUITimeController.cpp" />
-    <ClCompile Include="Source\GuideUITimeController2.cpp" />
     <ClCompile Include="Source\InputManager.cpp" />
     <ClCompile Include="Source\InputUI.cpp" />
     <ClCompile Include="Source\LevelSerializer.cpp" />
@@ -217,7 +215,6 @@
     <ClInclude Include="DebugEffectScene.h" />
     <ClInclude Include="source\ColliderDebug.h" />
     <ClInclude Include="Source\Config.h" />
-    <ClInclude Include="Source\DebugResult.h" />
     <ClInclude Include="Source\DynamicDimensionalArray.h" />
     <ClInclude Include="Source\Easing.h" />
     <ClInclude Include="Source\EditorTypes.h" />
@@ -274,7 +271,6 @@
     </FxCompile>
     <ClInclude Include="Source\GuideUIController2.h" />
     <ClInclude Include="Source\GuideUITimeController.h" />
-    <ClInclude Include="Source\GuideUITimeController2.h" />
     <FxCompile Include="Source\HLSL\IrisOut_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>

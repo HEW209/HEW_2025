@@ -16,8 +16,6 @@ private:
     void CreateStageSet();
     void CreateUIObject();
 
-    void CreateResultDebug();
-
     std::string m_levelName;
     LevelData m_levelData;
 };

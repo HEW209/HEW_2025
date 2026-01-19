@@ -3,10 +3,11 @@
 #include "GameState.h"
 #include "InputManager.h"
 #include "Easing.h"
+#include "ResultController.h"
 
 static const float CAMERA_ANGLE_X = 20.0f;
 static float START_CAMERA_DISTANCE = 3.2f;
-static float MID_CAMERA_DISTANCE = 1.7f;
+static float MID_CAMERA_DISTANCE = 2.0f;
 static float END_CAMERA_DISTANCE = 2.7f;
 constexpr float START_CAMERA_ANGLE_Y = 270.0f;
 constexpr float MID_CAMERA_ANGLE_Y = -45.0f;
@@ -31,7 +32,7 @@ void ClearProduce::Start()
 
 	auto obj = SceneManager::GetActiveScene()->CreateGameObject();
 	obj->GetTransform()->SetParent(GetTransform());
-	obj->GetTransform()->SetEulerAngle(CAMERA_ANGLE_X, 5.0f, 0.0f, Space::LOCAL);
+	obj->GetTransform()->SetEulerAngle(CAMERA_ANGLE_X, -3.0f, 0.0f, Space::LOCAL);
 	m_pCamera = obj->AddComponent<Camera>();
 	Camera::Config cameraConfig;
 	cameraConfig.fovAngle = 30.0f;
@@ -63,7 +64,7 @@ void ClearProduce::Update()
 	GridField* gridField = GameState::GetInstance()->GetGridField();
 	if (!m_isActive)
 	{
-		if (GameState::GetInstance()->IsClear() && InputManager::CurrentInputSystem().GetButtonDown("Clear"_hash))
+		if (GameState::GetInstance()->IsClearEnter())
 		{
 			m_pCamera->SetMain();
 			m_isActive = true;
@@ -79,6 +80,7 @@ void ClearProduce::Update()
 	float cameraDistance = 0.0f;
 	float cameraAngleY = 0.0f;
 
+	++m_count;
 	if (m_count < 60)
 	{
 		float t = static_cast<float>(m_count) / 60.0f;
@@ -88,8 +90,6 @@ void ClearProduce::Update()
 		Vector3 cameraLocalPos = Quaternion::Euler(CAMERA_ANGLE_X, 0.0f, 0.0f) * Vector3 { 0.0f, 0.0f, -distance } + Vector3{ 0.0f, gridField->GetSize().y * 0.5f, 0.0f };
 		m_pCamera->GetTransform()->SetPosition(cameraLocalPos, Space::LOCAL);
 		GetTransform()->SetEulerAngle(0.0f, angleY, 0.0f);
-
-		++m_count;
 	}
 	else if (m_count < 90)
 	{
@@ -104,7 +104,12 @@ void ClearProduce::Update()
 		float distance = Math::Lerp(m_midCameraDistance, m_endCameraDistance, e);
 		Vector3 cameraLocalPos = Quaternion::Euler(CAMERA_ANGLE_X, 0.0f, 0.0f) * Vector3 { 0.0f, 0.0f, -distance } + Vector3{ 0.0f, gridField->GetSize().y * 0.5f, 0.0f };
 		m_pCamera->GetTransform()->SetPosition(cameraLocalPos, Space::LOCAL);
+	}
 
+	if (m_count == 120)
+	{
+		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
+		obj->AddComponent<ResultController>();
 		++m_count;
 	}
 }
