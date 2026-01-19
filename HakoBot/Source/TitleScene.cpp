@@ -7,14 +7,20 @@
 #include "InputManager.h"
 #include "TitlePlayer.h"
 #include "Fade.h"
+#include "GameState.h"
+
+bool TitleScene::s_isFirst = true;
 
 void TitleScene::Init()
 {
     InputManager::ChangeBindType(InputBindType::UI);
     SoundManager::StopAll();
     SoundManager::Load();
+    SoundManager::PlayBGM("Title", 0.2f, true);
     RenderSystem::Instance().SetClearColor(Color(1.0f, 0.7f, 0.2f, 1.0f));
     
+    GameState::SetCurrentStegaNo(0);
+
     // ÉJÉÅÉâ
     {
         auto cameraRoot = CreateGameObject();
@@ -42,6 +48,14 @@ void TitleScene::Init()
     {
         auto obj = CreateGameObject();
         auto fade = obj->AddComponent<Fade>();
+        if (!s_isFirst)
+        {
+            s_isFirst = false;
+        }
+        else
+        {
+            Fade::StartIrisIn();
+        }
     }
 
     // ínå`

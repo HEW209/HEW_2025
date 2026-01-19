@@ -5,9 +5,11 @@
 #include "SaveData.h"
 #include "Fade.h"
 #include "GameState.h"
+#include "TitleScene.h"
+#include "StageSelectScene.h"
 
 #define STAGE_FILE "Assets/Stage/Level%d.json"
-#define FONT_SIZE (200.0f)
+#define FONT_SIZE (180.0f)
 
 static const int digitIndex[10] =
 {
@@ -31,29 +33,48 @@ StageNumber::StageNumber() :
 	m_keyHold(false),
 	m_holdTimer(0.0f),
 	m_repeatTimer(0.0f),
-	m_isSceneChange(false)
+	m_isSceneChange(false),
+	m_targetScene(TargetScene::GAME)
 {
 }
 
 void StageNumber::Start()
 {
-	float PosX = -5.2f;
-	float PosY = 1.0f;
-	float PosInterval = FONT_SIZE / 100.0f;	//文字間隔　＊　文字サイズによる間隔補正
+	float PosInterval = FONT_SIZE / 130.0f;	//文字間隔　＊　文字サイズによる間隔補正
 
-	for (int x = 0; x < 2; ++x)
+	float PosX = -5.2f;
+	float PosY = 1.3f;
+
+	m_line = GetGameObject()->AddComponent<SpriteRenderer>();
+	m_line->SetBackGround(true);
+	m_line->LoadTexture("Assets/Textures/StageSelect/StageNumberLine.png");
+	m_line->SetOffsetPos(-6.0f, 0.5f);
+	m_line->SetUVScale(1.0f, 1.0f);
+	m_line->SetUVOffsetPos(0.0f, 0.0f);
+	m_line->SetSize(1200, 70);
+	m_line->SetColor(1.0f, 1.0f, 1.0f, 0.2f);
+
+	for (int x = 0; x < 3; ++x)
 	{
 		m_NumberSprite[x] = GetGameObject()->AddComponent<SpriteRenderer>();
-		m_NumberSprite[x]->SetUI(true);
-		m_NumberSprite[x]->LoadTexture("Assets/Textures/Texts/Number.png");
+		m_NumberSprite[x]->SetBackGround(true);
+		m_NumberSprite[x]->LoadTexture("Assets/Textures/StageSelect/StageNumber.png");
 		m_NumberSprite[x]->SetOffsetPos(PosX, PosY);
 		PosX += PosInterval;
 
-		m_NumberSprite[x]->SetUVScale(1.0f / 6.0f, 1.0f / 2.0f);
+		m_NumberSprite[x]->SetUVScale(1.0f / 5.0f, 1.0f / 2.0f);
 		m_NumberSprite[x]->SetSize(FONT_SIZE, FONT_SIZE);
+		m_NumberSprite[x]->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 
-	m_selectIndex = SaveData::GetClearLevel() + 1;
+	if (GameState::GetCurrentStegaNo() == 0)
+	{
+		m_selectIndex = SaveData::GetClearLevel() + 1;
+	}
+	else
+	{
+		m_selectIndex = GameState::GetCurrentStegaNo();
+	}
 	if (m_selectIndex > StageCount)
 		m_selectIndex = StageCount;
 }
@@ -62,11 +83,21 @@ void StageNumber::Update()
 {
 	if (m_isSceneChange)
 	{
-		if (Fade::IsActive())
-			return;
+		if (!Fade::IsActive())
+		{
+			switch (m_targetScene)
+			{
+			case StageNumber::GAME:
+				GameState::SetCurrentStegaNo(m_selectIndex);
+				LoadGame();
+				return;
+				break;
 
-		GameState::SetCurrentStegaNo(m_selectIndex);
-		LoadGame();
+			case StageNumber::TITLE:
+				SceneManager::ChangeScene(std::make_unique<TitleScene>());
+				break;
+			}
+		}
 	}
 	else
 	{
@@ -77,9 +108,36 @@ void StageNumber::Update()
 			Input::GetButtonDown(PadCode::B))
 		{
 			m_isSceneChange = true;
+			m_targetScene = TargetScene::GAME;
+			Fade::StartIrisOut();
+		}
+		else if (Input::GetKeyDown(KeyCode::ESC) ||
+			Input::GetButtonDown(PadCode::BACK))
+		{
+			m_isSceneChange = true;
+			m_targetScene = TargetScene::TITLE;
 			Fade::StartIrisOut();
 		}
 	}
+
+#ifdef _DEBUG
+	float deltaTime = Time::GetDeltaTime();
+	int fps = 1.0f / deltaTime;
+
+	ImGui::Begin("StageSelect");
+	ImGui::Text("FPS : %3d", fps);
+
+	int clearLevel = SaveData::GetClearLevel();
+	ImGui::SliderInt("ClearLevel", &clearLevel, 0, StageCount);
+	SaveData::SetClearLevel(clearLevel);
+
+	if (ImGui::Button("Reload"))
+	{
+		SceneManager::ChangeScene(std::make_unique<StageSelectScene>());
+	}
+
+	ImGui::End();
+#endif // DEBUG
 
 #ifdef _DEBUG
 	if (Input::GetKeyDown(KeyCode::KEY_0)) {
@@ -114,20 +172,24 @@ void StageNumber::LoadGame()
 
 void StageNumber::SetDigitUV()
 {
-	int number[2];
-	number[0] = m_selectIndex / 10;
-	number[1] = m_selectIndex % 10;
+	int number[3];
+	int selectIndexTemp = m_selectIndex;
+	for (int i = 2; i >= 0; --i)
+	{
+		number[i] = selectIndexTemp % 10;
+		selectIndexTemp /= 10;
+	}
 
 	// 1マスのUVサイズ
-	const float uSize = 1.0f / 6.0f;
+	const float uSize = 1.0f / 5.0f;
 	const float vSize = 1.0f / 2.0f;
 
-	for (int x = 0; x < 2; ++x)
+	for (int x = 0; x < 3; ++x)
 	{
 		int index = number[x];
 
-		float u = (index % 6) * uSize;
-		float v = (index / 6) * vSize;
+		float u = (index % 5) * uSize;
+		float v = (index / 5) * vSize;
 
 		m_NumberSprite[x]->SetUVOffsetPos(u, v);
 	}

@@ -3,6 +3,7 @@
 #include "BlockObject.h"
 #include "GameState.h"
 #include <Component/Collider.h>
+#include "LifeTime.h"
 
 void BlockObject::Awake()
 {
@@ -18,11 +19,12 @@ void BlockObject::Awake()
 		material.SetBlendState(BlendState::DEFAULT);
 		material.SetDepthStencilState(DepthStencilState::DEFAULT);
 	}
+
 }
 
 void BlockObject::Update()
 {
-	if (GameState::GetInstance()->IsBlockTransparent() != m_isTransparent)
+	if (GameState::GetInstance() && GameState::GetInstance()->IsBlockTransparent() != m_isTransparent)
 	{
 		m_isTransparent = !m_isTransparent;
 		SetTransparent(m_isTransparent);
@@ -89,6 +91,9 @@ void BlockObject::SetModel(const std::string& modelPath)
 		m_pBlockMeshRenderer->LoadModel(modelPath);
 		m_pBlockMeshRenderer->SetEnabled(true);
 	}
+
+	m_isTransparent = GameState::GetInstance()->IsBlockTransparent();
+	SetTransparent(m_isTransparent);
 }
 
 void BlockObject::SetSelect(bool isSelected)
@@ -246,6 +251,57 @@ void BlockObject::SetTransparent(bool transparent)
 			material.SetPixelShader("Assets/Shader/Default_PS.cso");
 			material.SetBlendState(BlendState::DEFAULT);
 			material.SetDepthStencilState(DepthStencilState::DEFAULT);
+		}
+	}
+}
+
+void BlockObject::CreatePlaceEffect()
+{
+	GridField* gridField = GameState::GetInstance()->GetGridField();
+	ShapeType shapeX = gridField->GetClearShape(0);
+	ShapeType shapeY = gridField->GetClearShape(1);
+	ShapeType shapeZ = gridField->GetClearShape(2);
+
+	// 正解チェック
+	bool isSuccess = true;
+	for (auto block : m_pBlocks)
+	{
+		auto pos = gridField->CalcGridCoord(block->GetTransform()->GetPosition());
+
+		if (!shapeX(pos.y, pos.z))
+		{
+			isSuccess = false;
+			break;
+		}
+		if (!shapeY(pos.x, pos.z))
+		{
+			isSuccess = false;
+			break;
+		}
+		if (!shapeZ(pos.x, pos.y))
+		{
+			isSuccess = false;
+			break;
+		}
+	}
+	
+	for (auto block : m_pBlocks)
+	{
+		if (block)
+		{
+			auto obj = SceneManager::GetActiveScene()->CreateGameObject();
+			obj->GetTransform()->SetPosition(block->GetTransform()->GetPosition());
+			auto effect = obj->AddComponent<EffectRenderer>();
+			if (isSuccess)
+			{
+				effect->Load("Assets/Effect/BlockPlace/BlockPlace.efkefc");
+			}
+			else
+			{
+				effect->Load("Assets/Effect/BlockPlace/BlockPlaceRed.efkefc");
+			}
+			effect->Play();
+			obj->AddComponent<LifeTime>()->SetLifeTime(2.0f);
 		}
 	}
 }

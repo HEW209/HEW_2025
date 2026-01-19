@@ -179,28 +179,25 @@ void PlayerMove::Update()
 	material->SetParameter(&m_uvOffset, sizeof(m_uvOffset));
 
 	// 向きロック
-	if (InputManager::CurrentInputSystem().InputSystem::GetButtonDown("LockRotation"_hash))
+	m_IsDirLock = InputManager::CurrentInputSystem().InputSystem::GetButtonHold("LockRotation"_hash);
+
+	if (m_IsDirLock)	// ロック中
 	{
-		if (m_IsDirLock)	// ロック中
-		{
-			m_pHead->GetTransform()->SetQuaternion(Quaternion::identity,Space::LOCAL);
-			GetTransform()->SetQuaternion(m_HeadQuaternion);
-			m_IsDirLock = false;
-		}
-		else 
-		{
-			m_HeadQuaternion = GetTransform()->GetQuaternion();
-			m_IsDirLock = true;
-		}
+		m_pHead->GetTransform()->SetQuaternion(m_HeadQuaternion, Space::WORLD);
+	}
+	else
+	{
+		m_pHead->GetTransform()->SetQuaternion(Quaternion::identity, Space::LOCAL);
+		m_HeadQuaternion = GetTransform()->GetQuaternion();
 	}
 }
 
 void PlayerMove::LateUpdate()
 {
-	if (m_IsDirLock)	// ロック中
-	{
-		m_pHead->GetTransform()->SetQuaternion(m_HeadQuaternion, Space::WORLD);
-	}
+	//if (m_IsDirLock)	// ロック中
+	//{
+	//	m_pHead->GetTransform()->SetQuaternion(m_HeadQuaternion, Space::WORLD);
+	//}
 }
 
 void PlayerMove::SetCaterpillar(MeshRenderer* renderer)

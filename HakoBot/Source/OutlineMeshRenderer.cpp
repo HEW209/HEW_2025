@@ -29,7 +29,7 @@ void OutlineMeshRenderer::Draw()
 			itMeshMat->SetDepthStencilState(DepthStencilState::DISABLE_STENCIL);
 			itMeshMat->SetBlendState(BlendState::DISABLE);
 			itMeshMat->SetRasterizerState(RasterizerState::NONE);
-			itMeshMat->ClearPixelShader();
+			//itMeshMat->ClearPixelShader();
 			itOutlineMat->SetVertexShader("Assets/Shader/Outline_VS.cso");
 			itOutlineMat->SetPixelShader("Assets/Shader/Outline_PS.cso");
 			struct OutlineParams {

@@ -72,4 +72,12 @@ void Player::Awake()
 	renderer4->SetShouldDrawShadow(true);
 	caterpillar->GetTransform()->SetParent(pObj->GetTransform());
 	playerMove->SetCaterpillar(renderer4);
+	//{
+	//	auto effectObj = SceneManager::GetActiveScene()->CreateGameObject();
+	//	effectObj->GetTransform()->SetScale(100.0f, 100.0f, 100.0f);
+	//	effectObj->GetTransform()->SetParent(GetTransform());
+	//	auto effect = effectObj->AddComponent<EffectRenderer>();
+	//	effect->Load("Assets/Effect/dash.efkefc");
+	//	effect->Play();
+	//}
 }

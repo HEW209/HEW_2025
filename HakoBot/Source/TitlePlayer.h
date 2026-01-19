@@ -20,6 +20,7 @@ private:
 
 	MeshRenderer* m_caterpillar;
 	MeshRenderer* m_block;
+	ObjPtr<GameObject> m_pBlockHolder;
 	Vector2 m_uvOffset;
 	bool m_isStart;
 	std::vector<Block> m_blocks;

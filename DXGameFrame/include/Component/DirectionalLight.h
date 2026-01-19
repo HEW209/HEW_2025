@@ -55,6 +55,18 @@ public:
 	 */
 	void SetLightSize(float size);
 
+	/**
+	 * @brief 光源色を取得する
+	 * @return 光源色
+	 */
+	Color GetLightColor();
+
+	/**
+	 * @brief 光源色を取得する
+	 * @return 光源色
+	 */
+	Color GetAmbientColor();
+
 private:
 	/// 光源カラー
 	Color m_lightColor;

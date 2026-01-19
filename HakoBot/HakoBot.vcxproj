@@ -165,17 +165,18 @@
     <ClCompile Include="Source\ColliderDebug.cpp" />
     <ClCompile Include="Source\Fade.cpp" />
     <ClCompile Include="Source\GameScene.cpp" />
+    <ClCompile Include="Source\GameStart.cpp" />
     <ClCompile Include="Source\GameState.cpp" />
     <ClCompile Include="Source\GridBlockData.cpp" />
     <ClCompile Include="Source\GridField.cpp" />
     <ClCompile Include="Source\GuideUIMenuController.cpp" />
     <ClCompile Include="Source\InputSystem.cpp" />
-    <ClCompile Include="Source\GuideUIController.cpp" />
     <ClCompile Include="Source\GuideUIController2.cpp" />
     <ClCompile Include="Source\GuideUITimeController.cpp" />
-    <ClCompile Include="Source\GuideUITimeController2.cpp" />
     <ClCompile Include="Source\InputManager.cpp" />
+    <ClCompile Include="Source\InputUI.cpp" />
     <ClCompile Include="Source\LevelSerializer.cpp" />
+    <ClCompile Include="Source\LifeTime.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\OutlineMeshRenderer.cpp" />
     <ClCompile Include="Source\PlaceCursor.cpp" />
@@ -184,10 +185,12 @@
     <ClCompile Include="source\PlayerCamera.cpp" />
     <ClCompile Include="Source\PlayerMove.cpp" />
     <ClCompile Include="Source\PlayerStretch.cpp" />
+    <ClCompile Include="Source\ResultController.cpp" />
     <ClCompile Include="Source\SampleCamera.cpp" />
     <ClCompile Include="Source\SaveData.cpp" />
     <ClCompile Include="Source\ShapeScreen.cpp" />
     <ClCompile Include="Source\StageInfo.cpp" />
+    <ClCompile Include="Source\StageSet.cpp" />
     <ClCompile Include="Source\TitleExit.cpp" />
     <ClCompile Include="Source\TitleLogo.cpp" />
     <ClCompile Include="Source\TitlePlayer.cpp" />
@@ -218,6 +221,7 @@
     <ClInclude Include="Source\EditorTypes.h" />
     <ClInclude Include="Source\Fade.h" />
     <ClInclude Include="Source\GameScene.h" />
+    <ClInclude Include="Source\GameStart.h" />
     <ClInclude Include="Source\GameState.h" />
     <ClInclude Include="Source\GameTypes.h" />
     <ClInclude Include="Source\GridBlockData.h" />
@@ -227,7 +231,9 @@
     <ClInclude Include="Source\IDGenerator.h" />
     <ClInclude Include="Source\InputSystem.h" />
     <ClInclude Include="Source\InputManager.h" />
+    <ClInclude Include="Source\InputUI.h" />
     <ClInclude Include="Source\LevelSerializer.h" />
+    <ClInclude Include="Source\LifeTime.h" />
     <ClInclude Include="Source\OutlineMeshRenderer.h" />
     <ClInclude Include="Source\PlaceCursor.h" />
     <ClInclude Include="Source\Player.h" />
@@ -235,10 +241,12 @@
     <ClInclude Include="source\PlayerCamera.h" />
     <ClInclude Include="Source\PlayerMove.h" />
     <ClInclude Include="Source\PlayerStretch.h" />
+    <ClInclude Include="Source\ResultController.h" />
     <ClInclude Include="Source\SampleCamera.h" />
     <ClInclude Include="Source\SaveData.h" />
     <ClInclude Include="Source\ShapeScreen.h" />
     <ClInclude Include="Source\StageInfo.h" />
+    <ClInclude Include="Source\StageSet.h" />
     <ClInclude Include="Source\TitleExit.h" />
     <ClInclude Include="Source\TitleLogo.h" />
     <ClInclude Include="Source\TitlePlayer.h" />
@@ -257,16 +265,20 @@
     <None Include="Source\HLSL\Outline.hlsli" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Source\HLSL\Boundary_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
     <FxCompile Include="Source\HLSL\Hologram_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
-    <ClInclude Include="Source\GuideUIController.h" />
     <ClInclude Include="Source\GuideUIController2.h" />
     <ClInclude Include="Source\GuideUITimeController.h" />
-    <ClInclude Include="Source\GuideUITimeController2.h" />
     <FxCompile Include="Source\HLSL\IrisOut_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
@@ -302,6 +314,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="Source\HLSL\Screen_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Source\HLSL\Transparent_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>

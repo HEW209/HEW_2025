@@ -1,42 +1,50 @@
 #include "GuideUIController2.h"
 #include "Easing.h"
-#include "GameScene.h"
 #include "GameState.h"
 
+static const float g_easeDuration = 0.8f;
+
+GuideUIController2::GuideUIController2() :
+	m_renderer(nullptr),
+	m_easeTime(0.0f)
+{
+}
 
 void GuideUIController2::Start()
 {
-	//‰ŠúêŠŽæ“¾
-	m_defaultPosition = GetTransform()->GetPosition();
-	m_defaultScale = GetTransform()->GetScale();
-	m_value = 0;
+	m_renderer = GetGameObject()->AddComponent<SpriteRenderer>();
+	m_renderer->SetUI(true);
+	m_renderer->LoadTexture("Assets/Textures/Button/kansei.png");
+	m_renderer->SetSize(512.0f);
+	m_renderer->SetOffsetPos(-3.0f, 2.0f);
 }
 
 void GuideUIController2::Update()
 {
-	GridField* gridfield = GameState::GetInstance()->GetGridField();
-
-	if (gridfield->IsClear())
+	if (GameState::GetInstance()->IsClear())
 	{
-		m_value += 0.1f;
-
-		if (m_value > 5.0f)
-		{
-			m_value = 5.0f;
-		}
+		m_easeTime += Time::GetDeltaTime();
 	}
 	else
 	{
-		m_value -= 0.1f;
-		if (m_value < 0.0f)
-		{
-			m_value = 0.0f;
-		}
+		m_easeTime -= Time::GetDeltaTime();
 	}
 
-	Vector3 offset = Vector3::zero;
-	offset.y = Easing::OutQuad(m_value, 5.0f, 1.5f, 0.0f);
-	GetTransform()->SetPosition(m_defaultPosition + offset);
-	
+	// ƒNƒ‰ƒ“ƒv
+	if (m_easeTime > g_easeDuration)
+	{
+		m_easeTime = g_easeDuration;
+	}
+	if (m_easeTime < 0.0f)
+	{
+		m_easeTime = 0.0f;
+	}
 
+	float e = Easing::OutBack(m_easeTime, g_easeDuration, 1.7f, 0.0f, 1.0f);
+	GetTransform()->SetEulerAngle(0.0f, 0.0f, e * 90.0f);
+
+	if (GameState::GetInstance()->IsClearEnter())
+	{
+		GetGameObject()->SetActive(false);
+	}
 }

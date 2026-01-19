@@ -16,13 +16,21 @@ public:
 	std::string GetStageFilePath();
 
 private:
-	SpriteRenderer* m_NumberSprite[2];			//各桁の描画用
+	enum TargetScene
+	{
+		GAME,
+		TITLE
+	};
+
+	SpriteRenderer* m_NumberSprite[3];			//各桁の描画用
+	SpriteRenderer* m_line;
 	int m_selectIndex;
-	int m_lastInput;		// 左で-1 右で1
-	bool m_keyHold;			// 長押しフラグ
-	float m_holdTimer;		// 長押し時間
-	float m_repeatTimer;	// 長押し移動用タイマー
-	bool m_isSceneChange;	// シーン遷移中フラグ
+	int m_lastInput;			// 左で-1 右で1
+	bool m_keyHold;				// 長押しフラグ
+	float m_holdTimer;			// 長押し時間
+	float m_repeatTimer;		// 長押し移動用タイマー
+	TargetScene m_targetScene;	// 遷移先シーン
+	bool m_isSceneChange;		// シーン遷移中フラグ
 
 	void StageSelect();
 	void LoadGame();					//ステージ読み出し	

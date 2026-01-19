@@ -320,7 +320,7 @@ public:
 		max -= min;
 		time = time / totaltime - _1<Ty>;
 
-		return max * (time * time * ((back + _1<Ty>) * time * back) + _1<Ty>) + min;
+		return max * (time * time * ((back + _1<Ty>) * time + back) + _1<Ty>) + min;
 	}
 
 	template<typename Ty = float>

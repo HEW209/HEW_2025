@@ -201,6 +201,18 @@ void PlayerBlockHandler::LateUpdate()
 		pGridField->SetPlaceCursor(m_pBlockObject->GetBlockSet(), placeCursorPos, blockTransform->GetQuaternion(), m_pBlockObject->GetModelPath());
 
 		bool isOverlapGridField = pGridField->IsOverlap(m_pBlockObject->GetBlockSet(), placeCursorPosXZ, blockTransform->GetQuaternion());
+		bool isOutsideStage = false;
+		//ステージ外に出ていないかの判定
+		Vector3 stageSize = GameState::GetInstance()->GetStageSize();
+		for (auto&& vtx : m_pBlockObject->GetBlockVertices()) {
+			Vector3 worldPos = blockTransform->GetQuaternion() * vtx + placeCursorPosXZ;
+			if (worldPos.x < 0.0f || worldPos.x > stageSize.x ||
+				worldPos.y < 0.0f || worldPos.y > stageSize.y ||
+				worldPos.z < 0.0f || worldPos.z > stageSize.z) {
+				isOutsideStage = true;
+				break;
+			}
+		}
 
 		if (!isOverlapGridField) {
 			m_pPlaceCursor->GetGameObject()->SetActive(true);

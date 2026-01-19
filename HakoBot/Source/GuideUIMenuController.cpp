@@ -1,6 +1,5 @@
 //GuideUIMenuController.cpp
 #include "GuideUIMenuController.h"
-#include "GuideUIController.h"
 #include "Easing.h"
 #include "GridField.h"
 #include "GameState.h"
@@ -99,7 +98,7 @@ void GuideUIMeneController::UpdateDefault()
 		m_value2 = 0.0f;
 		GridField* gridfield = GameState::GetInstance()->GetGridField();
 		//クリアしてたらメニュー表示できない
-		if (!gridfield->IsClear())
+		if (!GameState::GetInstance()->IsClear())
 		{
 			m_menuState = MenuState::OPEN;
 			//ボタン受付をUIタイプに変更

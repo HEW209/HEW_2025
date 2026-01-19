@@ -30,7 +30,7 @@ void PlaceCursor::SetBlockSet(const BlockSetData& blockSet)
 	for (auto&& blockPos : blockSet.blocks) {
 		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
 		auto renderer = obj->AddComponent<MeshRenderer>();
-		renderer->LoadModel("Assets/Model/SelectGrid/SelectGrid.fbx");
+		renderer->LoadModel("Assets/Model/SelectGrid/fbx/SelectGrid.fbx");
 		auto transform = obj->GetTransform();
 		transform->SetParent(GetTransform());
 		transform->SetScale(0.9f, 0.9f, 0.9f);
@@ -54,13 +54,14 @@ void PlaceCursor::SetPlaceable(bool value)
 	if (value) {
 		for (auto&& pBlock : m_pBlocks)
 		{
-			pBlock.pRenderer->GetMaterial(0)->SetTexture("Assets/Model/SelectGrid/Texture.png");
+			pBlock.pRenderer->GetMaterial(0)->SetTexture("Assets/Model/SelectGrid/texture/Texture.png");
 		}
 	}
-	else {
+	else
+	{
 		for (auto&& pBlock : m_pBlocks)
 		{
-			pBlock.pRenderer->GetMaterial(0)->SetTexture("Assets/Model/SelectGrid/Texture_Out.png");
+			pBlock.pRenderer->GetMaterial(0)->SetTexture("Assets/Model/SelectGrid/texture/Texture_Out.png");
 		}
 	}
 }
