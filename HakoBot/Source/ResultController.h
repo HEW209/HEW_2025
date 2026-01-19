@@ -18,6 +18,8 @@ private:
 	ObjPtr<SpriteRenderer> m_tugi;
 	ObjPtr<SpriteRenderer> m_stage;
 	ObjPtr<SpriteRenderer> m_re;
+	ObjPtr<SpriteRenderer> m_illust;
 
 	float m_resultTime;
+	bool m_resultTimeUse;
 };
