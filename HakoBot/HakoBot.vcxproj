@@ -190,6 +190,7 @@
     <ClCompile Include="Source\SaveData.cpp" />
     <ClCompile Include="Source\ShapeScreen.cpp" />
     <ClCompile Include="Source\StageInfo.cpp" />
+    <ClCompile Include="Source\StageSet.cpp" />
     <ClCompile Include="Source\TitleExit.cpp" />
     <ClCompile Include="Source\TitleLogo.cpp" />
     <ClCompile Include="Source\TitlePlayer.cpp" />
@@ -245,6 +246,7 @@
     <ClInclude Include="Source\SaveData.h" />
     <ClInclude Include="Source\ShapeScreen.h" />
     <ClInclude Include="Source\StageInfo.h" />
+    <ClInclude Include="Source\StageSet.h" />
     <ClInclude Include="Source\TitleExit.h" />
     <ClInclude Include="Source\TitleLogo.h" />
     <ClInclude Include="Source\TitlePlayer.h" />
@@ -263,6 +265,12 @@
     <None Include="Source\HLSL\Outline.hlsli" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Source\HLSL\Boundary_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
     <FxCompile Include="Source\HLSL\Hologram_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -306,6 +314,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="Source\HLSL\Screen_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Source\HLSL\Transparent_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>

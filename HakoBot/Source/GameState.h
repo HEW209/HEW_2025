@@ -50,6 +50,9 @@ public:
 	static void SetCurrentStegaNo(int no) { s_currentStageNo = no; }
 	static int GetCurrentStegaNo() { return s_currentStageNo; };
 
+	void SetStageSize(const Vector3& size) { m_stageSize = size; }
+	Vector3 GetStageSize() const { return m_stageSize; }
+
 private:
 	
 	static GameState* s_pInstance;
@@ -61,6 +64,7 @@ private:
 	ObjPtr<Player> m_pPlayer;
 	std::string m_levelName;
 	bool m_isBlockTransparent;
+	Vector3 m_stageSize;
 	bool m_isClearEnter;
 
 	// デバッグ用
