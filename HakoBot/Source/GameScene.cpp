@@ -139,10 +139,12 @@ void GameScene::Init() {
     auto clearObj = CreateGameObject();
     clearObj->AddComponent<ClearProduce>();
 
-    
-
     // BGM再生
     SoundManager::PlayBGM("Stage1", 0.2f, true);
+
+    // 使用していないリソース解放
+    TextureManager::Instance().CollectGarbage();
+    ModelManager::Instance().CollectGarbage();
 
     // 当たり判定表示機能
 #ifdef _DEBUG
