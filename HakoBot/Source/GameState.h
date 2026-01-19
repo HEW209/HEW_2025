@@ -41,6 +41,11 @@ public:
 	}
 	bool IsBlockTransparent();
 
+	bool IsClear();
+
+	// クリア演出中
+	bool IsClearEnter();
+
 	static GameState* GetInstance() { return s_pInstance; }
 	static void SetCurrentStegaNo(int no) { s_currentStageNo = no; }
 	static int GetCurrentStegaNo() { return s_currentStageNo; };
@@ -56,4 +61,8 @@ private:
 	ObjPtr<Player> m_pPlayer;
 	std::string m_levelName;
 	bool m_isBlockTransparent;
+	bool m_isClearEnter;
+
+	// デバッグ用
+	bool m_colorBalanceMode;
 };

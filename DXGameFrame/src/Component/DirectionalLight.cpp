@@ -6,7 +6,7 @@ DirectionalLight* DirectionalLight::s_pMainLight = nullptr;
 
 DirectionalLight::DirectionalLight() :
 	m_lightColor(1.0f, 1.0f, 1.0f, 1.0f),
-	m_ambientColor(0.5f, 0.5f, 0.5f, 0.5f),
+	m_ambientColor(0.5f, 0.5f, 0.5f, 1.0f),
 	m_lightIntensity(1.0f),
 	m_lightSize(1.0f)
 {
@@ -60,6 +60,16 @@ void DirectionalLight::SetLightIntensity(float intensity)
 void DirectionalLight::SetLightSize(float size)
 {
 	m_lightSize = size;
+}
+
+Color DirectionalLight::GetLightColor()
+{
+	return m_lightColor;
+}
+
+Color DirectionalLight::GetAmbientColor()
+{
+	return m_ambientColor;
 }
 
 DirectionalLight* DirectionalLight::GetMain()

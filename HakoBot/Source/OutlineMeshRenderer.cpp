@@ -76,7 +76,7 @@ void OutlineMeshRenderer::DrawDepth()
 	for (auto itDepthMat = depthMaterials.begin(); itDepthMat != depthMaterials.end(); ++itDepthMat) {
 		itDepthMat->SetBlendState(BlendState::DISABLE);
 		itDepthMat->SetDepthStencilState(DepthStencilState::DEFAULT);
-		//itDepthMat->ClearPixelShader();
+		itDepthMat->ClearPixelShader();
 	}
 
 	// ƒ‚ƒfƒ‹•`‰æˆ—

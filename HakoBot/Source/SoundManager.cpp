@@ -38,7 +38,8 @@ void SoundManager::Load()
 void SoundManager::PlayBGM(const std::string& name, float volume, bool loop)
 {
 	auto it = bgmMap.find(name);
-	if (it == bgmMap.end()) return;
+	if (it == bgmMap.end())
+		return;
 
 	bgmPlayer.PlayWave(&it->second.data, loop, volume);
 }

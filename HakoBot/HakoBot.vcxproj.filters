@@ -105,9 +105,6 @@
     <ClCompile Include="Source\GuideUITimeController.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GuideUITimeController2.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Source\LevelSerializer.cpp">
       <Filter>ソース ファイル\Utility</Filter>
     </ClCompile>
@@ -163,16 +160,13 @@
       <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
     <ClCompile Include="Source\InputUI.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
     <ClCompile Include="Source\LifeTime.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
     <ClCompile Include="Source\ResultController.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\DebugResult.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -266,9 +260,6 @@
     <ClInclude Include="Source\GuideUITimeController.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GuideUITimeController2.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Source\EditorTypes.h">
       <Filter>ヘッダー ファイル\Utility</Filter>
     </ClInclude>
@@ -341,12 +332,6 @@
     <ClInclude Include="Source\Fade.h">
       <Filter>ヘッダー ファイル\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ResultController.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\DebugResult.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Source\GameStart.h">
       <Filter>ヘッダー ファイル\Component</Filter>
     </ClInclude>
@@ -354,6 +339,9 @@
       <Filter>ヘッダー ファイル\Component</Filter>
     </ClInclude>
     <ClInclude Include="Source\LifeTime.h">
+      <Filter>ヘッダー ファイル\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ResultController.h">
       <Filter>ヘッダー ファイル\Component</Filter>
     </ClInclude>
   </ItemGroup>

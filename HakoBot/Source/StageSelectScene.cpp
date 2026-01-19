@@ -5,9 +5,11 @@
 #include "StageInfo.h"
 #include "Fade.h"
 #include "InputManager.h"
+#include "SoundManager.h"
 
 void StageSelectScene::Init()
 {
+	SoundManager::PlayBGM("Title", 0.2f, true);
 	InputManager::ChangeBindType(InputBindType::UI);
 
 	// ƒJƒƒ‰
