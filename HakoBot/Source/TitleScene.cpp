@@ -7,6 +7,7 @@
 #include "InputManager.h"
 #include "TitlePlayer.h"
 #include "Fade.h"
+#include "GameState.h"
 
 bool TitleScene::s_isFirst = true;
 
@@ -17,6 +18,8 @@ void TitleScene::Init()
     SoundManager::Load();
     RenderSystem::Instance().SetClearColor(Color(1.0f, 0.7f, 0.2f, 1.0f));
     
+    GameState::SetCurrentStegaNo(0);
+
     // ÉJÉÅÉâ
     {
         auto cameraRoot = CreateGameObject();

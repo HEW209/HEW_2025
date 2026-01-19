@@ -12,6 +12,8 @@
 #include "GridField.h"
 #include "GameStart.h"
 #include "ClearProduce.h"
+#include "ResultController.h"
+#include "DebugResult.h"
 
 #include "GuideUIController2.h"
 #include "GuideUITimeController.h"
@@ -30,6 +32,7 @@ GameScene::GameScene(const std::string& levelName)
 void GameScene::Init() {
     SoundManager::StopAll();
     RenderSystem::Instance().SetClearColor(Color(1.0f, 0.7f, 0.2f, 1.0f));
+    InputManager::ChangeBindType(InputBindType::GAMEPLAY);
 
     std::string path = "Assets/Level/Stages/" + m_levelName + ".json";
     if (!LevelSerializer::LoadLevelData(path, m_levelData)) {
@@ -136,6 +139,8 @@ void GameScene::Init() {
     auto clearObj = CreateGameObject();
     clearObj->AddComponent<ClearProduce>();
 
+    
+
     // BGM再生
     SoundManager::PlayBGM("Stage1", 0.2f, true);
 
@@ -143,6 +148,8 @@ void GameScene::Init() {
 #ifdef _DEBUG
     auto obj = CreateGameObject();
     obj->AddComponent<ColliderDebug>();
+    //リザルトの表示用
+    CreateResultDebug();
 #endif
 }
 
@@ -537,3 +544,12 @@ void GameScene::CreateUIObject() {
         obj->AddComponent<GuideUITimeController2>();
     }
 }
+
+
+
+void GameScene::CreateResultDebug()
+{
+    auto obj = CreateGameObject();
+    obj->AddComponent<DebugResult>();
+}
+

@@ -183,6 +183,65 @@ Vector2 Input::GetLeftStick(float deadzone)
 	return input.Normalized() * percent;
 }
 
+
+
+Vector2 Input::GetLastRightStick(float deadzone)
+{
+	if (deadzone >= 1.0f)
+	{
+		return Vector2::zero;
+	}
+
+	Vector2 input(s_oldPadState.Gamepad.sThumbRX, s_oldPadState.Gamepad.sThumbRY);
+	input /= XINPUT_STICK_MAX;
+	float magnitude = input.Magnitude();
+
+	if (magnitude <= 1e-5f)
+	{
+		return Vector2::zero;
+	}
+
+	if (magnitude < deadzone)
+	{
+		return Vector2::zero;
+	}
+
+	float percent = (magnitude - deadzone) / (1.0f - deadzone);
+
+	percent = std::clamp(percent, 0.0f, 1.0f);
+
+	return input.Normalized() * percent;
+}
+
+Vector2 Input::GetLastLeftStick(float deadzone)
+{
+	if (deadzone >= 1.0f)
+	{
+		return Vector2::zero;
+	}
+
+	Vector2 input(s_oldPadState.Gamepad.sThumbLX, s_oldPadState.Gamepad.sThumbLY);
+	input /= XINPUT_STICK_MAX;
+	float magnitude = input.Magnitude();
+
+	if (magnitude <= 1e-5f)
+	{
+		return Vector2::zero;
+	}
+
+	if (magnitude < deadzone)
+	{
+		return Vector2::zero;
+	}
+
+	float percent = (magnitude - deadzone) / (1.0f - deadzone);
+
+	percent = std::clamp(percent, 0.0f, 1.0f);
+
+	return input.Normalized() * percent;
+}
+
+
 Vector2 Input::GetStick(StickCode stickCode, std::optional<float> deadzone)
 {
 	switch (stickCode)

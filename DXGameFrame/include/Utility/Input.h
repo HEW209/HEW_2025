@@ -258,6 +258,18 @@ public:
 	static Vector2 GetLeftStick(float deadzone = (float)XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE / XINPUT_STICK_MAX);
 
 	/**
+	 * @brief 前のフレームの右スティックの入力を取得する
+	 * @return 右スティックの入力情報
+	 */
+	static Vector2 GetLastRightStick(float deadzone = (float)XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE / XINPUT_STICK_MAX);
+
+	/**
+	 * @brief 前のフレームの左スティックの入力を取得する
+	 * @return 左スティックの入力情報
+	 */
+	static Vector2 GetLastLeftStick(float deadzone = (float)XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE / XINPUT_STICK_MAX);
+
+	/**
 	 * @brief スティックの入力を取得する
 	 * @param stickCode スティックの種類
 	 * @return スティックの入力情報

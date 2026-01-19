@@ -163,6 +163,7 @@
     <ClCompile Include="Source\ClearProduce.cpp" />
     <ClCompile Include="DebugEffectScene.cpp" />
     <ClCompile Include="Source\ColliderDebug.cpp" />
+    <ClCompile Include="Source\DebugResult.cpp" />
     <ClCompile Include="Source\Fade.cpp" />
     <ClCompile Include="Source\GameScene.cpp" />
     <ClCompile Include="Source\GameStart.cpp" />
@@ -186,6 +187,7 @@
     <ClCompile Include="source\PlayerCamera.cpp" />
     <ClCompile Include="Source\PlayerMove.cpp" />
     <ClCompile Include="Source\PlayerStretch.cpp" />
+    <ClCompile Include="Source\ResultController.cpp" />
     <ClCompile Include="Source\SampleCamera.cpp" />
     <ClCompile Include="Source\SaveData.cpp" />
     <ClCompile Include="Source\ShapeScreen.cpp" />
@@ -215,6 +217,7 @@
     <ClInclude Include="DebugEffectScene.h" />
     <ClInclude Include="source\ColliderDebug.h" />
     <ClInclude Include="Source\Config.h" />
+    <ClInclude Include="Source\DebugResult.h" />
     <ClInclude Include="Source\DynamicDimensionalArray.h" />
     <ClInclude Include="Source\Easing.h" />
     <ClInclude Include="Source\EditorTypes.h" />
@@ -240,6 +243,7 @@
     <ClInclude Include="source\PlayerCamera.h" />
     <ClInclude Include="Source\PlayerMove.h" />
     <ClInclude Include="Source\PlayerStretch.h" />
+    <ClInclude Include="Source\ResultController.h" />
     <ClInclude Include="Source\SampleCamera.h" />
     <ClInclude Include="Source\SaveData.h" />
     <ClInclude Include="Source\ShapeScreen.h" />
