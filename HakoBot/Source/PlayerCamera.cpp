@@ -9,19 +9,19 @@ PlayerCamera::PlayerCamera() :
 	m_cameraDistance(10.0f),
 	m_rotateSpeed(2.0f),
 	m_pPlayerTranform(nullptr),
-	m_currentAngleY(0.0f),
+	m_currentAngleY(330.0f),
 	m_currentAngleX(20.0f),
 	m_posOffset(0.0f, 1.0f, 0.0f)
 {
 }
 
-void PlayerCamera::Start()
+void PlayerCamera::Awake()
 {
 	auto obj = SceneManager::GetActiveScene()->CreateGameObject();
-	auto camera = obj->AddComponent<Camera>();
+	m_pCamera = obj->AddComponent<Camera>();
 	Camera::Config cameraConfig;
 	cameraConfig.fovAngle = 30.0f;
-	camera->SetConfig(cameraConfig);
+	m_pCamera->SetConfig(cameraConfig);
 	auto transform = obj->GetTransform();
 	transform->SetParent(GetTransform());
 	transform->SetPosition(0.0f, 0.0f, -m_cameraDistance,Space::LOCAL);
@@ -59,5 +59,6 @@ void PlayerCamera::SetCameraDistance(float distance)
 	const float distanceToOffsetY = 0.05f;
 
 	m_cameraDistance = distance;
-	m_posOffset.y = distance * distanceToOffsetY + 0.5f;
+	m_posOffset.y = distance * distanceToOffsetY + 1.5f;
+	m_pCamera->GetTransform()->SetPosition(0.0f, 0.0f, -m_cameraDistance, Space::LOCAL);
 }

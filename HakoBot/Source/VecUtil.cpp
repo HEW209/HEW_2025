@@ -116,3 +116,69 @@ void GetBasisFromQuaternion(const Quaternion& q, Vec3& right, Vec3& up, Vec3& fo
 
     return flatDir.Normalized();
 }
+
+Vector3 LerpVector3(const Vector3& from, const Vector3& to, float t)
+{
+    // C++20 なら std::lerp を各要素に使うとより高精度ですが、
+    // ゲームの汎用計算では高速な以下の実装が一般的です。
+    return Vector3(
+        std::lerp(from.x, to.x, t),
+        std::lerp(from.y, to.y, t),
+        std::lerp(from.z, to.z, t)
+    );
+}
+
+// 元のコードはNLERP（近似）でしたが、ここでは意図を明確にするために
+// 関数名を NlerpQuaternion とし、別途 Slerp も提示します。
+Quaternion NlerpQuaternion(const Quaternion& from, const Quaternion& to, float t)
+{
+    Quaternion result;
+    // 内積計算 (Cosine of angle)
+    float dot = from.x * to.x + from.y * to.y + from.z * to.z + from.w * to.w;
+
+    // 最短経路補正 (q と -q は同じ回転を表すが、混ぜると変な挙動になるため)
+    float scaleFrom = 1.0f - t;
+    float scaleTo = (dot >= 0.0f) ? t : -t;
+
+    result.x = scaleFrom * from.x + scaleTo * to.x;
+    result.y = scaleFrom * from.y + scaleTo * to.y;
+    result.z = scaleFrom * from.z + scaleTo * to.z;
+    result.w = scaleFrom * from.w + scaleTo * to.w;
+
+    return result.Normalized(); // 必須: 線形補間後は長さが変わるため正規化する
+}
+
+// 厳密な回転補間が必要な場合の SLERP 実装
+Quaternion SlerpQuaternion(const Quaternion& from, const Quaternion& to, float t)
+{
+    float dot = from.x * to.x + from.y * to.y + from.z * to.z + from.w * to.w;
+
+    // 最短経路の確保
+    float sign = 1.0f;
+    if (dot < 0.0f) {
+        dot = -dot;
+        sign = -1.0f;
+    }
+
+    // ドット積が1に近い（角度が非常に小さい）場合は、
+    // 0除算を防ぐため、安価なNLERPにフォールバックする
+    constexpr float DOT_THRESHOLD = 0.9995f;
+    if (dot > DOT_THRESHOLD) {
+        return NlerpQuaternion(from, to, t);
+    }
+
+    // 角度計算
+    float theta = std::acos(dot);           // 角度
+    float sinTheta = std::sin(theta);       // sin(角度)
+
+    // 補間係数の計算 (球面上の重み付け)
+    float scaleFrom = std::sin((1.0f - t) * theta) / sinTheta;
+    float scaleTo = (std::sin(t * theta) / sinTheta) * sign;
+
+    return Quaternion(
+        from.x * scaleFrom + to.x * scaleTo,
+        from.y * scaleFrom + to.y * scaleTo,
+        from.z * scaleFrom + to.z * scaleTo,
+        from.w * scaleFrom + to.w * scaleTo
+    ); // SLERPは理論上正規化済みだが、数値誤差蓄積を防ぐため最後にNormalized()する場合もある
+}
