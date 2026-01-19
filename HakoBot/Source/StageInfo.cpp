@@ -2,6 +2,7 @@
 #include "LevelSerializer.h"
 
 static const float g_windowSize = 600.0f;
+static const float g_titleSize = 400.0f;
 static const float g_clearShapeSize = 160.0f;
 static const float g_clearShapeSpace = 10.0f;
 
@@ -17,6 +18,12 @@ void StageInfo::Start()
 	window->LoadTexture("Assets/Textures/StageSelect/StageInfoWindow.png");
 	window->SetSize(g_windowSize);
 	window->SetBackGround(true);
+
+	m_pTitle = GetGameObject()->AddComponent<SpriteRenderer>();
+	m_pTitle->LoadTexture("Assets/Textures/StageSelect/Title/title_1.png");
+	m_pTitle->SetSize(g_clearShapeSize);
+	m_pTitle->SetOffsetPos(0.0f, 0.95f);
+	m_pTitle->SetBackGround(true);
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -37,6 +44,7 @@ void StageInfo::Update()
 	if (selectIndex != m_currentStage)
 	{
 		CreateClearShape();
+		m_pTitle->LoadTexture("Assets/Textures/StageSelect/Title/title_" + std::to_string(selectIndex) + ".png");
 		m_currentStage = selectIndex;
 	}
 }

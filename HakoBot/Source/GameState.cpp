@@ -9,7 +9,8 @@ int GameState::s_currentStageNo = 0;
 GameState::GameState() :
 	m_isBlockTransparent(false),
 	m_colorBalanceMode(false),
-	m_isClearEnter(false)
+	m_isClearEnter(false),
+	m_pTutorial(nullptr)
 {
 	if (s_pInstance == nullptr) {
 

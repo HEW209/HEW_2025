@@ -71,7 +71,7 @@ void ResultController::Start()
 	auto fade = GetGameObject()->AddComponent<SpriteRenderer>();
 	fade->SetUI(true);
 	fade->SetSize(1280, 720);
-	fade->SetColor(0.0f, 0.0f, 0.0f, 0.5f);
+	fade->SetColor(0.0f, 0.0f, 0.0f, 0.4f);
 	m_screenFade = fade;
 
 	//リザルトイラスト
@@ -181,11 +181,11 @@ void ResultController::MoveUpdate()
 
 	//黒下の移動
 	m_kuroDown->SetOffsetPos(Easing::InSine(m_resultTime, 10.0f, -KURO_POS_X_END, -KURO_POS_X_START),
-		Easing::OutBack(m_resultTime, 5.0f, 1.7f, -KURO_POS_Y_END, -KURO_POS_Y_START));
+		Easing::OutBack(m_resultTime, 5.0f, 1.5f, -KURO_POS_Y_END, -KURO_POS_Y_START));
 
 	//黒上の移動
 	m_kuroUp->SetOffsetPos(Easing::InSine(m_resultTime, 10.0f, KURO_POS_X_END, KURO_POS_X_START),
-		Easing::OutBack(m_resultTime, 5.0f, 1.7f, KURO_POS_Y_END, KURO_POS_Y_START));
+		Easing::OutBack(m_resultTime, 5.0f, 1.5f, KURO_POS_Y_END, KURO_POS_Y_START));
 
 	//リザルトの移動
 	m_result->SetOffsetPos(Easing::InSine(m_resultTime, 10.0f, RESULT_POS_X_END, RESULT_POS_X_START),

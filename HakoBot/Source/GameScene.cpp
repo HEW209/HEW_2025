@@ -10,14 +10,10 @@
 
 #include "BlockObject.h"
 #include "GridField.h"
-#include "GameStart.h"
 #include "ClearProduce.h"
 #include "ResultController.h"
 
-#include "GuideUIController2.h"
-#include "GuideUITimeController.h"
-#include "GuideUIMenuController.h"
-#include "InputUI.h"
+#include "GameUI.h"
 #include "Fade.h"
 #include "StageSet.h"
 
@@ -50,7 +46,7 @@ void GameScene::Init() {
     //移動できるオブジェクト（プレイヤー）を作成	
     //移動できるプレイヤーオブジェクトを作る
     auto player = CreateGameObject();
-    player->GetTransform()->SetPosition(6.0f, 0.0f, -8.0f);
+    player->GetTransform()->SetPosition(0.0f, 0.0f, -11.0f);
     player->GetTransform()->SetEulerAngle(0.0f, 180.0f, 0.0f);
     auto playerComp = player->AddComponent<Player>();
     GameState::GetInstance()->SetPlayer(playerComp);
@@ -130,10 +126,6 @@ void GameScene::Init() {
         Fade::StartIrisIn();
     }
 
-    // 開始演出
-    auto StartObj = CreateGameObject();
-    StartObj->AddComponent<StartUI>();
-
     // クリア演出
     auto clearObj = CreateGameObject();
     clearObj->AddComponent<ClearProduce>();
@@ -144,6 +136,16 @@ void GameScene::Init() {
     // 使用していないリソース解放
     TextureManager::Instance().CollectGarbage();
     ModelManager::Instance().CollectGarbage();
+
+	int stageNo = GameState::GetInstance()->GetCurrentStegaNo();
+    if (stageNo == 1) {
+        auto obj = CreateGameObject();
+        auto tutorial = obj->AddComponent<Tutorial1>();
+        GameState::GetInstance()->SetTutorial(tutorial);
+    }
+
+    // UIオブジェクト
+    CreateUIObject();
 
     // 当たり判定表示機能
 #ifdef _DEBUG
@@ -501,36 +503,10 @@ void GameScene::CreateStageSet() {
     //    auto collider = obj->AddComponent<Collider>();
     //    collider->m_scale = { 1.0f, 10.0f, float(stageSize_z) };
     //}
-    // UIオブジェクト
-    CreateUIObject();
 }
 
 void GameScene::CreateUIObject() {
-
-    // 入力ガイドUI
-    {
-        auto obj = CreateGameObject();
-        auto renderer = obj->AddComponent<InputUI>();
-    }
-
-    // 完成 
-    {
-        auto obj = CreateGameObject();
-        obj->GetTransform()->SetPosition(7.8f, -4.6f, 0.0f);
-        obj->AddComponent<GuideUIController2>();
-    }
-
-    // メニュー開いたやつ
-    {
-        auto obj = CreateGameObject();
-        obj->AddComponent<GuideUIMeneController>();
-    }
-
-    // タイマー1
-    {
-        auto obj = CreateGameObject();
-        obj->GetTransform()->SetPosition(4.1f, 3.2f, 0.0f);
-        obj->AddComponent<GuideUITimeController>();
-    }
+    auto uiObj = CreateGameObject();
+    uiObj->AddComponent<GameUI>();
 }
 

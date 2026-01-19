@@ -30,3 +30,8 @@ Vec3 SnapToCardinalAxis(const Vec3& v);
 Quaternion SnapRotationToNearest90(const Quaternion& rotation);
 
 Vec2 GetFlattenedDirection(const Quaternion& rotation);
+
+Vector3 LerpVector3(const Vector3& from, const Vector3& to, float t);
+
+Quaternion NlerpQuaternion(const Quaternion& from, const Quaternion& to, float t);
+Quaternion SlerpQuaternion(const Quaternion& from, const Quaternion& to, float t);

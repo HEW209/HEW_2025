@@ -18,7 +18,7 @@ public:
 	PlayerCamera();
 	~PlayerCamera() = default;
 
-	void Start() override;
+	void Awake() override;
 	void LateUpdate() override;
 
 	void SetPlayer(Transform* pPlayerTransform) { m_pPlayerTranform = pPlayerTransform; }
@@ -33,4 +33,6 @@ private:
 
 	Transform* m_pPlayerTranform;
 	Vector3 m_posOffset;
+
+	ObjPtr<Camera> m_pCamera;
 };

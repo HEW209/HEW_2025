@@ -13,6 +13,7 @@
 #include "PlayerBlockHandler.h"
 #include "Player.h"
 #include "GuideUIMenuController.h"
+#include "Tutorial.h"
 
 class GameState : public Component
 {
@@ -53,6 +54,9 @@ public:
 	void SetStageSize(const Vector3& size) { m_stageSize = size; }
 	Vector3 GetStageSize() const { return m_stageSize; }
 
+	void SetTutorial(ITutorial* pTutorial) { m_pTutorial = pTutorial; }
+	ITutorial* GetTutorial() { return m_pTutorial.Get(); }
+
 private:
 	
 	static GameState* s_pInstance;
@@ -69,4 +73,6 @@ private:
 
 	// デバッグ用
 	bool m_colorBalanceMode;
+
+	ObjPtr<ITutorial> m_pTutorial;
 };

@@ -35,8 +35,8 @@ void TitleUI::Start()
 void TitleUI::Update()
 {
     //イージング用
-    m_valueColor += EASING;
-    m_valueTitle += EASING;
+    m_valueColor += 0.1f;
+    m_valueTitle += 0.1f;
     if (m_valueTitle > 12.0f)
     {
         m_bTitleFall = true;
