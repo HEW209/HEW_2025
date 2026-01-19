@@ -447,7 +447,7 @@ void GameScene::CreateStageSet() {
     {
 		auto obj = CreateGameObject();
 		auto renderer = obj->AddComponent<MeshRenderer>();
-		renderer->LoadModel("Assets/Model/StageSet/fbx/Boundary.fbx");
+		renderer->LoadModel("Assets/Model/Stage/fbx/Boundary.fbx");
     }
 
     {
@@ -474,49 +474,51 @@ void GameScene::CreateStageSet() {
         transform->SetPosition(-16.8f, -1.0f, 1.3f);
         transform->SetEulerAngle(0.0f, 270.0f, 0.0f);
         auto renderer = obj->AddComponent<MeshRenderer>();
-        renderer->LoadModel("Assets/Model/StageSet/fbx/outlet.fbx");
+        renderer->LoadModel("Assets/Model/Stage/fbx/outlet.fbx");
     }
 
     {
         auto obj = CreateGameObject();
         auto renderer = obj->AddComponent<MeshRenderer>();
-		renderer->LoadModel("Assets/Model/StageSet/fbx/Floor.fbx");
+		renderer->LoadModel("Assets/Model/Stage/fbx/Floor.fbx");
+    }
+
+    {
+		auto obj = CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetPosition(-26.0f, 3.0f, -1.0f);
+		auto renderer = obj->AddComponent<MeshRenderer>();
+		renderer->LoadModel("Assets/Model/Stage/fbx/LeftWall.fbx");
     }
 
     {
 		auto obj = CreateGameObject();
 		auto renderer = obj->AddComponent<MeshRenderer>();
-		renderer->LoadModel("Assets/Model/StageSet/fbx/LeftWall.fbx");
+		renderer->LoadModel("Assets/Model/Stage/fbx/RightWall.fbx");
     }
 
     {
 		auto obj = CreateGameObject();
 		auto renderer = obj->AddComponent<MeshRenderer>();
-		renderer->LoadModel("Assets/Model/StageSet/fbx/RightWall.fbx");
-    }
-
-    {
-		auto obj = CreateGameObject();
-		auto renderer = obj->AddComponent<MeshRenderer>();
-		renderer->LoadModel("Assets/Model/StageSet/fbx/MiddleWall.fbx");
+		renderer->LoadModel("Assets/Model/Stage/fbx/MiddleWall.fbx");
     }
 
     {
         auto obj = CreateGameObject();
 		auto renderer = obj->AddComponent<MeshRenderer>();
-		renderer->LoadModel("Assets/Model/StageSet/fbx/pin.fbx");
+		renderer->LoadModel("Assets/Model/Stage/fbx/pin.fbx");
     }
 
     {
 		auto obj = CreateGameObject();
 		auto renderer = obj->AddComponent<MeshRenderer>();
-		renderer->LoadModel("Assets/Model/StageSet/fbx/sheet.fbx");
+		renderer->LoadModel("Assets/Model/Stage/fbx/sheet.fbx");
     }
 
     {
         auto obj = CreateGameObject();
         auto renderer = obj->AddComponent<MeshRenderer>();
-        renderer->LoadModel("Assets/Model/StageSet/fbx/Pillar.fbx");
+        renderer->LoadModel("Assets/Model/Stage/fbx/Pillar.fbx");
     }
 
     // 床当たり判定
@@ -526,45 +528,45 @@ void GameScene::CreateStageSet() {
         transform->SetPosition(Vector3(0.0f, -0.5f, 0.0f) + posOffset);
         transform->SetScale(stageSize_x, 1.0f, stageSize_z);
         auto collider = obj->AddComponent<Collider>();
-        collider->m_scale = { float(stageSize_x) , 1.0f,float(stageSize_z) };
+        collider->m_scale = { float(stageSize_x * 100) , 1.0f,float(stageSize_z * 100) };
     }
 
-    // +z壁当たり判定
-    {
-        auto obj = CreateGameObject();
-        auto transform = obj->GetTransform();
-        transform->SetPosition(Vector3(0.0f, 5.0f, stageSize_z * 0.5f) + posOffset);
-        transform->SetScale(stageSize_x, 10.0f, 1.0f);
-        auto collider = obj->AddComponent<Collider>();
-        collider->m_scale = { float(stageSize_x), 10.0f, 1.0f };
-    }
-    // -z壁当たり判定
-    {
-        auto obj = CreateGameObject();
-        auto transform = obj->GetTransform();
-        transform->SetPosition(Vector3(0.0f, 5.0f, -stageSize_z * 0.5f) + posOffset);
-        transform->SetScale(stageSize_x, 10.0f, 1.0f);
-        auto collider = obj->AddComponent<Collider>();
-        collider->m_scale = { float(stageSize_x), 10.0f, 1.0f };
-    }
-    // +x壁当たり判定
-    {
-        auto obj = CreateGameObject();
-        auto transform = obj->GetTransform();
-        transform->SetPosition(Vector3(stageSize_x * 0.5f, 5.0f, 0.0f) + posOffset);
-        transform->SetScale(1.0f, 10.0f, stageSize_z);
-        auto collider = obj->AddComponent<Collider>();
-        collider->m_scale = { 1.0f, 10.0f, float(stageSize_z) };
-    }
-    // -x壁当たり判定
-    {
-        auto obj = CreateGameObject();
-        auto transform = obj->GetTransform();
-        transform->SetPosition(Vector3(-stageSize_x * 0.5f, 5.0f, 0.0f) + posOffset);
-        transform->SetScale(1.0f, 10.0f, stageSize_z);
-        auto collider = obj->AddComponent<Collider>();
-        collider->m_scale = { 1.0f, 10.0f, float(stageSize_z) };
-    }
+    //// +z壁当たり判定
+    //{
+    //    auto obj = CreateGameObject();
+    //    auto transform = obj->GetTransform();
+    //    transform->SetPosition(Vector3(0.0f, 5.0f, stageSize_z * 0.5f) + posOffset);
+    //    transform->SetScale(stageSize_x, 10.0f, 1.0f);
+    //    auto collider = obj->AddComponent<Collider>();
+    //    collider->m_scale = { float(stageSize_x), 10.0f, 1.0f };
+    //}
+    //// -z壁当たり判定
+    //{
+    //    auto obj = CreateGameObject();
+    //    auto transform = obj->GetTransform();
+    //    transform->SetPosition(Vector3(0.0f, 5.0f, -stageSize_z * 0.5f) + posOffset);
+    //    transform->SetScale(stageSize_x, 10.0f, 1.0f);
+    //    auto collider = obj->AddComponent<Collider>();
+    //    collider->m_scale = { float(stageSize_x), 10.0f, 1.0f };
+    //}
+    //// +x壁当たり判定
+    //{
+    //    auto obj = CreateGameObject();
+    //    auto transform = obj->GetTransform();
+    //    transform->SetPosition(Vector3(stageSize_x * 0.5f, 5.0f, 0.0f) + posOffset);
+    //    transform->SetScale(1.0f, 10.0f, stageSize_z);
+    //    auto collider = obj->AddComponent<Collider>();
+    //    collider->m_scale = { 1.0f, 10.0f, float(stageSize_z) };
+    //}
+    //// -x壁当たり判定
+    //{
+    //    auto obj = CreateGameObject();
+    //    auto transform = obj->GetTransform();
+    //    transform->SetPosition(Vector3(-stageSize_x * 0.5f, 5.0f, 0.0f) + posOffset);
+    //    transform->SetScale(1.0f, 10.0f, stageSize_z);
+    //    auto collider = obj->AddComponent<Collider>();
+    //    collider->m_scale = { 1.0f, 10.0f, float(stageSize_z) };
+    //}
     // UIオブジェクト
     CreateUIObject();
 }
