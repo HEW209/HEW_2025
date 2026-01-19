@@ -106,10 +106,9 @@ void ClearProduce::Update()
 		m_pCamera->GetTransform()->SetPosition(cameraLocalPos, Space::LOCAL);
 	}
 
-	if (m_count == 120)
+	if (m_count == 100)
 	{
 		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
 		obj->AddComponent<ResultController>();
-		++m_count;
 	}
 }
