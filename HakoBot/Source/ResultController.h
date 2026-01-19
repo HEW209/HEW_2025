@@ -9,17 +9,33 @@
 
 class ResultController : public Component
 {
+public:
+	ResultController();
 	void Start() override;
 	void Update() override;
 private:
 	ObjPtr<SpriteRenderer> m_kuroDown;
 	ObjPtr<SpriteRenderer> m_kuroUp;
 	ObjPtr<SpriteRenderer> m_result;
-	ObjPtr<SpriteRenderer> m_tugi;
-	ObjPtr<SpriteRenderer> m_stage;
-	ObjPtr<SpriteRenderer> m_re;
+	ObjPtr<SpriteRenderer> m_selectText[3];
 	ObjPtr<SpriteRenderer> m_illust;
 
 	float m_resultTime;
-	bool m_resultTimeUse;
+
+	enum class ResultState
+	{
+		MOVE,SELECT,END
+	};
+
+	ResultState m_state;
+	void MoveUpdate();
+	void SelectUpdate();
+	void EndUpdate();
+
+	enum Select
+	{
+		NEXT,STAGE_SELECT,RESTART,COUNT
+	};
+
+	int m_currentSelect;
 };

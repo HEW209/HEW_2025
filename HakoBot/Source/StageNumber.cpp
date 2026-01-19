@@ -56,7 +56,14 @@ void StageNumber::Start()
 		m_NumberSprite[x]->SetSize(FONT_SIZE, FONT_SIZE);
 	}
 
-	m_selectIndex = SaveData::GetClearLevel() + 1;
+	if (GameState::GetCurrentStegaNo() == 0)
+	{
+		m_selectIndex = SaveData::GetClearLevel() + 1;
+	}
+	else
+	{
+		m_selectIndex = GameState::GetCurrentStegaNo();
+	}
 	if (m_selectIndex > StageCount)
 		m_selectIndex = StageCount;
 }

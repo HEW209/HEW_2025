@@ -4,9 +4,12 @@
 #include "BlockObject.h"
 #include "StageInfo.h"
 #include "Fade.h"
+#include "InputManager.h"
 
 void StageSelectScene::Init()
 {
+	InputManager::ChangeBindType(InputBindType::UI);
+
 	// ƒJƒƒ‰
 	{
 		auto obj = CreateGameObject();
