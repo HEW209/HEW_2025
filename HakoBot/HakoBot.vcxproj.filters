@@ -165,6 +165,9 @@
     <ClCompile Include="Source\GameStart.cpp">
       <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
+    <ClCompile Include="Source\StageSet.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Config.h">
@@ -338,6 +341,9 @@
     <ClInclude Include="Source\GameStart.h">
       <Filter>ヘッダー ファイル\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Source\StageSet.h">
+      <Filter>ヘッダー ファイル\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\HLSL\DXGameFrameShader.hlsli">
@@ -373,6 +379,12 @@
       <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="Source\HLSL\IrisOut_PS.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\HLSL\Transparent_PS.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\HLSL\Boundary_PS.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
   </ItemGroup>

@@ -19,6 +19,7 @@
 #include "GuideUITimeController2.h"
 #include "GuideUIMenuController.h"
 #include "Fade.h"
+#include "StageSet.h"
 
 #include "ColliderDebug.h"
 #include <cmath>
@@ -63,10 +64,10 @@ void GameScene::Init() {
     CreateStageSet();
     CreateGridField();
 
-    const Vector3 defaultPos(10.0f, 0.0f, 0.0f);
+    const Vector3 defaultPos(-10.0f, 0.0f, -3.0f);
     const int maxCountZ = 5;
     const float intervalZ = -4.0f;
-    const float intervalX = 4.0f;
+    const float intervalX = -4.0f;
 
     // プレイヤーが動かすブロックを置く
     for (size_t i = 0; i < m_levelData.inventoryBlockFiles.size(); ++i) {
@@ -120,7 +121,7 @@ void GameScene::Init() {
     auto lightObj = CreateGameObject();
     auto light = lightObj->AddComponent<DirectionalLight>();
     light->SetLightSize(0.1f);
-    lightObj->GetTransform()->SetEulerAngle(50.0f, -30.0f, 0.0f);
+    lightObj->GetTransform()->SetEulerAngle(50.0f, -15.0f, 0.0f);
 
     {
         auto obj = CreateGameObject();
@@ -445,80 +446,8 @@ void GameScene::CreateStageSet() {
     //}
 
     {
-		auto obj = CreateGameObject();
-		auto renderer = obj->AddComponent<MeshRenderer>();
-		renderer->LoadModel("Assets/Model/Stage/fbx/Boundary.fbx");
-    }
-
-    {
         auto obj = CreateGameObject();
-		auto transform = obj->GetTransform();
-		transform->SetPosition(-16.8f, -1.0f, 1.3f);
-		transform->SetEulerAngle(0.0f, 270.0f, 0.0f);
-        auto renderer = obj->AddComponent<MeshRenderer>();
-		renderer->LoadModel("Assets/Model/Stage/fbx/Conveyor_frame.fbx");
-    }
-
-    {
-		auto obj = CreateGameObject();
-        auto transform = obj->GetTransform();
-        transform->SetPosition(-16.8f, -1.0f, 1.3f);
-        transform->SetEulerAngle(0.0f, 270.0f, 0.0f);
-		auto renderer = obj->AddComponent<MeshRenderer>();
-		renderer->LoadModel("Assets/Model/Stage/fbx/Conveyors.fbx");
-    }
-
-    {
-        auto obj = CreateGameObject();
-        auto transform = obj->GetTransform();
-        transform->SetPosition(-16.8f, -1.0f, 1.3f);
-        transform->SetEulerAngle(0.0f, 270.0f, 0.0f);
-        auto renderer = obj->AddComponent<MeshRenderer>();
-        renderer->LoadModel("Assets/Model/Stage/fbx/outlet.fbx");
-    }
-
-    {
-        auto obj = CreateGameObject();
-        auto renderer = obj->AddComponent<MeshRenderer>();
-		renderer->LoadModel("Assets/Model/Stage/fbx/Floor.fbx");
-    }
-
-    {
-		auto obj = CreateGameObject();
-        auto transform = obj->GetTransform();
-        transform->SetPosition(-26.0f, 3.0f, -1.0f);
-		auto renderer = obj->AddComponent<MeshRenderer>();
-		renderer->LoadModel("Assets/Model/Stage/fbx/LeftWall.fbx");
-    }
-
-    {
-		auto obj = CreateGameObject();
-		auto renderer = obj->AddComponent<MeshRenderer>();
-		renderer->LoadModel("Assets/Model/Stage/fbx/RightWall.fbx");
-    }
-
-    {
-		auto obj = CreateGameObject();
-		auto renderer = obj->AddComponent<MeshRenderer>();
-		renderer->LoadModel("Assets/Model/Stage/fbx/MiddleWall.fbx");
-    }
-
-    {
-        auto obj = CreateGameObject();
-		auto renderer = obj->AddComponent<MeshRenderer>();
-		renderer->LoadModel("Assets/Model/Stage/fbx/pin.fbx");
-    }
-
-    {
-		auto obj = CreateGameObject();
-		auto renderer = obj->AddComponent<MeshRenderer>();
-		renderer->LoadModel("Assets/Model/Stage/fbx/sheet.fbx");
-    }
-
-    {
-        auto obj = CreateGameObject();
-        auto renderer = obj->AddComponent<MeshRenderer>();
-        renderer->LoadModel("Assets/Model/Stage/fbx/Pillar.fbx");
+        obj->AddComponent<StageSet>();
     }
 
     // 床当たり判定
