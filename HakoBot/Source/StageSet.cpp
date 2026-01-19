@@ -1,5 +1,6 @@
 #include "StageSet.h"
 #include "Vec.h"
+#include "GameState.h"
 
 StageSet::StageSet()
     : m_time(0.0f)
@@ -9,6 +10,9 @@ StageSet::StageSet()
 
 void StageSet::Awake()
 {
+    GameState::GetInstance()->SetStageSize(Vector3(29.2f, 25.0f, 25.0f));
+    GameState::GetInstance()->SetStagePos(Vector3(-7.0f, 0.0f, -2.0f));
+
     {
         auto obj = SceneManager::GetActiveScene()->CreateGameObject();
         auto transform = obj->GetTransform();

@@ -53,6 +53,8 @@ public:
 
 	void SetStageSize(const Vector3& size) { m_stageSize = size; }
 	Vector3 GetStageSize() const { return m_stageSize; }
+	void SetStagePos(const Vector3& pos) { m_stagePos = pos; }
+	Vector3 GetStagePos() const { return m_stagePos; }
 
 	void SetTutorial(ITutorial* pTutorial) { m_pTutorial = pTutorial; }
 	ITutorial* GetTutorial() { return m_pTutorial.Get(); }
@@ -69,6 +71,7 @@ private:
 	std::string m_levelName;
 	bool m_isBlockTransparent;
 	Vector3 m_stageSize;
+	Vector3 m_stagePos;
 	bool m_isClearEnter;
 
 	// デバッグ用
