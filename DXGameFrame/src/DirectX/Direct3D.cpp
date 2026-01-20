@@ -266,7 +266,7 @@ HRESULT Direct3D::CreateDeviceAndSwapChain(HWND hWnd, UINT width, UINT height)
 	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	sd.BufferCount = 2;
 	sd.OutputWindow = hWnd;
-	sd.Windowed = FALSE;
+	sd.Windowed = TRUE;
 	sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
 	// ƒhƒ‰ƒCƒo‚Ìí—Ş‚ğİ’è

@@ -59,6 +59,9 @@ public:
 	void SetTutorial(ITutorial* pTutorial) { m_pTutorial = pTutorial; }
 	ITutorial* GetTutorial() { return m_pTutorial.Get(); }
 
+	void SetClearTime(int time) { m_clearTime = time; }
+	int GetClearTime() const { return m_clearTime; }
+
 private:
 	
 	static GameState* s_pInstance;
@@ -73,6 +76,7 @@ private:
 	Vector3 m_stageSize;
 	Vector3 m_stagePos;
 	bool m_isClearEnter;
+	int m_clearTime;
 
 	// デバッグ用
 	bool m_colorBalanceMode;

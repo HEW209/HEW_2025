@@ -21,5 +21,6 @@ public:
 private:
 	int m_time;
 	bool m_b2;
+	ObjPtr<GameObject> m_root;
 };
 

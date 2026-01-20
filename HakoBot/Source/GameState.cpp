@@ -10,7 +10,8 @@ GameState::GameState() :
 	m_isBlockTransparent(false),
 	m_colorBalanceMode(false),
 	m_isClearEnter(false),
-	m_pTutorial(nullptr)
+	m_pTutorial(nullptr),
+	m_clearTime(0)
 {
 	if (s_pInstance == nullptr) {
 

@@ -24,9 +24,12 @@ void GuideUITimeController::Start()
 {
 	float PosX = 0.0f;
 
+	m_root = SceneManager::GetActiveScene()->CreateGameObject();
+	m_root->GetTransform()->SetParent(GetTransform());
+
 	for (int x = 0; x < 6; ++x)
 	{
-		sprite[x] = GetGameObject()->AddComponent<SpriteRenderer>();
+		sprite[x] = m_root->AddComponent<SpriteRenderer>();
 		sprite[x]->SetUI(true);
 		sprite[x]->LoadTexture("Assets/Textures/Texts/Number.png");
 		sprite[x]->SetOffsetPos(PosX,0.0f);
@@ -41,7 +44,7 @@ void GuideUITimeController::Start()
 
 	
 	//時計マーク
-	auto renderer1 = GetGameObject()->AddComponent<SpriteRenderer>();
+	auto renderer1 = m_root->AddComponent<SpriteRenderer>();
 	renderer1->LoadTexture("Assets/Textures/Texts/Number.png");
 	renderer1->SetOffsetPos(-0.5f, 0.0f);
 	renderer1->SetUI(true);
@@ -51,7 +54,7 @@ void GuideUITimeController::Start()
 	sprite1[0] = renderer1;
 
 	//点１
-	auto renderer2 = GetGameObject()->AddComponent<SpriteRenderer>();
+	auto renderer2 = m_root->AddComponent<SpriteRenderer>();
 	renderer2->LoadTexture("Assets/Textures/Texts/Number.png");
 	renderer2->SetOffsetPos(0.55f, 0.0f);
 	renderer2->SetUI(true);
@@ -61,7 +64,7 @@ void GuideUITimeController::Start()
 	sprite1[1] = renderer2;
 
 	//点２
-	auto renderer3 = GetGameObject()->AddComponent<SpriteRenderer>();
+	auto renderer3 = m_root->AddComponent<SpriteRenderer>();
 	renderer3->LoadTexture("Assets/Textures/Texts/Number.png");
 	renderer3->SetOffsetPos(1.35f, 0.0f);
 	renderer3->SetUI(true);
@@ -77,16 +80,30 @@ void GuideUITimeController::Start()
 
 void GuideUITimeController::Update()
 {
-	if (m_b == true)
+	if (m_totalTime < std::numeric_limits<int>::max()) {
+		++m_totalTime;
+	}
+	if (m_b)
 	{	
-			m_totalTime++;
-			SetTimer();
-			SetDigitUV();
+		SetTimer();
+		SetDigitUV();
 	}
 
 	if (GameState::GetInstance()->IsClearEnter())
 	{
-		GetGameObject()->SetActive(false);
+		m_b = false;
+		int clearTime = GameState::GetInstance()->GetClearTime();
+		if (clearTime == 0) {
+			clearTime = m_totalTime;
+			GameState::GetInstance()->SetClearTime(clearTime);
+			m_root->SetActive(false);
+		}
+		if (m_totalTime - clearTime >= 100) {
+			m_root->SetActive(true);
+			float rate = Math::Clamp(0.0f, 5.0f, (m_totalTime - clearTime - 100) * 0.2f);
+			GetTransform()->SetPosition(Easing::InSine(rate, 5.0f, 3.0f, 5.75f),
+				Easing::InSine(rate, 5.0f, 2.0f, 2.0f), 0.0f);
+		}
 	}
 }
 

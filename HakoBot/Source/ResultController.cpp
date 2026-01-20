@@ -69,6 +69,7 @@ void ResultController::Start()
 {
 	//フェード
 	auto fade = GetGameObject()->AddComponent<SpriteRenderer>();
+	fade->SetOrder(-1);
 	fade->SetUI(true);
 	fade->SetSize(1280, 720);
 	fade->SetColor(0.0f, 0.0f, 0.0f, 0.4f);
