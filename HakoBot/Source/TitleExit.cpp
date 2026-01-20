@@ -26,6 +26,16 @@ void TitleExit::Start()
 	m_continueText->SetSize(300.0f);
 	m_continueText->SetOffsetPos(0.0f, -0.5f);
 	m_continueText->SetUI(true);
+
+	// セーブデータが存在すれば初期カーソルをつづきからに
+	if (SaveData::Find())
+	{
+		m_isNewGame = false;
+	}
+	else
+	{
+		m_isNewGame = true;
+	}
 }
 
 void TitleExit::Update()
