@@ -18,13 +18,13 @@ void TitleExit::Start()
 	m_newGameText = GetGameObject()->AddComponent<SpriteRenderer>();
 	m_newGameText->LoadTexture("Assets/Textures/Texts/hajimekara.png");
 	m_newGameText->SetSize(300.0f);
-	m_newGameText->SetOffsetPos(0.0f, 0.5f);
+	m_newGameText->SetOffsetPos(0.0f, -0.5f);
 	m_newGameText->SetUI(true);
 
 	m_continueText = GetGameObject()->AddComponent<SpriteRenderer>();
 	m_continueText->LoadTexture("Assets/Textures/Texts/tudukikara_hide.png");
 	m_continueText->SetSize(300.0f);
-	m_continueText->SetOffsetPos(0.0f, -0.5f);
+	m_continueText->SetOffsetPos(0.0f, 0.5f);
 	m_continueText->SetUI(true);
 
 	// セーブデータが存在すれば初期カーソルをつづきからに
