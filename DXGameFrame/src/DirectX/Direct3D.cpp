@@ -154,7 +154,7 @@ void Direct3D::BeginDrawTransparentDepth()
 void Direct3D::Present()
 {
 	//•`‰æ“à—e‚ð‰æ–Ê‚É•\Ž¦
-	m_pSwapChain->Present(0, 0);
+	m_pSwapChain->Present(1, 0);
 }
 
 void Direct3D::ClearStencilView()
