@@ -62,6 +62,20 @@ void GuideUIMeneController::Start()
 
 	m_bgScrollY = 0.0f;
 	m_bgScrollSpeed = 0.001f;
+
+	// カーソル反映
+	int selectIndex = m_menuX + m_menuY * 2;
+	for (int i = 0; i < 4; ++i)
+	{
+		if (selectIndex == i)
+		{
+			m_buttons[i]->LoadTexture("Assets/Textures/menuselect.png", false);
+		}
+		else
+		{
+			m_buttons[i]->LoadTexture("Assets/Textures/menub.png", false);
+		}
+	}
 }
 
 void GuideUIMeneController::Update()
@@ -110,16 +124,16 @@ void GuideUIMeneController::UpdateDefault()
 void GuideUIMeneController::UpdateOpen()
 {
 	//メニュー出現
-	m_value1 += EASING * 2.0f;
+	m_value1 += 0.2f;
 	Vector3 scale;
-	scale.x = Easing::InSine(m_value1, EASING_MAX, m_targetScale.x, 0.0f);
-	scale.y = Easing::InSine(m_value1, EASING_MAX, m_targetScale.y, 0.0f);
+	scale.x = Easing::InSine(m_value1, 5.0f, m_targetScale.x, 0.0f);
+	scale.y = Easing::InSine(m_value1, 5.0f, m_targetScale.y, 0.0f);
 	scale.z = 1.0f;
 	GetTransform()->SetScale(scale);
 
-	if (m_value1 >= EASING_MAX)
+	if (m_value1 >= 5.0f)
 	{
-		m_value1 = EASING_MAX;
+		m_value1 = 5.0f;
 		m_menuState = MenuState::SELECT;
 	}
 }
@@ -148,8 +162,8 @@ void GuideUIMeneController::UpdateSelect()
 	//UVオフセットでスクロール
 	m_back->SetUVOffsetPos(0.0f, m_bgScrollY);
 
-	//メニューを閉じるボタン押したとき
-	if (InputManager::CurrentInputSystem().GetButtonDown("MenuBack"_hash))
+	//メニューを閉じるボタンかメニューのキャンセルボタン押したとき
+	if (InputManager::CurrentInputSystem().GetButtonDown("MenuBack"_hash) || InputManager::CurrentInputSystem().GetButtonDown("MenuClose"_hash))
 	{
 		m_closeStartScale = GetTransform()->GetScale();
 		m_menuState = MenuState::CLOSE;
@@ -201,18 +215,18 @@ void GuideUIMeneController::UpdateSelect()
 void GuideUIMeneController::UpdateClose()
 {
 	//メニューを閉じる
-	m_closeValue += EASING * 3.0f;
+	m_closeValue += 0.3f;
 
 	//Pop:少し拡大
 	if (m_closePhase == ClosePhase::Pop)
 	{
 		Vector3 scale;
-		scale.x = Easing::OutSine(m_closeValue, EASING_MAX / 2.0f, m_closeStartScale.x * 1.15f, m_closeStartScale.x);
-		scale.y = Easing::OutSine(m_closeValue, EASING_MAX / 2.0f, m_closeStartScale.y * 1.15f, m_closeStartScale.y);
+		scale.x = Easing::OutSine(m_closeValue, 5.0f / 2.0f, m_closeStartScale.x * 1.15f, m_closeStartScale.x);
+		scale.y = Easing::OutSine(m_closeValue, 5.0f / 2.0f, m_closeStartScale.y * 1.15f, m_closeStartScale.y);
 		scale.z = 1.0f;
 		GetTransform()->SetScale(scale);
 
-		if (m_closeValue >= EASING_MAX / 2.0f)
+		if (m_closeValue >= 5.0f / 2.0f)
 		{
 			m_closePhase = ClosePhase::Shrink;
 			m_closeValue = 0.0f;
@@ -222,8 +236,8 @@ void GuideUIMeneController::UpdateClose()
 	else if (m_closePhase == ClosePhase::Shrink)
 	{
 		Vector3 scale;
-		scale.x = Easing::OutSine(m_closeValue, EASING_MAX, 0.0f, m_closeStartScale.x * 1.15f);
-		scale.y = Easing::OutSine(m_closeValue, EASING_MAX, 0.0f, m_closeStartScale.y * 1.15f);
+		scale.x = Easing::OutSine(m_closeValue, 5.0f, 0.0f, m_closeStartScale.x * 1.15f);
+		scale.y = Easing::OutSine(m_closeValue, 5.0f, 0.0f, m_closeStartScale.y * 1.15f);
 		scale.z = 1.0f;
 		GetTransform()->SetScale(scale);
 
@@ -232,6 +246,24 @@ void GuideUIMeneController::UpdateClose()
 			GetTransform()->SetScale(0.0f, 0.0f, 0.0f);
 			m_menuState = MenuState::DEFAULT;
 			m_closePhase = ClosePhase::None;
+
+			// カーソル位置初期化
+			m_menuX = 0;
+			m_menuY = 0;
+
+			// カーソル反映
+			int selectIndex = m_menuX + m_menuY * 2;
+			for (int i = 0; i < 4; ++i)
+			{
+				if (selectIndex == i)
+				{
+					m_buttons[i]->LoadTexture("Assets/Textures/menuselect.png", false);
+				}
+				else
+				{
+					m_buttons[i]->LoadTexture("Assets/Textures/menub.png", false);
+				}
+			}
 		}
 	}
 }

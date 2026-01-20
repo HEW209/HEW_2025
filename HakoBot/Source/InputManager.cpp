@@ -62,6 +62,7 @@ void InputManager::Init()
 		system.CreateButtonAction("MenuLeft"_hash);
 		system.CreateButtonAction("MenuRight"_hash);
 		system.CreateButtonAction("MenuInteract"_hash);
+		system.CreateButtonAction("MenuClose"_hash);
 
 		system.BindKey("MenuBack"_hash, KeyCode::Z);
 		system.BindKey("MenuUp"_hash, KeyCode::UP);
@@ -69,6 +70,7 @@ void InputManager::Init()
 		system.BindKey("MenuLeft"_hash, KeyCode::LEFT);
 		system.BindKey("MenuRight"_hash, KeyCode::RIGHT);
 		system.BindKey("MenuInteract"_hash, KeyCode::ENTER);
+		system.BindKey("MenuClose"_hash, KeyCode::ESC);
 
 		system.BindPadButton("MenuBack"_hash, PadCode::A);
 		system.BindPadButton("MenuUp"_hash, PadCode::UP);
@@ -76,5 +78,6 @@ void InputManager::Init()
 		system.BindPadButton("MenuLeft"_hash, PadCode::LEFT);
 		system.BindPadButton("MenuRight"_hash, PadCode::RIGHT);
 		system.BindPadButton("MenuInteract"_hash, PadCode::B);
+		system.BindPadButton("MenuClose"_hash, PadCode::START);
 	}
 }

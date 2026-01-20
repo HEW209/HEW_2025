@@ -1,5 +1,6 @@
 #include "StageSet.h"
 #include "Vec.h"
+#include "GameState.h"
 
 StageSet::StageSet()
     : m_time(0.0f)
@@ -9,6 +10,9 @@ StageSet::StageSet()
 
 void StageSet::Awake()
 {
+    GameState::GetInstance()->SetStageSize(Vector3(29.2f, 25.0f, 25.0f));
+    GameState::GetInstance()->SetStagePos(Vector3(-7.0f, 0.0f, -2.0f));
+
     {
         auto obj = SceneManager::GetActiveScene()->CreateGameObject();
         auto transform = obj->GetTransform();
@@ -192,6 +196,59 @@ void StageSet::Awake()
             material.SetParameter(&transparentParam, sizeof(TransparentParam));
         }
         m_pRightPillar = renderer;
+    }
+
+    // “–‚½‚è”»’è
+    {
+		// -x‘¤
+        auto obj = SceneManager::GetActiveScene()->CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetParent(GetTransform());
+        transform->SetPosition(-23.1f, 7.5f, -4.2f, Space::LOCAL);
+        transform->SetScale(4.0f, 15.0f, 29.0f);
+        auto collider = obj->AddComponent<Collider>();
+        collider->m_scale = Vector3(4.0f, 15.0f, 29.0f);
+    }
+    {
+        // +x‘¤
+        auto obj = SceneManager::GetActiveScene()->CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetParent(GetTransform());
+        transform->SetPosition(7.7f, 7.5f, -3.0f, Space::LOCAL);
+        transform->SetScale(1.0f, 15.0f, 30.0f);
+        auto collider = obj->AddComponent<Collider>();
+        collider->m_scale = Vector3(1.0f, 15.0f, 30.0f);
+    }
+    {
+        // -z‘¤
+        auto obj = SceneManager::GetActiveScene()->CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetParent(GetTransform());
+        transform->SetPosition(-6.0f, 7.5f, -15.0f, Space::LOCAL);
+        transform->SetScale(30.0f, 15.0f, 1.0f);
+        auto collider = obj->AddComponent<Collider>();
+        collider->m_scale = Vector3(30.0f, 15.0f, 1.0f);
+    }
+    {
+        // +z‘¤
+        auto obj = SceneManager::GetActiveScene()->CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetParent(GetTransform());
+        transform->SetPosition(-6.0f, 7.5f, 11.5f, Space::LOCAL);
+        transform->SetScale(30.0f, 15.0f, 1.0f);
+        auto collider = obj->AddComponent<Collider>();
+        collider->m_scale = Vector3(30.0f, 15.0f, 1.0f);
+    }
+
+    {
+        // Šp‚Ì”zü•”•ª
+        auto obj = SceneManager::GetActiveScene()->CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetParent(GetTransform());
+        transform->SetPosition(-21.8f, 7.5f, 10.5f, Space::LOCAL);
+        transform->SetScale(10.0f, 15.0f, 1.0f);
+        auto collider = obj->AddComponent<Collider>();
+        collider->m_scale = Vector3(10.0f, 15.0f, 1.0f);
     }
 }
 

@@ -26,8 +26,6 @@ void StartUI::Start()
     m_StartSprite->SetOffsetPos(0.0f, 0.0f);
     
     m_StartSprite->SetSize(m_StartSize.x, m_StartSize.y);
-    SoundManager::StopAll();
-    SoundManager::Load();
     
 }
 

@@ -1,7 +1,13 @@
 #include "SaveData.h"
 #include <iostream>
+#include <filesystem>
 
 SaveData::GameData SaveData::s_data;
+
+bool SaveData::Find()
+{
+	return std::filesystem::exists("Assets/Level/SaveData.bin");
+}
 
 void SaveData::Save()
 {

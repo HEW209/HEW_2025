@@ -16,6 +16,7 @@ public:
 private:
 	using ClearShape = std::vector<std::vector<ObjPtr<SpriteRenderer>>>;
 	std::vector<ClearShape> m_clearShapes;
+	ObjPtr<SpriteRenderer> m_pTitle;
 
 	StageNumber* m_stageNumber;
 	int m_currentStage;

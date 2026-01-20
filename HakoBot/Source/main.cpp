@@ -211,10 +211,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	switch (message)
 	{
 	case WM_CLOSE:
-		if (IDNO == MessageBox(hWnd, "終了しますか？", "終了確認", MB_YESNO))
-		{
-			return 0;
-		}
+		//if (IDNO == MessageBox(hWnd, "終了しますか？", "終了確認", MB_YESNO))
+		//{
+		//	return 0;
+		//}
 		break;
 
 	case WM_DESTROY:

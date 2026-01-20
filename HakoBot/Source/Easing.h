@@ -1,392 +1,357 @@
 #pragma once
-//Easing.h
-
-//イージング関数台に引数用
-#define EASING_MAX (5.0f)	//イージング関数第二引数用
-#define EASING (0.1f)		//毎フレームプラスする値
+#include <cmath>
+#include <limits>
+#include <algorithm>
 
 // イージング関数
 struct Easing
 {
 private:
-	template <class Ty = double>
-	static constexpr Ty Pai{ static_cast<Ty>(3.141592653589793) }; // 円周率
+	// 定数定義 (円周率)
+	template <class Ty>
+	static constexpr Ty Pi{ static_cast<Ty>(3.141592653589793) };
 
-	template<typename Ty>
-	static constexpr Ty _0 = static_cast<Ty>(0);
-	template<typename Ty>
-	static constexpr Ty _0_5 = static_cast<Ty>(0.5);
-	template<typename Ty>
-	static constexpr Ty _0_75 = static_cast<Ty>(0.75);
-	template<typename Ty>
-	static constexpr Ty _0_9375 = static_cast<Ty>(0.9375);
-	template<typename Ty>
-	static constexpr Ty _0_984375 = static_cast<Ty>(0.984375);
-
-	template<typename Ty>
-	static constexpr Ty _1 = static_cast<Ty>(1);
-	template<typename Ty>
-	static constexpr Ty _1_5 = static_cast<Ty>(1.5);
-	template<typename Ty>
-	static constexpr Ty _1_525 = static_cast<Ty>(1.525);
-
-	template<typename Ty>
-	static constexpr Ty _2 = static_cast<Ty>(2);
-	template<typename Ty>
-	static constexpr Ty _2_25 = static_cast<Ty>(2.25);
-	template<typename Ty>
-	static constexpr Ty _2_5 = static_cast<Ty>(2.5);
-	template<typename Ty>
-	static constexpr Ty _2_625 = static_cast<Ty>(2.625);
-	template<typename Ty>
-	static constexpr Ty _2_75 = static_cast<Ty>(2.75);
-
-	template<typename Ty>
-	static constexpr Ty _7_5625 = static_cast<Ty>(7.5625);
-
-	template<typename Ty>
-	static constexpr Ty _10 = static_cast<Ty>(10);
-
-	template<typename Ty>
-	static constexpr Ty _180 = static_cast<Ty>(180);
-
-	template<typename Ty>
-	static constexpr Ty _90 = static_cast<Ty>(90);
-
-private:
+	// 度数法 -> 弧度法
 	template<class Ty>
 	[[nodiscard]] static inline Ty ToRadian(const Ty angle)
 	{
-		return static_cast<Ty>(angle * Pai<Ty> / _180<Ty>);
+		return angle * Pi<Ty> / static_cast<Ty>(180.0);
 	}
 
+	// 浮動小数点の誤差許容比較
 	template<typename Ty>
-	[[nodiscard]] static inline bool AdjEqual(const Ty epsilon_num, const Ty num)
+	[[nodiscard]] static inline bool AdjEqual(const Ty a, const Ty b)
 	{
-		constexpr auto Fabs{ [](const Ty num) constexpr {
-			if (num > _0<Ty>) return num; else return -num;
-		} };
-
-		static constexpr auto Epsilon{ std::numeric_limits<Ty>::epsilon() };
-		auto dis{ Fabs(epsilon_num - num) };
-
-		return (dis <= Epsilon);
+		return std::abs(a - b) <= std::numeric_limits<Ty>::epsilon();
 	}
 
 public:
+	// 基本的な引数: (現在の時間, 総時間, 終了値, 開始値)
+	// 内部で max -= min を行うため、第3引数は「移動量」ではなく「目標値」として扱っています。
 
+	// ----------------------------------------------------------------
+	// Quad (2乗)
+	// ----------------------------------------------------------------
 	template<typename Ty = float>
-	[[nodiscard]] static inline Ty InQuad(Ty time, Ty totaltime, Ty max = _1<Ty>, Ty min = _0<Ty>)
+	[[nodiscard]] static inline Ty InQuad(Ty time, Ty totaltime, Ty max = 1, Ty min = 0)
 	{
 		max -= min;
 		time /= totaltime;
-
 		return max * time * time + min;
 	}
 
 	template<typename Ty = float>
-	[[nodiscard]] static inline Ty OutQuad(Ty time, Ty totaltime, Ty max = _1<Ty>, Ty min = _0<Ty>)
+	[[nodiscard]] static inline Ty OutQuad(Ty time, Ty totaltime, Ty max = 1, Ty min = 0)
 	{
 		max -= min;
 		time /= totaltime;
-
-		return -max * time * (time - _2<Ty>) + min;
+		return -max * time * (time - static_cast<Ty>(2.0)) + min;
 	}
 
 	template<typename Ty = float>
-	[[nodiscard]] static inline Ty InOutQuad(Ty time, Ty totaltime, Ty max = _1<Ty>, Ty min = _0<Ty>)
+	[[nodiscard]] static inline Ty InOutQuad(Ty time, Ty totaltime, Ty max = 1, Ty min = 0)
 	{
 		max -= min;
-		time /= totaltime;
+		time /= (totaltime / static_cast<Ty>(2.0));
 
-		if (time / _2<Ty> < _1<Ty>)
-			return max / _2<Ty> *time * time + min;
+		if (time < static_cast<Ty>(1.0))
+			return max / static_cast<Ty>(2.0) * time * time + min;
 
 		--time;
-
-		return -max * (time * (time - _2<Ty>) - _1<Ty>) + min;
+		return -max / static_cast<Ty>(2.0) * (time * (time - static_cast<Ty>(2.0)) - static_cast<Ty>(1.0)) + min;
 	}
 
+	// ----------------------------------------------------------------
+	// Cubic (3乗)
+	// ----------------------------------------------------------------
 	template<typename Ty = float>
-	[[nodiscard]] static inline Ty InCubic(Ty time, Ty totaltime, Ty max = _1<Ty>, Ty min = _0<Ty>)
+	[[nodiscard]] static inline Ty InCubic(Ty time, Ty totaltime, Ty max = 1, Ty min = 0)
 	{
 		max -= min;
 		time /= totaltime;
-
 		return max * time * time * time + min;
 	}
 
 	template<typename Ty = float>
-	[[nodiscard]] static inline Ty OutCubic(Ty time, Ty totaltime, Ty max = _1<Ty>, Ty min = _0<Ty>)
+	[[nodiscard]] static inline Ty OutCubic(Ty time, Ty totaltime, Ty max = 1, Ty min = 0)
 	{
 		max -= min;
-		time = time / totaltime - _1<Ty>;
-
-		return max * (time * time * time + _1<Ty>) + min;
+		time = time / totaltime - static_cast<Ty>(1.0);
+		return max * (time * time * time + static_cast<Ty>(1.0)) + min;
 	}
 
 	template<typename Ty = float>
-	[[nodiscard]] static inline Ty InOutCubic(Ty time, Ty totaltime, Ty max = _1<Ty>, Ty min = _0<Ty>)
+	[[nodiscard]] static inline Ty InOutCubic(Ty time, Ty totaltime, Ty max = 1, Ty min = 0)
 	{
 		max -= min;
-		time /= totaltime;
+		time /= (totaltime / static_cast<Ty>(2.0));
 
-		if (time / _2<Ty> < _1<Ty>)
-			return max / _2<Ty> *time * time * time + min;
+		if (time < static_cast<Ty>(1.0))
+			return max / static_cast<Ty>(2.0) * time * time * time + min;
 
-		time -= _2<Ty>;
-
-		return max / _2<Ty> *(time * time * time + _2<Ty>) + min;
+		time -= static_cast<Ty>(2.0);
+		return max / static_cast<Ty>(2.0) * (time * time * time + static_cast<Ty>(2.0)) + min;
 	}
 
+	// ----------------------------------------------------------------
+	// Quart (4乗)
+	// ----------------------------------------------------------------
 	template<typename Ty = float>
-	[[nodiscard]] static inline Ty InQuart(Ty time, Ty totaltime, Ty max = _1<Ty>, Ty min = _0<Ty>)
+	[[nodiscard]] static inline Ty InQuart(Ty time, Ty totaltime, Ty max = 1, Ty min = 0)
 	{
 		max -= min;
 		time /= totaltime;
-
 		return max * time * time * time * time + min;
 	}
 
 	template<typename Ty = float>
-	[[nodiscard]] static inline Ty OutQuart(Ty time, Ty totaltime, Ty max = _1<Ty>, Ty min = _0<Ty>)
+	[[nodiscard]] static inline Ty OutQuart(Ty time, Ty totaltime, Ty max = 1, Ty min = 0)
 	{
 		max -= min;
-		time = time / totaltime - _1<Ty>;
-
-		return -max * (time * time * time * time - _1<Ty>) + min;
+		time = time / totaltime - static_cast<Ty>(1.0);
+		return -max * (time * time * time * time - static_cast<Ty>(1.0)) + min;
 	}
 
 	template<typename Ty = float>
-	[[nodiscard]] static inline Ty InOutQuart(Ty time, Ty totaltime, Ty max = _1<Ty>, Ty min = _0<Ty>)
+	[[nodiscard]] static inline Ty InOutQuart(Ty time, Ty totaltime, Ty max = 1, Ty min = 0)
 	{
 		max -= min;
-		time /= totaltime;
+		time /= (totaltime / static_cast<Ty>(2.0));
 
-		if (time / _2<Ty> < _1<Ty>)
-			return max / _2<Ty> *time * time * time * time + min;
+		if (time < static_cast<Ty>(1.0))
+			return max / static_cast<Ty>(2.0) * time * time * time * time + min;
 
-		time -= _2<Ty>;
-
-		return -max / _2<Ty> *(time * time * time * time - _2<Ty>) + min;
+		time -= static_cast<Ty>(2.0);
+		return -max / static_cast<Ty>(2.0) * (time * time * time * time - static_cast<Ty>(2.0)) + min;
 	}
 
+	// ----------------------------------------------------------------
+	// Quint (5乗)
+	// ----------------------------------------------------------------
 	template<typename Ty = float>
-	[[nodiscard]] static inline Ty InQuint(Ty time, Ty totaltime, Ty max = _1<Ty>, Ty min = _0<Ty>)
+	[[nodiscard]] static inline Ty InQuint(Ty time, Ty totaltime, Ty max = 1, Ty min = 0)
 	{
 		max -= min;
 		time /= totaltime;
-
 		return max * time * time * time * time * time + min;
 	}
 
 	template<typename Ty = float>
-	[[nodiscard]] static inline Ty OutQuint(Ty time, Ty totaltime, Ty max = _1<Ty>, Ty min = _0<Ty>)
+	[[nodiscard]] static inline Ty OutQuint(Ty time, Ty totaltime, Ty max = 1, Ty min = 0)
 	{
 		max -= min;
-		time = time / totaltime - _1<Ty>;
-
-		return max * (time * time * time * time * time + _1<Ty>) + min;
+		time = time / totaltime - static_cast<Ty>(1.0);
+		return max * (time * time * time * time * time + static_cast<Ty>(1.0)) + min;
 	}
 
 	template<typename Ty = float>
-	[[nodiscard]] static inline Ty InOutQuint(Ty time, Ty totaltime, Ty max = _1<Ty>, Ty min = _0<Ty>)
+	[[nodiscard]] static inline Ty InOutQuint(Ty time, Ty totaltime, Ty max = 1, Ty min = 0)
 	{
 		max -= min;
-		time /= totaltime;
+		time /= (totaltime / static_cast<Ty>(2.0));
 
-		if (time / _2<Ty> < _1<Ty>)
-			return max / _2<Ty> *time * time * time * time * time + min;
+		if (time < static_cast<Ty>(1.0))
+			return max / static_cast<Ty>(2.0) * time * time * time * time * time + min;
 
-		time -= _2<Ty>;
+		time -= static_cast<Ty>(2.0);
+		return max / static_cast<Ty>(2.0) * (time * time * time * time * time + static_cast<Ty>(2.0)) + min;
+	}
 
-		return max / _2<Ty> *(time * time * time * time * time + _2<Ty>) + min;
+	// ----------------------------------------------------------------
+	// Sine
+	// ----------------------------------------------------------------
+	template<typename Ty = float>
+	[[nodiscard]] static inline Ty InSine(Ty time, Ty totaltime, Ty max = 1, Ty min = 0)
+	{
+		max -= min;
+		return -max * std::cos(time * ToRadian(static_cast<Ty>(90.0)) / totaltime) + max + min;
 	}
 
 	template<typename Ty = float>
-	[[nodiscard]] static inline Ty InSine(Ty time, Ty totaltime, Ty max = _1<Ty>, Ty min = _0<Ty>)
+	[[nodiscard]] static inline Ty OutSine(Ty time, Ty totaltime, Ty max = 1, Ty min = 0)
 	{
 		max -= min;
-
-		return -max * std::cos(time * ToRadian(_90<Ty>) / totaltime) + max + min;
+		return max * std::sin(time * ToRadian(static_cast<Ty>(90.0)) / totaltime) + min;
 	}
 
 	template<typename Ty = float>
-	[[nodiscard]] static inline Ty OutSine(Ty time, Ty totaltime, Ty max = _1<Ty>, Ty min = _0<Ty>)
+	[[nodiscard]] static inline Ty InOutSine(Ty time, Ty totaltime, Ty max = 1, Ty min = 0)
 	{
 		max -= min;
-
-		return max * std::sin(time * ToRadian(_90<Ty>) / totaltime) + min;
+		return -max / static_cast<Ty>(2.0) * (std::cos(time * Pi<Ty> / totaltime) - static_cast<Ty>(1.0)) + min;
 	}
 
+	// ----------------------------------------------------------------
+	// Exp (Exponential)
+	// ----------------------------------------------------------------
 	template<typename Ty = float>
-	[[nodiscard]] static inline Ty InOutSine(Ty time, Ty totaltime, Ty max = _1<Ty>, Ty min = _0<Ty>)
+	[[nodiscard]] static inline Ty InExp(Ty time, Ty totaltime, Ty max = 1, Ty min = 0)
 	{
 		max -= min;
-
-		return -max / _2<Ty> *(std::cos(time * Pai<Ty> / totaltime) - 1) + min;
-	}
-
-	template<typename Ty = float>
-	[[nodiscard]] static inline Ty InExp(Ty time, Ty totaltime, Ty max = _1<Ty>, Ty min = _0<Ty>)
-	{
-		max -= min;
-
-		return  AdjEqual<Ty>(time, _0<Ty>) ?
+		return AdjEqual<Ty>(time, static_cast<Ty>(0.0)) ?
 			min :
-			max * std::pow(_2<Ty>, _10<Ty> *(time / totaltime - _1<Ty>)) + min;
+			max * std::pow(static_cast<Ty>(2.0), static_cast<Ty>(10.0) * (time / totaltime - static_cast<Ty>(1.0))) + min;
 	}
 
 	template<typename Ty = float>
-	[[nodiscard]] static inline Ty OutExp(Ty time, Ty totaltime, Ty max = _1<Ty>, Ty min = _0<Ty>)
+	[[nodiscard]] static inline Ty OutExp(Ty time, Ty totaltime, Ty max = 1, Ty min = 0)
 	{
 		max -= min;
-
 		return AdjEqual<Ty>(time, totaltime) ?
 			max + min :
-			max * (-std::pow(_2<Ty>, -_10<Ty> *time / totaltime) + _1<Ty>) + min;
+			max * (-std::pow(static_cast<Ty>(2.0), -static_cast<Ty>(10.0) * time / totaltime) + static_cast<Ty>(1.0)) + min;
 	}
 
 	template<typename Ty = float>
-	[[nodiscard]] static inline Ty InOutExp(Ty time, Ty totaltime, Ty max = _1<Ty>, Ty min = _0<Ty>)
+	[[nodiscard]] static inline Ty InOutExp(Ty time, Ty totaltime, Ty max = 1, Ty min = 0)
 	{
-		if (AdjEqual<Ty>(time, _0<Ty>))
-			return min;
-
-		if (AdjEqual<Ty>(time, totaltime))
-			return max;
+		if (AdjEqual<Ty>(time, static_cast<Ty>(0.0))) return min;
+		if (AdjEqual<Ty>(time, totaltime)) return max;
 
 		max -= min;
-		time /= totaltime;
+		time /= (totaltime / static_cast<Ty>(2.0));
 
-		if (time / _2<Ty> < _1<Ty>)
-			return max / _2<Ty> *std::pow(_2<Ty>, _10<Ty> *(time - _1<Ty>)) + min;
+		if (time < static_cast<Ty>(1.0))
+			return max / static_cast<Ty>(2.0) * std::pow(static_cast<Ty>(2.0), static_cast<Ty>(10.0) * (time - static_cast<Ty>(1.0))) + min;
 
 		--time;
-
-		return max / _2<Ty> *(-std::pow(_2<Ty>, -_10<Ty> *time) + _2<Ty>) + min;
+		return max / static_cast<Ty>(2.0) * (-std::pow(static_cast<Ty>(2.0), -static_cast<Ty>(10.0) * time) + static_cast<Ty>(2.0)) + min;
 	}
 
+	// ----------------------------------------------------------------
+	// Circ (Circular)
+	// ----------------------------------------------------------------
 	template<typename Ty = float>
-	[[nodiscard]] static inline Ty InCirc(Ty time, Ty totaltime, Ty max = _1<Ty>, Ty min = _0<Ty>)
+	[[nodiscard]] static inline Ty InCirc(Ty time, Ty totaltime, Ty max = 1, Ty min = 0)
 	{
 		max -= min;
 		time /= totaltime;
-		time = (std::max)((std::min)(time, _1<Ty>), -_1<Ty>);
+		// クランプ処理
+		time = std::clamp(time, static_cast<Ty>(-1.0), static_cast<Ty>(1.0));
 
-
-		return -max * (std::sqrt(_1<Ty> -time * time) - _1<Ty>) + min;
+		return -max * (std::sqrt(static_cast<Ty>(1.0) - time * time) - static_cast<Ty>(1.0)) + min;
 	}
 
 	template<typename Ty = float>
-	[[nodiscard]] static inline Ty OutCirc(Ty time, Ty totaltime, Ty max = _1<Ty>, Ty min = _0<Ty>)
+	[[nodiscard]] static inline Ty OutCirc(Ty time, Ty totaltime, Ty max = 1, Ty min = 0)
 	{
 		max -= min;
-		time /= (totaltime - _1<Ty>);
-		time = (std::max)((std::min)(time, _1<Ty>), -_1<Ty>);
+		time = time / totaltime - static_cast<Ty>(1.0); // 修正: ここが間違っていました
+		time = std::clamp(time, static_cast<Ty>(-1.0), static_cast<Ty>(1.0));
 
-
-		return max * std::sqrt(_1<Ty> -time * time) + min;
+		return max * std::sqrt(static_cast<Ty>(1.0) - time * time) + min;
 	}
 
 	template<typename Ty = float>
-	[[nodiscard]] static inline Ty InOutCirc(Ty time, Ty totaltime, Ty max = _1<Ty>, Ty min = _0<Ty>)
+	[[nodiscard]] static inline Ty InOutCirc(Ty time, Ty totaltime, Ty max = 1, Ty min = 0)
 	{
 		max -= min;
-		time /= totaltime;
-		time = (std::max)((std::min)(time, _1<Ty>), -_1<Ty>);
+		time /= (totaltime / static_cast<Ty>(2.0));
 
-
-		if (time / _2<Ty> < _1<Ty>)
-			return -max / _2<Ty> *(std::sqrt(_1<Ty> -time * time) - _1<Ty>) + min;
-
-		time -= _2<Ty>;
-
-		return max / _2<Ty> *(std::sqrt(_1<Ty> -time * time) + _1<Ty>) + min;
-	}
-
-	template<typename Ty = float>
-	[[nodiscard]] static inline Ty InBack(Ty time, Ty totaltime, Ty back, Ty max = _1<Ty>, Ty min = _0<Ty>)
-	{
-		max -= min;
-		time /= totaltime;
-
-		return max * time * time * ((back + _1<Ty>) * time - back) + min;
-	}
-
-	template<typename Ty = float>
-	[[nodiscard]] static inline Ty OutBack(Ty time, Ty totaltime, Ty back, Ty max = _1<Ty>, Ty min = _0<Ty>)
-	{
-		max -= min;
-		time = time / totaltime - _1<Ty>;
-
-		return max * (time * time * ((back + _1<Ty>) * time + back) + _1<Ty>) + min;
-	}
-
-	template<typename Ty = float>
-	[[nodiscard]] static inline Ty InOutBack(Ty time, Ty totaltime, Ty back, Ty max = _1<Ty>, Ty min = _0<Ty>)
-	{
-		max -= min;
-		back *= _1_525<Ty>;
-
-		if (time / _2<Ty> < _1<Ty>)
-			return max * (time * time * ((back + _1<Ty>) * time - back)) + min;
-
-		time -= _2<Ty>;
-
-		return max / _2<Ty> *(time * time * ((back + _1<Ty>) * time + back) + _2<Ty>) + min;
-	}
-
-	template<typename Ty = float>
-	[[nodiscard]] static inline Ty OutBounce(Ty time, Ty totaltime, Ty max = _1<Ty>, Ty min = _0<Ty>)
-	{
-		max -= min;
-		time /= totaltime;
-
-		if (time < _1<Ty> / _2_75<Ty>)
-			return max * (_7_5625<Ty> *time * time) + min;
-
-		else if (time < _2<Ty> / _2_75<Ty>)
+		if (time < static_cast<Ty>(1.0))
 		{
-			time -= _1_5<Ty> / _2_75<Ty>;
-
-			return max * (_7_5625<Ty> *time * time + _0_75<Ty>) + min;
+			time = std::clamp(time, static_cast<Ty>(-1.0), static_cast<Ty>(1.0));
+			return -max / static_cast<Ty>(2.0) * (std::sqrt(static_cast<Ty>(1.0) - time * time) - static_cast<Ty>(1.0)) + min;
 		}
-		else if (time < _2_5<Ty> / _2_75<Ty>)
-		{
-			time -= _2_25<Ty> / _2_75<Ty>;
 
-			return max * (_7_5625<Ty> *time * time + _0_9375<Ty>) + min;
+		time -= static_cast<Ty>(2.0);
+		time = std::clamp(time, static_cast<Ty>(-1.0), static_cast<Ty>(1.0));
+		return max / static_cast<Ty>(2.0) * (std::sqrt(static_cast<Ty>(1.0) - time * time) + static_cast<Ty>(1.0)) + min;
+	}
+
+	// ----------------------------------------------------------------
+	// Back
+	// ----------------------------------------------------------------
+	template<typename Ty = float>
+	[[nodiscard]] static inline Ty InBack(Ty time, Ty totaltime, Ty back, Ty max = 1, Ty min = 0)
+	{
+		max -= min;
+		time /= totaltime;
+		// 慣例的にback係数は 1.70158 付近がデフォルトですが、引数で受け取る仕様を維持
+		return max * time * time * ((back + static_cast<Ty>(1.0)) * time - back) + min;
+	}
+
+	template<typename Ty = float>
+	[[nodiscard]] static inline Ty OutBack(Ty time, Ty totaltime, Ty back, Ty max = 1, Ty min = 0)
+	{
+		max -= min;
+		time = time / totaltime - static_cast<Ty>(1.0);
+		return max * (time * time * ((back + static_cast<Ty>(1.0)) * time + back) + static_cast<Ty>(1.0)) + min;
+	}
+
+	template<typename Ty = float>
+	[[nodiscard]] static inline Ty InOutBack(Ty time, Ty totaltime, Ty back, Ty max = 1, Ty min = 0)
+	{
+		max -= min;
+		back *= static_cast<Ty>(1.525); // InOutの場合は反動を強くする
+
+		time /= (totaltime / static_cast<Ty>(2.0));
+
+		if (time < static_cast<Ty>(1.0))
+			return max / static_cast<Ty>(2.0) * (time * time * ((back + static_cast<Ty>(1.0)) * time - back)) + min;
+
+		time -= static_cast<Ty>(2.0);
+		return max / static_cast<Ty>(2.0) * (time * time * ((back + static_cast<Ty>(1.0)) * time + back) + static_cast<Ty>(2.0)) + min;
+	}
+
+	// ----------------------------------------------------------------
+	// Bounce
+	// ----------------------------------------------------------------
+	template<typename Ty = float>
+	[[nodiscard]] static inline Ty OutBounce(Ty time, Ty totaltime, Ty max = 1, Ty min = 0)
+	{
+		max -= min;
+		time /= totaltime;
+
+		const Ty div = static_cast<Ty>(2.75);
+		const Ty mul = static_cast<Ty>(7.5625);
+
+		if (time < static_cast<Ty>(1.0) / div)
+		{
+			return max * (mul * time * time) + min;
+		}
+		else if (time < static_cast<Ty>(2.0) / div)
+		{
+			time -= static_cast<Ty>(1.5) / div;
+			return max * (mul * time * time + static_cast<Ty>(0.75)) + min;
+		}
+		else if (time < static_cast<Ty>(2.5) / div)
+		{
+			time -= static_cast<Ty>(2.25) / div;
+			return max * (mul * time * time + static_cast<Ty>(0.9375)) + min;
 		}
 		else
 		{
-			time -= _2_625<Ty> / _2_75<Ty>;
-
-			return max * (_7_5625<Ty> *time * time + _0_984375<Ty>) + min;
+			time -= static_cast<Ty>(2.625) / div;
+			return max * (mul * time * time + static_cast<Ty>(0.984375)) + min;
 		}
 	}
 
 	template<typename Ty = float>
-	[[nodiscard]] static inline Ty InBounce(Ty time, Ty totaltime, Ty max = _1<Ty>, Ty min = _0<Ty>)
+	[[nodiscard]] static inline Ty InBounce(Ty time, Ty totaltime, Ty max = 1, Ty min = 0)
 	{
-		return max - OutBounce<Ty>(totaltime - time, totaltime, max - min, _0<Ty>) + min;
+		// InBounceは OutBounce を逆算して求める
+		return (max - min) - OutBounce<Ty>(totaltime - time, totaltime, max - min, static_cast<Ty>(0.0)) + min;
 	}
 
 	template<typename Ty = float>
-	[[nodiscard]] static inline Ty InOutBounce(Ty time, Ty totaltime, Ty max = _1<Ty>, Ty min = _0<Ty>)
+	[[nodiscard]] static inline Ty InOutBounce(Ty time, Ty totaltime, Ty max = 1, Ty min = 0)
 	{
-		if (time < totaltime / _2<Ty>)
+		if (time < totaltime / static_cast<Ty>(2.0))
 		{
-			return InBounce<Ty>(time * _2<Ty>, totaltime, max - min, max) * _0_5<Ty> +min;
+			return InBounce<Ty>(time * static_cast<Ty>(2.0), totaltime, max - min, static_cast<Ty>(0.0)) * static_cast<Ty>(0.5) + min;
 		}
 		else
 		{
-			return OutBounce<Ty>(time * _2<Ty> -totaltime, totaltime, max - min, _0<Ty>) * _0_5<Ty> +min + (max - min) * _0_5<Ty>;
+			return OutBounce<Ty>(time * static_cast<Ty>(2.0) - totaltime, totaltime, max - min, static_cast<Ty>(0.0)) * static_cast<Ty>(0.5) + min + (max - min) * static_cast<Ty>(0.5);
 		}
 	}
 
+	// ----------------------------------------------------------------
+	// Linear
+	// ----------------------------------------------------------------
 	template<typename Ty = float>
-	[[nodiscard]] static inline Ty Linear(Ty time, Ty totaltime, Ty max = _1<Ty>, Ty min = _0<Ty>)
+	[[nodiscard]] static inline Ty Linear(Ty time, Ty totaltime, Ty max = 1, Ty min = 0)
 	{
 		return (max - min) * time / totaltime + min;
 	}

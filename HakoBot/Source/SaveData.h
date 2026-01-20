@@ -4,6 +4,7 @@
 class SaveData
 {
 public:
+	static bool Find();
 	static void Save();
 	static void Load();
 	static void Reset();

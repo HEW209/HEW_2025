@@ -204,17 +204,20 @@ void PlayerBlockHandler::LateUpdate()
 		bool isOutsideStage = false;
 		//ステージ外に出ていないかの判定
 		Vector3 stageSize = GameState::GetInstance()->GetStageSize();
+		stageSize *= 0.5f;
+		Vector3 stagePos = GameState::GetInstance()->GetStagePos();
 		for (auto&& vtx : m_pBlockObject->GetBlockVertices()) {
 			Vector3 worldPos = blockTransform->GetQuaternion() * vtx + placeCursorPosXZ;
-			if (worldPos.x < 0.0f || worldPos.x > stageSize.x ||
-				worldPos.y < 0.0f || worldPos.y > stageSize.y ||
-				worldPos.z < 0.0f || worldPos.z > stageSize.z) {
+			if (worldPos.x < stagePos.x - stageSize.x || worldPos.x > stagePos.x + stageSize.x ||
+				worldPos.y < stagePos.y - stageSize.y || worldPos.y > stagePos.y + stageSize.y ||
+				worldPos.z < stagePos.z - stageSize.z || worldPos.z > stagePos.z + stageSize.z) {
 				isOutsideStage = true;
 				break;
 			}
 		}
 
-		if (!isOverlapGridField) {
+		if (!isOverlapGridField && !isOutsideStage) {
+			// カーソルを表示する
 			m_pPlaceCursor->GetGameObject()->SetActive(true);
 			m_pPlaceCursor->SetBlockSet(m_pBlockObject->GetBlockSet());
 			m_pPlaceCursor->SetPlaceable(CanPlaceWorld(placeCursorPosXZ));
@@ -222,10 +225,11 @@ void PlayerBlockHandler::LateUpdate()
 			m_pPlaceCursor->GetTransform()->SetQuaternion(m_pBlockObject->GetTransform()->GetQuaternion());
 		}
 		else {
+			// カーソルはグリッドフィールドに任せる
 			m_pPlaceCursor->GetGameObject()->SetActive(false);
 		}
 
-		if (InputManager::CurrentInputSystem().GetButtonDown("PlaceAndRemove"_hash)) {
+		if (InputManager::CurrentInputSystem().GetButtonDown("PlaceAndRemove"_hash) && !isOutsideStage) {
 
 			//グリッド内かどうかの判定
 			if (isOverlapGridField)

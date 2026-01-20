@@ -154,7 +154,7 @@ void Direct3D::BeginDrawTransparentDepth()
 void Direct3D::Present()
 {
 	//描画内容を画面に表示
-	m_pSwapChain->Present(0, 0);
+	m_pSwapChain->Present(1, 0);
 }
 
 void Direct3D::ClearStencilView()
@@ -266,7 +266,7 @@ HRESULT Direct3D::CreateDeviceAndSwapChain(HWND hWnd, UINT width, UINT height)
 	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	sd.BufferCount = 2;
 	sd.OutputWindow = hWnd;
-	sd.Windowed = TRUE;
+	sd.Windowed = FALSE;
 	sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
 	// ドライバの種類を設定

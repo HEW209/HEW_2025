@@ -9,7 +9,8 @@ int GameState::s_currentStageNo = 0;
 GameState::GameState() :
 	m_isBlockTransparent(false),
 	m_colorBalanceMode(false),
-	m_isClearEnter(false)
+	m_isClearEnter(false),
+	m_pTutorial(nullptr)
 {
 	if (s_pInstance == nullptr) {
 
@@ -32,7 +33,14 @@ void GameState::Start()
 
 void GameState::Update()
 {
-	m_isBlockTransparent = InputManager::CurrentInputSystem().GetButtonHold("ChangeBlockTransparency"_hash);
+	if (m_isClearEnter)
+	{
+		m_isBlockTransparent = false;
+	}
+	else
+	{
+		m_isBlockTransparent = InputManager::CurrentInputSystem().GetButtonHold("ChangeBlockTransparency"_hash);
+	}
 
 	if (IsClear() && InputManager::CurrentInputSystem().GetButtonDown("Clear"_hash))
 		m_isClearEnter = true;
