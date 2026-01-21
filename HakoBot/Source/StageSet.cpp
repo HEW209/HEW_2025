@@ -157,7 +157,7 @@ void StageSet::Awake()
         transform->SetPosition(-14.0f, 0.03f, -3.0f, Space::LOCAL);
         auto renderer = obj->AddComponent<MeshRenderer>();
         renderer->LoadModel("Assets/Model/Stage/fbx/sheet.fbx");
-        renderer->SetShouldDrawShadow(true);
+        //renderer->SetShouldDrawShadow(true);
     }
 
     {

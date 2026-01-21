@@ -174,19 +174,19 @@ void GuideUIMeneController::UpdateSelect()
 	}
 
 	Vector2 input = Input::GetLeftStick();
-	if (InputManager::CurrentInputSystem().GetButtonDown("MenuUp"_hash) || input.y > 0.0f)
+	if (InputManager::CurrentInputSystem().GetButtonDown("MenuUp"_hash) || input.y > 0.5f)
 	{
 		m_menuY = 0;
 	}
-	if (InputManager::CurrentInputSystem().GetButtonDown("MenuDown"_hash) || input.y < 0.0f)
+	if (InputManager::CurrentInputSystem().GetButtonDown("MenuDown"_hash) || input.y < -0.5f)
 	{
 		m_menuY = 1;
 	}
-	if (InputManager::CurrentInputSystem().GetButtonDown("MenuLeft"_hash) || input.x < 0.0f)
+	if (InputManager::CurrentInputSystem().GetButtonDown("MenuLeft"_hash) || input.x < -0.5f)
 	{
 		m_menuX = 0;
 	}
-	if (InputManager::CurrentInputSystem().GetButtonDown("MenuRight"_hash) || input.x > 0.0f)
+	if (InputManager::CurrentInputSystem().GetButtonDown("MenuRight"_hash) || input.x > 0.5f)
 	{
 		m_menuX = 1;
 	}
