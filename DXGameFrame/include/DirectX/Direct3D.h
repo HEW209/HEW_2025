@@ -24,9 +24,10 @@ public:
 	 * @param hWnd ウィンドウハンドル
 	 * @param width クライアント領域の幅
 	 * @param height クライアント領域の高さ
+	 * @param fullScreen フルスクリーン設定
 	 * @return 成功したかを返す
 	 */
-	HRESULT Init(HWND hWnd, UINT width, UINT height);
+	HRESULT Init(HWND hWnd, UINT width, UINT height, bool fullScreen);
 
 	/**
 	 * @brief DirectXの終了処理
@@ -163,9 +164,10 @@ private:
 	 * @param hWnd ウィンドウハンドル
 	 * @param width クライアント領域の幅
 	 * @param height クライアント領域の高さ
+	 * @param fullScreen フルスクリーン設定
 	 * @return 成功したかを返す
 	 */
-	HRESULT CreateDeviceAndSwapChain(HWND hWnd, UINT width, UINT height);
+	HRESULT CreateDeviceAndSwapChain(HWND hWnd, UINT width, UINT height, bool fullScreen);
 
 	/**
 	 * @brief レンダーターゲットビュー・深度ステンシルビューを作成しセットする
