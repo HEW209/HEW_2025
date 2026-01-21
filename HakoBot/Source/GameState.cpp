@@ -1,6 +1,7 @@
 #include "GameState.h"
 #include "InputManager.h"
 #include <GameFrame/Time.h>
+#include "SoundManager.h"
 
 GameState* GameState::s_pInstance = nullptr;
 int GameState::s_currentStageNo = 0;
@@ -36,7 +37,11 @@ void GameState::Update()
 	m_isBlockTransparent = InputManager::CurrentInputSystem().GetButtonHold("ChangeBlockTransparency"_hash);
 
 	if (IsClear() && InputManager::CurrentInputSystem().GetButtonDown("Clear"_hash))
+	{
+		SoundManager::StopAll();
 		m_isClearEnter = true;
+	}
+		
 
 #ifdef _DEBUG
 	float deltaTime = Time::GetDeltaTime();

@@ -4,6 +4,7 @@
 #include "InputManager.h"
 #include "Easing.h"
 #include "ResultController.h"
+#include "SoundManager.h"
 
 static const float CAMERA_ANGLE_X = 20.0f;
 static float START_CAMERA_DISTANCE = 3.2f;
@@ -94,6 +95,7 @@ void ClearProduce::Update()
 	else if (m_count < 90)
 	{
 		if (m_count == 60) {
+			SoundManager::PlaySE("Cracker", 1.0f, false);
 			for (auto&& r : m_effectRenderers) {
 				r->Play();
 			}

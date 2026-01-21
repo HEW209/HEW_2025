@@ -17,8 +17,8 @@ InputUI::InputUI() :
     m_basicTexts(),
     m_basicButtons(),
     m_buttonLB(nullptr),
-    m_specialTexts(nullptr),
-    m_specialButtons(nullptr)
+    m_specialTexts(),
+    m_specialButtons()
 {
 }
 

@@ -8,30 +8,98 @@ SoundPlayer SoundManager::sePlayer;
 // サウンド登録
 void SoundManager::Load()
 {
-	//----------------------------- BGM登録-------------------------------------
-	//タイトルBGM
-	bgmMap["Title"];
-	if (!SoundData::LoadWave("Assets/Sound/BGM_Title.wav", bgmMap["Title"].data))
-		MessageBoxA(NULL, "BGM_Title.wav の読み込みに失敗しました", "Sound Error", MB_OK | MB_ICONWARNING);
-	//ステージ1BGM
-	bgmMap["Stage1"];
-	if(!SoundData::LoadWave("Assets/Sound/BGM_Stage.wav", bgmMap["Stage1"].data))
-		MessageBoxA(NULL, "BGM_Stage.wav の読み込みに失敗しました", "Sound Error", MB_OK | MB_ICONWARNING);
+	//----------------------------- タイトル -------------------------------------
+	//BGM
+	LoadBGMFile("Title", "Assets/Sound/BGM_Title(1).wav");
+	//決定
+	LoadSEFile("Title_Decision", "Assets/Sound/SE_Decision.wav");
+	//選択
+	LoadSEFile("Title_Select", "Assets/Sound/SE_Select.wav");
 
 
-	//------------------------------ SE登録-------------------------------------
-	//タイトルロゴ落下SE
-	seMap["TitleFall"];
-	if (!SoundData::LoadWave("Assets/Sound/SE_TitleFall.wav", seMap["TitleFall"].data))
-		MessageBoxA(NULL, "SE_TitleFall.wav の読み込みに失敗しました", "Sound Error", MB_OK | MB_ICONWARNING);
-	//タイトルロゴ着地SE
-	seMap["TitleLanding"];
-	if (!SoundData::LoadWave("Assets/Sound/SE_TitleLanding.wav", seMap["TitleLanding"].data))
-		MessageBoxA(NULL, "SE_TitleLanding.wavv の読み込みに失敗しました", "Sound Error", MB_OK | MB_ICONWARNING);
-	//箱を持つ音,置く音
-	seMap["PutBox"];
-	if(!SoundData::LoadWave("Assets/Sound/SE_putBox.wav", seMap["PutBox"].data))
-		MessageBoxA(NULL, "SE_putBox.wav の読み込みに失敗しました", "Sound Error", MB_OK | MB_ICONWARNING);
+	//-------------------------- ステージセレクト ---------------------------------
+	//BGM
+	LoadBGMFile("StageSelect", "Assets/Sound/BGM_StageSelect(1).wav");
+	//選択
+	LoadSEFile("StageSelect_Select", "Assets/Sound/SE_Slide.wav");
+	//選択(長押し)
+	//決定
+	LoadSEFile("StageSelect_Decision", "Assets/Sound/SE_Decision.wav");
+	//タイトルに戻る
+	LoadSEFile("BackToTitle", "Assets/Sound/SE_BackToTitle.wav");
+
+
+	//-------------------------- チュートリアル ---------------------------------
+	//ゲームBGM
+	LoadBGMFile("Game", "Assets/Sound/BGM_Game(1).wav");
+	//テキストボックス出現
+	LoadSEFile("Textbox_in", "Assets/Sound/SE_Decision.wav");
+	//テキストボックス退場
+	//LoadSEFile("Textbox_out", "Assets/Sound/BGM_Game(1).wav");
+	//アナウンス
+	LoadSEFile("Announcement", "Assets/Sound/SE_Select.wav");
+	//次に進む
+	LoadSEFile("Tutorial_Decision", "Assets/Sound/SE_TutorialDecision.wav");
+
+
+	//-------------------------- プレイヤー ---------------------------------
+	//移動SE
+	//ブロック持つ
+	LoadSEFile("PutBox", "Assets/Sound/SE_putBox.wav");
+	//ブロック置く（グリッド外）
+	LoadSEFile("OutGrid", "Assets/Sound/SE_putBox.wav");
+	//ブロック置く（グリッド内.正解）
+	LoadSEFile("Correct", "Assets/Sound/SE_putBox.wav");
+	//ブロック置く（グリッド内.不正解）
+	LoadSEFile("Wrong", "Assets/Sound/SE_putBox.wav");
+	//ブロック回転
+	LoadSEFile("BlockRotate", "Assets/Sound/SE_Slide.wav");
+	//高さ変更
+	//LoadSEFile("PlayerStretch", "Assets/Sound/SE_Slide.wav");
+
+
+	//-------------------------- メニュー ---------------------------------
+	//開く
+	LoadSEFile("Menu_Open", "Assets/Sound/SE_Decision.wav");
+	//閉じる
+	LoadSEFile("Menu_Close", "Assets/Sound/SE_Decision.wav");
+	//選択
+	LoadSEFile("Menu_Select", "Assets/Sound/SE_Select.wav");
+	//決定
+	LoadSEFile("Menu_Decision", "Assets/Sound/SE_Decision.wav");
+
+
+	//-------------------------- システム ---------------------------------
+	//向きロック開始
+	//LoadSEFile("CameraLock", "Assets/Sound/SE_Decision.wav");
+	//向きロック終了
+	//LoadSEFile("CameraLock_end", "Assets/Sound/SE_Decision.wav");
+	//ブロック透明化開始
+	//LoadSEFile("Transparent", "Assets/Sound/SE_Decision.wav");
+	//ブロック透明化終了
+	//LoadSEFile("Transparent_end", "Assets/Sound/SE_Decision.wav");
+
+
+	//-------------------------- リザルト ---------------------------------
+	//BGM
+	LoadBGMFile("Result", "Assets/Sound/BGM_Result.wav");
+	//出現
+	//LoadSEFile("Result_in", "Assets/Sound/SE_TitleLanding.wav");
+	//選択
+	LoadSEFile("Result_Select", "Assets/Sound/SE_Select.wav");
+	//決定
+	LoadSEFile("Result_Decision", "Assets/Sound/SE_Decision.wav");
+
+
+	//-------------------------- 演出 ---------------------------------
+	//ステージ開始時UI
+	LoadSEFile("StageStart", "Assets/Sound/SE_TitleLanding.wav");
+	//完成UI出現
+	//LoadSEFile("Completed_in", "Assets/Sound/SE_TitleLanding.wav");
+	//完成UI退場
+	//LoadSEFile("Completed_out", "Assets/Sound/SE_TitleLanding.wav");
+	//クリア（クラッカー）
+	LoadSEFile("Cracker", "Assets/Sound/SE_Cracker.wav");
 }
 
 // BGM再生
@@ -70,4 +138,32 @@ void SoundManager::StopAll()
 {
 	bgmPlayer.StopWave();
 	sePlayer.StopWave();
+}
+
+bool SoundManager::LoadBGMFile(const std::string& soundname,const std::string& filepath)
+{
+	bgmMap[soundname];
+	if (!SoundData::LoadWave(filepath, bgmMap[soundname].data))
+	{
+		std::string message = filepath + "の読み込みに失敗しました";
+		MessageBoxA(NULL, message.c_str(), "Sound Error", MB_OK | MB_ICONWARNING);
+
+		return false;
+	}
+
+	return true;
+}
+
+bool SoundManager::LoadSEFile(const std::string& soundname, const std::string& filepath)
+{
+	seMap[soundname];
+	if (!SoundData::LoadWave(filepath, seMap[soundname].data))
+	{
+		std::string message = filepath + "の読み込みに失敗しました";
+		MessageBoxA(NULL, message.c_str(), "Sound Error", MB_OK | MB_ICONWARNING);
+
+		return false;
+	}
+
+	return true;
 }

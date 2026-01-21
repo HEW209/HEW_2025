@@ -35,4 +35,7 @@ private:
 	static std::unordered_map<std::string, SE> seMap;
 	static SoundPlayer bgmPlayer;
 	static SoundPlayer sePlayer;
+
+	static bool LoadBGMFile(const std::string&soundname, const std::string&filepath);
+	static bool LoadSEFile(const std::string& soundname, const std::string& filepath);
 };

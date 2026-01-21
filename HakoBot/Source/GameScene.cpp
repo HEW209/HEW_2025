@@ -132,7 +132,7 @@ void GameScene::Init() {
     clearObj->AddComponent<ClearProduce>();
 
     // BGM再生
-    SoundManager::PlayBGM("Stage1", 0.2f, true);
+    SoundManager::PlayBGM("Game", 0.6f, true);
 
     // 使用していないリソース解放
     TextureManager::Instance().CollectGarbage();

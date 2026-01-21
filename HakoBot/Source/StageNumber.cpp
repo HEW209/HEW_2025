@@ -7,6 +7,7 @@
 #include "GameState.h"
 #include "TitleScene.h"
 #include "StageSelectScene.h"
+#include "SoundManager.h"
 
 #define STAGE_FILE "Assets/Stage/Level%d.json"
 #define FONT_SIZE (180.0f)
@@ -107,6 +108,7 @@ void StageNumber::Update()
 		if (Input::GetKeyDown(KeyCode::ENTER) ||
 			Input::GetButtonDown(PadCode::B))
 		{
+			SoundManager::PlaySE("StageSelect_Decision", 0.5f, false);
 			m_isSceneChange = true;
 			m_targetScene = TargetScene::GAME;
 			Fade::StartIrisOut();
@@ -114,6 +116,7 @@ void StageNumber::Update()
 		else if (Input::GetKeyDown(KeyCode::ESC) ||
 			Input::GetButtonDown(PadCode::BACK))
 		{
+			SoundManager::PlaySE("BackToTitle", 1.0f, false);
 			m_isSceneChange = true;
 			m_targetScene = TargetScene::TITLE;
 			Fade::StartIrisOut();
@@ -197,6 +200,8 @@ void StageNumber::SetDigitUV()
 
 void StageNumber::StageSelect()
 {
+	const int prevIndex = m_selectIndex;
+
 	// 入力取得
 	int inputSide = 0;
 	if (Input::GetLeftStick().x < 0.0f || Input::GetKeyDown(KeyCode::LEFT))
@@ -248,5 +253,11 @@ void StageNumber::StageSelect()
 	if (m_selectIndex < 1)
 	{
 		m_selectIndex = 1;
+	}
+
+	// ステージ番号が変わった時だけSE再生
+	if (m_selectIndex != prevIndex)
+	{
+		SoundManager::PlaySE("StageSelect_Select", 0.5f, false);
 	}
 }

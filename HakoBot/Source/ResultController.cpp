@@ -7,7 +7,7 @@
 #include "InputManager.h"
 #include "GameState.h"
 #include "SaveData.h"
-
+#include "SoundManager.h"
 
 //黒
 constexpr float KURO_SIZE = 1350.0f;
@@ -67,6 +67,8 @@ ResultController::ResultController():
 
 void ResultController::Start()
 {
+	SoundManager::PlayBGM("Result", 0.5f, true);
+
 	//フェード
 	auto fade = GetGameObject()->AddComponent<SpriteRenderer>();
 	fade->SetUI(true);
@@ -211,6 +213,7 @@ void ResultController::SelectUpdate()
 	if ((Input::GetLeftStick().y > 0.0f && Input::GetLastLeftStick().y <= 0.0f) || 
 		Input::GetKeyDown(KeyCode::UP) || Input::GetKeyDown(KeyCode::W))
 	{
+		SoundManager::PlaySE("Result_Select", 1.0f, false);
 		m_currentSelect --;
 		if (m_currentSelect < 0)
 		{
@@ -222,6 +225,7 @@ void ResultController::SelectUpdate()
 	if ((Input::GetLeftStick().y < 0.0f && Input::GetLastLeftStick().y >= 0.0f) ||
 		Input::GetKeyDown(KeyCode::DOWN) || Input::GetKeyDown(KeyCode::S))
 	{
+		SoundManager::PlaySE("Result_Select", 1.0f, false);
 		m_currentSelect ++;
 		if (m_currentSelect >= Select::COUNT)
 		{
@@ -254,6 +258,7 @@ void ResultController::SelectUpdate()
 	//Enter B
 	if (InputManager::CurrentInputSystem().GetButtonDown("ResultSelect"_hash))
 	{
+		SoundManager::PlaySE("Result_Decision", 1.0f, false);
 		m_state = ResultState::END;
 		Fade::StartIrisOut();//フェード
 	}

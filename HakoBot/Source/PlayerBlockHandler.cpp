@@ -54,6 +54,8 @@ void PlayerBlockHandler::LateUpdate()
 	auto playerTransform = GetTransform();
 	auto holderTransform = m_pBlockHolder->GetTransform();
 
+	const bool isHoldingBlock = !m_pBlockObject->GetBlockSet().blocks.empty();
+
 
 	Vector3 blockOffset{ 0.0f, 1.5f, 0.0f };
 	//地面に設置させるために計算
@@ -63,10 +65,18 @@ void PlayerBlockHandler::LateUpdate()
 
 
 	if (InputManager::CurrentInputSystem().GetButtonDown("RotateBlockRight"_hash)) {
+		if (isHoldingBlock)
+		{
+			SoundManager::PlaySE("BlockRotate", 1.0f, false);
+		}
 		holderTransform->Rotate(0.0f, -90.0f, 0.0f);
 
 	}
 	if (InputManager::CurrentInputSystem().GetButtonDown("RotateBlockLeft"_hash)) {
+		if (isHoldingBlock)
+		{
+			SoundManager::PlaySE("BlockRotate", 1.0f, false);
+		}
 		holderTransform->Rotate(0.0f, 90.0f, 0.0f);
 
 	}
