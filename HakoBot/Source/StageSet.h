@@ -20,5 +20,7 @@ private:
 	ObjPtr<MeshRenderer> m_pRightPillar;
 	MeshGroup::AnimeNo m_fanAnim;
 
+	void SetTransparent(MeshRenderer* renderer, float transparency);
+
 	float m_time;
 };

@@ -60,14 +60,14 @@ float4 main(PS_IN pin) : SV_TARGET
     float3 rimLight = rim * rimAmount;
     
     // シャドウマップ座標への変換
-    float4 shadowPos = mul(pin.wPos, lightViewProj);
-    shadowPos.xyz /= shadowPos.w;
-    shadowPos.xy = shadowPos.xy * float2(0.5, -0.5) + 0.5;
+    //float4 shadowPos = mul(pin.wPos, lightViewProj);
+    //shadowPos.xyz /= shadowPos.w;
+    //shadowPos.xy = shadowPos.xy * float2(0.5, -0.5) + 0.5;
 
     // PCSS 計算
-    float pcssShadow = CalcPCSS(shadowPos, pin.pos.xy);
+    //float pcssShadow = CalcPCSS(shadowPos, pin.pos.xy);
     
-    float3 directLight = (diffuse + specular) * pcssShadow;
+    float3 directLight = (diffuse + specular)/* * pcssShadow*/;
 
     float3 finalColor = ambient + directLight + reflection + rimLight;
     

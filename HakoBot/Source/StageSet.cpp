@@ -43,7 +43,7 @@ void StageSet::Awake()
         transform->SetEulerAngle(0.0f, 270.0f, 0.0f, Space::LOCAL);
         auto renderer = obj->AddComponent<MeshRenderer>();
         renderer->LoadModel("Assets/Model/Stage/fbx/Conveyor_frame.fbx");
-        renderer->SetShouldDrawShadow(true);
+        //renderer->SetShouldDrawShadow(true);
     }
 
     {
@@ -54,7 +54,7 @@ void StageSet::Awake()
         transform->SetEulerAngle(0.0f, 270.0f, 0.0f, Space::LOCAL);
         auto renderer = obj->AddComponent<MeshRenderer>();
         renderer->LoadModel("Assets/Model/Stage/fbx/Conveyors.fbx");
-        renderer->SetShouldDrawShadow(true);
+        //renderer->SetShouldDrawShadow(true);
         renderer->GetMaterial(0)->SetPixelShader("Assets/Shader/UVScroll_PS.cso");
         struct Params {
             Vector2 uvOffset = { 0.0f, 0.0f };
@@ -69,7 +69,7 @@ void StageSet::Awake()
         transform->SetParent(GetTransform());
         auto renderer = obj->AddComponent<MeshRenderer>();
         renderer->LoadModel("Assets/Model/Stage/fbx/outlet.fbx");
-        renderer->SetShouldDrawShadow(true);
+        //renderer->SetShouldDrawShadow(true);
     }
 
     {
@@ -158,7 +158,7 @@ void StageSet::Awake()
         transform->SetPosition(-14.0f, 0.03f, -3.0f, Space::LOCAL);
         auto renderer = obj->AddComponent<MeshRenderer>();
         renderer->LoadModel("Assets/Model/Stage/fbx/sheet.fbx");
-        renderer->SetShouldDrawShadow(true);
+        //renderer->SetShouldDrawShadow(true);
     }
 
     {
@@ -257,6 +257,7 @@ void StageSet::Update()
 {
     m_time += Time::GetDeltaTime();
 
+    // コンベアUVスクロール
     struct Params {
         Vector2 uvOffset;
     } params;
@@ -266,158 +267,54 @@ void StageSet::Update()
 	Camera* pCamera = Camera::GetMain();
     Vector3 cameraDir = pCamera->GetTransform()->GetQuaternion() * Vector3::forward;
     {
-		float dot = static_cast<Vec3>(cameraDir).Dot(Vec3::Left());
-		float transparency = 1.0f - Math::Clamp01(dot);
-
-        if (transparency < 1.0f) {
-            m_pRightWall->SetTransparent(true);
-            for (auto&& material : *m_pRightWall->GetMaterials()) {
-                material.SetBlendState(BlendState::ALPHA);
-                material.SetDepthStencilState(DepthStencilState::READ_ONLY);
-                struct TransparentParam
-                {
-                    float transparency;
-                    Vector3 pad;
-                } transparentParam = { transparency, Vector3::zero };
-                material.SetParameter(&transparentParam, sizeof(TransparentParam));
-            }
-        }
-        else {
-			m_pRightWall->SetTransparent(false);
-            for (auto&& material : *m_pRightWall->GetMaterials()) {
-                material.SetBlendState(BlendState::DEFAULT);
-                material.SetDepthStencilState(DepthStencilState::DEFAULT);
-                struct TransparentParam
-                {
-                    float transparency;
-                    Vector3 pad;
-                } transparentParam = { 1.0f, Vector3::zero };
-                material.SetParameter(&transparentParam, sizeof(TransparentParam));
-            }
-        }
+        float dot = static_cast<Vec3>(cameraDir).Dot(Vec3::Left());
+        float transparency = 1.0f - Math::Clamp01(dot);
+        SetTransparent(m_pRightWall.Get(), transparency);
     }
     {
         float dot = static_cast<Vec3>(cameraDir).Dot(Vec3::Right());
         float transparency = 1.0f - Math::Clamp01(dot);
-
-        if (transparency < 1.0f) {
-            m_pLeftWall->SetTransparent(true);
-            for (auto&& material : *m_pLeftWall->GetMaterials()) {
-                material.SetBlendState(BlendState::ALPHA);
-                material.SetDepthStencilState(DepthStencilState::READ_ONLY);
-                struct TransparentParam
-                {
-                    float transparency;
-                    Vector3 pad;
-                } transparentParam = { transparency, Vector3::zero };
-                material.SetParameter(&transparentParam, sizeof(TransparentParam));
-            }
-        }
-        else {
-            m_pLeftWall->SetTransparent(false);
-            for (auto&& material : *m_pLeftWall->GetMaterials()) {
-                material.SetBlendState(BlendState::DEFAULT);
-                material.SetDepthStencilState(DepthStencilState::DEFAULT);
-                struct TransparentParam
-                {
-                    float transparency;
-                    Vector3 pad;
-                } transparentParam = { 1.0f, Vector3::zero };
-                material.SetParameter(&transparentParam, sizeof(TransparentParam));
-            }
-        }
+        SetTransparent(m_pLeftWall.Get(), transparency);
     }
     {
         float dot = static_cast<Vec3>(cameraDir).Dot(Vec3::Back());
         float transparency = 1.0f - Math::Clamp01(dot);
-
-        if (transparency < 1.0f) {
-            m_pMiddleWall->SetTransparent(true);
-            for (auto&& material : *m_pMiddleWall->GetMaterials()) {
-                material.SetBlendState(BlendState::ALPHA);
-                material.SetDepthStencilState(DepthStencilState::READ_ONLY);
-                struct TransparentParam
-                {
-                    float transparency;
-                    Vector3 pad;
-                } transparentParam = { transparency, Vector3::zero };
-                material.SetParameter(&transparentParam, sizeof(TransparentParam));
-            }
-        }
-        else {
-            m_pMiddleWall->SetTransparent(false);
-            for (auto&& material : *m_pMiddleWall->GetMaterials()) {
-                material.SetBlendState(BlendState::DEFAULT);
-                material.SetDepthStencilState(DepthStencilState::DEFAULT);
-                struct TransparentParam
-                {
-                    float transparency;
-                    Vector3 pad;
-                } transparentParam = { 1.0f, Vector3::zero };
-                material.SetParameter(&transparentParam, sizeof(TransparentParam));
-            }
-        }
+        SetTransparent(m_pMiddleWall.Get(), transparency);
     }
     {
         float dot = static_cast<Vec3>(cameraDir).Dot(Vec3::Left());
         float transparency = 1.0f - Math::Clamp01(dot);
-
-        if (transparency < 1.0f) {
-            m_pRightPillar->SetTransparent(true);
-            for (auto&& material : *m_pRightPillar->GetMaterials()) {
-                material.SetBlendState(BlendState::ALPHA);
-                material.SetDepthStencilState(DepthStencilState::READ_ONLY);
-                struct TransparentParam
-                {
-                    float transparency;
-                    Vector3 pad;
-                } transparentParam = { transparency, Vector3::zero };
-                material.SetParameter(&transparentParam, sizeof(TransparentParam));
-            }
-        }
-        else {
-            m_pRightPillar->SetTransparent(false);
-            for (auto&& material : *m_pRightPillar->GetMaterials()) {
-                material.SetBlendState(BlendState::DEFAULT);
-                material.SetDepthStencilState(DepthStencilState::DEFAULT);
-                struct TransparentParam
-                {
-                    float transparency;
-                    Vector3 pad;
-                } transparentParam = { 1.0f, Vector3::zero };
-                material.SetParameter(&transparentParam, sizeof(TransparentParam));
-            }
-        }
+        SetTransparent(m_pRightPillar.Get(), transparency);
     }
     {
         float dot = static_cast<Vec3>(cameraDir).Dot(Vec3::Right());
         float transparency = 1.0f - Math::Clamp01(dot);
+        SetTransparent(m_pLeftPillar.Get(), transparency);
+    }
+}
 
-        if (transparency < 1.0f) {
-            m_pLeftPillar->SetTransparent(true);
-            for (auto&& material : *m_pLeftPillar->GetMaterials()) {
-                material.SetBlendState(BlendState::ALPHA);
-                material.SetDepthStencilState(DepthStencilState::READ_ONLY);
-                struct TransparentParam
-                {
-                    float transparency;
-                    Vector3 pad;
-                } transparentParam = { transparency, Vector3::zero };
-                material.SetParameter(&transparentParam, sizeof(TransparentParam));
-            }
+void StageSet::SetTransparent(MeshRenderer* renderer, float transparency)
+{
+    if (transparency < 1.0f) {
+        renderer->SetTransparent(true);
+        for (auto&& material : *renderer->GetMaterials()) {
+            material.SetBlendState(BlendState::ALPHA);
+            material.SetDepthStencilState(DepthStencilState::READ_ONLY);
+            material.SetPixelShader("Assets/Shader/Transparent_PS.cso");
+            struct TransparentParam
+            {
+                float transparency;
+                Vector3 pad;
+            } transparentParam = { transparency, Vector3::zero };
+            material.SetParameter(&transparentParam, sizeof(TransparentParam));
         }
-        else {
-            m_pLeftPillar->SetTransparent(false);
-            for (auto&& material : *m_pLeftPillar->GetMaterials()) {
-                material.SetBlendState(BlendState::DEFAULT);
-                material.SetDepthStencilState(DepthStencilState::DEFAULT);
-                struct TransparentParam
-                {
-                    float transparency;
-                    Vector3 pad;
-                } transparentParam = { 1.0f, Vector3::zero };
-                material.SetParameter(&transparentParam, sizeof(TransparentParam));
-            }
+    }
+    else {
+        renderer->SetTransparent(false);
+        for (auto&& material : *renderer->GetMaterials()) {
+            material.SetBlendState(BlendState::DEFAULT);
+            material.SetDepthStencilState(DepthStencilState::DEFAULT);
+            material.SetPixelShader("Assets/Shader/Default_PS.cso");
         }
     }
 }

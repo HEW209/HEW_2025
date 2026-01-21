@@ -229,76 +229,82 @@ void RenderSystem::DrawAll3D()
 	// パイプラインステートをリセット
 	PipelineStateManager::Instance().Refresh();
 
-	// 3D描画処理
-	for (auto* renderer : m_pRendererComponents)
-	{
-		if (renderer->IsEnabled() &&
-			renderer->IsStarted() &&
-			renderer->GetGameObject()->IsActiveHierarchy() &&
-			!renderer->IsTransparent())
-		{
-			renderer->Draw();
-		}
-	}
-
-	// 3D透過オブジェクト描画処理
 	// 描画順ソートの準備
-	struct TransparentRendererInfo
+	struct RendererInfo
 	{
 		Renderer* pRenderer;
 		float cameraDistance = 0.0f;
 	};
-	std::vector<TransparentRendererInfo> transparentRenderer;		// 透過描画オブジェクト配列
+	std::vector<RendererInfo> rendererInfos;				// 描画オブジェクト情報
+	std::vector<RendererInfo> transparentRendererInfos;		// 透過描画オブジェクト情報
+
+	// カメラ座礁取得
 	Vector3 cameraPos;
 	if (pMainCamera != nullptr)
 	{
 		cameraPos = pMainCamera->GetTransform()->GetPosition();
 	}
 
-	// 透過オブジェクト描画準備
-	Direct3D::Instance().BeginDrawTransparentDepth();
-	
+	// 描画オブジェクト登録
 	for (auto* renderer : m_pRendererComponents)
 	{
 		if (renderer->IsEnabled() &&
 			renderer->IsStarted() &&
-			renderer->GetGameObject()->IsActiveHierarchy() &&
-			renderer->IsGroupTransparent())
+			renderer->GetGameObject()->IsActiveHierarchy())
 		{
-			renderer->DrawDepth();
+			// 描画オブジェクト情報登録
+			RendererInfo info;
+			info.pRenderer = renderer;
+			Vector3 rendererPos = renderer->GetTransform()->GetPosition();
+			info.cameraDistance = (cameraPos - rendererPos).Magnitude();
+
+			if (renderer->IsTransparent())
+			{
+				transparentRendererInfos.emplace_back(info);
+			}
+			else
+			{
+				rendererInfos.emplace_back(info);
+			}
+		}
+	}
+
+	// カメラ距離でソート (手前から描画)
+	std::stable_sort(rendererInfos.begin(), rendererInfos.end(),
+		[](RendererInfo a, RendererInfo b) {
+			return a.cameraDistance < b.cameraDistance;
+		});
+
+	// 3D描画処理
+	for (auto& info : rendererInfos)
+	{
+		info.pRenderer->Draw();
+	}
+
+	// 透過オブジェクト描画準備
+	Direct3D::Instance().BeginDrawTransparentDepth();
+	
+	for (auto& info : transparentRendererInfos)
+	{
+		if (info.pRenderer->IsGroupTransparent())
+		{
+			info.pRenderer->DrawDepth();
 		}
 	}
 
 	Direct3D::Instance().BeginDraw();
 	Direct3D::Instance().SetTransparentDepthMap();
 
-	// 透過オブジェクト登録
-	for (auto* renderer : m_pRendererComponents)
-	{
-		if (renderer->IsEnabled() &&
-			renderer->IsStarted() &&
-			renderer->GetGameObject()->IsActiveHierarchy() &&
-			renderer->IsTransparent())
-		{
-			// 透過オブジェクト情報登録
-			TransparentRendererInfo info;
-			info.pRenderer = renderer;
-			Vector3 rendererPos = renderer->GetTransform()->GetPosition();
-			info.cameraDistance = (cameraPos - rendererPos).Magnitude();
-			transparentRenderer.emplace_back(info);
-		}
-	}
-
-	// カメラ距離でソート
-	std::stable_sort(transparentRenderer.begin(), transparentRenderer.end(),
-		[](TransparentRendererInfo a, TransparentRendererInfo b) {
+	// カメラ距離でソート (奥から描画)
+	std::stable_sort(transparentRendererInfos.begin(), transparentRendererInfos.end(),
+		[](RendererInfo a, RendererInfo b) {
 			return a.cameraDistance > b.cameraDistance;
 		});
 
 	// 透過オブジェクト描画
-	for (auto& rendererInfo : transparentRenderer)
+	for (auto& info : transparentRendererInfos)
 	{
-		rendererInfo.pRenderer->Draw();
+		info.pRenderer->Draw();
 	}
 }
 
