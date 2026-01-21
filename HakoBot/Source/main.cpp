@@ -131,7 +131,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	int clientW = clientRc.right - clientRc.left;
 	int clientH = clientRc.bottom - clientRc.top;
 
-	if (FAILED(Direct3D::Instance().Init(hWnd, clientW, clientH)))
+	bool fullScreen = true;
+#ifdef _DEBUG
+	fullScreen = false;
+#endif // _DEBUG
+
+
+	if (FAILED(Direct3D::Instance().Init(hWnd, clientW, clientH, fullScreen)))
 	{
 		Debug::ErrorMessage("Direct3Dの初期化に失敗しました");
 		return 0;
@@ -211,10 +217,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	switch (message)
 	{
 	case WM_CLOSE:
-		if (IDNO == MessageBox(hWnd, "終了しますか？", "終了確認", MB_YESNO))
-		{
-			return 0;
-		}
+		//if (IDNO == MessageBox(hWnd, "終了しますか？", "終了確認", MB_YESNO))
+		//{
+		//	return 0;
+		//}
 		break;
 
 	case WM_DESTROY:

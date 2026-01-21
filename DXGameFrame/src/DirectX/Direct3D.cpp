@@ -24,12 +24,12 @@ Direct3D::Direct3D() :
 {
 }
 
-HRESULT Direct3D::Init(HWND hWnd, UINT width, UINT height)
+HRESULT Direct3D::Init(HWND hWnd, UINT width, UINT height, bool fullScreen)
 {
 	HRESULT hr = S_OK;		// 関数の結果
 
 	// デバイス・スワップチェインを作成
-	hr = CreateDeviceAndSwapChain(hWnd, width, height);
+	hr = CreateDeviceAndSwapChain(hWnd, width, height, fullScreen);
 	if (FAILED(hr)) { return hr; }
 
 	// レンダーターゲットビュー・深度ステンシルビューを作成
@@ -154,7 +154,7 @@ void Direct3D::BeginDrawTransparentDepth()
 void Direct3D::Present()
 {
 	//描画内容を画面に表示
-	m_pSwapChain->Present(0, 0);
+	m_pSwapChain->Present(1, 0);
 }
 
 void Direct3D::ClearStencilView()
@@ -251,7 +251,7 @@ void Direct3D::SetTransparentDepthMap()
 	);
 }
 
-HRESULT Direct3D::CreateDeviceAndSwapChain(HWND hWnd, UINT width, UINT height)
+HRESULT Direct3D::CreateDeviceAndSwapChain(HWND hWnd, UINT width, UINT height, bool fullScreen)
 {
 	HRESULT hr = S_OK;		// 関数の結果
 
@@ -266,7 +266,7 @@ HRESULT Direct3D::CreateDeviceAndSwapChain(HWND hWnd, UINT width, UINT height)
 	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	sd.BufferCount = 2;
 	sd.OutputWindow = hWnd;
-	sd.Windowed = FALSE;
+	sd.Windowed = fullScreen ? FALSE : TRUE;
 	sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
 	// ドライバの種類を設定

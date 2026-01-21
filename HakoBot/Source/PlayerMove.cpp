@@ -179,14 +179,20 @@ void PlayerMove::Update()
 	material->SetParameter(&m_uvOffset, sizeof(m_uvOffset));
 
 	// 向きロック
-	m_IsDirLock = InputManager::CurrentInputSystem().InputSystem::GetButtonHold("LockRotation"_hash);
-
-	if (m_IsDirLock)	// ロック中
+	if(InputManager::CurrentInputSystem().InputSystem::GetButtonHold("LockRotation"_hash))
 	{
+		m_IsDirLock = true;
 		m_pHead->GetTransform()->SetQuaternion(m_HeadQuaternion, Space::WORLD);
 	}
 	else
 	{
+		// 解除時は胴体の向き優先
+		if (m_IsDirLock)
+		{
+			GetTransform()->SetQuaternion(m_HeadQuaternion);
+		}
+
+		m_IsDirLock = false;
 		m_pHead->GetTransform()->SetQuaternion(Quaternion::identity, Space::LOCAL);
 		m_HeadQuaternion = GetTransform()->GetQuaternion();
 	}

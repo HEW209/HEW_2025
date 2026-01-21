@@ -8,6 +8,7 @@
 #include "TitlePlayer.h"
 #include "Fade.h"
 #include "GameState.h"
+#include "TitleStage.h"
 
 bool TitleScene::s_isFirst = true;
 
@@ -61,7 +62,7 @@ void TitleScene::Init()
     // 地形
     {
         // 床
-        Vector3 posOffset(-6.0f, 0.0f, 3.0f);
+        /*Vector3 posOffset(-6.0f, 0.0f, 3.0f);
         int stageSize_x = 30;
         int stageSize_z = 16;
         float blockScale = 1.0f;
@@ -76,10 +77,10 @@ void TitleScene::Init()
                 obj->GetTransform()->SetPosition(pos + posOffset);
                 obj->GetTransform()->SetScale(0.25f, 0.25f, 0.25f);
             }
-        }
+        }*/
 
         // 柵
-        posOffset = Vector3(-6.0f, 0.0f, 10.5f);
+        /*posOffset = Vector3(-6.0f, 0.0f, 10.5f);
         for (int x = 0; x < stageSize_x; ++x) {
             if (x % 2 == 0)
                 continue;
@@ -93,7 +94,13 @@ void TitleScene::Init()
             renderer->SetShouldDrawShadow(true);
             obj->GetTransform()->SetPosition(pos + posOffset);
             obj->GetTransform()->SetEulerAngle(0.0f, 90.0f, 0.0f);
-        }
+        }*/
+
+		// ステージ
+		{
+			auto obj = CreateGameObject();
+			obj->AddComponent<TitleStage>();
+		}
     }
 
     // プレイヤー
