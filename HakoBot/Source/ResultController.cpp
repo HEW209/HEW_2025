@@ -7,6 +7,7 @@
 #include "InputManager.h"
 #include "GameState.h"
 #include "SaveData.h"
+#include "StageNumber.h"
 
 
 //黒
@@ -132,9 +133,11 @@ void ResultController::Start()
 	reMozi->SetOffsetPos(RE_POS_X_START, RE_POS_Y_START);
 	m_selectText[Select::RESTART] = reMozi;
 
-	
-
-
+	if (GameState::GetInstance()->GetCurrentStegaNo() >= StageCount)
+	{
+		m_selectText[Select::NEXT]->SetEnabled(false);
+		m_currentSelect = Select::STAGE_SELECT;
+	}
 }
 
 void ResultController::Update()
@@ -207,11 +210,14 @@ void ResultController::MoveUpdate()
 
 void ResultController::SelectUpdate()
 {
+	bool isUp = false;
+
 	//上選択
 	if ((Input::GetLeftStick().y > 0.0f && Input::GetLastLeftStick().y <= 0.0f) || 
 		Input::GetKeyDown(KeyCode::UP) || Input::GetKeyDown(KeyCode::W))
 	{
-		m_currentSelect --;
+		isUp = true;
+		m_currentSelect--;
 		if (m_currentSelect < 0)
 		{
 			m_currentSelect += Select::COUNT;
@@ -222,10 +228,33 @@ void ResultController::SelectUpdate()
 	if ((Input::GetLeftStick().y < 0.0f && Input::GetLastLeftStick().y >= 0.0f) ||
 		Input::GetKeyDown(KeyCode::DOWN) || Input::GetKeyDown(KeyCode::S))
 	{
-		m_currentSelect ++;
+		isUp = false;
+		m_currentSelect++;
 		if (m_currentSelect >= Select::COUNT)
 		{
 			m_currentSelect -= Select::COUNT;
+		}
+	}
+
+	// 次のステージを選択できなくする
+	if (GameState::GetInstance()->GetCurrentStegaNo() >= StageCount &&
+		m_currentSelect == Select::NEXT)
+	{
+		if (isUp)
+		{
+			m_currentSelect--;
+			if (m_currentSelect < 0)
+			{
+				m_currentSelect += Select::COUNT;
+			}
+		}
+		else
+		{
+			m_currentSelect++;
+			if (m_currentSelect >= Select::COUNT)
+			{
+				m_currentSelect -= Select::COUNT;
+			}
 		}
 	}
 
