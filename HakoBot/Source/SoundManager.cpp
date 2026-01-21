@@ -47,11 +47,11 @@ void SoundManager::Load()
 	//ブロック持つ
 	LoadSEFile("PutBox", "Assets/Sound/SE_putBox.wav");
 	//ブロック置く（グリッド外）
-	LoadSEFile("OutGrid", "Assets/Sound/SE_putBox.wav");
+	LoadSEFile("OutGrid", "Assets/Sound/SE_OutGrid.wav");
 	//ブロック置く（グリッド内.正解）
-	LoadSEFile("Correct", "Assets/Sound/SE_putBox.wav");
+	LoadSEFile("Correct", "Assets/Sound/SE_Correct.wav");
 	//ブロック置く（グリッド内.不正解）
-	LoadSEFile("Wrong", "Assets/Sound/SE_putBox.wav");
+	LoadSEFile("Wrong", "Assets/Sound/SE_Wrong.wav");
 	//ブロック回転
 	LoadSEFile("BlockRotate", "Assets/Sound/SE_Slide.wav");
 	//高さ変更
