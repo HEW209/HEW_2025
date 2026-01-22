@@ -50,6 +50,12 @@ void EffectManager::BeginDraw()
 
 void EffectManager::EndDraw()
 {
+	// エフェクトの描画を行う。
+	Effekseer::Manager::DrawParameter drawParameter;
+	drawParameter.ZNear = 0.0f;
+	drawParameter.ZFar = 1.0f;
+	drawParameter.ViewProjectionMatrix = m_effectRendererRef->GetCameraProjectionMatrix();
+	m_effectManager->Draw();
 	m_effectRendererRef->EndRendering();
 }
 

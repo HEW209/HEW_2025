@@ -4,10 +4,12 @@
 #include <string>
 #include <Windows.h>
 #include <GameFrame/RenderSystem.h>
+#include <GameFrame/Time.h>
 
 
 
-EffectRenderer::EffectRenderer()
+EffectRenderer::EffectRenderer() :
+    m_handle(-1)
 {
     RenderSystem::Instance().RegisterEffect(this);
 }
@@ -28,12 +30,20 @@ void EffectRenderer::Draw()
     DirectX::XMMATRIX matrix = GetTransform()->GetWorldMatrix();
     manager->SetMatrix(m_handle, ConvertXMMatrixToEffekseerMatrix43(matrix));
     // エフェクトの描画を行う。
-    Effekseer::Manager::DrawParameter drawParameter;
-    drawParameter.ZNear = 0.0f;
-    drawParameter.ZFar = 1.0f;
-    drawParameter.ViewProjectionMatrix = renderer->GetCameraProjectionMatrix();
-    manager->Draw(drawParameter);
+    //Effekseer::Manager::DrawParameter drawParameter;
+    //drawParameter.ZNear = 0.0f;
+    //drawParameter.ZFar = 1.0f;
+    //drawParameter.ViewProjectionMatrix = renderer->GetCameraProjectionMatrix();
 
+
+    //manager->Draw(drawParameter);
+
+    //static float sceneTime = 0.0f;
+    //if (sceneTime != Time::GetSceneTime())
+    //{
+    //    manager->Draw(drawParameter);
+    //    sceneTime = Time::GetSceneTime();
+    //}
 }
 
 void EffectRenderer::Load(const std::string& fileName)
@@ -64,7 +74,6 @@ void EffectRenderer::Play()
 void EffectRenderer::Stop()
 {
     EffectManager::Instance().GetEffectManager()->StopEffect(m_handle);
-
 }
 
 
