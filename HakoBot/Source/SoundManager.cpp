@@ -83,10 +83,10 @@ void SoundManager::Load()
 
 
 	//-------------------------- リザルト ---------------------------------
-	//BGM
-	LoadBGMFile("Result", "Assets/Sound/BGM_Result.wav");
-	//出現
-	//LoadSEFile("Result_in", "Assets/Sound/SE_TitleLanding.wav");
+	//BGM開始
+	LoadBGMFile("ResultStart", "Assets/Sound/BGM_ResultStart.wav");
+	//BGMループ
+	LoadBGMFile("ResultLoop", "Assets/Sound/BGM_ResultLoop.wav");
 	//選択
 	LoadSEFile("Result_Select", "Assets/Sound/SE_Select.wav");
 	//決定
@@ -163,6 +163,11 @@ void SoundManager::StopAll()
 {
 	StopBGM();
 	StopSE();
+}
+
+bool SoundManager::IsBGMPlaying()
+{
+	return bgmPlayer.IsPlaying();
 }
 
 bool SoundManager::LoadBGMFile(const std::string& soundname,const std::string& filepath)

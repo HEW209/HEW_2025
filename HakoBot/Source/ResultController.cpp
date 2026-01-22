@@ -61,14 +61,14 @@ constexpr float ILLUST_POS_Y_START = -5.2f;
 
 
 ResultController::ResultController():
-	m_state(ResultState::MOVE), m_currentSelect(0), m_resultTime(0.0f)
+	m_state(ResultState::MOVE), m_currentSelect(0), m_resultTime(0.0f), m_isStartedBGMLoop(false)
 {
 
 }
 
 void ResultController::Start()
 {
-	SoundManager::PlayBGM("Result", 0.5f, true);
+	SoundManager::PlayBGM("ResultStart", 1.0f, false);
 
 	//フェード
 	auto fade = GetGameObject()->AddComponent<SpriteRenderer>();
@@ -159,7 +159,11 @@ void ResultController::Update()
 		break;
 	}
 	
-	
+	if (!m_isStartedBGMLoop && !SoundManager::IsBGMPlaying())
+	{
+		SoundManager::PlayBGM("ResultLoop", 1.0f, true);
+		m_isStartedBGMLoop = true;
+	}
 }
 
 void ResultController::MoveUpdate()

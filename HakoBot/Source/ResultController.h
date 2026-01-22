@@ -39,4 +39,6 @@ private:
 	};
 
 	int m_currentSelect;
+
+	bool m_isStartedBGMLoop;
 };

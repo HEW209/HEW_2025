@@ -21,6 +21,9 @@ public:
 	// 全てのサウンド停止
 	static void StopAll();
 
+	// BGM再生中か
+	static bool IsBGMPlaying();
+
 private:
 	struct BGM
 	{
