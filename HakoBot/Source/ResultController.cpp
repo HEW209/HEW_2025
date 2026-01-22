@@ -279,7 +279,6 @@ void ResultController::SelectUpdate()
 	Vector2 offsetPos(SELECT_POS_X_END, SELECT_POS_Y_END);
 	for (int i = 0; i < Select::COUNT; ++i)
 	{
-		float targetSize;
 		if (m_currentSelect == i)
 		{
 			m_selectText[i]->LoadTexture(g_activeText[i], false);
@@ -305,7 +304,7 @@ void ResultController::SelectUpdate()
 	{
 		SoundManager::PlaySE("Result_Decision", 1.0f, false);
 		m_state = ResultState::END;
-		Fade::StartIrisOut();//フェード
+		Fade::StartIconIrisOut();//フェード
 	}
 
 }

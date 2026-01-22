@@ -55,7 +55,7 @@ void TitleScene::Init()
         }
         else
         {
-            Fade::StartIrisIn();
+            Fade::StartIconIrisIn();
         }
     }
 
