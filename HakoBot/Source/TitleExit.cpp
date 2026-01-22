@@ -4,6 +4,7 @@
 #include "InputManager.h"
 #include "SaveData.h"
 #include "Fade.h"
+#include "SoundManager.h"
 
 TitleExit::TitleExit():
 	m_newGameText(nullptr),
@@ -63,10 +64,12 @@ void TitleExit::Update()
 	{
 		if (InputManager::CurrentInputSystem().GetButtonDown("MenuUp"_hash))
 		{
+			SoundManager::PlaySE("Title_Select", 1.0f, false);
 			m_isNewGame = !m_isNewGame;
 		}
 		if (InputManager::CurrentInputSystem().GetButtonDown("MenuDown"_hash))
 		{
+			SoundManager::PlaySE("Title_Select", 1.0f, false);
 			m_isNewGame = !m_isNewGame;
 		}
 
@@ -94,6 +97,7 @@ void TitleExit::Update()
 
 		if (InputManager::CurrentInputSystem().GetButtonDown("MenuInteract"_hash))
 		{
+			SoundManager::PlaySE("Title_Decision", 1.0f, false);
 			m_startFlag = true;
 			Fade::StartIrisOut();
 		}

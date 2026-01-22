@@ -7,6 +7,7 @@
 #include "GameScene.h"
 #include "StageSelectScene.h"
 #include "Fade.h"
+#include "SoundManager.h"
 
 constexpr float BUTTON_SIZE = 1000.0f;//メニューボタンのサイズ
 constexpr float MAX_MENU = 5000.0f;
@@ -109,6 +110,7 @@ void GuideUIMeneController::UpdateDefault()
 	//メニューをひらく
 	if (InputManager::CurrentInputSystem().GetButtonDown("Menu"_hash))
 	{
+		SoundManager::PlaySE("Menu_Open", 1.0f, false);
 		m_value2 = 0.0f;
 		GridField* gridfield = GameState::GetInstance()->GetGridField();
 		//クリアしてたらメニュー表示できない
@@ -174,20 +176,24 @@ void GuideUIMeneController::UpdateSelect()
 	}
 
 	Vector2 input = Input::GetLeftStick();
-	if (InputManager::CurrentInputSystem().GetButtonDown("MenuUp"_hash) || input.y > 0.0f)
+	if (InputManager::CurrentInputSystem().GetButtonDown("MenuUp"_hash) || input.y > 0.5f)
 	{
+		SoundManager::PlaySE("Menu_Select", 1.0f, false);
 		m_menuY = 0;
 	}
-	if (InputManager::CurrentInputSystem().GetButtonDown("MenuDown"_hash) || input.y < 0.0f)
+	if (InputManager::CurrentInputSystem().GetButtonDown("MenuDown"_hash) || input.y < -0.5f)
 	{
+		SoundManager::PlaySE("Menu_Select", 1.0f, false);
 		m_menuY = 1;
 	}
-	if (InputManager::CurrentInputSystem().GetButtonDown("MenuLeft"_hash) || input.x < 0.0f)
+	if (InputManager::CurrentInputSystem().GetButtonDown("MenuLeft"_hash) || input.x < -0.5f)
 	{
+		SoundManager::PlaySE("Menu_Select", 1.0f, false);
 		m_menuX = 0;
 	}
-	if (InputManager::CurrentInputSystem().GetButtonDown("MenuRight"_hash) || input.x > 0.0f)
+	if (InputManager::CurrentInputSystem().GetButtonDown("MenuRight"_hash) || input.x > 0.5f)
 	{
+		SoundManager::PlaySE("Menu_Select", 1.0f, false);
 		m_menuX = 1;
 	}
 
@@ -208,6 +214,7 @@ void GuideUIMeneController::UpdateSelect()
 	// 決定
 	if (InputManager::CurrentInputSystem().GetButtonDown("MenuInteract"_hash))
 	{
+		SoundManager::PlaySE("Menu_Decision", 1.0f, false);
 		SelectEnter();
 	}
 }

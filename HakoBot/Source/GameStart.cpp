@@ -75,7 +75,7 @@ void StartUI::Update()
         if (m_Timer >= halfTime*1.5f && m_Timer < DRAW_TIME&& m_SEFlag==false)
         {
 
-            SoundManager::PlaySE("TitleLanding", 1.0f, false);
+            SoundManager::PlaySE("StageStart", 1.0f, false);
             m_SEFlag = true;
         }
         //========================================================================================

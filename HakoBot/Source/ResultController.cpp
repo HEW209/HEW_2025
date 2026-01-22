@@ -7,7 +7,8 @@
 #include "InputManager.h"
 #include "GameState.h"
 #include "SaveData.h"
-
+#include "StageNumber.h"
+#include "SoundManager.h"
 
 //黒
 constexpr float KURO_SIZE = 1350.0f;
@@ -67,6 +68,8 @@ ResultController::ResultController():
 
 void ResultController::Start()
 {
+	SoundManager::PlayBGM("Result", 0.5f, true);
+
 	//フェード
 	auto fade = GetGameObject()->AddComponent<SpriteRenderer>();
 	fade->SetUI(true);
@@ -132,9 +135,11 @@ void ResultController::Start()
 	reMozi->SetOffsetPos(RE_POS_X_START, RE_POS_Y_START);
 	m_selectText[Select::RESTART] = reMozi;
 
-	
-
-
+	if (GameState::GetInstance()->GetCurrentStegaNo() >= StageCount)
+	{
+		m_selectText[Select::NEXT]->SetEnabled(false);
+		m_currentSelect = Select::STAGE_SELECT;
+	}
 }
 
 void ResultController::Update()
@@ -207,11 +212,15 @@ void ResultController::MoveUpdate()
 
 void ResultController::SelectUpdate()
 {
+	bool isUp = false;
+
 	//上選択
 	if ((Input::GetLeftStick().y > 0.0f && Input::GetLastLeftStick().y <= 0.0f) || 
 		Input::GetKeyDown(KeyCode::UP) || Input::GetKeyDown(KeyCode::W))
 	{
-		m_currentSelect --;
+		SoundManager::PlaySE("Result_Select", 1.0f, false);
+		isUp = true;
+		m_currentSelect--;
 		if (m_currentSelect < 0)
 		{
 			m_currentSelect += Select::COUNT;
@@ -222,10 +231,34 @@ void ResultController::SelectUpdate()
 	if ((Input::GetLeftStick().y < 0.0f && Input::GetLastLeftStick().y >= 0.0f) ||
 		Input::GetKeyDown(KeyCode::DOWN) || Input::GetKeyDown(KeyCode::S))
 	{
-		m_currentSelect ++;
+		SoundManager::PlaySE("Result_Select", 1.0f, false);
+		isUp = false;
+		m_currentSelect++;
 		if (m_currentSelect >= Select::COUNT)
 		{
 			m_currentSelect -= Select::COUNT;
+		}
+	}
+
+	// 次のステージを選択できなくする
+	if (GameState::GetInstance()->GetCurrentStegaNo() >= StageCount &&
+		m_currentSelect == Select::NEXT)
+	{
+		if (isUp)
+		{
+			m_currentSelect--;
+			if (m_currentSelect < 0)
+			{
+				m_currentSelect += Select::COUNT;
+			}
+		}
+		else
+		{
+			m_currentSelect++;
+			if (m_currentSelect >= Select::COUNT)
+			{
+				m_currentSelect -= Select::COUNT;
+			}
 		}
 	}
 
@@ -254,6 +287,7 @@ void ResultController::SelectUpdate()
 	//Enter B
 	if (InputManager::CurrentInputSystem().GetButtonDown("ResultSelect"_hash))
 	{
+		SoundManager::PlaySE("Result_Decision", 1.0f, false);
 		m_state = ResultState::END;
 		Fade::StartIrisOut();//フェード
 	}

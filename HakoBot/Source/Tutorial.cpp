@@ -2,6 +2,7 @@
 #include "VecUtil.h"
 #include "Easing.h"
 #include "InputManager.h"
+#include "SoundManager.h"
 
 ITutorial::~ITutorial()
 {
@@ -10,6 +11,7 @@ ITutorial::~ITutorial()
 
 Tutorial1::Tutorial1()
 	: m_finished(false)
+	, m_sePlayed(false)
 	, m_cameraMoveDuration(0.0f)
 	, m_cameraMoveTimer(0.0f)
 	, m_step(0)
@@ -67,6 +69,7 @@ void Tutorial1::LateUpdate()
 		m_pCamera->SetMain();
 
 		InputManager::ChangeBindType(InputBindType::UI);
+		m_sePlayed = false;
 		++m_step;
 	}
 	break;
@@ -75,7 +78,15 @@ void Tutorial1::LateUpdate()
 	{
 		if (m_cameraMoveTimer >= m_cameraMoveDuration) {
 			m_pLine->SetEnabled(true);
+
+			if (!m_sePlayed)
+			{
+				SoundManager::PlaySE("Announcement", 1.0f, false);
+				m_sePlayed = true;
+			}
+
 			if (InputManager::CurrentInputSystem().GetButtonDown("MenuInteract"_hash)) {
+				SoundManager::PlaySE("Tutorial_Decision", 1.0f, false);
 				++m_step;
 				auto transform = m_pCamera->GetTransform();
 				m_prevCameraPos = transform->GetPosition();
@@ -102,6 +113,7 @@ void Tutorial1::LateUpdate()
 	{
 		if (m_cameraMoveTimer >= m_cameraMoveDuration) {
 			if (InputManager::CurrentInputSystem().GetButtonDown("MenuInteract"_hash)) {
+				SoundManager::PlaySE("Tutorial_Decision", 1.0f, false);
 				++m_step;
 				auto transform = m_pCamera->GetTransform();
 				m_prevCameraPos = transform->GetPosition();

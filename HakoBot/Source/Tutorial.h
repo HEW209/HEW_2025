@@ -24,6 +24,7 @@ public:
 
 private:
 	bool m_finished;
+	bool m_sePlayed;
 	int m_step;
 
 	ObjPtr<Camera> m_pCamera;
