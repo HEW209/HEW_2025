@@ -34,11 +34,11 @@ void SoundManager::Load()
 	//ゲームBGM
 	LoadBGMFile("Game", "Assets/Sound/BGM_Game(1).wav");
 	//テキストボックス出現
-	//LoadSEFile("Textbox_in", "Assets/Sound/SE_Decision.wav");
+	LoadSEFile("TextBoxIn", "Assets/Sound/SE_TextBoxIn.wav");
 	//テキストボックス退場
-	//LoadSEFile("Textbox_out", "Assets/Sound/BGM_Game(1).wav");
+	LoadSEFile("TextBoxOut", "Assets/Sound/SE_TextBoxOut.wav");
 	//アナウンス
-	LoadSEFile("Announcement", "Assets/Sound/SE_Select.wav");
+	LoadSEFile("Announcement", "Assets/Sound/SE_Announce2.wav");
 	//次に進む
 	LoadSEFile("Tutorial_Decision", "Assets/Sound/SE_TutorialDecision.wav");
 

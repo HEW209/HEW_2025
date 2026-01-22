@@ -2,7 +2,7 @@
 #include "SoundManager.h"
 
 static const float g_weight = 0.0f;
-static const float g_defaultFadeSpeed = 1.0f;
+static const float g_defaultFadeSpeed = 1.2f;
 static const int g_skipFrameCount = 2;
 
 Fade* Fade::s_main = nullptr;
