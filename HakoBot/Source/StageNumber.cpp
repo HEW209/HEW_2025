@@ -111,7 +111,7 @@ void StageNumber::Update()
 			SoundManager::PlaySE("StageSelect_Decision", 0.5f, false);
 			m_isSceneChange = true;
 			m_targetScene = TargetScene::GAME;
-			Fade::StartIrisOut();
+			Fade::StartIconIrisOut();
 		}
 		else if (Input::GetKeyDown(KeyCode::ESC) ||
 			Input::GetButtonDown(PadCode::BACK))
@@ -119,7 +119,7 @@ void StageNumber::Update()
 			SoundManager::PlaySE("BackToTitle", 1.0f, false);
 			m_isSceneChange = true;
 			m_targetScene = TargetScene::TITLE;
-			Fade::StartIrisOut();
+			Fade::StartIconIrisOut();
 		}
 	}
 

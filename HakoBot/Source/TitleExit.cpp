@@ -99,7 +99,7 @@ void TitleExit::Update()
 		{
 			SoundManager::PlaySE("Title_Decision", 1.0f, false);
 			m_startFlag = true;
-			Fade::StartIrisOut();
+			Fade::StartIconIrisOut();
 		}
 	}
 }

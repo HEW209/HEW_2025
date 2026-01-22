@@ -124,7 +124,8 @@ void GameScene::Init() {
     {
         auto obj = CreateGameObject();
         auto fade = obj->AddComponent<Fade>();
-        Fade::StartIrisIn();
+		static bool s_isFirst = true;
+        Fade::StartIconIrisIn();
     }
 
     // ƒNƒŠƒA‰‰o

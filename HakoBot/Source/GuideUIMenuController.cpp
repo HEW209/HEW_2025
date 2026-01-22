@@ -298,7 +298,7 @@ void GuideUIMeneController::SelectEnter()
 	if (m_menuX == 0 && m_menuY == 0)
 	{
 		m_menuState = MenuState::SCENE_CHANGE;
-		Fade::StartIrisOut();
+		Fade::StartIconIrisOut();
 	}
 	// ‘€ìà–¾
 	if (m_menuX == 1 && m_menuY == 0)
@@ -309,7 +309,7 @@ void GuideUIMeneController::SelectEnter()
 	if (m_menuX == 0 && m_menuY == 1)
 	{
 		m_menuState = MenuState::SCENE_CHANGE;
-		Fade::StartIrisOut();
+		Fade::StartIconIrisOut();
 	}
 	// ƒƒjƒ…[‚ğ•Â‚¶‚é
 	if (m_menuX == 1 && m_menuY == 1)
