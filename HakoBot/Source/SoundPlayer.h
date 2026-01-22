@@ -13,6 +13,8 @@ public:
 
 	void SetPitch(float pitchRatio);	// 1.0 = 原音, 2.0 = 1オクターブ高,　0.5 = 1オクターブ低
 
+	bool IsPlaying() const;
+
 private:
 	IXAudio2SourceVoice* pSourceVoice;
 };

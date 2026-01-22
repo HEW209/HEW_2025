@@ -3,7 +3,7 @@
 std::unordered_map<std::string, SoundManager::BGM> SoundManager::bgmMap;
 std::unordered_map<std::string, SoundManager::SE> SoundManager::seMap;
 SoundPlayer SoundManager::bgmPlayer;
-SoundPlayer SoundManager::sePlayer;
+std::vector<std::unique_ptr<SoundPlayer>> SoundManager::sePlayers;
 
 // サウンド登録
 void SoundManager::Load()
@@ -23,6 +23,7 @@ void SoundManager::Load()
 	//選択
 	LoadSEFile("StageSelect_Select", "Assets/Sound/SE_Slide.wav");
 	//選択(長押し)
+	// LoadSEFile("StageSelect_Select_Long", "Assets/Sound/SE_Slide.wav");
 	//決定
 	LoadSEFile("StageSelect_Decision", "Assets/Sound/SE_Decision.wav");
 	//タイトルに戻る
@@ -33,7 +34,7 @@ void SoundManager::Load()
 	//ゲームBGM
 	LoadBGMFile("Game", "Assets/Sound/BGM_Game(1).wav");
 	//テキストボックス出現
-	LoadSEFile("Textbox_in", "Assets/Sound/SE_Decision.wav");
+	//LoadSEFile("Textbox_in", "Assets/Sound/SE_Decision.wav");
 	//テキストボックス退場
 	//LoadSEFile("Textbox_out", "Assets/Sound/BGM_Game(1).wav");
 	//アナウンス
@@ -44,6 +45,7 @@ void SoundManager::Load()
 
 	//-------------------------- プレイヤー ---------------------------------
 	//移動SE
+	// LoadSEFile("PlayerMove", "Assets/Sound/SE_Move.wav");
 	//ブロック持つ
 	LoadSEFile("PutBox", "Assets/Sound/SE_putBox.wav");
 	//ブロック置く（グリッド外）
@@ -98,8 +100,14 @@ void SoundManager::Load()
 	//LoadSEFile("Completed_in", "Assets/Sound/SE_TitleLanding.wav");
 	//完成UI退場
 	//LoadSEFile("Completed_out", "Assets/Sound/SE_TitleLanding.wav");
+	//クリア（回転）
+	LoadSEFile("Clear", "Assets/Sound/SE_Clear.wav");
 	//クリア（クラッカー）
 	LoadSEFile("Cracker", "Assets/Sound/SE_Cracker.wav");
+	//フェードイン
+	LoadSEFile("FadeIn", "Assets/Sound/SE_FadeIn.wav");
+	//フェードアウト
+	LoadSEFile("FadeOut", "Assets/Sound/SE_FadeOut.wav");
 }
 
 // BGM再生
@@ -124,20 +132,37 @@ void SoundManager::PlaySE(const std::string& name, float volume, bool loop)
 	auto it = seMap.find(name);
 	if (it == seMap.end()) return;
 
-	sePlayer.PlayWave(&it->second.data, loop, volume);
+	bool isPlayed = false;
+
+	for (auto&& player : sePlayers) {
+		if (!player->IsPlaying()) {
+			player->PlayWave(&it->second.data, loop, volume);
+			isPlayed = true;
+			return;
+		}
+	}
+
+	if (!isPlayed) 
+	{
+		sePlayers.push_back(std::make_unique<SoundPlayer>());
+		sePlayers.back()->PlayWave(&it->second.data, loop, volume);
+	}
 }
 
 // SE停止
 void SoundManager::StopSE()
 {
-	sePlayer.StopWave();
+	for (auto&& player : sePlayers) {
+		player->StopWave();
+	}
+	sePlayers.clear();
 }
 
 // 全てのサウンド停止
 void SoundManager::StopAll()
 {
-	bgmPlayer.StopWave();
-	sePlayer.StopWave();
+	StopBGM();
+	StopSE();
 }
 
 bool SoundManager::LoadBGMFile(const std::string& soundname,const std::string& filepath)

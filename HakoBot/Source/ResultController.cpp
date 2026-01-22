@@ -287,6 +287,7 @@ void ResultController::SelectUpdate()
 	//Enter B
 	if (InputManager::CurrentInputSystem().GetButtonDown("ResultSelect"_hash))
 	{
+		SoundManager::StopBGM();
 		SoundManager::PlaySE("Result_Decision", 1.0f, false);
 		m_state = ResultState::END;
 		Fade::StartIrisOut();//フェード

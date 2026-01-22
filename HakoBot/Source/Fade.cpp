@@ -1,18 +1,20 @@
 #include "Fade.h"
+#include "SoundManager.h"
 
 static const float g_weight = 0.0f;
-static const float g_defaultFadeSpeed = 2.0f;
+static const float g_defaultFadeSpeed = 1.0f;
+static const int g_skipFrameCount = 2;
 
 Fade* Fade::s_main = nullptr;
 Fade::FadeMode Fade::s_fadeMode = Fade::FadeMode::IRIS;
 bool Fade::s_isFade = false;
 bool Fade::s_isActive = false;
 float Fade::s_fadeRatio = 0.0f;
+int Fade::s_frameCount = 0;
 
 Fade::Fade() :
 	m_renderer(nullptr),
-	m_fadeSpeed(2.0f),
-	m_isFirst(true)
+	m_fadeSpeed(g_defaultFadeSpeed)
 {
 	if (s_main == nullptr)
 		s_main = this;
@@ -38,10 +40,10 @@ void Fade::Update()
 	if (s_main != this)
 		return;
 
-	if (m_isFirst)
+	// 最初の2フレームは処理スキップ (DeltaTimeが読み込みで大きくなる)
+	if (s_frameCount < g_skipFrameCount)
 	{
-		// 最初のフレームは処理スキップ (DeltaTimeが読み込みで大きくなる)
-		m_isFirst = false;
+		++s_frameCount;
 	}
 	else
 	{
@@ -54,6 +56,11 @@ void Fade::Update()
 				s_fadeRatio = 0.0f;
 				s_isActive = false;
 			}
+
+			if (s_frameCount == g_skipFrameCount) {
+				SoundManager::PlaySE("FadeIn", 1.0f, false);
+				++s_frameCount;
+			}
 		}
 		if (s_fadeRatio < 1.0f && s_isFade)
 		{
@@ -62,6 +69,11 @@ void Fade::Update()
 			{
 				s_fadeRatio = 1.0f;
 				s_isActive = false;
+			}
+
+			if (s_frameCount == g_skipFrameCount) {
+				SoundManager::PlaySE("FadeOut", 1.0f, false);
+				++s_frameCount;
 			}
 		}
 	}
@@ -109,6 +121,7 @@ void Fade::StartIrisOut()
 	s_fadeRatio = -g_weight;
 	s_isActive = true;
 	s_isFade = true;
+	s_frameCount = 0;
 }
 
 void Fade::StartIrisIn()
@@ -117,4 +130,5 @@ void Fade::StartIrisIn()
 	s_fadeRatio = 1.0f + g_weight;
 	s_isActive = true;
 	s_isFade = false;
+	s_frameCount = 0;
 }

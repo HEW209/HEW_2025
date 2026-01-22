@@ -15,7 +15,6 @@ public:
 private:
 	SpriteRenderer* m_renderer;
 	float m_fadeSpeed;
-	bool m_isFirst;
 
 public:
 	static bool IsActive();
@@ -35,4 +34,5 @@ private:
 	static bool s_isFade;			// フェード状態フラグ
 	static bool s_isActive;			// 動作中フラグ
 	static float s_fadeRatio;		// フェード割合
+	static int s_frameCount;
 };
