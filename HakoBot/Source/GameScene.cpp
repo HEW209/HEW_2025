@@ -125,7 +125,7 @@ void GameScene::Init() {
         auto obj = CreateGameObject();
         auto fade = obj->AddComponent<Fade>();
 		static bool s_isFirst = true;
-        Fade::StartIrisIn();
+        Fade::StartIconIrisIn();
     }
 
     // クリア演出
@@ -210,6 +210,14 @@ void GameScene::CreateGridField() {
             transform->SetEulerAngle(0.0f, 180.0f, 0.0f);
             break;
         }
+
+        auto effectObj = CreateGameObject();
+        effectObj->GetTransform()->SetParent(obj);
+        effectObj->GetTransform()->SetPosition(0.0f, -0.25f, 0.0f, Space::LOCAL);
+        effectObj->GetTransform()->SetScale(1.6f, 1.6f, 1.6f);
+        auto effect = effectObj->AddComponent<EffectRenderer>();
+        effect->Load("Assets/Effect/Toueiki/toueiki_efe.efkefc");
+        effect->Play();
     }
 
     // 危険エリア Z

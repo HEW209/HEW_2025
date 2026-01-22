@@ -18,6 +18,7 @@ private:
 	ObjPtr<MeshRenderer> m_pRightWall;
 	ObjPtr<MeshRenderer> m_pLeftPillar;
 	ObjPtr<MeshRenderer> m_pRightPillar;
+	ObjPtr<MeshRenderer> m_pFans[3];
 	MeshGroup::AnimeNo m_fanAnim;
 
 	void SetTransparent(MeshRenderer* renderer, float transparency);

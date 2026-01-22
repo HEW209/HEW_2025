@@ -299,7 +299,7 @@ void GuideUIMeneController::SelectEnter()
 		SoundManager::StopBGM();
 		SoundManager::PlaySE("Menu_Decision", 1.0f, false);
 		m_menuState = MenuState::SCENE_CHANGE;
-		Fade::StartIrisOut();
+		Fade::StartIconIrisOut();
 	}
 	// ‘€ìà–¾
 	if (m_menuX == 1 && m_menuY == 0)
@@ -312,7 +312,7 @@ void GuideUIMeneController::SelectEnter()
 		SoundManager::StopBGM();
 		SoundManager::PlaySE("Menu_Decision", 1.0f, false);
 		m_menuState = MenuState::SCENE_CHANGE;
-		Fade::StartIrisOut();
+		Fade::StartIconIrisOut();
 	}
 	// ƒƒjƒ…[‚ğ•Â‚¶‚é
 	if (m_menuX == 1 && m_menuY == 1)

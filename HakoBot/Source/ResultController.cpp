@@ -10,55 +10,71 @@
 #include "StageNumber.h"
 #include "SoundManager.h"
 
+constexpr float EASE_TOTAL_TIME = 0.7f;
+
 //黒
 constexpr float KURO_SIZE = 1350.0f;
 constexpr float KURO_POS_X_END = 0.0f;
 constexpr float KURO_POS_Y_END = 3.9f;
-constexpr float KURO_POS_X_START = 0.0f;
-constexpr float KURO_POS_Y_START = 7.0f;
+constexpr float KURO_POS_X_START = KURO_POS_X_END;
+constexpr float KURO_POS_Y_START = KURO_POS_Y_END + 5.0f;
 
-////リザルト　右バージョン
-//constexpr float RESULT_SIZE = 500.0f;
-//constexpr float RESULT_POS_X_END = -2.9f;
-//constexpr float RESULT_POS_Y_END = 1.4f;
-//constexpr float RESULT_POS_X_START = 6.8f;
-//constexpr float RESULT_POS_Y_START = 1.4f;
-
-//リザルト 左上バージョン
-constexpr float RESULT_SIZE = 510.0f;
-constexpr float RESULT_POS_X_END = 1.3f;
-constexpr float RESULT_POS_Y_END = 2.45f;
-constexpr float RESULT_POS_X_START = -5.8f;
-constexpr float RESULT_POS_Y_START = 2.45f;
-
-//次のステージ
-constexpr float TUGI_SIZE = 450.0f;
-constexpr float TUGI_POS_X_END = -1.3f;
-constexpr float TUGI_POS_Y_END = -0.4f;
-constexpr float TUGI_POS_X_START = 6.8f;
-constexpr float TUGI_POS_Y_START = -0.4f;
-
-//ステージセレクト
-constexpr float STAGE_SIZE = 450.0f;
-constexpr float STAGE_POS_X_END = -1.3f;
-constexpr float STAGE_POS_Y_END = -1.4f;
-constexpr float STAGE_POS_X_START = 6.8f;
-constexpr float STAGE_POS_Y_START = -1.4f;
-
-//リスタート
-constexpr float RE_SIZE = 450.0f;
-constexpr float RE_POS_X_END = -1.2f;
-constexpr float RE_POS_Y_END = -2.4f;
-constexpr float RE_POS_X_START = 6.8f;
-constexpr float RE_POS_Y_START = -2.4f;
+//リザルト
+constexpr float RESULT_SIZE = 640.0f;
+constexpr float RESULT_POS_X_END = 3.4f;
+constexpr float RESULT_POS_Y_END = 2.4f;
+constexpr float RESULT_POS_X_START = RESULT_POS_X_END + 8.0f;
+constexpr float RESULT_POS_Y_START = RESULT_POS_Y_END;
 
 //リザルトイラスト
-constexpr float ILLUST_SIZE = 900.0f;
-constexpr float ILLUST_POS_X_END = -3.7f;
-constexpr float ILLUST_POS_Y_END = -1.1f;
-constexpr float ILLUST_POS_X_START = -3.7f;
-constexpr float ILLUST_POS_Y_START = -5.2f;
+constexpr float ILLUST_SIZE = 1400.0f;
+constexpr float ILLUST_POS_X_END = -2.0f;
+constexpr float ILLUST_POS_Y_END = 0.1f;
+constexpr float ILLUST_POS_X_START = ILLUST_POS_X_END + 15.0f;
+constexpr float ILLUST_POS_Y_START = ILLUST_POS_Y_END;
 
+// 選択肢
+constexpr float SELECT_SIZE_MAX = 550.0f;
+constexpr float SELECT_SIZE_MIN = 450.0f;
+constexpr float SELECT_POS_X_END = 4.0f;
+constexpr float SELECT_POS_Y_END = -0.7f;
+constexpr float SELECT_POS_X_START = SELECT_POS_X_END + 8.0f;
+constexpr float SELECT_POS_Y_START = SELECT_POS_Y_END;
+constexpr float SELECT_SPACE_RATIO = 0.5f * 0.45f;
+constexpr float SELECT_SCALING_SPEED = 800.0f;
+
+static const char* g_activeText[3] = {
+		"Assets/Textures/Result/tugi_stage.png",
+		"Assets/Textures/Result/stage_select.png",
+		"Assets/Textures/Result/re_start.png"
+};
+
+static const char* g_defaultText[3] = {
+	"Assets/Textures/Result/tugi_stageoff.png",
+	"Assets/Textures/Result/stage_selectoff.png",
+	"Assets/Textures/Result/re_startoff.png"
+};
+
+////次のステージ
+//constexpr float TUGI_SIZE = 450.0f;
+//constexpr float TUGI_POS_X_END = 4.0f;
+//constexpr float TUGI_POS_Y_END = -1.6f;
+//constexpr float TUGI_POS_X_START = TUGI_POS_X_END + 8.0f;
+//constexpr float TUGI_POS_Y_START = TUGI_POS_Y_END;
+//
+////ステージセレクト
+//constexpr float STAGE_SIZE = 450.0f;
+//constexpr float STAGE_POS_X_END = 4.0f;
+//constexpr float STAGE_POS_Y_END = -2.4f;
+//constexpr float STAGE_POS_X_START = STAGE_POS_X_END + 8.0f;
+//constexpr float STAGE_POS_Y_START = STAGE_POS_Y_END;
+//
+////リスタート
+//constexpr float RE_SIZE = 450.0f;
+//constexpr float RE_POS_X_END = 4.0f;
+//constexpr float RE_POS_Y_END = -3.2f;
+//constexpr float RE_POS_X_START = RE_POS_X_END + 8.0f;
+//constexpr float RE_POS_Y_START = RE_POS_X_START;
 
 ResultController::ResultController():
 	m_state(ResultState::MOVE), m_currentSelect(0), m_resultTime(0.0f), m_isStartedBGMLoop(false)
@@ -69,6 +85,11 @@ ResultController::ResultController():
 void ResultController::Start()
 {
 	SoundManager::PlayBGM("ResultStart", 1.0f, false);
+
+	if (GameState::GetInstance()->GetCurrentStegaNo() >= StageCount)
+	{
+		m_currentSelect = Select::STAGE_SELECT;
+	}
 
 	//フェード
 	auto fade = GetGameObject()->AddComponent<SpriteRenderer>();
@@ -111,34 +132,36 @@ void ResultController::Start()
 	resultMozi->SetOffsetPos(RESULT_POS_X_START, RESULT_POS_Y_START);
 	m_result = resultMozi;
 
-	//次のステージ
-	auto tugiMozi = GetGameObject()->AddComponent<SpriteRenderer>();
-	tugiMozi->LoadTexture("Assets/Textures/Result/tugi_stage.png");
-	tugiMozi->SetUI(true);
-	tugiMozi->SetSize(TUGI_SIZE);
-	tugiMozi->SetOffsetPos(TUGI_POS_X_START, TUGI_POS_Y_START);
-	m_selectText[Select::NEXT] = tugiMozi;
+	//選択肢
+	Vector2 offsetPos(SELECT_POS_X_START, SELECT_POS_Y_START);
+	for (int i = 0; i < Select::COUNT; ++i)
+	{
+		auto renderer = GetGameObject()->AddComponent<SpriteRenderer>();
+		if (i == m_currentSelect)
+		{
+			renderer->LoadTexture(g_activeText[i]);
+			renderer->SetSize(SELECT_SIZE_MAX);
+		}
+		else
+		{
+			renderer->LoadTexture(g_defaultText[i]);
+			renderer->SetSize(SELECT_SIZE_MIN);
+		}
+		// オフセットをずらす
+		offsetPos.y -= renderer->GetSize().y * SELECT_SPACE_RATIO * 0.01f;
+		renderer->SetOffsetPos(offsetPos);
+		renderer->SetUI(true);
 
-	//ステージセレクト
-	auto stageMozi = GetGameObject()->AddComponent<SpriteRenderer>();
-	stageMozi->LoadTexture("Assets/Textures/Result/stage_selectoff.png");
-	stageMozi->SetUI(true);
-	stageMozi->SetSize(STAGE_SIZE);
-	stageMozi->SetOffsetPos(STAGE_POS_X_START, STAGE_POS_Y_START);
-	m_selectText[Select::STAGE_SELECT] = stageMozi;
+		// オフセットをずらす
+		offsetPos.y -= renderer->GetSize().y * SELECT_SPACE_RATIO * 0.01f;
 
-	//リスタート
-	auto reMozi = GetGameObject()->AddComponent<SpriteRenderer>();
-	reMozi->LoadTexture("Assets/Textures/Result/re_startoff.png");
-	reMozi->SetUI(true);
-	reMozi->SetSize(RE_SIZE);
-	reMozi->SetOffsetPos(RE_POS_X_START, RE_POS_Y_START);
-	m_selectText[Select::RESTART] = reMozi;
+		m_selectText[i] = renderer;
+	}
 
+	// ラストステージ用
 	if (GameState::GetInstance()->GetCurrentStegaNo() >= StageCount)
 	{
 		m_selectText[Select::NEXT]->SetEnabled(false);
-		m_currentSelect = Select::STAGE_SELECT;
 	}
 }
 
@@ -169,49 +192,41 @@ void ResultController::Update()
 void ResultController::MoveUpdate()
 {
 	//時間加算
-	m_resultTime += 0.2f;
-
-	
-	if (m_resultTime > 5.0f)
+	m_resultTime += Time::GetDeltaTime();
+	if (m_resultTime > EASE_TOTAL_TIME)
 	{
-		m_resultTime = 5.0f;
+		m_resultTime = EASE_TOTAL_TIME;
 		m_state = ResultState::SELECT;
 	}
 
-	
-	
-	////リザルトイラストの移動
-	//m_illust->SetOffsetPos(Easing::InSine(m_resultTime, 10.0f, ILLUST_POS_X_END, ILLUST_POS_X_START),
-	//	Easing::OutBack(m_resultTime, 5.0f, ILLUST_POS_Y_END, ILLUST_POS_Y_END + 1.0f, ILLUST_POS_Y_START));
 
 	//リザルトイラストの移動
-	m_illust->SetOffsetPos(Easing::InSine(m_resultTime, 10.0f, ILLUST_POS_X_END, ILLUST_POS_X_START),
-		Easing::OutBack(m_resultTime, 5.0f, 1.7f, ILLUST_POS_Y_END, ILLUST_POS_Y_START));
+	m_illust->SetOffsetPos(
+		Easing::OutQuart(m_resultTime, EASE_TOTAL_TIME, ILLUST_POS_X_END, ILLUST_POS_X_START),
+		Easing::OutQuart(m_resultTime, EASE_TOTAL_TIME, ILLUST_POS_Y_END, ILLUST_POS_Y_START));
 
 	//黒下の移動
-	m_kuroDown->SetOffsetPos(Easing::InSine(m_resultTime, 10.0f, -KURO_POS_X_END, -KURO_POS_X_START),
-		Easing::OutBack(m_resultTime, 5.0f, 1.5f, -KURO_POS_Y_END, -KURO_POS_Y_START));
+	m_kuroDown->SetOffsetPos(
+		Easing::OutCubic(m_resultTime, EASE_TOTAL_TIME, -KURO_POS_X_END, -KURO_POS_X_START),
+		Easing::OutCubic(m_resultTime, EASE_TOTAL_TIME, -KURO_POS_Y_END, -KURO_POS_Y_START));
 
 	//黒上の移動
-	m_kuroUp->SetOffsetPos(Easing::InSine(m_resultTime, 10.0f, KURO_POS_X_END, KURO_POS_X_START),
-		Easing::OutBack(m_resultTime, 5.0f, 1.5f, KURO_POS_Y_END, KURO_POS_Y_START));
+	m_kuroUp->SetOffsetPos(
+		Easing::OutCubic(m_resultTime, EASE_TOTAL_TIME, KURO_POS_X_END, KURO_POS_X_START),
+		Easing::OutCubic(m_resultTime, EASE_TOTAL_TIME, KURO_POS_Y_END, KURO_POS_Y_START));
 
 	//リザルトの移動
-	m_result->SetOffsetPos(Easing::InSine(m_resultTime, 10.0f, RESULT_POS_X_END, RESULT_POS_X_START),
-		Easing::InSine(m_resultTime, 5.0f, RESULT_POS_Y_END, RESULT_POS_Y_START));
+	m_result->SetOffsetPos(
+		Easing::OutCubic(m_resultTime, EASE_TOTAL_TIME, RESULT_POS_X_END, RESULT_POS_X_START),
+		Easing::OutCubic(m_resultTime, EASE_TOTAL_TIME, RESULT_POS_Y_END, RESULT_POS_Y_START));
 
-	//次のステージの移動
-	m_selectText[Select::NEXT]->SetOffsetPos(Easing::InSine(m_resultTime, 10.0f, TUGI_POS_X_END, TUGI_POS_X_START),
-		Easing::InSine(m_resultTime, 5.0f, TUGI_POS_Y_END, TUGI_POS_Y_START));
-
-	//ステージセレクトの移動
-	m_selectText[Select::STAGE_SELECT]->SetOffsetPos(Easing::InSine(m_resultTime, 10.0f, STAGE_POS_X_END, STAGE_POS_X_START),
-		Easing::InSine(m_resultTime, 5.0f, STAGE_POS_Y_END, STAGE_POS_Y_START));
-
-	//リスタートの移動
-	m_selectText[Select::RESTART]->SetOffsetPos(Easing::InSine(m_resultTime, 10.0f, RE_POS_X_END, RE_POS_X_START),
-		Easing::InSine(m_resultTime, 5.0f, RE_POS_Y_END, RE_POS_Y_START));
-
+	// 選択肢の移動
+	for (int i = 0; i < Select::COUNT; ++i)
+	{
+		Vector2 offset = m_selectText[i]->GetOffsetPos();
+		offset.x = Easing::OutCubic(m_resultTime, EASE_TOTAL_TIME, SELECT_POS_X_END, SELECT_POS_X_START);
+		m_selectText[i]->SetOffsetPos(offset);
+	}
 }
 
 void ResultController::SelectUpdate()
@@ -266,26 +281,28 @@ void ResultController::SelectUpdate()
 		}
 	}
 
-	const char* activeText[3] = {
-		"Assets/Textures/Result/tugi_stage.png",
-		"Assets/Textures/Result/stage_select.png",
-		"Assets/Textures/Result/re_start.png" };
-
-	const char* defaultText[3] = {
-		"Assets/Textures/Result/tugi_stageoff.png",
-		"Assets/Textures/Result/stage_selectoff.png",
-		"Assets/Textures/Result/re_startoff.png" };
-
-	for (int i = 0; i < 3; i++)
+	// 選択肢更新
+	Vector2 offsetPos(SELECT_POS_X_END, SELECT_POS_Y_END);
+	for (int i = 0; i < Select::COUNT; ++i)
 	{
 		if (m_currentSelect == i)
 		{
-			m_selectText[i]->LoadTexture(activeText[i], false);
+			m_selectText[i]->LoadTexture(g_activeText[i], false);
+			m_selectText[i]->SetSize(SELECT_SIZE_MAX);
 		}
 		else
 		{
-			m_selectText[i]->LoadTexture(defaultText[i], false);
+			m_selectText[i]->LoadTexture(g_defaultText[i], false);
+			m_selectText[i]->SetSize(SELECT_SIZE_MIN);
 		}
+
+		// オフセットをずらす
+		offsetPos.y -= m_selectText[i]->GetSize().y * SELECT_SPACE_RATIO * 0.01f;
+		m_selectText[i]->SetOffsetPos(offsetPos);
+		m_selectText[i]->SetUI(true);
+
+		// オフセットをずらす
+		offsetPos.y -= m_selectText[i]->GetSize().y * SELECT_SPACE_RATIO * 0.01f;
 	}
 
 	//Enter B
@@ -294,7 +311,7 @@ void ResultController::SelectUpdate()
 		SoundManager::StopBGM();
 		SoundManager::PlaySE("Result_Decision", 1.0f, false);
 		m_state = ResultState::END;
-		Fade::StartIrisOut();//フェード
+		Fade::StartIconIrisOut();//フェード
 	}
 
 }

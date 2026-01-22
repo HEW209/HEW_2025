@@ -28,7 +28,7 @@ void StageSelectScene::Init()
 	{
 		auto obj = CreateGameObject();
 		auto fade = obj->AddComponent<Fade>();
-		Fade::StartIrisIn();
+		Fade::StartIconIrisIn();
 	}
 
 	// ステージ番号
