@@ -8,6 +8,7 @@
 #include "StageSelectScene.h"
 #include "Fade.h"
 #include "SoundManager.h"
+#include "Manual.h"
 
 constexpr float BUTTON_SIZE = 1000.0f;//メニューボタンのサイズ
 constexpr float MAX_MENU = 5000.0f;
@@ -64,6 +65,12 @@ void GuideUIMeneController::Start()
 	m_bgScrollY = 0.0f;
 	m_bgScrollSpeed = 0.001f;
 
+	// 操作説明
+	{
+		m_manual = SceneManager::GetActiveScene()->CreateGameObject();
+		m_manual->AddComponent<Manual>();
+	}
+
 	// カーソル反映
 	int selectIndex = m_menuX + m_menuY * 2;
 	for (int i = 0; i < 4; ++i)
@@ -101,6 +108,10 @@ void GuideUIMeneController::Update()
 	
 	case GuideUIMeneController::SCENE_CHANGE:
 		UpdateChangeScene();
+		break;
+
+	case GuideUIMeneController::MANUAL:
+		UpdateManual();
 		break;
 	}
 }
@@ -292,6 +303,37 @@ void GuideUIMeneController::UpdateChangeScene()
 	}
 }
 
+void GuideUIMeneController::UpdateManual()
+{
+	//メニュー開いてるとき
+	//位置追従
+	m_back->GetTransform()->SetPosition(
+		m_frame->GetTransform()->GetPosition()
+	);
+
+	//背景スクロール
+	m_bgScrollY -= m_bgScrollSpeed;
+
+	//ループ処理
+	while (m_bgScrollY >= 1.0f)
+	{
+		m_bgScrollY -= 1.0f;
+	}
+	while (m_bgScrollY < 0.0f)
+	{
+		m_bgScrollY += 1.0f;
+	}
+
+	//UVオフセットでスクロール
+	m_back->SetUVOffsetPos(0.0f, m_bgScrollY);
+
+	//メニューを閉じるボタンかメニューのキャンセルボタン押したとき
+	if (InputManager::CurrentInputSystem().GetButtonDown("MenuBack"_hash) || InputManager::CurrentInputSystem().GetButtonDown("MenuClose"_hash))
+	{
+		m_menuState = MenuState::SELECT;
+	}
+}
+
 void GuideUIMeneController::SelectEnter()
 {
 	// リスタート
@@ -303,7 +345,8 @@ void GuideUIMeneController::SelectEnter()
 	// 操作説明
 	if (m_menuX == 1 && m_menuY == 0)
 	{
-
+		m_manual->GetComponent<Manual>()->ChangeState(Manual::State::DOWN);
+		m_menuState = MenuState::MANUAL;
 	}
 	// ステージセレクト
 	if (m_menuX == 0 && m_menuY == 1)

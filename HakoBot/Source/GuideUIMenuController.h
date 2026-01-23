@@ -21,7 +21,8 @@ private:
 		OPEN,
 		SELECT,
 		CLOSE,
-		SCENE_CHANGE
+		SCENE_CHANGE,
+		MANUAL
 	};
 
 	MenuState m_menuState;
@@ -32,6 +33,8 @@ private:
 	SpriteRenderer* m_buttons[4];
 	SpriteRenderer* m_back;
 	SpriteRenderer* m_frame;
+
+	GameObject* m_manual;
 
 	//メニュー閉じるときのアニメーション管理
 	enum class ClosePhase
@@ -74,6 +77,7 @@ private:
 	void UpdateSelect();
 	void UpdateClose();
 	void UpdateChangeScene();
+	void UpdateManual();
 
 	void SelectEnter();
 };
