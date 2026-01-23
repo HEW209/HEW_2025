@@ -8,6 +8,7 @@
 #include "TitleScene.h"
 #include "StageSelectScene.h"
 #include "SoundManager.h"
+#include "InputManager.h"
 
 #define STAGE_FILE "Assets/Stage/Level%d.json"
 #define FONT_SIZE (180.0f)
@@ -206,11 +207,11 @@ void StageNumber::StageSelect()
 
 	// “ü—ÍŽæ“¾
 	int inputSide = 0;
-	if (Input::GetLeftStick().x < 0.0f || Input::GetKeyDown(KeyCode::LEFT))
+	if (Input::GetLeftStick().x < 0.0f || InputManager::CurrentInputSystem().GetButtonHold("MenuLeft"_hash))
 	{
 		inputSide--;
 	}
-	if (Input::GetLeftStick().x > 0.0f || Input::GetKeyDown(KeyCode::RIGHT))
+	if (Input::GetLeftStick().x > 0.0f || InputManager::CurrentInputSystem().GetButtonHold("MenuRight"_hash))
 	{
 		inputSide++;
 	}
