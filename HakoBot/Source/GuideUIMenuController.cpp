@@ -178,26 +178,33 @@ void GuideUIMeneController::UpdateSelect()
 	}
 
 	Vector2 input = Input::GetLeftStick();
+	int targetX = m_menuX;
+	int targetY = m_menuY;
 	if (InputManager::CurrentInputSystem().GetButtonDown("MenuUp"_hash) || input.y > 0.5f)
 	{
-		SoundManager::PlaySE("Menu_Select", 1.0f, false);
-		m_menuY = 0;
+		targetY = 0;
 	}
 	if (InputManager::CurrentInputSystem().GetButtonDown("MenuDown"_hash) || input.y < -0.5f)
 	{
-		SoundManager::PlaySE("Menu_Select", 1.0f, false);
-		m_menuY = 1;
+		targetY = 1;
 	}
 	if (InputManager::CurrentInputSystem().GetButtonDown("MenuLeft"_hash) || input.x < -0.5f)
 	{
-		SoundManager::PlaySE("Menu_Select", 1.0f, false);
-		m_menuX = 0;
+		targetX = 0;
 	}
 	if (InputManager::CurrentInputSystem().GetButtonDown("MenuRight"_hash) || input.x > 0.5f)
 	{
-		SoundManager::PlaySE("Menu_Select", 1.0f, false);
-		m_menuX = 1;
+		targetX = 1;
 	}
+
+	if (targetX != m_menuX || targetY != m_menuY)
+	{
+		SoundManager::PlaySE("Menu_Select", 1.0f, false);
+	}
+
+	// カーソル位置更新
+	m_menuX = targetX;
+	m_menuY = targetY;
 
 	// メニュー選択用
 	int selectIndex = m_menuX + m_menuY * 2;
