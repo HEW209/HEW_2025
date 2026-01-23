@@ -69,7 +69,10 @@ void Tutorial1::LateUpdate()
 		m_pCamera->SetMain();
 
 		InputManager::ChangeBindType(InputBindType::UI);
-		m_sePlayed = false;
+		for (auto& played : m_sePlayed)
+		{
+			played = false;
+		}
 		++m_step;
 	}
 	break;
@@ -79,10 +82,10 @@ void Tutorial1::LateUpdate()
 		if (m_cameraMoveTimer >= m_cameraMoveDuration) {
 			m_pLine->SetEnabled(true);
 
-			if (!m_sePlayed)
+			if (!m_sePlayed[0])
 			{
-				SoundManager::PlaySE("Announcement", 1.0f, false);
-				m_sePlayed = true;
+				SoundManager::PlaySE("Announcement", 0.9f, false);
+				m_sePlayed[0] = true;
 			}
 
 			if (InputManager::CurrentInputSystem().GetButtonDown("MenuInteract"_hash)) {
@@ -96,6 +99,7 @@ void Tutorial1::LateUpdate()
 				m_cameraMoveDuration = 2.0f;
 				m_cameraMoveTimer = 0.0f;
 				m_pLine->SetEnabled(false);
+				SoundManager::PlaySE("TextBoxOut", 1.0f, false);
 			}
 		}
 		else {
@@ -103,7 +107,13 @@ void Tutorial1::LateUpdate()
 				float rate = Math::Clamp01((m_cameraMoveTimer - 1.5f) * 2.0f);
 				float t = Easing::OutBack(rate, 1.0f, 1.7f);
 				m_pText1->SetOffsetPos(0.0f, std::lerp(-7.0f, 0.0f, t));
-				m_pText1->SetEnabled(true);
+				if (!m_pText1->IsEnabled()) {
+					m_pText1->SetEnabled(true);
+				}
+				if (t > 0.0f && !m_sePlayed[1]) {
+					SoundManager::PlaySE("TextBoxIn", 1.0f, false);
+					m_sePlayed[1] = true;
+				}
 			}
 		}
 	}
@@ -122,6 +132,7 @@ void Tutorial1::LateUpdate()
 				m_nextCameraRot = m_pDefaultCamera->GetTransform()->GetQuaternion();
 				m_cameraMoveDuration = 2.0f;
 				m_cameraMoveTimer = 0.0f;
+				SoundManager::PlaySE("TextBoxOut", 1.0f, false);
 			}
 		}
 		else {
@@ -139,7 +150,13 @@ void Tutorial1::LateUpdate()
 				float rate = Math::Clamp01((m_cameraMoveTimer - 1.5f) * 2.0f);
 				float t = Easing::OutBack(rate, 1.0f, 1.7f);
 				m_pText2->SetOffsetPos(0.0f, std::lerp(-7.0f, 0.0f, t));
-				m_pText2->SetEnabled(true);
+				if (!m_pText2->IsEnabled()) {
+					m_pText2->SetEnabled(true);
+				}
+				if (t > 0.0f && !m_sePlayed[2]) {
+					SoundManager::PlaySE("TextBoxIn", 1.0f, false);
+					m_sePlayed[2] = true;
+				}
 			}
 		}
 	}

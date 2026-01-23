@@ -24,7 +24,7 @@ public:
 
 private:
 	bool m_finished;
-	bool m_sePlayed;
+	std::array<bool, 3> m_sePlayed;
 	int m_step;
 
 	ObjPtr<Camera> m_pCamera;

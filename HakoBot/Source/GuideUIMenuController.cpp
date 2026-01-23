@@ -168,6 +168,7 @@ void GuideUIMeneController::UpdateSelect()
 	//メニューを閉じるボタンかメニューのキャンセルボタン押したとき
 	if (InputManager::CurrentInputSystem().GetButtonDown("MenuBack"_hash) || InputManager::CurrentInputSystem().GetButtonDown("MenuClose"_hash))
 	{
+		SoundManager::PlaySE("Menu_Close", 1.0f, false);
 		GameState::GetInstance()->StartTimer();
 		m_closeStartScale = GetTransform()->GetScale();
 		m_menuState = MenuState::CLOSE;
@@ -225,7 +226,6 @@ void GuideUIMeneController::UpdateSelect()
 	// 決定
 	if (InputManager::CurrentInputSystem().GetButtonDown("MenuInteract"_hash))
 	{
-		SoundManager::PlaySE("Menu_Decision", 1.0f, false);
 		SelectEnter();
 	}
 }
@@ -308,23 +308,28 @@ void GuideUIMeneController::SelectEnter()
 	// リスタート
 	if (m_menuX == 0 && m_menuY == 0)
 	{
+		SoundManager::StopBGM();
+		SoundManager::PlaySE("Menu_Decision", 1.0f, false);
 		m_menuState = MenuState::SCENE_CHANGE;
-		Fade::StartIconIrisOut();
+		Fade::StartIrisOut();
 	}
 	// 操作説明
 	if (m_menuX == 1 && m_menuY == 0)
 	{
-
+		SoundManager::PlaySE("Menu_Decision", 1.0f, false);
 	}
 	// ステージセレクト
 	if (m_menuX == 0 && m_menuY == 1)
 	{
+		SoundManager::StopBGM();
+		SoundManager::PlaySE("Menu_Decision", 1.0f, false);
 		m_menuState = MenuState::SCENE_CHANGE;
 		Fade::StartIconIrisOut();
 	}
 	// メニューを閉じる
 	if (m_menuX == 1 && m_menuY == 1)
 	{
+		SoundManager::PlaySE("Menu_Close", 1.0f, false);
 		m_closeStartScale = GetTransform()->GetScale();
 		m_menuState = MenuState::CLOSE;
 		m_closePhase = ClosePhase::Pop;

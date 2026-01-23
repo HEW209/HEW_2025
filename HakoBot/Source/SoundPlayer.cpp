@@ -94,3 +94,14 @@ void SoundPlayer::SetPitch(float pitchRatio)
 		pSourceVoice->SetFrequencyRatio(pitchRatio);
 	}
 }
+
+bool SoundPlayer::IsPlaying() const
+{
+	if (pSourceVoice)
+	{
+		XAUDIO2_VOICE_STATE state{};
+		pSourceVoice->GetState(&state);
+		return (state.BuffersQueued > 0);
+	}
+	return false;
+}

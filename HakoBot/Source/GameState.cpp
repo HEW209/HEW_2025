@@ -52,7 +52,7 @@ void GameState::Update()
 
 	if (IsClear() && InputManager::CurrentInputSystem().GetButtonDown("Clear"_hash))
 	{
-		SoundManager::StopAll();
+		SoundManager::StopBGM();
 		m_timerActive = false;
 		m_isClearEnter = true;
 	}

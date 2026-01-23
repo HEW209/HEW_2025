@@ -64,14 +64,14 @@ static const char* g_defaultText[3] = {
 };
 
 ResultController::ResultController():
-	m_state(ResultState::MOVE), m_currentSelect(0), m_resultTime(0.0f)
+	m_state(ResultState::MOVE), m_currentSelect(0), m_resultTime(0.0f), m_isStartedBGMLoop(false)
 {
 
 }
 
 void ResultController::Start()
 {
-	SoundManager::PlayBGM("Result", 0.5f, true);
+	SoundManager::PlayBGM("ResultStart", 1.0f, false);
 
 	if (GameState::GetInstance()->GetCurrentStegaNo() >= StageCount)
 	{
@@ -178,6 +178,12 @@ void ResultController::Update()
 	case ResultController::ResultState::END:
 		EndUpdate();
 		break;
+	}
+	
+	if (!m_isStartedBGMLoop && !SoundManager::IsBGMPlaying())
+	{
+		SoundManager::PlayBGM("ResultLoop", 1.0f, true);
+		m_isStartedBGMLoop = true;
 	}
 }
 
@@ -307,9 +313,19 @@ void ResultController::SelectUpdate()
 	//Enter B
 	if (InputManager::CurrentInputSystem().GetButtonDown("ResultSelect"_hash))
 	{
+		SoundManager::StopBGM();
 		SoundManager::PlaySE("Result_Decision", 1.0f, false);
 		m_state = ResultState::END;
-		Fade::StartIconIrisOut();//フェード
+		switch (m_currentSelect)
+		{
+		case 0:
+		case 2:
+			Fade::StartIrisOut();//フェード
+			break;
+		case 1:
+			Fade::StartIconIrisOut();//フェード
+			break;
+		}
 	}
 
 }

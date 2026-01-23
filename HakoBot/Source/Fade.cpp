@@ -48,8 +48,7 @@ void Fade::Update()
 	// フェードイン最初の2フレームは処理スキップ (DeltaTimeが読み込みで大きくなる)
 	if (s_frameCount < g_skipFrameCount && !s_isFade)
 	{
-		// 最初のフレームは処理スキップ (DeltaTimeが読み込みで大きくなる)
-		s_frameCount++;
+		++s_frameCount;
 	}
 	else
 	{
@@ -62,6 +61,11 @@ void Fade::Update()
 				s_fadeRatio = 0.0f;
 				s_isActive = false;
 			}
+
+			if (s_frameCount == g_skipFrameCount) {
+				SoundManager::PlaySE("FadeIn", 1.0f, false);
+				++s_frameCount;
+			}
 		}
 		if (s_fadeRatio < 1.0f && s_isFade)
 		{
@@ -70,6 +74,11 @@ void Fade::Update()
 			{
 				s_fadeRatio = 1.0f;
 				s_isActive = false;
+			}
+
+			if (s_frameCount == 0) {
+				SoundManager::PlaySE("FadeOut", 1.0f, false);
+				++s_frameCount;
 			}
 		}
 	}
@@ -219,6 +228,7 @@ void Fade::StartFadeOut()
 	s_frameCount = 0;
 	s_isActive = true;
 	s_isFade = true;
+	s_frameCount = 0;
 }
 
 void Fade::StartFadeIn()
@@ -227,4 +237,5 @@ void Fade::StartFadeIn()
 	s_frameCount = 0;
 	s_isActive = true;
 	s_isFade = false;
+	s_frameCount = 0;
 }

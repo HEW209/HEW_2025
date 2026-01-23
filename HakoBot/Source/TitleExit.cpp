@@ -97,6 +97,7 @@ void TitleExit::Update()
 
 		if (InputManager::CurrentInputSystem().GetButtonDown("MenuInteract"_hash))
 		{
+			SoundManager::StopBGM();
 			SoundManager::PlaySE("Title_Decision", 1.0f, false);
 			m_startFlag = true;
 			Fade::StartIconIrisOut();
