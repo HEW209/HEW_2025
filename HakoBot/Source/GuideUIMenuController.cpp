@@ -177,6 +177,7 @@ void GuideUIMeneController::UpdateSelect()
 		InputManager::ChangeBindType(InputBindType::GAMEPLAY);
 	}
 
+	// カーソル移動
 	Vector2 input = Input::GetLeftStick();
 	int targetX = m_menuX;
 	int targetY = m_menuY;
@@ -197,6 +198,7 @@ void GuideUIMeneController::UpdateSelect()
 		targetX = 1;
 	}
 
+	// カーソル移動してたら鳴らす
 	if (targetX != m_menuX || targetY != m_menuY)
 	{
 		SoundManager::PlaySE("Menu_Select", 1.0f, false);
