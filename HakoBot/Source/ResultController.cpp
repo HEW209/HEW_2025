@@ -234,7 +234,7 @@ void ResultController::SelectUpdate()
 
 	//ã‘I‘ð
 	if ((Input::GetLeftStick().y > 0.0f && Input::GetLastLeftStick().y <= 0.0f) || 
-		Input::GetKeyDown(KeyCode::UP) || Input::GetKeyDown(KeyCode::W))
+		Input::GetKeyDown(KeyCode::UP) || Input::GetKeyDown(KeyCode::W) || Input::GetButtonDown(PadCode::UP))
 	{
 		SoundManager::PlaySE("Result_Select", 1.0f, false);
 		isUp = true;
@@ -247,7 +247,7 @@ void ResultController::SelectUpdate()
 
 	//‰º‘I‘ð
 	if ((Input::GetLeftStick().y < 0.0f && Input::GetLastLeftStick().y >= 0.0f) ||
-		Input::GetKeyDown(KeyCode::DOWN) || Input::GetKeyDown(KeyCode::S))
+		Input::GetKeyDown(KeyCode::DOWN) || Input::GetKeyDown(KeyCode::S) || Input::GetButtonDown(PadCode::DOWN))
 	{
 		SoundManager::PlaySE("Result_Select", 1.0f, false);
 		isUp = false;
