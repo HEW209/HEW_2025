@@ -125,12 +125,6 @@ void StageSet::Awake()
         transform->SetPosition(-8.5f, 5.0f, 11.0f, Space::LOCAL);
         auto renderer = obj->AddComponent<MeshRenderer>();
         renderer->LoadModel("Assets/Model/Stage/fbx/MiddleWall.fbx");
-        m_fanAnim = renderer->LoadAnimation("Assets/Model/Stage/fbx/MiddleWall.fbx");
-        for (auto& material : *renderer->GetMaterials())
-        {
-            material.SetVertexShader("Assets/Shader/Anime_VS.cso");
-        }
-        renderer->PlayAnime(m_fanAnim, true, 0.2f);
         for (auto&& material : *renderer->GetMaterials()) {
             material.SetPixelShader("Assets/Shader/Transparent_PS.cso");
             struct TransparentParam
@@ -141,6 +135,19 @@ void StageSet::Awake()
             material.SetParameter(&transparentParam, sizeof(TransparentParam));
         }
         m_pMiddleWall = renderer;
+    }
+
+    // ファン
+    for (int i = 0; i < 3; ++i)
+    {
+        auto obj = SceneManager::GetActiveScene()->CreateGameObject();
+        auto transform = obj->GetTransform();
+        transform->SetParent(GetTransform());
+        transform->SetPosition(-14.5f + i * 2.0f, 8.5f, 10.2f, Space::LOCAL);
+        transform->Rotate(0.0f, 0.0f, i * 20.0f);
+        auto renderer = obj->AddComponent<MeshRenderer>();
+        renderer->LoadModel("Assets/Model/Stage/fbx/Fan.fbx");
+        m_pFans[i] = renderer;
     }
 
     {
@@ -280,6 +287,21 @@ void StageSet::Update()
         float dot = static_cast<Vec3>(cameraDir).Dot(Vec3::Back());
         float transparency = 1.0f - Math::Clamp01(dot);
         SetTransparent(m_pMiddleWall.Get(), transparency);
+
+        // ファン
+        for (int i = 0; i < 3; ++i)
+        {
+            if (transparency < 1.0f)
+            {
+                m_pFans[i]->SetEnabled(false);
+            }
+            else
+            {
+                m_pFans[i]->SetEnabled(true);
+            }
+
+            m_pFans[i]->GetTransform()->Rotate(0.0f, 0.0f, Time::GetDeltaTime() * 360.0f);
+        }
     }
     {
         float dot = static_cast<Vec3>(cameraDir).Dot(Vec3::Left());

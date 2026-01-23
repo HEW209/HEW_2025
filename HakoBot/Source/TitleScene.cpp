@@ -49,13 +49,13 @@ void TitleScene::Init()
     {
         auto obj = CreateGameObject();
         auto fade = obj->AddComponent<Fade>();
-        if (!s_isFirst)
+        if (s_isFirst)
         {
             s_isFirst = false;
         }
         else
         {
-            Fade::StartIrisIn();
+            Fade::StartIconIrisIn();
         }
     }
 

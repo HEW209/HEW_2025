@@ -30,14 +30,13 @@ float4 main(PS_IN pin) : SV_TARGET
     // 距離マスク
     float dist = max(abs(centerTo.x), abs(centerTo.y));
     float border = 1 - fadeRatio;
-    float distMask = 1 - smoothstep(border, border - 0.003, dist);
+    float distMask = smoothstep(border, border - 0.003, dist);
     
     // テクスチャマスク
-    float2 maskUV = centerTo * (1 / max(fadeRatio, 1e-6));
-    float4 texColor = tex.Sample(samp, maskUV);
-    float texMask = texColor.r;
+    float2 maskUV = center + centerTo * (1 / max(1 - fadeRatio, 1e-6));
+    float texMask = tex.Sample(samp, maskUV).a;
 
-    float mask = saturate(distMask + texMask);
-    pin.color.a *= distMask;
+    float mask = distMask * texMask;
+    pin.color.a *= 1 - mask;
     return pin.color;
 }
