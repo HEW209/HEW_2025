@@ -1,7 +1,7 @@
 #include "GameUI.h"
 
 #include "GuideUIController2.h"
-#include "GuideUITimeController.h"
+#include "TimeUI.h"
 #include "GuideUIMenuController.h"
 #include "InputUI.h"
 #include "GameStart.h"
@@ -43,7 +43,7 @@ void GameUI::Awake()
         auto obj = SceneManager::GetActiveScene()->CreateGameObject();
         obj->GetTransform()->SetParent(m_pRoot->GetTransform());
         obj->GetTransform()->SetPosition(4.1f, 3.2f, 0.0f);
-        obj->AddComponent<GuideUITimeController>();
+        obj->AddComponent<TimeUI>();
     }
 
     // ŠJn‰‰o

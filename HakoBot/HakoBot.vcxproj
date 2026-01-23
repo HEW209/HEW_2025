@@ -173,7 +173,7 @@
     <ClCompile Include="Source\GuideUIMenuController.cpp" />
     <ClCompile Include="Source\InputSystem.cpp" />
     <ClCompile Include="Source\GuideUIController2.cpp" />
-    <ClCompile Include="Source\GuideUITimeController.cpp" />
+    <ClCompile Include="Source\TimeUI.cpp" />
     <ClCompile Include="Source\InputManager.cpp" />
     <ClCompile Include="Source\InputUI.cpp" />
     <ClCompile Include="Source\LevelSerializer.cpp" />
@@ -284,7 +284,7 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <ClInclude Include="Source\GuideUIController2.h" />
-    <ClInclude Include="Source\GuideUITimeController.h" />
+    <ClInclude Include="Source\TimeUI.h" />
     <FxCompile Include="Source\HLSL\IrisOut_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
