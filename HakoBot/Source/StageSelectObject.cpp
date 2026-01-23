@@ -13,40 +13,6 @@ static const float g_defaultMoveSpeed = 5.0f;
 static const float g_minMoveSpeed = 1.0f;
 static const float g_rotateSpeed = 60.0f;
 
-//static const char* g_blockNames[StageCount] =
-//{
-//	"1masu",
-//	"Lji1",
-//	"tate2masu",
-//	"tate3masu",
-//	"yoko2masu",
-//	"yoko3masu",
-//	"1masu",
-//	"1masu",
-//	"1masu",
-//	"1masu",
-//	"1masu",
-//	"1masu",
-//	"1masu",
-//	"1masu",
-//	"1masu",
-//	"1masu",
-//	"1masu",
-//	"1masu",
-//	"1masu",
-//	"1masu",
-//	"1masu",
-//	"1masu",
-//	"1masu",
-//	"1masu",
-//	"1masu",
-//	"1masu",
-//	"1masu",
-//	"1masu",
-//	"1masu",
-//	"1masu"
-//};
-
 void StageSelectObject::Start()
 {
 	int clearStage = SaveData::GetClearLevel();

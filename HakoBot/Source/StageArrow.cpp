@@ -5,26 +5,36 @@
 
 //StageArrow.cpp
 
+static const float g_hideTime = 0.7f;
+static const float g_hideChangeTime = 0.3f;
+
+StageArrow::StageArrow():
+	m_ease(0.0f),
+	m_hideTimer(g_hideChangeTime)
+{
+}
+
 void StageArrow::Start()
 {
 	//矢印左
 	auto renderer = GetGameObject()->AddComponent<SpriteRenderer>();
 	renderer->LoadTexture("Assets/Textures/StageSelect/Arrow.png");
 	renderer->SetOffsetPos(-2.5f,-1.1f);
-	renderer->SetSize(200.0f);
+	renderer->SetSize(160.0f);
 	renderer->SetUI(true);
 	m_ArrowLeft = renderer;
 
 	//矢印右
 	auto renderer1 = GetGameObject()->AddComponent<SpriteRenderer>();
-	renderer1->LoadTexture("Assets/Textures/StageSelect/Arrow1.png");
+	renderer1->LoadTexture("Assets/Textures/StageSelect/Arrow.png");
 	renderer1->SetOffsetPos(2.5f, -1.1f);
-	renderer1->SetSize(200.0f);
+	renderer1->SetSize(160.0f);
+	renderer1->SetUVOffsetPos(1.0f, 1.0f);
+	renderer1->SetUVScale(-1.0f, -1.0f);
 	renderer1->SetUI(true);
 	m_ArrowRight = renderer1;
 
-	m_ease = 0.0f;
-	
+	m_lastSelectNumber = m_stageNumber->GetSelectIndex();
 }
 
 void StageArrow::Update()
@@ -51,8 +61,29 @@ void StageArrow::Update()
 	m_ArrowLeft->SetOffsetPos(Easing::InSine(t,1.0f,-2.7f,-2.6f),-1.1f);
 	m_ArrowRight->SetOffsetPos(Easing::InSine(t, 1.0f, 2.7f, 2.6f), -1.1f);
 
-	
+	// 移動中に矢印を消す
+	if (m_lastSelectNumber != m_stageNumber->GetSelectIndex())
+	{
+		m_lastSelectNumber = m_stageNumber->GetSelectIndex();
+		m_hideTimer = g_hideTime + g_hideTime;
+	}
 
+	// 透明度変更
+	m_hideTimer -= Time::GetDeltaTime();
+	if (m_hideTimer > g_hideChangeTime)
+	{
+		m_ArrowLeft->SetColor(1.0f, 1.0f, 1.0f, 0.0f);
+		m_ArrowRight->SetColor(1.0f, 1.0f, 1.0f, 0.0f);
+	}
+	else
+	{
+		if (m_hideTimer < 0.0f)
+			m_hideTimer = 0.0f;
+
+		float alpha = 1.0f - m_hideTimer / g_hideChangeTime;
+		m_ArrowLeft->SetColor(1.0f, 1.0f, 1.0f, alpha);
+		m_ArrowRight->SetColor(1.0f, 1.0f, 1.0f, alpha);
+	}
 
 	//ステージ1を選択しているとき矢印左を消す
 	if (m_stageNumber->GetSelectIndex() == 1)
