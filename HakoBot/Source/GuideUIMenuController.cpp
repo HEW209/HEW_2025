@@ -116,6 +116,7 @@ void GuideUIMeneController::UpdateDefault()
 		//クリアしてたらメニュー表示できない
 		if (!GameState::GetInstance()->IsClear())
 		{
+			GameState::GetInstance()->StopTimer();
 			m_menuState = MenuState::OPEN;
 			//ボタン受付をUIタイプに変更
 			InputManager::ChangeBindType(InputBindType::UI);
@@ -167,6 +168,7 @@ void GuideUIMeneController::UpdateSelect()
 	//メニューを閉じるボタンかメニューのキャンセルボタン押したとき
 	if (InputManager::CurrentInputSystem().GetButtonDown("MenuBack"_hash) || InputManager::CurrentInputSystem().GetButtonDown("MenuClose"_hash))
 	{
+		GameState::GetInstance()->StartTimer();
 		m_closeStartScale = GetTransform()->GetScale();
 		m_menuState = MenuState::CLOSE;
 		m_closePhase = ClosePhase::Pop;
