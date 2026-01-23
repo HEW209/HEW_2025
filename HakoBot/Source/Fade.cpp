@@ -185,12 +185,19 @@ void Fade::SetFadeRatio(float ratio)
 void Fade::StartIrisOut()
 {
 	s_fadeMode = FadeMode::SIMPLE_IRIS;
+	{
+		s_main->m_renderer->SetSize(1280, 1280);
+	}
 	StartFadeOut();
 }
 
 void Fade::StartIrisIn()
 {
 	s_fadeMode = FadeMode::SIMPLE_IRIS;
+	if (s_main)
+	{
+		s_main->m_renderer->SetSize(1280, 1280);
+	}
 	StartFadeIn();
 }
 
