@@ -167,6 +167,7 @@ void GuideUIMeneController::UpdateSelect()
 	//メニューを閉じるボタンかメニューのキャンセルボタン押したとき
 	if (InputManager::CurrentInputSystem().GetButtonDown("MenuBack"_hash) || InputManager::CurrentInputSystem().GetButtonDown("MenuClose"_hash))
 	{
+		SoundManager::PlaySE("Menu_Close", 1.0f, false);
 		m_closeStartScale = GetTransform()->GetScale();
 		m_menuState = MenuState::CLOSE;
 		m_closePhase = ClosePhase::Pop;
