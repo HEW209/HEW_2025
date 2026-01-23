@@ -79,6 +79,11 @@ void Fade::Update()
 	{
 	case Fade::SIMPLE_IRIS:
 		m_renderer->GetMaterial()->SetPixelShader("Assets/Shader/IrisOut_PS.cso");
+		m_renderer->LoadTexture("Assets/Textures/Default.png", false);
+		break;
+
+	case Fade::ICON_IRIS:
+		m_renderer->GetMaterial()->SetPixelShader("Assets/Shader/IrisOut_PS.cso");
 		break;
 	}
 
@@ -88,13 +93,13 @@ void Fade::Update()
 	// レンダラー更新
 	if (s_fadeRatio <= 0.0f)
 	{
-		//m_renderer->SetEnabled(false);
+		m_renderer->SetEnabled(false);
 	}
 	else
 	{
-		//m_renderer->SetEnabled(true);
+		m_renderer->SetEnabled(true);
 	}
-	if (FadeMode::ICON_IRIS)
+	if (s_fadeMode == FadeMode::ICON_IRIS)
 	{
 		float pointTime = 0.3f;		// 最もフェードが遅くなるタイミング
 		float pointRatio = 0.97f;	// 最もフェードが遅くなっているときの割合
@@ -182,6 +187,7 @@ void Fade::StartIrisIn()
 
 void Fade::StartIconIrisOut(bool maskIconChange)
 {
+	s_fadeMode = FadeMode::ICON_IRIS;
 	if (maskIconChange)
 	{
 		s_maskIcon = (IconType)(rand() % (int)IconType::COUNT);
@@ -195,6 +201,7 @@ void Fade::StartIconIrisOut(bool maskIconChange)
 
 void Fade::StartIconIrisIn(bool maskIconChange)
 {
+	s_fadeMode = FadeMode::ICON_IRIS;
 	if (maskIconChange)
 	{
 		s_maskIcon = (IconType)(rand() % (int)IconType::COUNT);
