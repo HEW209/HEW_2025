@@ -76,7 +76,7 @@ void Fade::Update()
 				s_isActive = false;
 			}
 
-			if (s_frameCount == g_skipFrameCount) {
+			if (s_frameCount == 0) {
 				SoundManager::PlaySE("FadeOut", 1.0f, false);
 				++s_frameCount;
 			}

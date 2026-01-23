@@ -299,7 +299,7 @@ void GuideUIMeneController::SelectEnter()
 		SoundManager::StopBGM();
 		SoundManager::PlaySE("Menu_Decision", 1.0f, false);
 		m_menuState = MenuState::SCENE_CHANGE;
-		Fade::StartIconIrisOut();
+		Fade::StartIrisOut();
 	}
 	// ëÄçÏê‡ñæ
 	if (m_menuX == 1 && m_menuY == 0)

@@ -311,7 +311,16 @@ void ResultController::SelectUpdate()
 		SoundManager::StopBGM();
 		SoundManager::PlaySE("Result_Decision", 1.0f, false);
 		m_state = ResultState::END;
-		Fade::StartIconIrisOut();//フェード
+		switch (m_currentSelect)
+		{
+		case 0:
+		case 2:
+			Fade::StartIrisOut();//フェード
+			break;
+		case 1:
+			Fade::StartIconIrisOut();//フェード
+			break;
+		}
 	}
 
 }
