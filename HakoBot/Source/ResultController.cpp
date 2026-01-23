@@ -9,6 +9,7 @@
 #include "SaveData.h"
 #include "StageNumber.h"
 #include "SoundManager.h"
+#include "TimeUI.h"
 
 constexpr float EASE_TOTAL_TIME = 0.7f;
 
@@ -33,6 +34,13 @@ constexpr float ILLUST_POS_Y_END = 0.1f;
 constexpr float ILLUST_POS_X_START = ILLUST_POS_X_END + 15.0f;
 constexpr float ILLUST_POS_Y_START = ILLUST_POS_Y_END;
 
+//クリアタイム
+constexpr float TIMEUI_SCALE = 1.6f;
+constexpr float TIMEUI_POS_X_END = 2.0f;
+constexpr float TIMEUI_POS_Y_END = 0.2f;
+constexpr float TIMEUI_POS_X_START = ILLUST_POS_X_END + 8.0f;
+constexpr float TIMEUI_POS_Y_START = ILLUST_POS_Y_END;
+
 // 選択肢
 constexpr float SELECT_SIZE_MAX = 550.0f;
 constexpr float SELECT_SIZE_MIN = 450.0f;
@@ -44,9 +52,9 @@ constexpr float SELECT_SPACE_RATIO = 0.5f * 0.45f;
 constexpr float SELECT_SCALING_SPEED = 800.0f;
 
 static const char* g_activeText[3] = {
-		"Assets/Textures/Result/tugi_stage.png",
-		"Assets/Textures/Result/stage_select.png",
-		"Assets/Textures/Result/re_start.png"
+	"Assets/Textures/Result/tugi_stage.png",
+	"Assets/Textures/Result/stage_select.png",
+	"Assets/Textures/Result/re_start.png"
 };
 
 static const char* g_defaultText[3] = {
@@ -54,27 +62,6 @@ static const char* g_defaultText[3] = {
 	"Assets/Textures/Result/stage_selectoff.png",
 	"Assets/Textures/Result/re_startoff.png"
 };
-
-////次のステージ
-//constexpr float TUGI_SIZE = 450.0f;
-//constexpr float TUGI_POS_X_END = 4.0f;
-//constexpr float TUGI_POS_Y_END = -1.6f;
-//constexpr float TUGI_POS_X_START = TUGI_POS_X_END + 8.0f;
-//constexpr float TUGI_POS_Y_START = TUGI_POS_Y_END;
-//
-////ステージセレクト
-//constexpr float STAGE_SIZE = 450.0f;
-//constexpr float STAGE_POS_X_END = 4.0f;
-//constexpr float STAGE_POS_Y_END = -2.4f;
-//constexpr float STAGE_POS_X_START = STAGE_POS_X_END + 8.0f;
-//constexpr float STAGE_POS_Y_START = STAGE_POS_Y_END;
-//
-////リスタート
-//constexpr float RE_SIZE = 450.0f;
-//constexpr float RE_POS_X_END = 4.0f;
-//constexpr float RE_POS_Y_END = -3.2f;
-//constexpr float RE_POS_X_START = RE_POS_X_END + 8.0f;
-//constexpr float RE_POS_Y_START = RE_POS_X_START;
 
 ResultController::ResultController():
 	m_state(ResultState::MOVE), m_currentSelect(0), m_resultTime(0.0f)
@@ -132,6 +119,19 @@ void ResultController::Start()
 	resultMozi->SetOffsetPos(RESULT_POS_X_START, RESULT_POS_Y_START);
 	m_result = resultMozi;
 
+	//クリアタイム
+	auto timeObj = SceneManager::GetActiveScene()->CreateGameObject();
+	timeObj->GetTransform()->SetPosition(TIMEUI_POS_X_START, TIMEUI_POS_Y_START, 0.0f);
+	timeObj->GetTransform()->SetScale(TIMEUI_SCALE, TIMEUI_SCALE, 1.0f);
+	auto timeBack = timeObj->AddComponent<SpriteRenderer>();
+	timeBack->LoadTexture("Assets/Textures/Result/result_time_back.png");
+	timeBack->SetSize(320.0f, 120.0f);
+	timeBack->SetOffsetPos(0.91f, 0.02f);
+	timeBack->SetUI(true);
+	auto timeUI = timeObj->AddComponent<TimeUI>();
+	timeUI->SetTextureType(TimeUI::TextureType::RESULT);
+	m_clearTime = timeObj;
+
 	//選択肢
 	Vector2 offsetPos(SELECT_POS_X_START, SELECT_POS_Y_START);
 	for (int i = 0; i < Select::COUNT; ++i)
@@ -178,8 +178,6 @@ void ResultController::Update()
 	case ResultController::ResultState::END:
 		EndUpdate();
 		break;
-	default:
-		break;
 	}
 }
 
@@ -213,6 +211,13 @@ void ResultController::MoveUpdate()
 	m_result->SetOffsetPos(
 		Easing::OutCubic(m_resultTime, EASE_TOTAL_TIME, RESULT_POS_X_END, RESULT_POS_X_START),
 		Easing::OutCubic(m_resultTime, EASE_TOTAL_TIME, RESULT_POS_Y_END, RESULT_POS_Y_START));
+
+	// クリアタイムの移動
+	m_clearTime->GetTransform()->SetPosition(
+		Easing::OutCubic(m_resultTime, EASE_TOTAL_TIME, TIMEUI_POS_X_END, TIMEUI_POS_X_START),
+		Easing::OutCubic(m_resultTime, EASE_TOTAL_TIME, TIMEUI_POS_Y_END, TIMEUI_POS_Y_START),
+		0.0f
+	);
 
 	// 選択肢の移動
 	for (int i = 0; i < Select::COUNT; ++i)

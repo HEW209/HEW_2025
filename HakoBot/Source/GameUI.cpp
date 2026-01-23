@@ -38,11 +38,24 @@ void GameUI::Awake()
         obj->AddComponent<GuideUIMeneController>();
     }
 
+    // タイマー背景
+    {
+        auto obj = SceneManager::GetActiveScene()->CreateGameObject();
+        obj->GetTransform()->SetParent(m_pRoot->GetTransform());
+        auto back = obj->AddComponent<SpriteRenderer>();
+        back->LoadTexture("Assets/Textures/time_frame.png");
+        back->SetSize(350.0f);
+        Vector2 backOffset = back->GetSize() * -0.5f * 0.01f;
+        back->SetOffsetPos(backOffset + Vector2(6.4f, 3.6f));
+        back->SetUI(true);
+        back->GetMaterial()->SetSamplerState(SamplerState::POINT_CLAMP);
+    }
+
     // タイマー1
     {
         auto obj = SceneManager::GetActiveScene()->CreateGameObject();
         obj->GetTransform()->SetParent(m_pRoot->GetTransform());
-        obj->GetTransform()->SetPosition(4.1f, 3.2f, 0.0f);
+        obj->GetTransform()->SetPosition(4.3f, 3.25f, 0.0f);
         obj->AddComponent<TimeUI>();
     }
 
@@ -57,5 +70,15 @@ void GameUI::Awake()
 void GameUI::Update()
 {
 	ITutorial* tutorial = GameState::GetInstance()->GetTutorial();
-    m_pRoot->SetActive(!tutorial || tutorial->IsFinished());
+    if (!tutorial || tutorial->IsFinished())
+    {
+        if (!m_pRoot->IsActiveSelf())
+            GameState::GetInstance()->StartTimer();
+
+        m_pRoot->SetActive(true);
+    }
+    else
+    {
+        m_pRoot->SetActive(false);
+    }
 }
