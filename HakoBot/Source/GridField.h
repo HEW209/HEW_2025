@@ -69,6 +69,8 @@ public:
 	// クリア判定
 	bool IsClear();
 
+	bool IsCorrect();
+
 	//グリッド内判定
 	bool IsInside(const Vector3& position);
 

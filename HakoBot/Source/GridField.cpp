@@ -292,6 +292,32 @@ bool GridField::IsClear()
 	return true;
 }
 
+bool GridField::IsCorrect()
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		const ShapeType& target = m_clearShape[i];
+		const ShapeType now = m_gridData.GetShape(i);
+
+		// ※ DynamicDimArray のサイズ取得APIはプロジェクト側に合わせて置き換えてください
+		const int w = now.GetSize(0);
+		const int h = now.GetSize(1);
+
+		for (int y = 0; y < h; ++y)
+		{
+			for (int x = 0; x < w; ++x)
+			{
+				// 現在 true なのに、目標が false なら「置いたらダメな場所」を埋めた＝矛盾
+				if (now(x, y) && !target(x, y))
+				{
+					return false;
+				}
+			}
+		}
+	}
+	return true;
+}
+
 bool GridField::IsInside(const Vector3& position)
 {
 	Vec3 start = static_cast<Vec3>(GetGridOrigin());

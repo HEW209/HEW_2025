@@ -249,8 +249,16 @@ void PlayerBlockHandler::LateUpdate()
 
 					m_pBlockObject->SetBlockSet(BlockSetData{});
 
-					// SE再生
-					SoundManager::PlaySE("PutBox", 1.0f, false);
+					if (pGridField->IsCorrect())
+					{
+						// SE再生
+						SoundManager::PlaySE("Correct", 1.0f, false);
+					}
+					else
+					{
+						SoundManager::PlaySE("Wrong", 1.0f, false);
+					}
+					
 					m_pRenderer->PlayBlend(m_okuAnime, g_blendTime, true);
 
 					SetBlockSet(BlockSetData{});
@@ -290,7 +298,7 @@ void PlayerBlockHandler::PlaceBlockWorld(Vector3 placePos)
 	m_pBlockObject->SetBlockSet(BlockSetData{});
 
 	// SE再生
-	SoundManager::PlaySE("PutBox", 1.0f, false);
+	SoundManager::PlaySE("OutGrid", 1.0f, false);
 	m_pRenderer->PlayBlend(m_okuAnime, g_blendTime, true);
 	SetBlockSet(BlockSetData{});
 	m_pBlockObject->SetModel("");
