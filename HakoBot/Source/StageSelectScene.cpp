@@ -6,12 +6,13 @@
 #include "Fade.h"
 #include "InputManager.h"
 #include "SoundManager.h"
+#include "StageArrow.h"
+#include "SaveData.h"
 
 void StageSelectScene::Init()
 {
 	SoundManager::PlayBGM("StageSelect", 1.0f, true);
 	InputManager::ChangeBindType(InputBindType::UI);
-
 	// ƒJƒƒ‰
 	{
 		auto obj = CreateGameObject();
@@ -58,6 +59,14 @@ void StageSelectScene::Init()
 		auto info = obj->AddComponent<StageInfo>();
 		info->SetStageNumber(stageNumber);
 	}
+
+	//–îˆó
+	{
+		auto obj = CreateGameObject();
+		auto arrow = obj->AddComponent<StageArrow>();
+		arrow->SetStageNumber(stageNumber);
+	}
+
 
 	// ‚»‚Ì‘¼
 	{
