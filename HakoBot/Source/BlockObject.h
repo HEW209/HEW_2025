@@ -78,6 +78,7 @@ public:
 	bool IsTransparent() const { return m_isTransparent; }
 
 	void CreatePlaceEffect();
+	void CreateWorldPlaceEffect();
 
 private:
 	BlockSetData m_blockSet;

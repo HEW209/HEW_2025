@@ -305,3 +305,17 @@ void BlockObject::CreatePlaceEffect()
 		}
 	}
 }
+
+void BlockObject::CreateWorldPlaceEffect()
+{
+	auto obj = SceneManager::GetActiveScene()->CreateGameObject();
+	float scale = std::max(m_size.x, m_size.z) * 0.25f + 0.25f;
+	obj->GetTransform()->SetScale(scale, scale, scale);
+	Vector3 pos = GetTransform()->GetPosition() + m_center;
+	pos.y -= m_size.y * 0.5f;
+	obj->GetTransform()->SetPosition(pos);
+	auto effect = obj->AddComponent<EffectRenderer>();
+	effect->Load("Assets/Effect/BlockPlace/BlockPlaceWorld.efkefc");
+	effect->Play();
+	obj->AddComponent<LifeTime>()->SetLifeTime(2.0f);
+}
