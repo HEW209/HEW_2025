@@ -9,7 +9,7 @@ static const float g_hideTime = 0.7f;
 static const float g_hideChangeTime = 0.3f;
 
 StageArrow::StageArrow():
-	m_ease(0.0f),
+	m_ease(0.25f),
 	m_hideTimer(g_hideChangeTime)
 {
 }
