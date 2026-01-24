@@ -17,9 +17,9 @@
 #include "OutlineMeshRenderer.h"
 
 
-/**
- * @brief ブロックのコンポーネント
- */
+ /**
+  * @brief ブロックのコンポーネント
+  */
 class BlockObject : public Component
 {
 public:
@@ -78,6 +78,7 @@ public:
 	bool IsTransparent() const { return m_isTransparent; }
 
 	void CreatePlaceEffect();
+	void CreateWorldPlaceEffect();
 
 private:
 	BlockSetData m_blockSet;

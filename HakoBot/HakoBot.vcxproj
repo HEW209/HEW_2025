@@ -190,7 +190,7 @@
     <ClCompile Include="Source\SampleCamera.cpp" />
     <ClCompile Include="Source\SaveData.cpp" />
     <ClCompile Include="Source\ShapeScreen.cpp" />
-    <ClCompile Include="Source\StageArrow.cpp" />
+    <ClCompile Include="Source\StageSelectUI.cpp" />
     <ClCompile Include="Source\StageInfo.cpp" />
     <ClCompile Include="Source\StageSet.cpp" />
     <ClCompile Include="Source\TitleExit.cpp" />
@@ -250,7 +250,7 @@
     <ClInclude Include="Source\SampleCamera.h" />
     <ClInclude Include="Source\SaveData.h" />
     <ClInclude Include="Source\ShapeScreen.h" />
-    <ClInclude Include="Source\StageArrow.h" />
+    <ClInclude Include="Source\StageSelectUI.h" />
     <ClInclude Include="Source\StageInfo.h" />
     <ClInclude Include="Source\StageSet.h" />
     <ClInclude Include="Source\TitleExit.h" />

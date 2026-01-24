@@ -144,13 +144,6 @@ void StageNumber::Update()
 
 	ImGui::End();
 #endif // DEBUG
-
-#ifdef _DEBUG
-	if (Input::GetKeyDown(KeyCode::KEY_0)) {
-		SaveData::SetClearLevel(std::min(SaveData::GetClearLevel() + 1, StageCount));
-	}
-#endif // _DEBUG
-
 }
 
 int StageNumber::GetSelectIndex()
@@ -219,7 +212,7 @@ void StageNumber::StageSelect()
 	// ‘I‘ğˆÚ“®
 	if (m_lastInput == inputSide)
 	{
-		const float holdMoveWait = 0.7f;		// ’·‰Ÿ‚µˆÚ“®‚ªn‚Ü‚é‚Ü‚Å‚ÌŠÔ
+		const float holdMoveWait = 0.5f;		// ’·‰Ÿ‚µˆÚ“®‚ªn‚Ü‚é‚Ü‚Å‚ÌŠÔ
 		const float holdMoveInterval = 0.1f;	// ’·‰Ÿ‚µˆÚ“®‚ÌŠÔŠÔŠu
 
 		// ’·‰Ÿ‚µˆ—

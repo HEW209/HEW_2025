@@ -27,7 +27,7 @@ float4 main(PS_IN pin) : SV_TARGET
 {
     float gloss = 64;       // ハイライトのシャープさ
     float specPower = 0.5;  // スペキュラ
-    float reflAmount = 0.3; // 
+    float reflAmount = 0.2; // 
     float rimAmount = 0.2;  // リムライト
 
     float3 N = normalize(pin.normal);

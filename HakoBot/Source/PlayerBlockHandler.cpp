@@ -302,6 +302,8 @@ void PlayerBlockHandler::PlaceBlockWorld(Vector3 placePos)
 	m_pRenderer->PlayBlend(m_okuAnime, g_blendTime, true);
 	SetBlockSet(BlockSetData{});
 	m_pBlockObject->SetModel("");
+
+	component->CreateWorldPlaceEffect();
 }
 
 bool PlayerBlockHandler::CanPlaceWorld(Vector3 placePos)

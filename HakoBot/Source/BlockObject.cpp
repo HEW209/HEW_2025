@@ -10,7 +10,7 @@ void BlockObject::Awake()
 	m_pBlockMeshRenderer = GetGameObject()->AddComponent<OutlineMeshRenderer>();
 	m_pBlockMeshRenderer->SetEnabled(false);
 	m_pBlockMeshRenderer->SetShouldDrawOutline(false);
-	m_pBlockMeshRenderer->SetOutlineColor(Color{1.0f, 0.5f, 0.0f, 1.0f});
+	m_pBlockMeshRenderer->SetOutlineColor(Color{ 1.0f, 0.5f, 0.0f, 1.0f });
 	m_pBlockMeshRenderer->SetOutlineThickness(5.0f);
 	m_pBlockMeshRenderer->SetShouldDrawShadow(true);
 
@@ -74,7 +74,7 @@ void BlockObject::SetBlockSet(const BlockSetData& blockSet)
 		auto transform = obj->GetTransform();
 		transform->SetParent(GetTransform());
 		transform->SetPosition(blockPos.x, blockPos.y, blockPos.z, Space::LOCAL);
-	
+
 		m_pBlocks.push_back(obj);
 	}
 	m_size = max - min + Vector3(1.0f, 1.0f, 1.0f);
@@ -284,7 +284,7 @@ void BlockObject::CreatePlaceEffect()
 			break;
 		}
 	}
-	
+
 	for (auto block : m_pBlocks)
 	{
 		if (block)
@@ -304,4 +304,19 @@ void BlockObject::CreatePlaceEffect()
 			obj->AddComponent<LifeTime>()->SetLifeTime(2.0f);
 		}
 	}
+}
+
+void BlockObject::CreateWorldPlaceEffect()
+{
+	auto obj = SceneManager::GetActiveScene()->CreateGameObject();
+	float scale = std::max(m_size.x, m_size.z) * 0.25f + 0.25f;
+	obj->GetTransform()->SetScale(scale, scale, scale);
+	Vector3 center = GetTransform()->GetQuaternion() * m_center;
+	Vector3 pos = GetTransform()->GetPosition() + center;
+	pos.y -= m_size.y * 0.5f;
+	obj->GetTransform()->SetPosition(pos);
+	auto effect = obj->AddComponent<EffectRenderer>();
+	effect->Load("Assets/Effect/BlockPlace/BlockPlaceWorld.efkefc");
+	effect->Play();
+	obj->AddComponent<LifeTime>()->SetLifeTime(2.0f);
 }
