@@ -17,9 +17,9 @@
 #include "OutlineMeshRenderer.h"
 
 
-/**
- * @brief ブロックのコンポーネント
- */
+ /**
+  * @brief ブロックのコンポーネント
+  */
 class BlockObject : public Component
 {
 public:

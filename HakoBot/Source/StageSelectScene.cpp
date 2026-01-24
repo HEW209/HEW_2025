@@ -13,7 +13,6 @@ void StageSelectScene::Init()
 {
 	SoundManager::PlayBGM("StageSelect", 1.0f, true);
 	InputManager::ChangeBindType(InputBindType::UI);
-
 	// ƒJƒƒ‰
 	{
 		auto obj = CreateGameObject();
