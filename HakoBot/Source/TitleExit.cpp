@@ -76,10 +76,12 @@ void TitleExit::Update()
 		Vector2 currentInput = Input::GetLeftStick(0.5f);
 		if (currentInput.y > 0.0f && m_lastInput.y <= 0.0f)
 		{
+			SoundManager::PlaySE("Title_Select", 1.0f, false);
 			m_isNewGame = !m_isNewGame;
 		}
 		if (currentInput.y < 0.0f && m_lastInput.y >= 0.0f)
 		{
+			SoundManager::PlaySE("Title_Select", 1.0f, false);
 			m_isNewGame = !m_isNewGame;
 		}
 		m_lastInput = currentInput;

@@ -4,6 +4,7 @@
 #include "GameState.h"
 #include <Component/Collider.h>
 #include "LifeTime.h"
+#include "SoundManager.h"
 
 void BlockObject::Awake()
 {
@@ -304,6 +305,16 @@ void BlockObject::CreatePlaceEffect()
 			obj->AddComponent<LifeTime>()->SetLifeTime(2.0f);
 		}
 	}
+
+	// SEÄ¶
+	if (isSuccess)
+	{
+		SoundManager::PlaySE("Correct", 1.0f, false);
+	}
+	else
+	{
+		SoundManager::PlaySE("Wrong", 1.0f, false);
+	}
 }
 
 void BlockObject::CreateWorldPlaceEffect()
@@ -319,4 +330,7 @@ void BlockObject::CreateWorldPlaceEffect()
 	effect->Load("Assets/Effect/BlockPlace/BlockPlaceWorld.efkefc");
 	effect->Play();
 	obj->AddComponent<LifeTime>()->SetLifeTime(2.0f);
+
+	// SEÄ¶
+	SoundManager::PlaySE("OutGrid", 1.0f, false);
 }
