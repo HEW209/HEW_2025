@@ -6,11 +6,14 @@
 #include "Fade.h"
 #include "SoundManager.h"
 
+static const float g_textSize = 300.0f;
+
 TitleExit::TitleExit():
 	m_newGameText(nullptr),
 	m_continueText(nullptr),
 	m_isNewGame(true),
-	m_startFlag(false)
+	m_startFlag(false),
+	m_animeTimer(0.0f)
 {
 }
 
@@ -18,13 +21,13 @@ void TitleExit::Start()
 {
 	m_newGameText = GetGameObject()->AddComponent<SpriteRenderer>();
 	m_newGameText->LoadTexture("Assets/Textures/Texts/hajimekara.png");
-	m_newGameText->SetSize(300.0f);
+	m_newGameText->SetSize(g_textSize);
 	m_newGameText->SetOffsetPos(0.0f, -0.5f);
 	m_newGameText->SetUI(true);
 
 	m_continueText = GetGameObject()->AddComponent<SpriteRenderer>();
 	m_continueText->LoadTexture("Assets/Textures/Texts/tudukikara_hide.png");
-	m_continueText->SetSize(300.0f);
+	m_continueText->SetSize(g_textSize);
 	m_continueText->SetOffsetPos(0.0f, 0.5f);
 	m_continueText->SetUI(true);
 
@@ -76,23 +79,33 @@ void TitleExit::Update()
 		Vector2 currentInput = Input::GetLeftStick(0.5f);
 		if (currentInput.y > 0.0f && m_lastInput.y <= 0.0f)
 		{
+			SoundManager::PlaySE("Title_Select", 1.0f, false);
 			m_isNewGame = !m_isNewGame;
 		}
 		if (currentInput.y < 0.0f && m_lastInput.y >= 0.0f)
 		{
+			SoundManager::PlaySE("Title_Select", 1.0f, false);
 			m_isNewGame = !m_isNewGame;
 		}
 		m_lastInput = currentInput;
 
+
+		m_animeTimer += Time::GetDeltaTime();
+		float scale = std::fabsf(std::sinf(m_animeTimer * Math::TAU / 3.0f));
+		scale = scale * 0.1f + 1.0f;
 		if (m_isNewGame)
 		{
 			m_newGameText->LoadTexture("Assets/Textures/Texts/hajimekara.png", false);
 			m_continueText->LoadTexture("Assets/Textures/Texts/tudukikara_hide.png", false);
+			m_newGameText->SetSize(g_textSize * scale);
+			m_continueText->SetSize(g_textSize);
 		}
 		else
 		{
 			m_newGameText->LoadTexture("Assets/Textures/Texts/hajimekara_hide.png", false);
 			m_continueText->LoadTexture("Assets/Textures/Texts/tudukikara.png", false);
+			m_newGameText->SetSize(g_textSize);
+			m_continueText->SetSize(g_textSize * scale);
 		}
 
 		if (InputManager::CurrentInputSystem().GetButtonDown("MenuInteract"_hash))

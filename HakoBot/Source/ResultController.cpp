@@ -71,8 +71,6 @@ ResultController::ResultController():
 
 void ResultController::Start()
 {
-	SoundManager::PlayBGM("ResultStart", 1.0f, false);
-
 	if (GameState::GetInstance()->GetCurrentStegaNo() >= StageCount)
 	{
 		m_currentSelect = Select::STAGE_SELECT;
@@ -179,12 +177,6 @@ void ResultController::Update()
 		EndUpdate();
 		break;
 	}
-	
-	if (!m_isStartedBGMLoop && !SoundManager::IsBGMPlaying())
-	{
-		SoundManager::PlayBGM("ResultLoop", 1.0f, true);
-		m_isStartedBGMLoop = true;
-	}
 }
 
 void ResultController::MoveUpdate()
@@ -193,6 +185,7 @@ void ResultController::MoveUpdate()
 	m_resultTime += Time::GetDeltaTime();
 	if (m_resultTime > EASE_TOTAL_TIME)
 	{
+		SoundManager::PlayBGM("ResultStart", 1.0f, false);
 		m_resultTime = EASE_TOTAL_TIME;
 		m_state = ResultState::SELECT;
 	}
@@ -328,6 +321,11 @@ void ResultController::SelectUpdate()
 		}
 	}
 
+	if (!m_isStartedBGMLoop && !SoundManager::IsBGMPlaying())
+	{
+		SoundManager::PlayBGM("ResultLoop", 1.0f, true);
+		m_isStartedBGMLoop = true;
+	}
 }
 
 void ResultController::EndUpdate()

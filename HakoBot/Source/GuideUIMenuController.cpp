@@ -110,7 +110,6 @@ void GuideUIMeneController::UpdateDefault()
 	//メニューをひらく
 	if (InputManager::CurrentInputSystem().GetButtonDown("Menu"_hash))
 	{
-		SoundManager::PlaySE("Menu_Open", 1.0f, false);
 		m_value2 = 0.0f;
 		GridField* gridfield = GameState::GetInstance()->GetGridField();
 		//クリアしてたらメニュー表示できない
@@ -120,6 +119,10 @@ void GuideUIMeneController::UpdateDefault()
 			m_menuState = MenuState::OPEN;
 			//ボタン受付をUIタイプに変更
 			InputManager::ChangeBindType(InputBindType::UI);
+		}
+		else
+		{
+			SoundManager::PlaySE("Menu_Open", 1.0f, false);
 		}
 	}
 }

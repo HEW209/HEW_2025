@@ -16,7 +16,6 @@ void TitleScene::Init()
 {
     InputManager::ChangeBindType(InputBindType::UI);
     SoundManager::StopAll();
-    SoundManager::Load();
     SoundManager::PlayBGM("Title", 1.0f, true);
     RenderSystem::Instance().SetClearColor(Color(1.0f, 0.7f, 0.2f, 1.0f));
     

@@ -6,7 +6,7 @@
 #include "Fade.h"
 #include "InputManager.h"
 #include "SoundManager.h"
-#include "StageArrow.h"
+#include "StageSelectUI.h"
 #include "SaveData.h"
 
 void StageSelectScene::Init()
@@ -63,7 +63,7 @@ void StageSelectScene::Init()
 	//–îˆó
 	{
 		auto obj = CreateGameObject();
-		auto arrow = obj->AddComponent<StageArrow>();
+		auto arrow = obj->AddComponent<StageSelectUI>();
 		arrow->SetStageNumber(stageNumber);
 	}
 

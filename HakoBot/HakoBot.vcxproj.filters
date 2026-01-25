@@ -180,7 +180,7 @@
     <ClCompile Include="Source\TimeUI.cpp">
       <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
-    <ClCompile Include="Source\StageArrow.cpp">
+    <ClCompile Include="Source\StageSelectUI.cpp">
       <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
   </ItemGroup>
@@ -371,7 +371,7 @@
     <ClInclude Include="Source\TimeUI.h">
       <Filter>ヘッダー ファイル\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\StageArrow.h">
+    <ClInclude Include="Source\StageSelectUI.h">
       <Filter>ヘッダー ファイル\Component</Filter>
     </ClInclude>
   </ItemGroup>

@@ -248,16 +248,6 @@ void PlayerBlockHandler::LateUpdate()
 				if (pGridField->PlaceBlock()) {
 
 					m_pBlockObject->SetBlockSet(BlockSetData{});
-
-					if (pGridField->IsCorrect())
-					{
-						// SE再生
-						SoundManager::PlaySE("Correct", 1.0f, false);
-					}
-					else
-					{
-						SoundManager::PlaySE("Wrong", 1.0f, false);
-					}
 					
 					m_pRenderer->PlayBlend(m_okuAnime, g_blendTime, true);
 
@@ -297,11 +287,11 @@ void PlayerBlockHandler::PlaceBlockWorld(Vector3 placePos)
 	//使った頭上のブロックは初期化
 	m_pBlockObject->SetBlockSet(BlockSetData{});
 
-	// SE再生
-	SoundManager::PlaySE("OutGrid", 1.0f, false);
 	m_pRenderer->PlayBlend(m_okuAnime, g_blendTime, true);
 	SetBlockSet(BlockSetData{});
 	m_pBlockObject->SetModel("");
+
+	component->CreateWorldPlaceEffect();
 }
 
 bool PlayerBlockHandler::CanPlaceWorld(Vector3 placePos)

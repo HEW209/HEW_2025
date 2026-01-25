@@ -10,7 +10,7 @@ void SoundManager::Load()
 {
 	//----------------------------- タイトル -------------------------------------
 	//BGM
-	LoadBGMFile("Title", "Assets/Sound/BGM_Title(1).wav");
+	LoadBGMFile("Title", "Assets/Sound/BGM_Title.wav");
 	//決定
 	LoadSEFile("Title_Decision", "Assets/Sound/SE_Decision.wav");
 	//選択
