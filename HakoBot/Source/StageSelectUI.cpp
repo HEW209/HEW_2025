@@ -7,10 +7,12 @@
 
 static const float g_hideTime = 0.5f;
 static const float g_hideChangeTime = 0.3f;
+static const float g_textSize = 280.0f;
 
 StageSelectUI::StageSelectUI():
 	m_ease(0.0f),
-	m_hideTimer(g_hideChangeTime)
+	m_hideTimer(g_hideChangeTime),
+	m_animeTimer(0.0f)
 {
 }
 
@@ -37,18 +39,10 @@ void StageSelectUI::Start()
 	//テキスト
 	auto text = GetGameObject()->AddComponent<SpriteRenderer>();
 	text->LoadTexture("Assets/Textures/Texts/hajimeru.png");
-	text->SetOffsetPos(0.9f, -2.8f);
-	text->SetSize(280.0f);
+	text->SetOffsetPos(0.0f, -2.8f);
+	text->SetSize(g_textSize);
 	text->SetUI(true);
 	m_startText = text;
-
-	//ボタン
-	auto button = GetGameObject()->AddComponent<SpriteRenderer>();
-	button->LoadTexture("Assets/Textures/Button/Button_B.png");
-	button->SetOffsetPos(-1.0f, -2.8f);
-	button->SetSize(70.0f);
-	button->SetUI(true);
-	m_button = button;
 
 	m_lastSelectNumber = m_stageNumber->GetSelectIndex();
 }
@@ -91,7 +85,6 @@ void StageSelectUI::Update()
 		m_arrowLeft->SetColor(1.0f, 1.0f, 1.0f, 0.0f);
 		m_arrowRight->SetColor(1.0f, 1.0f, 1.0f, 0.0f);
 		m_startText->SetColor(1.0f, 1.0f, 1.0f, 0.0f);
-		m_button->SetColor(1.0f, 1.0f, 1.0f, 0.0f);
 	}
 	else
 	{
@@ -102,8 +95,13 @@ void StageSelectUI::Update()
 		m_arrowLeft->SetColor(1.0f, 1.0f, 1.0f, alpha);
 		m_arrowRight->SetColor(1.0f, 1.0f, 1.0f, alpha);
 		m_startText->SetColor(1.0f, 1.0f, 1.0f, alpha);
-		m_button->SetColor(1.0f, 1.0f, 1.0f, alpha);
 	}
+
+	// スケーリングアニメーション
+	m_animeTimer += Time::GetDeltaTime();
+	float scale = std::fabsf(std::sinf(m_animeTimer * Math::TAU / 3.0f));
+	scale = scale * 0.1f + 1.0f;
+	m_startText->SetSize(g_textSize * scale);
 
 	//ステージ1を選択しているとき矢印左を消す
 	if (m_stageNumber->GetSelectIndex() == 1)

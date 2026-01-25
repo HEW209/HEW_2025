@@ -55,7 +55,7 @@ void GameUI::Awake()
     {
         auto obj = SceneManager::GetActiveScene()->CreateGameObject();
         obj->GetTransform()->SetParent(m_pRoot->GetTransform());
-        obj->GetTransform()->SetPosition(4.3f, 3.25f, 0.0f);
+        obj->GetTransform()->SetPosition(4.25f, 3.25f, 0.0f);
         obj->AddComponent<TimeUI>();
     }
 
