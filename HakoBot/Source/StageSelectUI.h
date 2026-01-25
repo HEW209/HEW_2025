@@ -17,9 +17,9 @@ private:
 	ObjPtr<SpriteRenderer> m_arrowLeft;
 	ObjPtr<SpriteRenderer> m_arrowRight;
 	ObjPtr<SpriteRenderer> m_startText;
-	ObjPtr<SpriteRenderer> m_button;
 	ObjPtr<StageNumber> m_stageNumber;
 	int m_lastSelectNumber;
 	float m_ease;
 	float m_hideTimer;
+	float m_animeTimer;
 };

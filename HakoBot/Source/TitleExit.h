@@ -26,4 +26,5 @@ private:
 	Vector2 m_lastInput;
 	bool m_isNewGame;
 	bool m_startFlag;
+	float m_animeTimer;
 };
