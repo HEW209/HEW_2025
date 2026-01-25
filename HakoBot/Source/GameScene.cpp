@@ -140,10 +140,29 @@ void GameScene::Init() {
     ModelManager::Instance().CollectGarbage();
 
 	int stageNo = GameState::GetInstance()->GetCurrentStegaNo();
-    if (stageNo == 1) {
+    switch (stageNo) {
+    case 1:
+    {
         auto obj = CreateGameObject();
         auto tutorial = obj->AddComponent<Tutorial1>();
         GameState::GetInstance()->SetTutorial(tutorial);
+    }
+    break;
+
+    case 2:
+    {
+        auto obj = CreateGameObject();
+        auto tutorial = obj->AddComponent<Tutorial2>();
+        GameState::GetInstance()->SetTutorial(tutorial);
+    }
+    break;
+
+    case 4:
+    {
+        auto obj = CreateGameObject();
+        auto tutorial = obj->AddComponent<Tutorial3>();
+        GameState::GetInstance()->SetTutorial(tutorial);
+    }
     }
 
     // UIオブジェクト
