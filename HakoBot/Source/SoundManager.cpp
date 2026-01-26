@@ -12,7 +12,7 @@ void SoundManager::Load()
 	//BGM
 	LoadBGMFile("Title", "Assets/Sound/BGM_Title.wav");
 	//決定
-	LoadSEFile("Title_Decision", "Assets/Sound/SE_Decision.wav");
+	LoadSEFile("Title_Decision", "Assets/Sound/SE_TitleDecision.wav");
 	//選択
 	LoadSEFile("Title_Select", "Assets/Sound/SE_Select.wav");
 
@@ -25,7 +25,7 @@ void SoundManager::Load()
 	//選択(長押し)
 	// LoadSEFile("StageSelect_Select_Long", "Assets/Sound/SE_Slide.wav");
 	//決定
-	LoadSEFile("StageSelect_Decision", "Assets/Sound/SE_Decision.wav");
+	LoadSEFile("StageSelect_Decision", "Assets/Sound/SE_StageSelectDecision.wav");
 	//タイトルに戻る
 	LoadSEFile("BackToTitle", "Assets/Sound/SE_BackToTitle.wav");
 
@@ -62,9 +62,9 @@ void SoundManager::Load()
 
 	//-------------------------- メニュー ---------------------------------
 	//開く
-	LoadSEFile("Menu_Open", "Assets/Sound/SE_Decision.wav");
+	LoadSEFile("Menu_Open", "Assets/Sound/SE_MenuOpen.wav");
 	//閉じる
-	LoadSEFile("Menu_Close", "Assets/Sound/SE_Decision.wav");
+	LoadSEFile("Menu_Close", "Assets/Sound/SE_MenuClose.wav");
 	//選択
 	LoadSEFile("Menu_Select", "Assets/Sound/SE_Select.wav");
 	//決定

@@ -258,13 +258,6 @@ void Tutorial2::LateUpdate()
 	case 1:
 	{
 		if (m_cameraMoveTimer >= m_cameraMoveDuration) {
-
-			if (!m_sePlayed[0])
-			{
-				SoundManager::PlaySE("Announcement", 0.9f, false);
-				m_sePlayed[0] = true;
-			}
-
 			if (InputManager::CurrentInputSystem().GetButtonDown("MenuInteract"_hash)) {
 				SoundManager::PlaySE("Tutorial_Decision", 1.0f, false);
 				++m_step;
@@ -464,9 +457,9 @@ void Tutorial3::LateUpdate()
 				auto transform = m_pCamera->GetTransform();
 				m_prevCameraPos = transform->GetPosition();
 				m_prevCameraRot = transform->GetQuaternion();
-				m_nextCameraPos = Vector3(8.0f, 6.0f, -14.0f);
-				m_nextCameraRot = Quaternion::Euler(15.0f, 240.0f, 0.0f);
-				m_cameraMoveDuration = 1.0f;
+				m_nextCameraPos = m_pDefaultCamera->GetTransform()->GetPosition();
+				m_nextCameraRot = m_pDefaultCamera->GetTransform()->GetQuaternion();
+				m_cameraMoveDuration = 2.0f;
 				m_cameraMoveTimer = 0.0f;
 				SoundManager::PlaySE("TextBoxOut", 1.0f, false);
 			}
@@ -502,13 +495,6 @@ void Tutorial3::LateUpdate()
 	{
 		if (m_cameraMoveTimer >= m_cameraMoveDuration) {
 			++m_step;
-			auto transform = m_pCamera->GetTransform();
-			m_prevCameraPos = transform->GetPosition();
-			m_prevCameraRot = transform->GetQuaternion();
-			m_nextCameraPos = m_pDefaultCamera->GetTransform()->GetPosition();
-			m_nextCameraRot = m_pDefaultCamera->GetTransform()->GetQuaternion();
-			m_cameraMoveDuration = 1.0f;
-			m_cameraMoveTimer = 0.0f;
 		}
 		else {
 			{
@@ -527,14 +513,6 @@ void Tutorial3::LateUpdate()
 
 	case 4:
 	{
-		if (m_cameraMoveTimer >= m_cameraMoveDuration) {
-			++m_step;
-		}
-	}
-	break;
-
-	case 5:
-	{
 		++m_step;
 		InputManager::ChangeBindType(InputBindType::GAMEPLAY);
 		m_pDefaultCamera->SetMain();
@@ -546,33 +524,31 @@ void Tutorial3::LateUpdate()
 	if (m_cameraMoveTimer < m_cameraMoveDuration)
 	{
 		m_cameraMoveTimer += Time::GetDeltaTime();
-		float t;
-		float e;
 		switch (m_step)
 		{
 		case 3:
-			t = Easing::InQuad(m_cameraMoveTimer, m_cameraMoveDuration);
-			e = Easing::OutSine(t, 1.0f);
-			break;
-
-		case 4:
-			t = Easing::OutQuad(m_cameraMoveTimer, m_cameraMoveDuration);
-			e = Easing::InSine(t, 1.0f);
-			break;
+		{
+			float t = Easing::InOutQuad(m_cameraMoveTimer, m_cameraMoveDuration);
+			float ePos = Easing::InQuad(t, 1.0f);
+			auto transform = m_pCamera->GetTransform();
+			Vector3 newPos = LerpVector3(m_prevCameraPos, m_nextCameraPos, ePos);
+			newPos.x += std::sin(t * Math::PI) * 5.0f;
+			Quaternion newRot = SlerpQuaternion(m_prevCameraRot, m_nextCameraRot, t);
+			transform->SetPosition(newPos);
+			transform->SetQuaternion(newRot);
+		}
+		break;
 
 		default:
-			t = Easing::InOutQuad(m_cameraMoveTimer, m_cameraMoveDuration);
-			e = t;
-			break;
+		{
+			float t = Easing::InOutQuad(m_cameraMoveTimer, m_cameraMoveDuration);
+			auto transform = m_pCamera->GetTransform();
+			Vector3 newPos = LerpVector3(m_prevCameraPos, m_nextCameraPos, t);
+			Quaternion newRot = SlerpQuaternion(m_prevCameraRot, m_nextCameraRot, t);
+			transform->SetPosition(newPos);
+			transform->SetQuaternion(newRot);
 		}
-		auto transform = m_pCamera->GetTransform();
-		Vector3 newPos = LerpVector3(m_prevCameraPos, m_nextCameraPos, t);
-		Vector3 tmpPos1 = LerpVector3(m_prevCameraPos, m_nextCameraPos, e);
-		Vector3 tmpPos2 = Quaternion::Euler(0.0f, 30.0f, 0.0f) * newPos;
-		Vector3 tmpPos3 = Quaternion::Euler(0.0f, 30.0f, 0.0f) * tmpPos1;
-		newPos = Quaternion::Euler(0.0f, -30.0f, 0.0f) * Vector3 {tmpPos3.x, tmpPos2.y, tmpPos2.z};
-		Quaternion newRot = SlerpQuaternion(m_prevCameraRot, m_nextCameraRot, t);
-		transform->SetPosition(newPos);
-		transform->SetQuaternion(newRot);
+		break;
+		}
 	}
 }

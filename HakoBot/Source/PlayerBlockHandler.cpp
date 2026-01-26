@@ -182,7 +182,7 @@ void PlayerBlockHandler::LateUpdate()
 					holderTransform->SetQuaternion(blockData->rotation);
 
 					// SE再生
-					SoundManager::PlaySE("PutBox", 1.0f, false);
+					SoundManager::PlaySE("PutBox", 0.8f, false);
 					m_pRenderer->PlayBlend(m_motuAnime, g_blendTime, true);
 				}
 
@@ -199,7 +199,7 @@ void PlayerBlockHandler::LateUpdate()
 					pRemoveBlock->GetGameObject()->Destroy();
 
 					// SE再生
-					SoundManager::PlaySE("PutBox", 1.0f, false);
+					SoundManager::PlaySE("PutBox", 0.8f, false);
 					m_pRenderer->PlayBlend(m_motuAnime, g_blendTime, true);
 				}
 			}

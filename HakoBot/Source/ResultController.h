@@ -41,5 +41,10 @@ private:
 
 	int m_currentSelect;
 
-	bool m_isStartedBGMLoop;
+	enum class BGMState
+	{
+		NONE,START,LOOP
+	};
+
+	BGMState m_bgmState;
 };
