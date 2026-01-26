@@ -83,6 +83,10 @@ void StageSelectScene::Init()
 		renderer->SetSize(1280.0f);
 		renderer->SetBackGround(true);
 	}
+
+	// 使用していないリソース解放
+	TextureManager::Instance().CollectGarbage();
+	ModelManager::Instance().CollectGarbage();
 }
 
 
