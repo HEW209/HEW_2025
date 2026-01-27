@@ -64,7 +64,8 @@ static const char* g_defaultText[3] = {
 };
 
 ResultController::ResultController():
-	m_state(ResultState::MOVE), m_currentSelect(0), m_resultTime(0.0f), m_isStartedBGMLoop(false)
+	m_state(ResultState::MOVE), m_currentSelect(0), m_resultTime(0.0f), m_isStartedBGMLoop(false),
+	m_animTime(0.0f),on(false)
 {
 
 }
@@ -90,6 +91,9 @@ void ResultController::Start()
 	illust->SetSize(ILLUST_SIZE);
 	illust->SetOffsetPos(ILLUST_POS_X_START, ILLUST_POS_Y_START);
 	m_illust = illust;
+	m_charaPos.x = ILLUST_POS_X_END;
+	m_charaPos.y = ILLUST_POS_Y_END;
+	m_charaScale = m_illust->GetSize();
 
 	//リザルトのときでる黒(下)
 	auto kuroDownRenderer = GetGameObject()->AddComponent<SpriteRenderer>();
@@ -116,6 +120,8 @@ void ResultController::Start()
 	resultMozi->SetSize(RESULT_SIZE);
 	resultMozi->SetOffsetPos(RESULT_POS_X_START, RESULT_POS_Y_START);
 	m_result = resultMozi;
+	m_resultPos.x = RESULT_POS_X_END;
+	m_resultPos.y = RESULT_POS_Y_END;
 
 	//クリアタイム
 	auto timeObj = SceneManager::GetActiveScene()->CreateGameObject();
@@ -177,6 +183,34 @@ void ResultController::Update()
 		EndUpdate();
 		break;
 	}
+
+
+	m_animTime += Time::GetDeltaTime();
+
+	//リザルトをゆらそう！！！
+	float bgmBpm = 112.0f;
+	float beatPerCycle = 2.0f;
+	float secPerCycle = 60.0f / bgmBpm * beatPerCycle;
+
+	float tChara = std::fmodf(m_animTime / secPerCycle, 1.0f);
+	float end = 1.0f;
+
+	float charaRatio = 0.1f;
+
+	if (tChara < charaRatio)
+	{
+		tChara *= 1.0f / charaRatio;
+	}
+	else {
+		tChara -= charaRatio;
+		tChara *= 1.0f / (1.0f - charaRatio);
+		tChara = 1.0f - tChara;
+	}
+
+	//イラストサイズ
+	float charaScaleX = Easing::OutQuad(tChara, end, m_charaScale.x + 100.0f, (float)m_charaScale.x);
+	float charaScaleY = Easing::OutQuad(tChara, end, m_charaScale.y + 50.0f, (float)m_charaScale.y);
+	m_illust->SetSize(charaScaleX, charaScaleY);
 }
 
 void ResultController::MoveUpdate()
@@ -231,6 +265,7 @@ void ResultController::SelectUpdate()
 {
 	bool isUp = false;
 
+	
 	//上選択
 	if ((Input::GetLeftStick().y > 0.0f && Input::GetLastLeftStick().y <= 0.0f) || 
 		Input::GetKeyDown(KeyCode::UP) || Input::GetKeyDown(KeyCode::W) || Input::GetButtonDown(PadCode::UP))
@@ -242,6 +277,21 @@ void ResultController::SelectUpdate()
 		{
 			m_currentSelect += Select::COUNT;
 		}
+
+		////ゆらすアニメーション
+		//if (m_currentSelect == 0)
+		//{
+		//	float off = m_selectText[0]->GetOffsetPos().y;
+		//	m_selectText[0]->SetOffsetPos(0.0f, Easing::InSine(m_animTime, 5.0f, off + 1.0f, off));
+		//}
+		//else if (m_currentSelect == 1)
+		//{
+
+		//}
+		//else if (m_currentSelect == 2)
+		//{
+
+		//}
 	}
 
 	//下選択

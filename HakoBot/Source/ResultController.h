@@ -21,8 +21,12 @@ private:
 	ObjPtr<SpriteRenderer> m_selectText[3];
 	ObjPtr<SpriteRenderer> m_illust;
 	ObjPtr<GameObject> m_clearTime;
-
+	Vector2 m_resultPos;
+	Vector2 m_charaPos;
+	Vector2 m_charaScale;
 	float m_resultTime;
+	float m_animTime;
+	bool on;
 
 	enum class ResultState
 	{
