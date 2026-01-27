@@ -50,6 +50,7 @@ private:
 	static bool s_isActive;			// 動作中フラグ
 	static float s_fadeRatio;		// フェード割合
 	static int s_frameCount;
+	static float s_fadeEndTimer;
 
 	static IconType s_maskIcon;
 

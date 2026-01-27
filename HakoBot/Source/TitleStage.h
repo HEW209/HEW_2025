@@ -12,8 +12,17 @@ public:
 	void Update() override;
 
 private:
+	struct Block
+	{
+		const char* filePath;
+		Vector3 offset;
+		Vector3 angle;
+	};
 
 	ObjPtr<MeshRenderer> m_pConveyors;
+	ObjPtr<MeshRenderer> m_block;
 
 	float m_time;
+
+	void SetRandomBlock();
 }; 
