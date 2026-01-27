@@ -22,21 +22,29 @@ void GuideUIMeneController::Start()
 {
 	GetTransform()->SetScale(0.0f, 0.0f, 0.0f);
 
-	//メニュー背景
-	auto back = GetGameObject()->AddComponent<SpriteRenderer>();
-	back->SetUI(true);
-	back->LoadTexture("Assets/Textures/menuhaikei.png");
-	back->SetOffsetPos(0.0f, 0.0f);
-	back->SetUVScale(1.0f, 1.0f);
-	back->SetSize(MAX_MENU / 2.0f);
-	m_back = back;
-
 	//メニュー画面
 	auto renderer = GetGameObject()->AddComponent<SpriteRenderer>();
 	renderer->SetUI(true);
-	renderer->LoadTexture("Assets/Textures/menuban.png");
-	renderer->SetSize(MAX_MENU);
+	renderer->LoadTexture("Assets/Textures/menu_frame.png");
+	renderer->SetSize(MAX_MENU * 0.7f);
 	m_frame = renderer;
+
+	//メニュー背景
+	auto back = GetGameObject()->AddComponent<SpriteRenderer>();
+	back->SetUI(true);
+	back->LoadTexture("Assets/Textures/menu_screen.png");
+	back->SetOffsetPos(0.0f, 0.0f);
+	back->SetUVScale(1.0f, 1.0f);
+	back->SetSize(MAX_MENU * 0.7f);
+	m_back = back;
+
+	// 見出し
+	{
+		auto renderer = GetGameObject()->AddComponent<SpriteRenderer>();
+		renderer->SetUI(true);
+		renderer->LoadTexture("Assets/Textures/menu_midasi.png");
+		renderer->SetSize(MAX_MENU * 0.7f);
+	}
 
 	//メニュー画面ボタン
 	Vector2 pos[4] = { {-5.5f, 1.8f}, {5.5f, 1.8f}, {-5.5f, -2.8f}, {5.5f, -2.8f} };
