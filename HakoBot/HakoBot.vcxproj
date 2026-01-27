@@ -173,7 +173,6 @@
     <ClCompile Include="Source\GuideUIMenuController.cpp" />
     <ClCompile Include="Source\InputSystem.cpp" />
     <ClCompile Include="Source\GuideUIController2.cpp" />
-    <ClCompile Include="Source\Manual.cpp" />
     <ClCompile Include="Source\TimeUI.cpp" />
     <ClCompile Include="Source\InputManager.cpp" />
     <ClCompile Include="Source\InputUI.cpp" />
@@ -239,7 +238,6 @@
     <ClInclude Include="Source\InputUI.h" />
     <ClInclude Include="Source\LevelSerializer.h" />
     <ClInclude Include="Source\LifeTime.h" />
-    <ClInclude Include="Source\Manual.h" />
     <ClInclude Include="Source\OutlineMeshRenderer.h" />
     <ClInclude Include="Source\PlaceCursor.h" />
     <ClInclude Include="Source\Player.h" />

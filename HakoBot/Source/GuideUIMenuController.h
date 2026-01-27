@@ -25,6 +25,13 @@ private:
 		MANUAL
 	};
 
+	enum class ManualState
+	{
+		OPEN,
+		DISPLAY,
+		CLOSE
+	};
+
 	MenuState m_menuState;
 	float m_value1 = 0.0f;			//メニュー表示
 	float m_value2 = 0.0f;			//メニュー非表示
@@ -34,7 +41,12 @@ private:
 	SpriteRenderer* m_back;
 	SpriteRenderer* m_frame;
 
-	GameObject* m_manual;
+	ManualState m_manualState;
+	//GameObject* m_manual;
+	SpriteRenderer* m_manual;
+	float m_time;
+
+	SpriteRenderer* m_midashi;
 
 	//メニュー閉じるときのアニメーション管理
 	enum class ClosePhase
@@ -47,24 +59,6 @@ private:
 	//メニュー用
 	int m_menuX = 0;
 	int m_menuY = 0;
-	struct MenuCell
-	{
-		float uvX;
-		float uvY;
-		float posX;
-		float posY;
-	};
-	MenuCell menuTable[2][2] =
-	{
-		{
-			{ 0.0f, 0.0f, -5.0f,  2.8f },
-			{ 0.5f, 0.0f,  5.0f,  2.8f },
-		},
-		{
-			{ 0.0f, 0.5f, -5.0f, -2.83f },
-			{ 0.5f, 0.5f,  5.0f, -2.83f },
-		}
-	};
 
 	ClosePhase m_closePhase;			//現在のメニュー閉じアニメーションの状態
 	Vector3 m_closeStartScale;			//メニュー閉じアニメーションが始まるまえののスケール
