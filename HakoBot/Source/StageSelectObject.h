@@ -6,7 +6,7 @@
 class StageSelectObject : public Component
 {
 public:
-	StageSelectObject() = default;
+	StageSelectObject();
 	~StageSelectObject() = default;
 
 	void Start() override;
@@ -18,8 +18,12 @@ private:
 	ObjPtr<StageNumber> m_stageNumber;
 	GameObject* m_blocks[StageCount];
 	std::vector<OutlineMeshRenderer*> m_blockRenderers;
+	bool m_easeStartFlag;
+	float m_easeStartScale;
+	float m_scaleEaseTimer;
 
 	void Move();
 	void BlockMove();
 	void BlockRotate();
+	void BlockScaling();
 };

@@ -8,11 +8,13 @@
 static const float g_hideTime = 0.5f;
 static const float g_hideChangeTime = 0.3f;
 static const float g_textSize = 280.0f;
+static const float g_startAnimeDuration = 0.3f;
 
 StageSelectUI::StageSelectUI():
 	m_ease(0.0f),
 	m_hideTimer(g_hideChangeTime),
-	m_animeTimer(0.0f)
+	m_animeTimer(0.0f),
+	m_stageStartFlag(false)
 {
 }
 
@@ -49,80 +51,100 @@ void StageSelectUI::Start()
 
 void StageSelectUI::Update()
 {
-	float t = 0.0f;
-	static const float ratio = 0.2f;
-
-	m_ease += 0.0164f;
-
-	if (m_ease >= 1.0f)
+	if (m_stageNumber->IsStageStart())
 	{
-		m_ease = 0.0f;
-	}
-	
-	if (m_ease < ratio)
-	{
-		t = m_ease / ratio;
+		if (!m_stageStartFlag)
+		{
+			m_stageStartFlag = true;
+			m_ease = 0.0f;
+		}
+
+		m_ease += Time::GetDeltaTime();
+		if (m_ease > g_startAnimeDuration)
+			m_ease = g_startAnimeDuration;
+
+		float easeRatio = m_ease / g_startAnimeDuration;
+		m_startText->SetColor(1.0f, 1.0f, 1.0f, 1.0f - easeRatio);
+		float size = g_textSize * (easeRatio + 1.0f);
+		m_startText->SetSize(size);
 	}
 	else
 	{
-		t = 1.0f - (m_ease - ratio) / (1.0f - ratio);
-	}
+		float t = 0.0f;
+		static const float ratio = 0.2f;
 
-	m_arrowLeft->SetOffsetPos(Easing::InSine(t,1.0f,-2.7f,-2.6f),-1.1f);
-	m_arrowRight->SetOffsetPos(Easing::InSine(t, 1.0f, 2.7f, 2.6f), -1.1f);
+		m_ease += 0.0164f;
 
-	// 移動中に矢印を消す
-	if (m_lastSelectNumber != m_stageNumber->GetSelectIndex())
-	{
-		m_lastSelectNumber = m_stageNumber->GetSelectIndex();
-		m_hideTimer = g_hideTime + g_hideTime;
-	}
+		if (m_ease >= 1.0f)
+		{
+			m_ease = 0.0f;
+		}
 
-	// 透明度変更
-	m_hideTimer -= Time::GetDeltaTime();
-	if (m_hideTimer > g_hideChangeTime)
-	{
-		m_arrowLeft->SetColor(1.0f, 1.0f, 1.0f, 0.0f);
-		m_arrowRight->SetColor(1.0f, 1.0f, 1.0f, 0.0f);
-		m_startText->SetColor(1.0f, 1.0f, 1.0f, 0.0f);
-	}
-	else
-	{
-		if (m_hideTimer < 0.0f)
-			m_hideTimer = 0.0f;
+		if (m_ease < ratio)
+		{
+			t = m_ease / ratio;
+		}
+		else
+		{
+			t = 1.0f - (m_ease - ratio) / (1.0f - ratio);
+		}
 
-		float alpha = 1.0f - m_hideTimer / g_hideChangeTime;
-		m_arrowLeft->SetColor(1.0f, 1.0f, 1.0f, alpha);
-		m_arrowRight->SetColor(1.0f, 1.0f, 1.0f, alpha);
-		m_startText->SetColor(1.0f, 1.0f, 1.0f, alpha);
-	}
+		m_arrowLeft->SetOffsetPos(Easing::InSine(t, 1.0f, -2.7f, -2.6f), -1.1f);
+		m_arrowRight->SetOffsetPos(Easing::InSine(t, 1.0f, 2.7f, 2.6f), -1.1f);
 
-	// スケーリングアニメーション
-	m_animeTimer += Time::GetDeltaTime();
-	float scale = std::fabsf(std::sinf(m_animeTimer * Math::TAU / 3.0f));
-	scale = scale * 0.1f + 1.0f;
-	m_startText->SetSize(g_textSize * scale);
+		// 移動中に矢印を消す
+		if (m_lastSelectNumber != m_stageNumber->GetSelectIndex())
+		{
+			m_lastSelectNumber = m_stageNumber->GetSelectIndex();
+			m_hideTimer = g_hideTime + g_hideTime;
+		}
 
-	//ステージ1を選択しているとき矢印左を消す
-	if (m_stageNumber->GetSelectIndex() == 1)
-	{
-		m_arrowLeft->SetEnabled(false);
-	}
-	else
-	{
-		m_arrowLeft->SetEnabled(true);
-	}
-	//ステージ30を選択しているとき矢印右を消す
-	if (m_stageNumber->GetSelectIndex() >= 30)
-	{
-		m_arrowRight->SetEnabled(false);
-	}
-	else if (m_stageNumber->GetSelectIndex() >= SaveData::GetClearLevel() + 1)
-	{
-		m_arrowRight->SetEnabled(false);
-	}
-	else
-	{
-		m_arrowRight->SetEnabled(true);
+		// 透明度変更
+		m_hideTimer -= Time::GetDeltaTime();
+		if (m_hideTimer > g_hideChangeTime)
+		{
+			m_arrowLeft->SetColor(1.0f, 1.0f, 1.0f, 0.0f);
+			m_arrowRight->SetColor(1.0f, 1.0f, 1.0f, 0.0f);
+			m_startText->SetColor(1.0f, 1.0f, 1.0f, 0.0f);
+		}
+		else
+		{
+			if (m_hideTimer < 0.0f)
+				m_hideTimer = 0.0f;
+
+			float alpha = 1.0f - m_hideTimer / g_hideChangeTime;
+			m_arrowLeft->SetColor(1.0f, 1.0f, 1.0f, alpha);
+			m_arrowRight->SetColor(1.0f, 1.0f, 1.0f, alpha);
+			m_startText->SetColor(1.0f, 1.0f, 1.0f, alpha);
+		}
+
+		// スケーリングアニメーション
+		m_animeTimer += Time::GetDeltaTime();
+		float scale = std::fabsf(std::sinf(m_animeTimer * Math::TAU / 3.0f));
+		scale = scale * 0.1f + 1.0f;
+		m_startText->SetSize(g_textSize * scale);
+
+		//ステージ1を選択しているとき矢印左を消す
+		if (m_stageNumber->GetSelectIndex() == 1)
+		{
+			m_arrowLeft->SetEnabled(false);
+		}
+		else
+		{
+			m_arrowLeft->SetEnabled(true);
+		}
+		//ステージ30を選択しているとき矢印右を消す
+		if (m_stageNumber->GetSelectIndex() >= 30)
+		{
+			m_arrowRight->SetEnabled(false);
+		}
+		else if (m_stageNumber->GetSelectIndex() >= SaveData::GetClearLevel() + 1)
+		{
+			m_arrowRight->SetEnabled(false);
+		}
+		else
+		{
+			m_arrowRight->SetEnabled(true);
+		}
 	}
 }

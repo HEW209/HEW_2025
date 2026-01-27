@@ -7,6 +7,7 @@
 #include "SoundManager.h"
 
 static const float g_textSize = 300.0f;
+static const float g_startAnimeDuration = 0.3f;
 
 TitleExit::TitleExit():
 	m_newGameText(nullptr),
@@ -46,6 +47,25 @@ void TitleExit::Update()
 {
 	if (m_startFlag)
 	{
+		// スケーリングアニメーション
+		m_animeTimer += Time::GetDeltaTime();
+		if (m_animeTimer > g_startAnimeDuration)
+			m_animeTimer = g_startAnimeDuration;
+
+		float easeRatio = m_animeTimer / g_startAnimeDuration;
+		float size = g_textSize * (easeRatio * 2.0f + 1.0f);
+		if (m_isNewGame)
+		{
+			m_newGameText->SetColor(1.0f, 1.0f, 1.0f, 1.0f - easeRatio);
+			m_newGameText->SetSize(size);
+		}
+		else
+		{
+			m_continueText->SetColor(1.0f, 1.0f, 1.0f, 1.0f - easeRatio);
+			m_continueText->SetSize(size);
+		}
+
+
 		if (Fade::IsActive())
 			return;
 
@@ -93,6 +113,7 @@ void TitleExit::Update()
 		m_animeTimer += Time::GetDeltaTime();
 		float scale = std::fabsf(std::sinf(m_animeTimer * Math::TAU / 3.0f));
 		scale = scale * 0.1f + 1.0f;
+
 		if (m_isNewGame)
 		{
 			m_newGameText->LoadTexture("Assets/Textures/Texts/hajimekara.png", false);
@@ -112,6 +133,7 @@ void TitleExit::Update()
 		{
 			SoundManager::StopBGM();
 			SoundManager::PlaySE("Title_Decision", 1.0f, false);
+			m_animeTimer = 0.0f;
 			m_startFlag = true;
 			Fade::StartIconIrisOut();
 		}

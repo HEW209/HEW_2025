@@ -119,9 +119,6 @@ void GuideUIMeneController::UpdateDefault()
 			m_menuState = MenuState::OPEN;
 			//ボタン受付をUIタイプに変更
 			InputManager::ChangeBindType(InputBindType::UI);
-		}
-		else
-		{
 			SoundManager::PlaySE("Menu_Open", 1.0f, false);
 		}
 	}
@@ -333,6 +330,7 @@ void GuideUIMeneController::SelectEnter()
 	if (m_menuX == 1 && m_menuY == 1)
 	{
 		SoundManager::PlaySE("Menu_Close", 1.0f, false);
+		GameState::GetInstance()->StartTimer();
 		m_closeStartScale = GetTransform()->GetScale();
 		m_menuState = MenuState::CLOSE;
 		m_closePhase = ClosePhase::Pop;
