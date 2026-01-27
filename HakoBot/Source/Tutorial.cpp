@@ -208,7 +208,7 @@ Tutorial2::Tutorial2()
 	, m_cameraMoveTimer(0.0f)
 	, m_step(0)
 	, m_arrowMoveTimer(0.0f)
-	, m_arrowAlpha(1.0f)
+	, m_arrowAlpha(0.0f)
 {
 }
 
@@ -243,6 +243,7 @@ void Tutorial2::Awake()
 			arrow->LoadModel("Assets/Model/TutorialUI/fbx/R_Arrow.fbx");
 		}
 		m_rotateArrow[i] = arrow;
+		m_rotateArrow[i]->GetMaterial(0)->SetParameter(&m_arrowAlpha, sizeof(m_arrowAlpha));
 	}
 }
 
@@ -254,6 +255,35 @@ void Tutorial2::LateUpdate()
 
 	m_rotateArrow[0]->GetTransform()->SetEulerAngle(0.0f, -105.0f - offset, 0.0f);
 	m_rotateArrow[1]->GetTransform()->SetEulerAngle(0.0f, -30.0f + offset, 0.0f);
+
+	if (m_arrowAlpha < 1.0f && m_step < 3 && m_step > 0)
+	{
+		m_arrowAlpha += Time::GetDeltaTime() * 1.0f;
+		if (m_arrowAlpha > 1.0f)
+		{
+			m_arrowAlpha = 1.0f;
+			for (int i = 0; i < 2; ++i)
+			{
+				m_rotateArrow[i]->SetTransparent(false);
+				auto material = m_rotateArrow[i]->GetMaterial(0);
+				material->SetBlendState(BlendState::DEFAULT);
+				material->SetDepthStencilState(DepthStencilState::DEFAULT);
+				material->SetPixelShader("Assets/Shader/Default_PS.cso");
+			}
+		}
+		else
+		{
+			for (int i = 0; i < 2; ++i)
+			{
+				m_rotateArrow[i]->SetTransparent(true);
+				auto material = m_rotateArrow[i]->GetMaterial(0);
+				material->SetBlendState(BlendState::ALPHA);
+				material->SetDepthStencilState(DepthStencilState::READ_ONLY);
+				material->SetPixelShader("Assets/Shader/Transparent_PS.cso");
+				m_rotateArrow[i]->GetMaterial(0)->SetParameter(&m_arrowAlpha, sizeof(m_arrowAlpha));
+			}
+		}
+	}
 
 	if (m_step >= 3)
 	{
@@ -395,8 +425,9 @@ Tutorial3::Tutorial3()
 	, m_cameraMoveTimer(0.0f)
 	, m_step(0)
 	, m_arrowMoveTimer(0.0f)
-	, m_arrowAlpha(1.0f)
+	, m_arrowAlpha(0.0f)
 	, m_lightAngleY(0.0f)
+	, m_lightRotateDelay(0.5f)
 {
 }
 
@@ -446,6 +477,12 @@ void Tutorial3::Awake()
 
 		auto arrow = arrowObj->AddComponent<MeshRenderer>();
 		arrow->LoadModel("Assets/Model/TutorialUI/fbx/Arrow.fbx");
+		arrow->SetTransparent(true);
+		auto material = arrow->GetMaterial(0);
+		material->SetBlendState(BlendState::ALPHA);
+		material->SetDepthStencilState(DepthStencilState::READ_ONLY);
+		material->SetPixelShader("Assets/Shader/Transparent_PS.cso");
+		material->SetParameter(&m_arrowAlpha, sizeof(m_arrowAlpha));
 		m_arrow[i] = arrow;
 	}
 }
@@ -458,6 +495,35 @@ void Tutorial3::LateUpdate()
 
 	m_arrow[0]->GetTransform()->SetPosition(-1.5f, 1.5f + offset, -10.5f);
 	m_arrow[1]->GetTransform()->SetPosition(-1.5f, 0.5f - offset, -10.5f);
+
+	if (m_arrowAlpha < 1.0f && m_step < 3 && m_step > 1)
+	{
+		m_arrowAlpha += Time::GetDeltaTime() * 1.0f;
+		if (m_arrowAlpha > 1.0f)
+		{
+			m_arrowAlpha = 1.0f;
+			for (int i = 0; i < 2; ++i)
+			{
+				m_arrow[i]->SetTransparent(false);
+				auto material = m_arrow[i]->GetMaterial(0);
+				material->SetBlendState(BlendState::DEFAULT);
+				material->SetDepthStencilState(DepthStencilState::DEFAULT);
+				material->SetPixelShader("Assets/Shader/Default_PS.cso");
+			}
+		}
+		else
+		{
+			for (int i = 0; i < 2; ++i)
+			{
+				m_arrow[i]->SetTransparent(true);
+				auto material = m_arrow[i]->GetMaterial(0);
+				material->SetBlendState(BlendState::ALPHA);
+				material->SetDepthStencilState(DepthStencilState::READ_ONLY);
+				material->SetPixelShader("Assets/Shader/Transparent_PS.cso");
+				m_arrow[i]->GetMaterial(0)->SetParameter(&m_arrowAlpha, sizeof(m_arrowAlpha));
+			}
+		}
+	}
 
 	if (m_step >= 3)
 	{
@@ -478,10 +544,17 @@ void Tutorial3::LateUpdate()
 			}
 		}
 
-		m_lightAngleY -= Time::GetDeltaTime() * 360.0f;
-		if (m_lightAngleY < -15.0f)
-			m_lightAngleY = -15.0f;
-		DirectionalLight::GetMain()->GetTransform()->SetEulerAngle(50.0f, m_lightAngleY, 0.0f);
+		if (m_lightRotateDelay > 0.0f)
+		{
+			m_lightRotateDelay -= Time::GetDeltaTime();
+		}
+		else
+		{
+			m_lightAngleY -= Time::GetDeltaTime() * 360.0f;
+			if (m_lightAngleY < -15.0f)
+				m_lightAngleY = -15.0f;
+			DirectionalLight::GetMain()->GetTransform()->SetEulerAngle(50.0f, m_lightAngleY, 0.0f);
+		}
 	}
 
 	switch (m_step)

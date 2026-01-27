@@ -106,4 +106,5 @@ private:
 	float m_arrowMoveTimer;
 	float m_arrowAlpha;
 	float m_lightAngleY;
+	float m_lightRotateDelay;
 };
