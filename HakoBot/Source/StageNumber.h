@@ -14,6 +14,10 @@ public:
 
 	int GetSelectIndex();
 	std::string GetStageFilePath();
+	bool IsStageStart()
+	{
+		return m_isSceneChange && m_targetScene == TargetScene::GAME;
+	}
 
 private:
 	enum TargetScene

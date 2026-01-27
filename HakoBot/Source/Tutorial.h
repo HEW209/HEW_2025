@@ -60,6 +60,7 @@ private:
 	ObjPtr<Camera> m_pCamera;
 	ObjPtr<Camera> m_pDefaultCamera;
 	ObjPtr<SpriteRenderer> m_pText;
+	ObjPtr<MeshRenderer> m_rotateArrow[2];
 
 	Vector3 m_prevCameraPos;
 	Quaternion m_prevCameraRot;
@@ -67,6 +68,9 @@ private:
 	Quaternion m_nextCameraRot;
 	float m_cameraMoveDuration;
 	float m_cameraMoveTimer;
+
+	float m_arrowMoveTimer;
+	float m_arrowAlpha;
 };
 
 class Tutorial3 final : public ITutorial
@@ -97,4 +101,9 @@ private:
 	Quaternion m_nextCameraRot;
 	float m_cameraMoveDuration;
 	float m_cameraMoveTimer;
+	ObjPtr<MeshRenderer> m_arrow[2];
+
+	float m_arrowMoveTimer;
+	float m_arrowAlpha;
+	float m_lightAngleY;
 };

@@ -139,6 +139,7 @@ void StageNumber::Update()
 
 	if (ImGui::Button("Reload"))
 	{
+		SaveData::Save();
 		SceneManager::ChangeScene(std::make_unique<StageSelectScene>());
 	}
 

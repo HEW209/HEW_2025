@@ -207,6 +207,8 @@ Tutorial2::Tutorial2()
 	, m_cameraMoveDuration(0.0f)
 	, m_cameraMoveTimer(0.0f)
 	, m_step(0)
+	, m_arrowMoveTimer(0.0f)
+	, m_arrowAlpha(1.0f)
 {
 }
 
@@ -225,10 +227,54 @@ void Tutorial2::Awake()
 	m_pText->SetSize(1280.0f);
 	m_pText->SetUI(true);
 	m_pText->SetEnabled(false);
+
+	for (int i = 0; i < 2; ++i)
+	{
+		auto arrowObj = SceneManager::GetActiveScene()->CreateGameObject();
+		arrowObj->GetTransform()->SetPosition(-10.5f, 0.8f, -5.5f);
+		
+		auto arrow = arrowObj->AddComponent<MeshRenderer>();
+		if (i == 1)
+		{
+			arrow->LoadModel("Assets/Model/TutorialUI/fbx/L_Arrow.fbx");
+		}
+		else
+		{
+			arrow->LoadModel("Assets/Model/TutorialUI/fbx/R_Arrow.fbx");
+		}
+		m_rotateArrow[i] = arrow;
+	}
 }
 
 void Tutorial2::LateUpdate()
 {
+	m_arrowMoveTimer += Time::GetDeltaTime();
+	float rad = m_arrowMoveTimer * Math::TAU / 2.0f;
+	float offset = std::fabsf(std::sinf(rad)) * 5.0f;
+
+	m_rotateArrow[0]->GetTransform()->SetEulerAngle(0.0f, -105.0f - offset, 0.0f);
+	m_rotateArrow[1]->GetTransform()->SetEulerAngle(0.0f, -30.0f + offset, 0.0f);
+
+	if (m_step >= 3)
+	{
+		if (m_arrowAlpha > 0.0f)
+		{
+			m_arrowAlpha -= Time::GetDeltaTime() * 2.0f;
+			if (m_arrowAlpha < 0.0f)
+				m_arrowAlpha = 0.0f;
+
+			for (int i = 0; i < 2; ++i)
+			{
+				m_rotateArrow[i]->SetTransparent(true);
+				auto material = m_rotateArrow[i]->GetMaterial(0);
+				material->SetBlendState(BlendState::ALPHA);
+				material->SetDepthStencilState(DepthStencilState::READ_ONLY);
+				material->SetPixelShader("Assets/Shader/Transparent_PS.cso");
+				m_rotateArrow[i]->GetMaterial(0)->SetParameter(&m_arrowAlpha, sizeof(m_arrowAlpha));
+			}
+		}
+	}
+
 	switch (m_step)
 	{
 	case 0:
@@ -240,8 +286,8 @@ void Tutorial2::LateUpdate()
 		m_prevCameraRot = mainCamTransform->GetQuaternion();
 		transform->SetPosition(m_prevCameraPos);
 		transform->SetQuaternion(m_prevCameraRot);
-		m_nextCameraPos = Vector3(-5.3f, 4.0f, -7.3f);
-		m_nextCameraRot = Quaternion::Euler(30.0f, 300.0f, 0.0f);
+		m_nextCameraPos = Vector3(-4.0f, 3.5f, -8.0f);
+		m_nextCameraRot = Quaternion::Euler(25.0f, 300.0f, 0.0f);
 		m_cameraMoveDuration = 2.0f;
 		m_cameraMoveTimer = 0.0f;
 		m_pCamera->SetMain();
@@ -348,6 +394,9 @@ Tutorial3::Tutorial3()
 	, m_cameraMoveDuration(0.0f)
 	, m_cameraMoveTimer(0.0f)
 	, m_step(0)
+	, m_arrowMoveTimer(0.0f)
+	, m_arrowAlpha(1.0f)
+	, m_lightAngleY(0.0f)
 {
 }
 
@@ -376,10 +425,65 @@ void Tutorial3::Awake()
 	m_pText2->SetSize(1280.0f);
 	m_pText2->SetUI(true);
 	m_pText2->SetEnabled(false);
+
+	m_lightAngleY = 90.0f;
+	DirectionalLight::GetMain()->GetTransform()->SetEulerAngle(50.0f, m_lightAngleY, 0.0f);
+	for (int i = 0; i < 2; ++i)
+	{
+		auto arrowObj = SceneManager::GetActiveScene()->CreateGameObject();
+		arrowObj->GetTransform()->SetScale(0.6f, 0.6f, 0.6f);
+
+		if (i == 0)
+		{
+			arrowObj->GetTransform()->SetPosition(-1.5f, 1.5f, -10.5f);
+			arrowObj->GetTransform()->SetEulerAngle(0.0f, -60.0f, 0.0f);
+		}
+		else
+		{
+			arrowObj->GetTransform()->SetPosition(-1.5f, 0.5f, -10.5f);
+			arrowObj->GetTransform()->SetEulerAngle(0.0f, -60.0f, 180.0f);
+		}
+
+		auto arrow = arrowObj->AddComponent<MeshRenderer>();
+		arrow->LoadModel("Assets/Model/TutorialUI/fbx/Arrow.fbx");
+		m_arrow[i] = arrow;
+	}
 }
 
 void Tutorial3::LateUpdate()
 {
+	m_arrowMoveTimer += Time::GetDeltaTime();
+	float rad = m_arrowMoveTimer * Math::TAU / 2.0f;
+	float offset = std::fabsf(std::sinf(rad)) * 0.1f;
+
+	m_arrow[0]->GetTransform()->SetPosition(-1.5f, 1.5f + offset, -10.5f);
+	m_arrow[1]->GetTransform()->SetPosition(-1.5f, 0.5f - offset, -10.5f);
+
+	if (m_step >= 3)
+	{
+		if (m_arrowAlpha > 0.0f)
+		{
+			m_arrowAlpha -= Time::GetDeltaTime() * 2.0f;
+			if (m_arrowAlpha < 0.0f)
+				m_arrowAlpha = 0.0f;
+
+			for (int i = 0; i < 2; ++i)
+			{
+				m_arrow[i]->SetTransparent(true);
+				auto material = m_arrow[i]->GetMaterial(0);
+				material->SetBlendState(BlendState::ALPHA);
+				material->SetDepthStencilState(DepthStencilState::READ_ONLY);
+				material->SetPixelShader("Assets/Shader/Transparent_PS.cso");
+				m_arrow[i]->GetMaterial(0)->SetParameter(&m_arrowAlpha, sizeof(m_arrowAlpha));
+			}
+		}
+
+		m_lightAngleY -= Time::GetDeltaTime() * 360.0f;
+		if (m_lightAngleY < -15.0f)
+			m_lightAngleY = -15.0f;
+		DirectionalLight::GetMain()->GetTransform()->SetEulerAngle(50.0f, m_lightAngleY, 0.0f);
+	}
+
 	switch (m_step)
 	{
 	case 0:
@@ -424,7 +528,7 @@ void Tutorial3::LateUpdate()
 				m_prevCameraPos = transform->GetPosition();
 				m_prevCameraRot = transform->GetQuaternion();
 				m_nextCameraPos = Vector3(-4.3f, 2.5f, -5.5f);
-				m_nextCameraRot = Quaternion::Euler(10.0f, 150.0f, 0.0f);
+				m_nextCameraRot = Quaternion::Euler(10.0f, 151.0f, 0.0f);
 				m_cameraMoveDuration = 2.0f;
 				m_cameraMoveTimer = 0.0f;
 				m_pLine->SetEnabled(false);
