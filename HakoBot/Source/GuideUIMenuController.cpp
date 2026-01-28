@@ -9,11 +9,16 @@
 #include "Fade.h"
 #include "SoundManager.h"
 
-constexpr float BUTTON_SIZE = 1000.0f;//メニューボタンのサイズ
+constexpr float BUTTON_SIZE = 1100.0f;//メニューボタンのサイズ
 constexpr float MAX_MENU = 5000.0f;
+constexpr float MENU_SCALE = 0.3f;
+constexpr float MANUAL_SCALE = 0.4f;	// 操作説明の時のフレームのスケール
+constexpr float EASING_TIME = 0.3f;		// イージングする秒数
+constexpr float MANUAL_SIZE = 2400.0f;	// 
 
 GuideUIMeneController::GuideUIMeneController():
-	m_menuState(MenuState::DEFAULT)
+	m_menuState(MenuState::DEFAULT),
+	m_time(0.0f)
 {
 }
 
@@ -21,24 +26,33 @@ void GuideUIMeneController::Start()
 {
 	GetTransform()->SetScale(0.0f, 0.0f, 0.0f);
 
-	//メニュー背景
-	auto back = GetGameObject()->AddComponent<SpriteRenderer>();
-	back->SetUI(true);
-	back->LoadTexture("Assets/Textures/menuhaikei.png");
-	back->SetOffsetPos(0.0f, 0.0f);
-	back->SetUVScale(1.0f, 1.0f);
-	back->SetSize(MAX_MENU / 2.0f);
-	m_back = back;
-
 	//メニュー画面
 	auto renderer = GetGameObject()->AddComponent<SpriteRenderer>();
 	renderer->SetUI(true);
-	renderer->LoadTexture("Assets/Textures/menuban.png");
+	renderer->LoadTexture("Assets/Textures/menu_frame.png");
 	renderer->SetSize(MAX_MENU);
 	m_frame = renderer;
 
+	//メニュー背景
+	auto back = GetGameObject()->AddComponent<SpriteRenderer>();
+	back->SetUI(true);
+	back->LoadTexture("Assets/Textures/menu_screen.png");
+	back->SetOffsetPos(0.0f, 0.0f);
+	back->SetUVScale(1.0f, 1.0f);
+	back->SetSize(MAX_MENU * 0.5f);
+	m_back = back;
+
+	// 見出し
+	{
+		auto renderer = GetGameObject()->AddComponent<SpriteRenderer>();
+		renderer->SetUI(true);
+		renderer->LoadTexture("Assets/Textures/menu_midashi.png");
+		renderer->SetSize(MAX_MENU);
+		m_midashi = renderer;
+	}
+
 	//メニュー画面ボタン
-	Vector2 pos[4] = { {-5.5f, 1.8f}, {5.5f, 1.8f}, {-5.5f, -2.8f}, {5.5f, -2.8f} };
+	Vector2 pos[4] = { {-5.5f, 2.6f}, {5.5f, 2.6f}, {-5.5f, -2.8f}, {5.5f, -2.8f} };
 	Vector2 uvPos[4] = { {0.0f, 0.0f}, {0.5f, 0.0f}, {0.0f, 0.5f}, {0.5f, 0.5f} };
 	for (int i = 0; i < 4; ++i)
 	{
@@ -54,7 +68,7 @@ void GuideUIMeneController::Start()
 
 	m_defaultPosition = GetTransform()->GetPosition();
 	m_defaultScale = GetTransform()->GetScale();
-	m_targetScale = Vector3(0.3f, 0.3f, 0.3f);
+	m_targetScale = Vector3(MENU_SCALE, MENU_SCALE, MENU_SCALE);
 	m_closePhase = ClosePhase::None;
 	m_closeValue = 0.0f;
 	m_closeStartScale = Vector3::zero;
@@ -63,6 +77,15 @@ void GuideUIMeneController::Start()
 
 	m_bgScrollY = 0.0f;
 	m_bgScrollSpeed = 0.001f;
+
+	// 操作説明
+	{
+		m_manual = GetGameObject()->AddComponent<SpriteRenderer>();
+		m_manual->SetUI(true);
+		m_manual->LoadTexture("Assets/Textures/Menu_sousasetumei.png");	
+		m_manual->SetEnabled(false);
+		m_manual->SetSize(MANUAL_SIZE);
+	}
 
 	// カーソル反映
 	int selectIndex = m_menuX + m_menuY * 2;
@@ -87,7 +110,7 @@ void GuideUIMeneController::Update()
 		UpdateDefault();
 		break;
 
-	case GuideUIMeneController::OPEN:
+	case GuideUIMeneController::MenuState::OPEN:
 		UpdateOpen();
 		break;
 
@@ -95,12 +118,16 @@ void GuideUIMeneController::Update()
 		UpdateSelect();
 		break;
 
-	case GuideUIMeneController::CLOSE:
+	case GuideUIMeneController::MenuState::CLOSE:
 		UpdateClose();
 		break;
 	
 	case GuideUIMeneController::SCENE_CHANGE:
 		UpdateChangeScene();
+		break;
+
+	case GuideUIMeneController::MANUAL:
+		UpdateManual();
 		break;
 	}
 }
@@ -303,6 +330,89 @@ void GuideUIMeneController::UpdateChangeScene()
 	}
 }
 
+void GuideUIMeneController::UpdateManual()
+{
+	//メニュー開いてるとき
+	//位置追従
+	m_back->GetTransform()->SetPosition(
+		m_frame->GetTransform()->GetPosition()
+	);
+
+	//背景スクロール
+	m_bgScrollY -= m_bgScrollSpeed;
+
+	//ループ処理
+	while (m_bgScrollY >= 1.0f)
+	{
+		m_bgScrollY -= 1.0f;
+	}
+	while (m_bgScrollY < 0.0f)
+	{
+		m_bgScrollY += 1.0f;
+	}
+
+	//UVオフセットでスクロール
+	m_back->SetUVOffsetPos(0.0f, m_bgScrollY);
+
+	float scale = 0.0f;
+	float alpha = 0.0f;
+
+	switch (m_manualState)
+	{
+	case ManualState::OPEN:
+		// 大きくする
+		m_time += Time::GetDeltaTime();
+
+		if (m_time > EASING_TIME)
+		{
+			m_time = EASING_TIME;
+			m_manualState = ManualState::DISPLAY;
+		}
+
+		scale = Easing::OutSine(m_time, EASING_TIME,MANUAL_SCALE, MENU_SCALE);
+		alpha = Easing::OutSine(m_time, EASING_TIME, 1.0f, 0.0f);
+		GetTransform()->SetScale(scale, scale, 0.0f);
+		m_manual->SetColor(1.0f,1.0f,1.0f,alpha);
+
+		break;
+
+	case ManualState::DISPLAY:
+		//メニューを閉じるボタンかメニューのキャンセルボタン押したとき
+		if (InputManager::CurrentInputSystem().GetButtonDown("MenuBack"_hash) || InputManager::CurrentInputSystem().GetButtonDown("MenuClose"_hash)
+			|| InputManager::CurrentInputSystem().GetButtonDown("MenuInteract"_hash))
+		{
+			m_manualState = ManualState::CLOSE;
+			m_time = 0.0f;
+		}
+
+		break;
+
+	case ManualState::CLOSE:
+		// 小さくする
+		m_time += Time::GetDeltaTime();
+
+		if (m_time > EASING_TIME)
+		{
+			m_time = EASING_TIME;
+			m_manualState = ManualState::OPEN;
+			m_menuState = MenuState::SELECT;
+			for (int i = 0; i < 4; ++i)
+			{
+				m_buttons[i]->SetEnabled(true);
+			}
+			m_manual->SetEnabled(false);
+			m_midashi->SetEnabled(true);
+		}
+
+		scale = Easing::OutSine(m_time, EASING_TIME, MENU_SCALE, MANUAL_SCALE);
+		GetTransform()->SetScale(scale, scale, 0.0f);
+		alpha = Easing::OutSine(m_time, EASING_TIME, 0.0f, 1.0f);
+		m_manual->SetColor(1.0f, 1.0f, 1.0f, alpha);
+
+		break;
+	}
+}
+
 void GuideUIMeneController::SelectEnter()
 {
 	// リスタート
@@ -316,6 +426,14 @@ void GuideUIMeneController::SelectEnter()
 	// 操作説明
 	if (m_menuX == 1 && m_menuY == 0)
 	{
+		m_menuState = MenuState::MANUAL;
+		for (int i = 0; i < 4; ++i)
+		{
+			m_buttons[i]->SetEnabled(false);
+		}
+		m_time = 0.0f;
+		m_midashi->SetEnabled(false);
+		m_manual->SetEnabled(true);
 		SoundManager::PlaySE("Menu_Decision", 1.0f, false);
 	}
 	// ステージセレクト
