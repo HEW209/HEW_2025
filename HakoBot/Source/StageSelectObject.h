@@ -16,6 +16,7 @@ public:
 
 private:
 	ObjPtr<StageNumber> m_stageNumber;
+	ObjPtr<EffectRenderer> m_effect;
 	GameObject* m_blocks[StageCount];
 	std::vector<OutlineMeshRenderer*> m_blockRenderers;
 	bool m_easeStartFlag;
