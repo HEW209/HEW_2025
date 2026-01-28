@@ -6,12 +6,13 @@
 #include "Fade.h"
 #include "InputManager.h"
 #include "SoundManager.h"
+#include "StageSelectUI.h"
+#include "SaveData.h"
 
 void StageSelectScene::Init()
 {
 	SoundManager::PlayBGM("StageSelect", 1.0f, true);
 	InputManager::ChangeBindType(InputBindType::UI);
-
 	// カメラ
 	{
 		auto obj = CreateGameObject();
@@ -59,6 +60,14 @@ void StageSelectScene::Init()
 		info->SetStageNumber(stageNumber);
 	}
 
+	//矢印
+	{
+		auto obj = CreateGameObject();
+		auto arrow = obj->AddComponent<StageSelectUI>();
+		arrow->SetStageNumber(stageNumber);
+	}
+
+
 	// その他
 	{
 		auto obj = CreateGameObject();
@@ -74,6 +83,10 @@ void StageSelectScene::Init()
 		renderer->SetSize(1280.0f);
 		renderer->SetBackGround(true);
 	}
+
+	// 使用していないリソース解放
+	TextureManager::Instance().CollectGarbage();
+	ModelManager::Instance().CollectGarbage();
 }
 
 

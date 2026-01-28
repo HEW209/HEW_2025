@@ -8,6 +8,7 @@
 #include "TitleScene.h"
 #include "StageSelectScene.h"
 #include "SoundManager.h"
+#include "InputManager.h"
 
 #define STAGE_FILE "Assets/Stage/Level%d.json"
 #define FONT_SIZE (180.0f)
@@ -108,14 +109,16 @@ void StageNumber::Update()
 		if (Input::GetKeyDown(KeyCode::ENTER) ||
 			Input::GetButtonDown(PadCode::B))
 		{
+			SoundManager::StopBGM();
 			SoundManager::PlaySE("StageSelect_Decision", 0.5f, false);
 			m_isSceneChange = true;
 			m_targetScene = TargetScene::GAME;
-			Fade::StartIconIrisOut();
+			Fade::StartIrisOut();
 		}
 		else if (Input::GetKeyDown(KeyCode::ESC) ||
 			Input::GetButtonDown(PadCode::BACK))
 		{
+			SoundManager::StopBGM();
 			SoundManager::PlaySE("BackToTitle", 1.0f, false);
 			m_isSceneChange = true;
 			m_targetScene = TargetScene::TITLE;
@@ -141,13 +144,6 @@ void StageNumber::Update()
 
 	ImGui::End();
 #endif // DEBUG
-
-#ifdef _DEBUG
-	if (Input::GetKeyDown(KeyCode::KEY_0)) {
-		SaveData::SetClearLevel(std::min(SaveData::GetClearLevel() + 1, StageCount));
-	}
-#endif // _DEBUG
-
 }
 
 int StageNumber::GetSelectIndex()
@@ -204,11 +200,11 @@ void StageNumber::StageSelect()
 
 	// “ü—Íæ“¾
 	int inputSide = 0;
-	if (Input::GetLeftStick().x < 0.0f || Input::GetKeyDown(KeyCode::LEFT))
+	if (Input::GetLeftStick().x < 0.0f || InputManager::CurrentInputSystem().GetButtonHold("MenuLeft"_hash))
 	{
 		inputSide--;
 	}
-	if (Input::GetLeftStick().x > 0.0f || Input::GetKeyDown(KeyCode::RIGHT))
+	if (Input::GetLeftStick().x > 0.0f || InputManager::CurrentInputSystem().GetButtonHold("MenuRight"_hash))
 	{
 		inputSide++;
 	}
@@ -216,7 +212,7 @@ void StageNumber::StageSelect()
 	// ‘I‘ğˆÚ“®
 	if (m_lastInput == inputSide)
 	{
-		const float holdMoveWait = 0.7f;		// ’·‰Ÿ‚µˆÚ“®‚ªn‚Ü‚é‚Ü‚Å‚ÌŠÔ
+		const float holdMoveWait = 0.5f;		// ’·‰Ÿ‚µˆÚ“®‚ªn‚Ü‚é‚Ü‚Å‚ÌŠÔ
 		const float holdMoveInterval = 0.1f;	// ’·‰Ÿ‚µˆÚ“®‚ÌŠÔŠÔŠu
 
 		// ’·‰Ÿ‚µˆ—

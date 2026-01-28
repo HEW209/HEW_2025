@@ -26,7 +26,6 @@ GameScene::GameScene(const std::string& levelName)
 
 void GameScene::Init() {
     SoundManager::StopAll();
-    SoundManager::Load();
     RenderSystem::Instance().SetClearColor(Color(1.0f, 0.7f, 0.2f, 1.0f));
     InputManager::ChangeBindType(InputBindType::GAMEPLAY);
 
@@ -125,7 +124,7 @@ void GameScene::Init() {
         auto obj = CreateGameObject();
         auto fade = obj->AddComponent<Fade>();
 		static bool s_isFirst = true;
-        Fade::StartIconIrisIn();
+        Fade::StartIrisIn();
     }
 
     // ƒNƒŠƒA‰‰o

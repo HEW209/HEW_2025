@@ -10,7 +10,6 @@
 #include "StageSelectScene.h"
 #include <DXGameFrame.h>
 #include "GameScene.h"
-#include "../DebugEffectScene.h"
 
 // 最初のシーン
 #include "GameScene.h"

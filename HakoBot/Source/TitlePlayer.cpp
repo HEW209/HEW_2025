@@ -52,27 +52,6 @@ void TitlePlayer::Start()
 	GetTransform()->SetPosition(g_startPos);
 	GetTransform()->SetEulerAngle(0.0f, -90.0f, 0.0f);
 
-	// ƒuƒƒbƒN“o˜^
-	//m_blocks.push_back({ "Assets/Model/Blocks/FBX/1masu.fbx", {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} });
-	//m_blocks.push_back({ "Assets/Model/Blocks/FBX/Lji1.fbx", {0.5f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} });
-	//m_blocks.push_back({ "Assets/Model/Blocks/FBX/tate2masu.fbx", {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} });
-	//m_blocks.push_back({ "Assets/Model/Blocks/FBX/tate3masu.fbx", {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} });
-	//m_blocks.push_back({ "Assets/Model/Blocks/FBX/yoko2masu.fbx", {0.5f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} });
-	//m_blocks.push_back({ "Assets/Model/Blocks/FBX/yoko3masu.fbx", {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} });
-	//m_blocks.push_back({ "Assets/Model/Blocks/FBX/teto.fbx", {-0.5f, 0.0f, 0.5f}, {0.0f, 0.0f, 0.0f} });
-	//m_blocks.push_back({ "Assets/Model/Blocks/FBX/ebi.fbx", {0.5f, 0.0f, 0.5f}, {0.0f, 0.0f, 0.0f} });
-	//m_blocks.push_back({ "Assets/Model/Blocks/FBX/Barrel.fbx", {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} });
-	//m_blocks.push_back({ "Assets/Model/Blocks/FBX/Tree.fbx", {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} });
-	//m_blocks.push_back({ "Assets/Model/Blocks/FBX/FirePlace.fbx", {-0.5f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} });
-	//m_blocks.push_back({ "Assets/Model/Blocks/FBX/Kotatu.fbx", {-0.5f, 0.0f, -0.5f}, {0.0f, 0.0f, 0.0f} });
-	//m_blocks.push_back({ "Assets/Model/Blocks/FBX/Shachihoko.fbx", {-0.5f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} });
-
-	//auto blockObj = SceneManager::GetActiveScene()->CreateGameObject();
-	//blockObj->GetTransform()->SetParent(GetTransform());
-	//blockObj->GetTransform()->SetPosition(g_blockPos, Space::LOCAL);
-	//m_block = blockObj->AddComponent<MeshRenderer>();
-	//m_block->SetShouldDrawShadow(true);
-
 	m_pBlockHolder = SceneManager::GetActiveScene()->CreateGameObject();
 	m_pBlockHolder->GetTransform()->SetParent(GetTransform());
 	m_pBlockHolder->GetTransform()->SetPosition(g_blockPos, Space::LOCAL);

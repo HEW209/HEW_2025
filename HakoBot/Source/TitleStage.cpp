@@ -1,4 +1,11 @@
 #include "TitleStage.h"
+#include "SaveData.h"
+#include "LevelSerializer.h"
+#include "BlockData.h"
+
+const static Vector3 g_blockDefaultPos(8.0f, 2.32f, 11.8f);
+const static float g_blockEndPos_x = -25.0f;
+const static float g_blockMoveSpeed = 2.05f;
 
 TitleStage::TitleStage():
 	m_time(0.0f)
@@ -56,6 +63,16 @@ void TitleStage::Awake()
         mesh->GetMaterial(0)->SetParameter(&params, sizeof(Params));
         m_pConveyors = mesh;
     }
+
+    // ブロック
+    {
+        auto blockObj = SceneManager::GetActiveScene()->CreateGameObject();
+        blockObj->GetTransform()->SetPosition(g_blockDefaultPos);
+        m_block = blockObj->AddComponent<MeshRenderer>();
+        m_block->SetShouldDrawShadow(true);
+    }
+
+    SetRandomBlock();
 }
 
 void TitleStage::Update()
@@ -67,4 +84,86 @@ void TitleStage::Update()
     } params;
     params.uvOffset = { m_time * -0.1f, 0.0f };
     m_pConveyors->GetMaterial(0)->SetParameter(&params, sizeof(Params));
+
+	m_block->GetTransform()->Translate(Vector3::left * g_blockMoveSpeed* Time::GetDeltaTime());
+	if (m_block->GetTransform()->GetPosition().x < g_blockEndPos_x)
+	{
+		SetRandomBlock();
+	}
 }
+
+void TitleStage::SetRandomBlock()
+{
+
+	SaveData::Load();
+	int clearStage = SaveData::GetClearLevel();
+
+	int randIndex = rand() % std::max(clearStage, 5) + 1;
+	LevelData levelData;
+	LevelSerializer::LoadLevelData("Assets/Level/Stages/Level" + std::to_string(randIndex) + ".json", levelData);
+	BlockTemplateData blockData;
+	if (levelData.inventoryBlockFiles.empty()) {
+		LevelSerializer::LoadBlockTemplate("Assets/Level/Blocks/1masu.json", blockData);
+	}
+	else {
+		LevelSerializer::LoadBlockTemplate("Assets/Level/Blocks/" + levelData.inventoryBlockFiles[0] + ".json", blockData);
+	}
+	BlockSetData blockSet;
+	blockSet.blocks = blockData.blocks;
+
+	Vector3 min{ std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max() };
+	Vector3 max{ std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest() };
+	for (auto&& blockPos : blockSet.blocks) {
+		// ブロックの最小位置を記録
+		min.x = std::min(min.x, (float)blockPos.x);
+		min.y = std::min(min.y, (float)blockPos.y);
+		min.z = std::min(min.z, (float)blockPos.z);
+
+		// ブロックの最大位置を記録
+		max.x = std::max(max.x, (float)blockPos.x);
+		max.y = std::max(max.y, (float)blockPos.y);
+		max.z = std::max(max.z, (float)blockPos.z);
+	}
+	Vector3 center = (min + max) * 0.5f;
+
+	// ブロック（立方体）の中心から見た8つの頂点へのオフセット
+	const std::vector<Vector3> cornerOffsets = {
+		{ -0.5f, -0.5f, -0.5f },
+		{  0.5f, -0.5f, -0.5f },
+		{ -0.5f,  0.5f, -0.5f },
+		{  0.5f,  0.5f, -0.5f },
+		{ -0.5f, -0.5f,  0.5f },
+		{  0.5f, -0.5f,  0.5f },
+		{ -0.5f,  0.5f,  0.5f },
+		{  0.5f,  0.5f,  0.5f }
+	};
+
+	float minY = (std::numeric_limits<float>::max)();
+
+	const Quaternion rotation = GetTransform()->GetQuaternion();
+
+	for (const auto& blockPos : blockSet.blocks) {
+		// ブロックの中心座標
+		const Vector3 center(static_cast<float>(blockPos.x), static_cast<float>(blockPos.y), static_cast<float>(blockPos.z));
+
+		for (const auto& offset : cornerOffsets) {
+			// ブロックの頂点座標
+			Vector3 corner = center + offset;
+
+			Vector3 rotatedCorner = rotation * corner;
+
+			if (rotatedCorner.y < minY) {
+				minY = rotatedCorner.y;
+			}
+		}
+	}
+
+	float groundY = (minY == (std::numeric_limits<float>::max)()) ? 0.0f : -minY;
+
+	Vector3 offset = center * -1.0f;
+	offset.y = groundY;
+
+	m_block->LoadModel(blockData.modelPath);
+	m_block->GetTransform()->SetPosition(g_blockDefaultPos + offset);
+}
+

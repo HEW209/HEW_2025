@@ -16,7 +16,6 @@ void TitleScene::Init()
 {
     InputManager::ChangeBindType(InputBindType::UI);
     SoundManager::StopAll();
-    SoundManager::Load();
     SoundManager::PlayBGM("Title", 1.0f, true);
     RenderSystem::Instance().SetClearColor(Color(1.0f, 0.7f, 0.2f, 1.0f));
     
@@ -29,11 +28,11 @@ void TitleScene::Init()
 
         auto camera = obj->AddComponent<Camera>();
         Camera::Config cameraConfig;
-        cameraConfig.fovAngle = 10.0f;
+        cameraConfig.fovAngle = 20.0f;
         camera->SetConfig(cameraConfig);
 
         obj->GetTransform()->SetParent(cameraRoot);
-        obj->GetTransform()->SetPosition(0.0f, 3.0f, -40.0f, Space::LOCAL);
+        obj->GetTransform()->SetPosition(0.0f, 3.0f, -20.0f, Space::LOCAL);
         cameraRoot->GetTransform()->SetEulerAngle(10.0f, -30.0f, 0.0f);
     }
 
@@ -130,4 +129,8 @@ void TitleScene::Init()
         renderer->LoadTexture("Assets/Textures/StageSelect/BackGround.png");
         renderer->SetBackGround(true);
     }
+
+    // 使用していないリソース解放
+    TextureManager::Instance().CollectGarbage();
+    ModelManager::Instance().CollectGarbage();
 }

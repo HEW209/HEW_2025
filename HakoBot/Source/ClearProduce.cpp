@@ -74,6 +74,8 @@ void ClearProduce::Update()
 			
 			// アウトライン対策
 			player->GetTransform()->SetPosition(1000.0f, 0.0f, 0.0f);
+
+			SoundManager::PlaySE("Clear", 1.0f, false);
 		}
 		return;
 	}
@@ -82,9 +84,9 @@ void ClearProduce::Update()
 	float cameraAngleY = 0.0f;
 
 	++m_count;
-	if (m_count < 60)
+	if (m_count < 100)
 	{
-		float t = static_cast<float>(m_count) / 60.0f;
+		float t = static_cast<float>(m_count) / 100.0f;
 		float e = Easing::OutCubic(t, 1.0f);
 		float angleY = Math::Lerp(START_CAMERA_ANGLE_Y, MID_CAMERA_ANGLE_Y, e);
 		float distance = Math::Lerp(m_startCameraDistance, m_midCameraDistance, e);
@@ -92,23 +94,25 @@ void ClearProduce::Update()
 		m_pCamera->GetTransform()->SetPosition(cameraLocalPos, Space::LOCAL);
 		GetTransform()->SetEulerAngle(0.0f, angleY, 0.0f);
 	}
-	else if (m_count < 90)
+	else if (m_count < 130)
 	{
-		if (m_count == 60) {
-			SoundManager::PlaySE("Cracker", 1.0f, false);
+		if (m_count == 100) {
 			for (auto&& r : m_effectRenderers) {
 				r->Play();
 			}
 		}
+		if (m_count == 110) {
+			SoundManager::PlaySE("Cracker", 1.0f, false);
+		}
 
-		float t = static_cast<float>(m_count - 60.0f) / 30.0f;
+		float t = static_cast<float>(m_count - 100.0f) / 30.0f;
 		float e = Easing::OutQuart(t, 1.0f);
 		float distance = Math::Lerp(m_midCameraDistance, m_endCameraDistance, e);
 		Vector3 cameraLocalPos = Quaternion::Euler(CAMERA_ANGLE_X, 0.0f, 0.0f) * Vector3 { 0.0f, 0.0f, -distance } + Vector3{ 0.0f, gridField->GetSize().y * 0.5f, 0.0f };
 		m_pCamera->GetTransform()->SetPosition(cameraLocalPos, Space::LOCAL);
 	}
 
-	if (m_count == 100)
+	if (m_count == 150)
 	{
 		auto obj = SceneManager::GetActiveScene()->CreateGameObject();
 		obj->AddComponent<ResultController>();

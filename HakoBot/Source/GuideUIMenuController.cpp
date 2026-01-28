@@ -137,15 +137,19 @@ void GuideUIMeneController::UpdateDefault()
 	//メニューをひらく
 	if (InputManager::CurrentInputSystem().GetButtonDown("Menu"_hash))
 	{
-		SoundManager::PlaySE("Menu_Open", 1.0f, false);
 		m_value2 = 0.0f;
 		GridField* gridfield = GameState::GetInstance()->GetGridField();
 		//クリアしてたらメニュー表示できない
 		if (!GameState::GetInstance()->IsClear())
 		{
+			GameState::GetInstance()->StopTimer();
 			m_menuState = MenuState::OPEN;
 			//ボタン受付をUIタイプに変更
 			InputManager::ChangeBindType(InputBindType::UI);
+		}
+		else
+		{
+			SoundManager::PlaySE("Menu_Open", 1.0f, false);
 		}
 	}
 }
@@ -194,6 +198,8 @@ void GuideUIMeneController::UpdateSelect()
 	//メニューを閉じるボタンかメニューのキャンセルボタン押したとき
 	if (InputManager::CurrentInputSystem().GetButtonDown("MenuBack"_hash) || InputManager::CurrentInputSystem().GetButtonDown("MenuClose"_hash))
 	{
+		SoundManager::PlaySE("Menu_Close", 1.0f, false);
+		GameState::GetInstance()->StartTimer();
 		m_closeStartScale = GetTransform()->GetScale();
 		m_menuState = MenuState::CLOSE;
 		m_closePhase = ClosePhase::Pop;
@@ -202,27 +208,36 @@ void GuideUIMeneController::UpdateSelect()
 		InputManager::ChangeBindType(InputBindType::GAMEPLAY);
 	}
 
+	// カーソル移動
 	Vector2 input = Input::GetLeftStick();
+	int targetX = m_menuX;
+	int targetY = m_menuY;
 	if (InputManager::CurrentInputSystem().GetButtonDown("MenuUp"_hash) || input.y > 0.5f)
 	{
-		SoundManager::PlaySE("Menu_Select", 1.0f, false);
-		m_menuY = 0;
+		targetY = 0;
 	}
 	if (InputManager::CurrentInputSystem().GetButtonDown("MenuDown"_hash) || input.y < -0.5f)
 	{
-		SoundManager::PlaySE("Menu_Select", 1.0f, false);
-		m_menuY = 1;
+		targetY = 1;
 	}
 	if (InputManager::CurrentInputSystem().GetButtonDown("MenuLeft"_hash) || input.x < -0.5f)
 	{
-		SoundManager::PlaySE("Menu_Select", 1.0f, false);
-		m_menuX = 0;
+		targetX = 0;
 	}
 	if (InputManager::CurrentInputSystem().GetButtonDown("MenuRight"_hash) || input.x > 0.5f)
 	{
-		SoundManager::PlaySE("Menu_Select", 1.0f, false);
-		m_menuX = 1;
+		targetX = 1;
 	}
+
+	// カーソル移動してたら鳴らす
+	if (targetX != m_menuX || targetY != m_menuY)
+	{
+		SoundManager::PlaySE("Menu_Select", 1.0f, false);
+	}
+
+	// カーソル位置更新
+	m_menuX = targetX;
+	m_menuY = targetY;
 
 	// メニュー選択用
 	int selectIndex = m_menuX + m_menuY * 2;
@@ -241,7 +256,6 @@ void GuideUIMeneController::UpdateSelect()
 	// 決定
 	if (InputManager::CurrentInputSystem().GetButtonDown("MenuInteract"_hash))
 	{
-		SoundManager::PlaySE("Menu_Decision", 1.0f, false);
 		SelectEnter();
 	}
 }
@@ -407,8 +421,10 @@ void GuideUIMeneController::SelectEnter()
 	// リスタート
 	if (m_menuX == 0 && m_menuY == 0)
 	{
+		SoundManager::StopBGM();
+		SoundManager::PlaySE("Menu_Decision", 1.0f, false);
 		m_menuState = MenuState::SCENE_CHANGE;
-		Fade::StartIconIrisOut();
+		Fade::StartIrisOut();
 	}
 	// 操作説明
 	if (m_menuX == 1 && m_menuY == 0)
@@ -421,16 +437,20 @@ void GuideUIMeneController::SelectEnter()
 		m_time = 0.0f;
 		m_midashi->SetEnabled(false);
 		m_manual->SetEnabled(true);
+		SoundManager::PlaySE("Menu_Decision", 1.0f, false);
 	}
 	// ステージセレクト
 	if (m_menuX == 0 && m_menuY == 1)
 	{
+		SoundManager::StopBGM();
+		SoundManager::PlaySE("Menu_Decision", 1.0f, false);
 		m_menuState = MenuState::SCENE_CHANGE;
 		Fade::StartIconIrisOut();
 	}
 	// メニューを閉じる
 	if (m_menuX == 1 && m_menuY == 1)
 	{
+		SoundManager::PlaySE("Menu_Close", 1.0f, false);
 		m_closeStartScale = GetTransform()->GetScale();
 		m_menuState = MenuState::CLOSE;
 		m_closePhase = ClosePhase::Pop;

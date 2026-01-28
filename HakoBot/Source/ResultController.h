@@ -20,6 +20,7 @@ private:
 	ObjPtr<SpriteRenderer> m_result;
 	ObjPtr<SpriteRenderer> m_selectText[3];
 	ObjPtr<SpriteRenderer> m_illust;
+	ObjPtr<GameObject> m_clearTime;
 
 	float m_resultTime;
 
@@ -39,4 +40,6 @@ private:
 	};
 
 	int m_currentSelect;
+
+	bool m_isStartedBGMLoop;
 };

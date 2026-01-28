@@ -2,6 +2,7 @@
 #include <unordered_map>
 #include "SoundData.h"
 #include "SoundPlayer.h"
+#include <memory>
 
 class SoundManager
 {
@@ -20,6 +21,9 @@ public:
 	// 全てのサウンド停止
 	static void StopAll();
 
+	// BGM再生中か
+	static bool IsBGMPlaying();
+
 private:
 	struct BGM
 	{
@@ -34,7 +38,7 @@ private:
 	static std::unordered_map<std::string, BGM> bgmMap;
 	static std::unordered_map<std::string, SE> seMap;
 	static SoundPlayer bgmPlayer;
-	static SoundPlayer sePlayer;
+	static std::vector<std::unique_ptr<SoundPlayer>> sePlayers;
 
 	static bool LoadBGMFile(const std::string&soundname, const std::string&filepath);
 	static bool LoadSEFile(const std::string& soundname, const std::string& filepath);

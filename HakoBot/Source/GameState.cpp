@@ -11,7 +11,9 @@ GameState::GameState() :
 	m_isBlockTransparent(false),
 	m_colorBalanceMode(false),
 	m_isClearEnter(false),
-	m_pTutorial(nullptr)
+	m_pTutorial(nullptr),
+	m_timerActive(false),
+	m_gameTime(0.0f)
 {
 	if (s_pInstance == nullptr) {
 
@@ -43,9 +45,15 @@ void GameState::Update()
 		m_isBlockTransparent = InputManager::CurrentInputSystem().GetButtonHold("ChangeBlockTransparency"_hash);
 	}
 
+	if (m_timerActive)
+	{
+		m_gameTime += Time::GetDeltaTime();
+	}
+
 	if (IsClear() && InputManager::CurrentInputSystem().GetButtonDown("Clear"_hash))
 	{
-		SoundManager::StopAll();
+		SoundManager::StopBGM();
+		m_timerActive = false;
 		m_isClearEnter = true;
 	}
 		
@@ -177,5 +185,20 @@ bool GameState::IsClear()
 bool GameState::IsClearEnter()
 {
 	return m_isClearEnter;
+}
+
+float GameState::GetGameTime()
+{
+	return m_gameTime;
+}
+
+void GameState::StartTimer()
+{
+	m_timerActive = true;
+}
+
+void GameState::StopTimer()
+{
+	m_timerActive = false;
 }
 

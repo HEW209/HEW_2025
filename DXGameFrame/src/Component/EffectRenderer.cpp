@@ -37,13 +37,6 @@ void EffectRenderer::Draw()
 
 
     //manager->Draw(drawParameter);
-
-    //static float sceneTime = 0.0f;
-    //if (sceneTime != Time::GetSceneTime())
-    //{
-    //    manager->Draw(drawParameter);
-    //    sceneTime = Time::GetSceneTime();
-    //}
 }
 
 void EffectRenderer::Load(const std::string& fileName)
