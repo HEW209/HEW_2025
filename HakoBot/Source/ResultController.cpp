@@ -89,7 +89,7 @@ void ResultController::Start()
 
 	//リザルトイラスト
 	auto illust = GetGameObject()->AddComponent<SpriteRenderer>();
-	illust->LoadTexture("Assets/Textures/Result/result_illust.png");
+	illust->LoadTexture("Assets/Textures/Result/result_illust_3.png");
 	illust->SetUI(true);
 	illust->SetSize(ILLUST_SIZE);
 	illust->SetOffsetPos(ILLUST_POS_X_START, ILLUST_POS_Y_START);

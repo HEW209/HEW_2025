@@ -44,6 +44,10 @@ void Tutorial1::Awake()
 	m_pText2->SetSize(1280.0f);
 	m_pText2->SetUI(true);
 	m_pText2->SetEnabled(false);
+	m_pText2->LoadTexture("Assets/Textures/Tutorial/tutorial1_text3.png", false);
+	m_pText2->SetSize(1280.0f);
+	m_pText2->SetUI(true);
+	m_pText2->SetEnabled(false);
 }
 
 void Tutorial1::LateUpdate()
@@ -88,15 +92,7 @@ void Tutorial1::LateUpdate()
 			if (InputManager::CurrentInputSystem().GetButtonDown("MenuInteract"_hash)) {
 				SoundManager::PlaySE("Tutorial_Decision", 1.0f, false);
 				++m_step;
-				auto transform = m_pCamera->GetTransform();
-				m_prevCameraPos = transform->GetPosition();
-				m_prevCameraRot = transform->GetQuaternion();
-				m_nextCameraPos = Vector3(-5.0f, 4.0f, -5.0f);
-				m_nextCameraRot = Quaternion::Euler(30.0f, 300.0f, 0.0f);
-				m_cameraMoveDuration = 2.0f;
-				m_cameraMoveTimer = 0.0f;
-				m_pLine->SetEnabled(false);
-				SoundManager::PlaySE("TextBoxOut", 1.0f, false);
+				m_pText1->LoadTexture("Assets/Textures/Tutorial/tutorial1_text2.png", false);
 			}
 		}
 		else {
@@ -117,6 +113,28 @@ void Tutorial1::LateUpdate()
 	break;
 
 	case 2:
+	{
+		if (m_cameraMoveTimer >= m_cameraMoveDuration) {
+			if (InputManager::CurrentInputSystem().GetButtonDown("MenuInteract"_hash)) {
+				SoundManager::PlaySE("Tutorial_Decision", 1.0f, false);
+				++m_step;
+				auto transform = m_pCamera->GetTransform();
+				m_prevCameraPos = transform->GetPosition();
+				m_prevCameraRot = transform->GetQuaternion();
+				m_nextCameraPos = Vector3(-5.0f, 4.0f, -5.0f);
+				m_nextCameraRot = Quaternion::Euler(30.0f, 300.0f, 0.0f);
+				m_cameraMoveDuration = 2.0f;
+				m_cameraMoveTimer = 0.0f;
+				m_pLine->SetEnabled(false);
+				SoundManager::PlaySE("TextBoxOut", 1.0f, false);
+			}
+		}
+		else {
+		}
+	}
+	break;
+
+	case 3:
 	{
 		if (m_cameraMoveTimer >= m_cameraMoveDuration) {
 			if (InputManager::CurrentInputSystem().GetButtonDown("MenuInteract"_hash)) {
@@ -159,7 +177,7 @@ void Tutorial1::LateUpdate()
 	}
 	break;
 
-	case 3:
+	case 4:
 	{
 		if (m_cameraMoveTimer >= m_cameraMoveDuration) {
 			++m_step;
@@ -179,7 +197,7 @@ void Tutorial1::LateUpdate()
 	}
 	break;
 
-	case 4:
+	case 5:
 	{
 		++m_step;
 		InputManager::ChangeBindType(InputBindType::GAMEPLAY);
@@ -337,6 +355,7 @@ void Tutorial2::LateUpdate()
 			if (InputManager::CurrentInputSystem().GetButtonDown("MenuInteract"_hash)) {
 				SoundManager::PlaySE("Tutorial_Decision", 1.0f, false);
 				++m_step;
+				m_pText->LoadTexture("Assets/Textures/Tutorial/tutorial2_text2.png", false);
 			}
 		}
 		else {
@@ -371,7 +390,6 @@ void Tutorial2::LateUpdate()
 			SoundManager::PlaySE("TextBoxOut", 1.0f, false);
 		}
 		else {
-			m_pText->LoadTexture("Assets/Textures/Tutorial/tutorial2_text2.png", false);
 		}
 	}
 	break;
