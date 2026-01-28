@@ -383,6 +383,7 @@ void GuideUIMeneController::UpdateManual()
 		{
 			m_manualState = ManualState::CLOSE;
 			m_time = 0.0f;
+			SoundManager::PlaySE("Menu_Close", 1.0f, false);
 		}
 
 		break;

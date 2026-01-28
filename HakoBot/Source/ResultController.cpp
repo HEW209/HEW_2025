@@ -51,6 +51,10 @@ constexpr float SELECT_POS_Y_START = SELECT_POS_Y_END;
 constexpr float SELECT_SPACE_RATIO = 0.5f * 0.45f;
 constexpr float SELECT_SCALING_SPEED = 800.0f;
 
+constexpr float BGM_BPM = 112.0f;
+constexpr float BEATS_PER_CYCLE = 2.0f;
+constexpr float SEC_PER_CYCLE = 60.0f / BGM_BPM * BEATS_PER_CYCLE;
+
 static const char* g_activeText[3] = {
 	"Assets/Textures/Result/tugi_stage.png",
 	"Assets/Textures/Result/stage_select.png",
@@ -64,7 +68,7 @@ static const char* g_defaultText[3] = {
 };
 
 ResultController::ResultController():
-	m_state(ResultState::MOVE), m_currentSelect(0), m_resultTime(0.0f), m_bgmState(BGMState::NONE)
+	m_state(ResultState::MOVE), m_currentSelect(0), m_resultTime(0.0f), m_bgmState(BGMState::NONE), m_animTime(0.0f)
 {
 
 }
@@ -113,14 +117,25 @@ void ResultController::Start()
 	m_kuroUp = kuroUpRenderer;
 
 	//リザルト
-	auto resultMozi = GetGameObject()->AddComponent<SpriteRenderer>();
-	resultMozi->LoadTexture("Assets/Textures/Result/rizaruto4.png");
-	resultMozi->SetUI(true);
-	resultMozi->SetSize(RESULT_SIZE);
-	resultMozi->SetOffsetPos(RESULT_POS_X_START, RESULT_POS_Y_START);
-	m_result = resultMozi;
-	m_resultPos.x = RESULT_POS_X_END;
-	m_resultPos.y = RESULT_POS_Y_END;
+	m_resultTextRoot = SceneManager::GetActiveScene()->CreateGameObject();
+	m_resultTextRoot->GetTransform()->SetParent(GetGameObject());
+	m_resultTextRoot->GetTransform()->SetPosition(RESULT_POS_X_START, RESULT_POS_Y_START, 0.0f);
+	auto resultLine = m_resultTextRoot->AddComponent<SpriteRenderer>();
+	resultLine->LoadTexture("Assets/Textures/Result/result_line.png");
+	resultLine->SetUI(true);
+	resultLine->SetSize(RESULT_SIZE);
+
+	for (int i = 0; i < 4; ++i) {
+		m_resultTexts[i] = SceneManager::GetActiveScene()->CreateGameObject();
+		m_resultTexts[i]->GetTransform()->SetParent(m_resultTextRoot->GetTransform());
+		for (int j = 0; j < 3; ++j) {
+			auto resultMoji = m_resultTexts[i]->AddComponent<SpriteRenderer>();
+			resultMoji->LoadTexture("Assets/Textures/Result/result" + std::to_string(i + 1) + "-" + std::to_string(3 - j) + ".png");
+			resultMoji->SetUI(true);
+			resultMoji->SetSize(RESULT_SIZE);
+			resultMoji->SetOrder(j);
+		}
+	}
 
 	//クリアタイム
 	auto timeObj = SceneManager::GetActiveScene()->CreateGameObject();
@@ -170,6 +185,8 @@ void ResultController::Start()
 
 void ResultController::Update()
 {
+	m_animTime += Time::GetDeltaTime();
+
 	switch (m_state)
 	{
 	case ResultController::ResultState::MOVE:
@@ -186,28 +203,23 @@ void ResultController::Update()
 		if (m_bgmState == BGMState::NONE) {
 			SoundManager::PlayBGM("ResultStart", 0.8f, false);
 			m_bgmState = BGMState::START;
+			m_animTime = 60.0f / 112.0f * 0.9f;
 		}
 		else if (m_bgmState == BGMState::START && !SoundManager::IsBGMPlaying()) {
 			SoundManager::PlayBGM("ResultLoop", 0.8f, true);
 			m_bgmState = BGMState::LOOP;
 		}
 	}
-}
-
-
-	m_animTime += Time::GetDeltaTime();
 
 	//リザルトをゆらそう！！！
-	float bgmBpm = 112.0f;
-	float beatPerCycle = 2.0f;
-	float secPerCycle = 60.0f / bgmBpm * beatPerCycle;
 
-	float tChara = std::fmodf(m_animTime / secPerCycle, 1.0f);
-	float end = 1.0f;
+	float tCycle = std::fmodf(m_animTime / SEC_PER_CYCLE, 1.0f);
 
 	float charaRatio = 0.1f;
 
-	if (tChara < charaRatio)
+	float tChara = tCycle;
+
+	if (tCycle < charaRatio)
 	{
 		tChara *= 1.0f / charaRatio;
 	}
@@ -218,8 +230,8 @@ void ResultController::Update()
 	}
 
 	//イラストサイズ
-	float charaScaleX = Easing::OutQuad(tChara, end, m_charaScale.x + 100.0f, (float)m_charaScale.x);
-	float charaScaleY = Easing::OutQuad(tChara, end, m_charaScale.y + 50.0f, (float)m_charaScale.y);
+	float charaScaleX = Easing::InQuad(tChara, 1.0f, m_charaScale.x + 100.0f, (float)m_charaScale.x);
+	float charaScaleY = Easing::InQuad(tChara, 1.0f, m_charaScale.y + 50.0f, (float)m_charaScale.y);
 	m_illust->SetSize(charaScaleX, charaScaleY);
 }
 
@@ -250,9 +262,9 @@ void ResultController::MoveUpdate()
 		Easing::OutCubic(m_resultTime, EASE_TOTAL_TIME, KURO_POS_Y_END, KURO_POS_Y_START));
 
 	//リザルトの移動
-	m_result->SetOffsetPos(
+	m_resultTextRoot->GetTransform()->SetPosition(
 		Easing::OutCubic(m_resultTime, EASE_TOTAL_TIME, RESULT_POS_X_END, RESULT_POS_X_START),
-		Easing::OutCubic(m_resultTime, EASE_TOTAL_TIME, RESULT_POS_Y_END, RESULT_POS_Y_START));
+		Easing::OutCubic(m_resultTime, EASE_TOTAL_TIME, RESULT_POS_Y_END, RESULT_POS_Y_START), 0.0f);
 
 	// クリアタイムの移動
 	m_clearTime->GetTransform()->SetPosition(
@@ -286,21 +298,6 @@ void ResultController::SelectUpdate()
 		{
 			m_currentSelect += Select::COUNT;
 		}
-
-		////ゆらすアニメーション
-		//if (m_currentSelect == 0)
-		//{
-		//	float off = m_selectText[0]->GetOffsetPos().y;
-		//	m_selectText[0]->SetOffsetPos(0.0f, Easing::InSine(m_animTime, 5.0f, off + 1.0f, off));
-		//}
-		//else if (m_currentSelect == 1)
-		//{
-
-		//}
-		//else if (m_currentSelect == 2)
-		//{
-
-		//}
 	}
 
 	//下選択
@@ -338,19 +335,35 @@ void ResultController::SelectUpdate()
 		}
 	}
 
-	// 選択肢更新
+	float tSelect = std::fmodf(m_animTime * 0.75f / SEC_PER_CYCLE + 0.2f, 1.0f);
+
+	if (tSelect < 0.5f)
+	{
+		tSelect *= 2.0f;
+	}
+	else {
+		tSelect -= 0.5f;
+		tSelect *= 2.0f;
+		tSelect = 1.0f - tSelect;
+	}
+
+	float selectPosX = Easing::OutSine(tSelect, 1.0f, SELECT_POS_X_END - 0.2f, SELECT_POS_X_END);
+
 	Vector2 offsetPos(SELECT_POS_X_END, SELECT_POS_Y_END);
+	// 選択肢更新
 	for (int i = 0; i < Select::COUNT; ++i)
 	{
 		if (m_currentSelect == i)
 		{
 			m_selectText[i]->LoadTexture(g_activeText[i], false);
 			m_selectText[i]->SetSize(SELECT_SIZE_MAX);
+			offsetPos.x = selectPosX;
 		}
 		else
 		{
 			m_selectText[i]->LoadTexture(g_defaultText[i], false);
 			m_selectText[i]->SetSize(SELECT_SIZE_MIN);
+			offsetPos.x = SELECT_POS_X_END;
 		}
 
 		// オフセットをずらす
@@ -378,6 +391,29 @@ void ResultController::SelectUpdate()
 			Fade::StartIconIrisOut();//フェード
 			break;
 		}
+	}
+
+	float textAnimCycle = 3.0f;
+	float textAnimLength = 0.2f;
+	float textAnimInterval = 0.15f;
+	float textAnimMaxYOffset = 0.3f;
+
+	for (int i = 0; i < 4; ++i)
+	{
+		float tText = std::fmodf(m_animTime - i * textAnimInterval + textAnimCycle, textAnimCycle);
+		float offsetY = 0.0f;
+		tText = std::clamp(tText, 0.0f, textAnimLength) / textAnimLength;
+		if (tText < 0.5f)
+		{
+			tText *= 2.0f;
+		}
+		else {
+			tText -= 0.5f;
+			tText *= 2.0f;
+			tText = 1.0f - tText;
+		}
+		offsetY = Easing::OutSine(tText, 1.0f, textAnimMaxYOffset, 0.0f);
+		m_resultTexts[i]->GetTransform()->SetPosition(0.0f, offsetY, 0.0f, Space::LOCAL);
 	}
 }
 

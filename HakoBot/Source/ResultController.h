@@ -17,7 +17,8 @@ private:
 	ObjPtr<SpriteRenderer> m_screenFade;
 	ObjPtr<SpriteRenderer> m_kuroDown;
 	ObjPtr<SpriteRenderer> m_kuroUp;
-	ObjPtr<SpriteRenderer> m_result;
+	std::array<ObjPtr<GameObject>, 4> m_resultTexts;
+	ObjPtr<GameObject> m_resultTextRoot;
 	ObjPtr<SpriteRenderer> m_selectText[3];
 	ObjPtr<SpriteRenderer> m_illust;
 	ObjPtr<GameObject> m_clearTime;
@@ -26,7 +27,6 @@ private:
 	Vector2 m_charaScale;
 	float m_resultTime;
 	float m_animTime;
-	bool on;
 
 	enum class ResultState
 	{
