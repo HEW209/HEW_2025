@@ -5,6 +5,7 @@
 static const float g_weight = 0.0f;
 static const float g_defaultFadeSpeed = 1.2f;
 static const int g_skipFrameCount = 2;
+static const float g_fadeEndWaitTime = 0.2f;	// フェード終了時の待ち時間
 
 Fade* Fade::s_main = nullptr;
 Fade::FadeMode Fade::s_fadeMode = Fade::FadeMode::SIMPLE_IRIS;
@@ -12,6 +13,7 @@ bool Fade::s_isFade = false;
 bool Fade::s_isActive = false;
 float Fade::s_fadeRatio = 0.0f;
 int Fade::s_frameCount = 0;
+float Fade::s_fadeEndTimer = 0.0f;
 Fade::IconType Fade::s_maskIcon = Fade::IconType::SIMPLE;
 
 Fade::Fade() :
@@ -67,18 +69,29 @@ void Fade::Update()
 				++s_frameCount;
 			}
 		}
-		if (s_fadeRatio < 1.0f && s_isFade)
+		if (s_isFade)
 		{
-			s_fadeRatio += m_fadeSpeed * Time::GetDeltaTime();
-			if (s_fadeRatio > 1.0f)
+			if (s_fadeRatio < 1.0f)
 			{
-				s_fadeRatio = 1.0f;
-				s_isActive = false;
-			}
+				s_fadeRatio += m_fadeSpeed * Time::GetDeltaTime();
+				if (s_fadeRatio > 1.0f)
+				{
+					s_fadeRatio = 1.0f;
+				}
 
-			if (s_frameCount == 0) {
-				SoundManager::PlaySE("FadeOut", 1.0f, false);
-				++s_frameCount;
+				if (s_frameCount == 0) {
+					SoundManager::PlaySE("FadeOut", 1.0f, false);
+					++s_frameCount;
+				}
+			}
+			else
+			{
+				s_fadeEndTimer += Time::GetDeltaTime();
+				if (s_fadeEndTimer > g_fadeEndWaitTime)
+				{
+					s_isActive = false;
+					s_fadeEndTimer = 0.0f;
+				}
 			}
 		}
 	}
@@ -236,6 +249,7 @@ void Fade::StartFadeOut()
 	s_isActive = true;
 	s_isFade = true;
 	s_frameCount = 0;
+	s_fadeEndTimer = 0.0f;
 }
 
 void Fade::StartFadeIn()
@@ -245,4 +259,5 @@ void Fade::StartFadeIn()
 	s_isActive = true;
 	s_isFade = false;
 	s_frameCount = 0;
+	s_fadeEndTimer = 0.0f;
 }

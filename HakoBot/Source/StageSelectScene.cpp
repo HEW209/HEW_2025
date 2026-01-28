@@ -11,7 +11,7 @@
 
 void StageSelectScene::Init()
 {
-	SoundManager::PlayBGM("StageSelect", 1.0f, true);
+	SoundManager::PlayBGM("StageSelect", 0.8f, true);
 	InputManager::ChangeBindType(InputBindType::UI);
 	// カメラ
 	{
@@ -83,6 +83,10 @@ void StageSelectScene::Init()
 		renderer->SetSize(1280.0f);
 		renderer->SetBackGround(true);
 	}
+
+	// 使用していないリソース解放
+	TextureManager::Instance().CollectGarbage();
+	ModelManager::Instance().CollectGarbage();
 }
 
 

@@ -3,6 +3,7 @@
 #include "LevelSerializer.h"
 #include "SaveData.h"
 #include "BlockData.h"
+#include "Easing.h"
 
 static const Vector3 g_defaultPos(0.0f, -4.0f, -1.0f);
 static const Vector3 g_centerPos(0.0f, -3.0f, -1.0f);
@@ -12,6 +13,15 @@ static const float g_conveyerDistance = 20.0f;
 static const float g_defaultMoveSpeed = 5.0f;
 static const float g_minMoveSpeed = 1.0f;
 static const float g_rotateSpeed = 60.0f;
+static const float g_easeScaleDuration = 0.5f;
+
+StageSelectObject::StageSelectObject() :
+	m_blocks(),
+	m_easeStartFlag(false),
+	m_easeStartScale(0.0f),
+	m_scaleEaseTimer(0.0f)
+{
+}
 
 void StageSelectObject::Start()
 {
@@ -131,6 +141,7 @@ void StageSelectObject::Update()
 {
 	Move();
 	BlockMove();
+	BlockScaling();
 	BlockRotate();
 }
 
@@ -208,13 +219,6 @@ void StageSelectObject::BlockMove()
 			pos_yz += move * Time::GetDeltaTime();
 		}
 		m_blocks[x]->GetTransform()->SetPosition(pos_x, pos_yz.y, pos_yz.z, Space::LOCAL);
-
-		// スケーリング
-		float toCenter = (g_centerPos - pos_yz).Magnitude();
-		float moveDistance = (g_centerPos - g_defaultPos).Magnitude();
-		float centerRatio = 1.0f - toCenter / moveDistance;
-		float scale = centerRatio * 0.5f + 1.0f;
-		m_blocks[x]->GetTransform()->SetScale(scale, scale, scale);
 	}
 }
 
@@ -246,5 +250,43 @@ void StageSelectObject::BlockRotate()
 				angle_y = 0.0f;
 		}
 		m_blocks[x]->GetTransform()->SetEulerAngle(0.0f, angle_y, 0.0f);
+	}
+}
+
+void StageSelectObject::BlockScaling()
+{
+	int selectIndex = m_stageNumber->GetSelectIndex() - 1;
+
+	if (m_stageNumber->IsStageStart())
+	{
+		if (!m_easeStartFlag)
+		{
+			m_easeStartScale = m_blocks[selectIndex]->GetTransform()->GetScale().x;
+			m_easeStartFlag = true;
+		}
+
+		m_scaleEaseTimer += Time::GetDeltaTime();
+		if (m_scaleEaseTimer > g_easeScaleDuration)
+			m_scaleEaseTimer = g_easeScaleDuration;
+
+		float scale = Easing::InBack(m_scaleEaseTimer, g_easeScaleDuration, 4.0f, 0.0f, m_easeStartScale);
+		m_blocks[selectIndex]->GetTransform()->SetScale(scale, scale, scale);
+	}
+
+	// ブロックごとのスケーリング
+	for (int x = 0; x < StageCount; ++x)
+	{
+		if (x == selectIndex && m_easeStartFlag)
+			continue;
+
+		Vector3 pos_yz = m_blocks[x]->GetTransform()->GetPosition(Space::LOCAL);
+		pos_yz.x = 0.0f;
+
+		// スケーリング
+		float toCenter = (g_centerPos - pos_yz).Magnitude();
+		float moveDistance = (g_centerPos - g_defaultPos).Magnitude();
+		float centerRatio = 1.0f - toCenter / moveDistance;
+		float scale = centerRatio * 0.5f + 1.0f;
+		m_blocks[x]->GetTransform()->SetScale(scale, scale, scale);
 	}
 }

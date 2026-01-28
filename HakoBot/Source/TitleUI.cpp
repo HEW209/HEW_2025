@@ -73,7 +73,7 @@ void TitleUI::Update()
         {
             //ˆê‰ñ‚¾‚¯Às
             m_bPlayBGM = true;
-            SoundManager::PlayBGM("Title", 1.0f, true);
+            SoundManager::PlayBGM("Title", 0.8f, true);
         }
     }
 }

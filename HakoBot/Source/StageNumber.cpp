@@ -110,7 +110,7 @@ void StageNumber::Update()
 			Input::GetButtonDown(PadCode::B))
 		{
 			SoundManager::StopBGM();
-			SoundManager::PlaySE("StageSelect_Decision", 0.5f, false);
+			SoundManager::PlaySE("StageSelect_Decision", 0.8f, false);
 			m_isSceneChange = true;
 			m_targetScene = TargetScene::GAME;
 			Fade::StartIrisOut();
@@ -139,6 +139,7 @@ void StageNumber::Update()
 
 	if (ImGui::Button("Reload"))
 	{
+		SaveData::Save();
 		SceneManager::ChangeScene(std::make_unique<StageSelectScene>());
 	}
 

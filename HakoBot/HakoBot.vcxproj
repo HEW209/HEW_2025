@@ -161,7 +161,6 @@
   <ItemGroup>
     <ClCompile Include="Source\BlockObject.cpp" />
     <ClCompile Include="Source\ClearProduce.cpp" />
-    <ClCompile Include="DebugEffectScene.cpp" />
     <ClCompile Include="Source\ColliderDebug.cpp" />
     <ClCompile Include="Source\Fade.cpp" />
     <ClCompile Include="Source\GameScene.cpp" />
@@ -217,7 +216,6 @@
     <ClInclude Include="Source\BlockData.h" />
     <ClInclude Include="Source\BlockObject.h" />
     <ClInclude Include="Source\ClearProduce.h" />
-    <ClInclude Include="DebugEffectScene.h" />
     <ClInclude Include="source\ColliderDebug.h" />
     <ClInclude Include="Source\Config.h" />
     <ClInclude Include="Source\DynamicDimensionalArray.h" />

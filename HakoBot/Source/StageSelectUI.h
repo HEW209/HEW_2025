@@ -22,4 +22,5 @@ private:
 	float m_ease;
 	float m_hideTimer;
 	float m_animeTimer;
+	float m_stageStartFlag;
 };

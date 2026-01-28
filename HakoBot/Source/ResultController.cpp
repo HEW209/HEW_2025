@@ -64,8 +64,7 @@ static const char* g_defaultText[3] = {
 };
 
 ResultController::ResultController():
-	m_state(ResultState::MOVE), m_currentSelect(0), m_resultTime(0.0f), m_isStartedBGMLoop(false),
-	m_animTime(0.0f),on(false)
+	m_state(ResultState::MOVE), m_currentSelect(0), m_resultTime(0.0f), m_bgmState(BGMState::NONE)
 {
 
 }
@@ -183,6 +182,17 @@ void ResultController::Update()
 		EndUpdate();
 		break;
 	}
+	if (m_resultTime >= 0.0f) {
+		if (m_bgmState == BGMState::NONE) {
+			SoundManager::PlayBGM("ResultStart", 0.8f, false);
+			m_bgmState = BGMState::START;
+		}
+		else if (m_bgmState == BGMState::START && !SoundManager::IsBGMPlaying()) {
+			SoundManager::PlayBGM("ResultLoop", 0.8f, true);
+			m_bgmState = BGMState::LOOP;
+		}
+	}
+}
 
 
 	m_animTime += Time::GetDeltaTime();
@@ -219,7 +229,6 @@ void ResultController::MoveUpdate()
 	m_resultTime += Time::GetDeltaTime();
 	if (m_resultTime > EASE_TOTAL_TIME)
 	{
-		SoundManager::PlayBGM("ResultStart", 1.0f, false);
 		m_resultTime = EASE_TOTAL_TIME;
 		m_state = ResultState::SELECT;
 	}
@@ -369,12 +378,6 @@ void ResultController::SelectUpdate()
 			Fade::StartIconIrisOut();//フェード
 			break;
 		}
-	}
-
-	if (!m_isStartedBGMLoop && !SoundManager::IsBGMPlaying())
-	{
-		SoundManager::PlayBGM("ResultLoop", 1.0f, true);
-		m_isStartedBGMLoop = true;
 	}
 }
 
