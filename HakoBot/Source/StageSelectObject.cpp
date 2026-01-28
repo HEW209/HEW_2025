@@ -263,7 +263,17 @@ void StageSelectObject::BlockScaling()
 		{
 			m_easeStartScale = m_blocks[selectIndex]->GetTransform()->GetScale().x;
 			m_easeStartFlag = true;
+
+			// エフェクト生成
+			auto effectObj = SceneManager::GetActiveScene()->CreateGameObject();
+			effectObj->GetTransform()->SetScale(3.0f, 3.0f, 3.0f);
+			m_effect = effectObj->AddComponent<EffectRenderer>();
+			m_effect->Load("Assets/Effect/Kira/kira.efkefc");
+			m_effect->Play();
 		}
+
+		m_effect->GetTransform()->SetPosition(
+			m_blocks[selectIndex]->GetTransform()->GetPosition() + Vector3(0.0f, 1.0f, 0.0f));
 
 		m_scaleEaseTimer += Time::GetDeltaTime();
 		if (m_scaleEaseTimer > g_easeScaleDuration)

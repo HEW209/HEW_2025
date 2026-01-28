@@ -20,9 +20,9 @@ private:
 	};
 
 	ObjPtr<MeshRenderer> m_pConveyors;
-	ObjPtr<MeshRenderer> m_block;
+	ObjPtr<MeshRenderer> m_block[3];
 
 	float m_time;
 
-	void SetRandomBlock();
+	void SetRandomBlock(MeshRenderer* block);
 }; 

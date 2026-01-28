@@ -65,14 +65,14 @@ void TitleStage::Awake()
     }
 
     // ƒuƒƒbƒN
+	for (int i = 0; i < 3; ++i)
     {
         auto blockObj = SceneManager::GetActiveScene()->CreateGameObject();
-        blockObj->GetTransform()->SetPosition(g_blockDefaultPos);
-        m_block = blockObj->AddComponent<MeshRenderer>();
-        m_block->SetShouldDrawShadow(true);
+        m_block[i] = blockObj->AddComponent<MeshRenderer>();
+        m_block[i]->SetShouldDrawShadow(true);
+		SetRandomBlock(m_block[i].Get());
+		blockObj->GetTransform()->SetPosition(g_blockDefaultPos + Vector3::right * 11.0f * i);
     }
-
-    SetRandomBlock();
 }
 
 void TitleStage::Update()
@@ -85,14 +85,17 @@ void TitleStage::Update()
     params.uvOffset = { m_time * -0.1f, 0.0f };
     m_pConveyors->GetMaterial(0)->SetParameter(&params, sizeof(Params));
 
-	m_block->GetTransform()->Translate(Vector3::left * g_blockMoveSpeed* Time::GetDeltaTime());
-	if (m_block->GetTransform()->GetPosition().x < g_blockEndPos_x)
+	for (int i = 0; i < 3; ++i)
 	{
-		SetRandomBlock();
+		m_block[i]->GetTransform()->Translate(Vector3::left * g_blockMoveSpeed * 1.0f / 60.0f);
+		if (m_block[i]->GetTransform()->GetPosition().x < g_blockEndPos_x)
+		{
+			SetRandomBlock(m_block[i].Get());
+		}
 	}
 }
 
-void TitleStage::SetRandomBlock()
+void TitleStage::SetRandomBlock(MeshRenderer* block)
 {
 
 	SaveData::Load();
@@ -163,7 +166,7 @@ void TitleStage::SetRandomBlock()
 	Vector3 offset = center * -1.0f;
 	offset.y = groundY;
 
-	m_block->LoadModel(blockData.modelPath);
-	m_block->GetTransform()->SetPosition(g_blockDefaultPos + offset);
+	block->LoadModel(blockData.modelPath);
+	block->GetTransform()->SetPosition(g_blockDefaultPos + offset);
 }
 
