@@ -85,8 +85,8 @@ void StageSelectScene::Init()
 	}
 
 	// 使用していないリソース解放
-	TextureManager::Instance().CollectGarbage();
 	ModelManager::Instance().CollectGarbage();
+	TextureManager::Instance().CollectGarbage();
 }
 
 

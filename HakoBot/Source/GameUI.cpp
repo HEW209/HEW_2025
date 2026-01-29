@@ -43,7 +43,7 @@ void GameUI::Awake()
         auto obj = SceneManager::GetActiveScene()->CreateGameObject();
         obj->GetTransform()->SetParent(m_pRoot->GetTransform());
         auto back = obj->AddComponent<SpriteRenderer>();
-        back->LoadTexture("Assets/Textures/time_frame.png");
+        back->LoadTexture("Assets/Textures/GameUI/time_frame.png");
         back->SetSize(350.0f);
         Vector2 backOffset = back->GetSize() * -0.5f * 0.01f;
         back->SetOffsetPos(backOffset + Vector2(6.4f, 3.6f));

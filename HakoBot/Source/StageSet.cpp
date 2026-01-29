@@ -13,6 +13,18 @@ void StageSet::Awake()
     GameState::GetInstance()->SetStageSize(Vector3(29.2f, 25.0f, 25.0f));
     GameState::GetInstance()->SetStagePos(Vector3(-7.0f, 0.0f, -2.0f));
 
+    // スカイドーム
+    //{
+    //    auto obj = SceneManager::GetActiveScene()->CreateGameObject();
+    //    auto transform = obj->GetTransform();
+    //    transform->SetParent(GetTransform());
+    //    transform->SetPosition(0.0f, -10.0f, 0.0f);
+    //    transform->SetScale(500.0f, 500.0f, 500.0f);
+    //    auto renderer = obj->AddComponent<MeshRenderer>();
+    //    renderer->LoadModel("Assets/Model/Stage/fbx/SkyDome.fbx");
+    //    renderer->GetMaterial(0)->SetPixelShader("Assets/Shader/Unlit_PS.cso");
+    //}
+
     // 柵
     {
         auto obj = SceneManager::GetActiveScene()->CreateGameObject();

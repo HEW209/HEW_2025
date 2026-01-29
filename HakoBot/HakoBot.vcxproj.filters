@@ -411,5 +411,8 @@
     <FxCompile Include="Source\HLSL\Boundary_PS.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
+    <FxCompile Include="Source\HLSL\Unlit_PS.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
