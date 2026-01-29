@@ -29,14 +29,14 @@ void GuideUIMeneController::Start()
 	//ƒƒjƒ…[‰æ–Ê
 	auto renderer = GetGameObject()->AddComponent<SpriteRenderer>();
 	renderer->SetUI(true);
-	renderer->LoadTexture("Assets/Textures/menu_frame.png");
+	renderer->LoadTexture("Assets/Textures/GameUI/menu_frame.png");
 	renderer->SetSize(MAX_MENU);
 	m_frame = renderer;
 
 	//ƒƒjƒ…[”wŒi
 	auto back = GetGameObject()->AddComponent<SpriteRenderer>();
 	back->SetUI(true);
-	back->LoadTexture("Assets/Textures/menu_screen.png");
+	back->LoadTexture("Assets/Textures/GameUI/menu_screen.png");
 	back->SetOffsetPos(0.0f, 0.0f);
 	back->SetUVScale(1.0f, 1.0f);
 	back->SetSize(MAX_MENU * 0.5f);
@@ -46,7 +46,7 @@ void GuideUIMeneController::Start()
 	{
 		auto renderer = GetGameObject()->AddComponent<SpriteRenderer>();
 		renderer->SetUI(true);
-		renderer->LoadTexture("Assets/Textures/menu_midashi.png");
+		renderer->LoadTexture("Assets/Textures/GameUI/menu_midashi.png");
 		renderer->SetSize(MAX_MENU);
 		m_midashi = renderer;
 	}
@@ -58,7 +58,7 @@ void GuideUIMeneController::Start()
 	{
 		auto button = GetGameObject()->AddComponent<SpriteRenderer>();
 		button->SetUI(true);
-		button->LoadTexture("Assets/Textures/menub.png");
+		button->LoadTexture("Assets/Textures/GameUI/menub.png");
 		button->SetOffsetPos(pos[i]);
 		button->SetSize(BUTTON_SIZE);
 		button->SetUVOffsetPos(uvPos[i]);
@@ -82,7 +82,7 @@ void GuideUIMeneController::Start()
 	{
 		m_manual = GetGameObject()->AddComponent<SpriteRenderer>();
 		m_manual->SetUI(true);
-		m_manual->LoadTexture("Assets/Textures/Menu_sousasetumei.png");	
+		m_manual->LoadTexture("Assets/Textures/GameUI/Menu_sousasetumei.png");	
 		m_manual->SetEnabled(false);
 		m_manual->SetSize(MANUAL_SIZE);
 	}
@@ -93,11 +93,11 @@ void GuideUIMeneController::Start()
 	{
 		if (selectIndex == i)
 		{
-			m_buttons[i]->LoadTexture("Assets/Textures/menuselect.png", false);
+			m_buttons[i]->LoadTexture("Assets/Textures/GameUI/menuselect.png", false);
 		}
 		else
 		{
-			m_buttons[i]->LoadTexture("Assets/Textures/menub.png", false);
+			m_buttons[i]->LoadTexture("Assets/Textures/GameUI/menub.png", false);
 		}
 	}
 }
@@ -242,11 +242,11 @@ void GuideUIMeneController::UpdateSelect()
 	{
 		if (selectIndex == i)
 		{
-			m_buttons[i]->LoadTexture("Assets/Textures/menuselect.png", false);
+			m_buttons[i]->LoadTexture("Assets/Textures/GameUI/menuselect.png", false);
 		}
 		else
 		{
-			m_buttons[i]->LoadTexture("Assets/Textures/menub.png", false);
+			m_buttons[i]->LoadTexture("Assets/Textures/GameUI/menub.png", false);
 		}
 	}
 
@@ -302,11 +302,11 @@ void GuideUIMeneController::UpdateClose()
 			{
 				if (selectIndex == i)
 				{
-					m_buttons[i]->LoadTexture("Assets/Textures/menuselect.png", false);
+					m_buttons[i]->LoadTexture("Assets/Textures/GameUI/menuselect.png", false);
 				}
 				else
 				{
-					m_buttons[i]->LoadTexture("Assets/Textures/menub.png", false);
+					m_buttons[i]->LoadTexture("Assets/Textures/GameUI/menub.png", false);
 				}
 			}
 		}

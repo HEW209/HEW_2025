@@ -71,7 +71,7 @@ void TitleStage::Awake()
         m_block[i] = blockObj->AddComponent<MeshRenderer>();
         m_block[i]->SetShouldDrawShadow(true);
 		SetRandomBlock(m_block[i].Get());
-		blockObj->GetTransform()->SetPosition(g_blockDefaultPos + Vector3::right * 11.0f * i);
+		blockObj->GetTransform()->Translate(Vector3::right * 11.0f * i);
     }
 }
 

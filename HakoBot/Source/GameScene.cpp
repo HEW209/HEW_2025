@@ -135,8 +135,8 @@ void GameScene::Init() {
     SoundManager::PlayBGM("Game", 0.4f, true);
 
     // 使用していないリソース解放
-    TextureManager::Instance().CollectGarbage();
     ModelManager::Instance().CollectGarbage();
+    TextureManager::Instance().CollectGarbage();
 
 	int stageNo = GameState::GetInstance()->GetCurrentStegaNo();
     switch (stageNo) {

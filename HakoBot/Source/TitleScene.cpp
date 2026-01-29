@@ -120,7 +120,7 @@ void TitleScene::Init()
     {
         auto obj = CreateGameObject();
         obj->AddComponent<TitleExit>();
-        obj->GetTransform()->SetPosition(0.0f, -2.0f, 0.0f);
+        obj->GetTransform()->SetPosition(0.0f, -1.7f, 0.0f);
     }
 
     {
@@ -131,6 +131,6 @@ void TitleScene::Init()
     }
 
     // 使用していないリソース解放
-    TextureManager::Instance().CollectGarbage();
     ModelManager::Instance().CollectGarbage();
+    TextureManager::Instance().CollectGarbage();
 }
