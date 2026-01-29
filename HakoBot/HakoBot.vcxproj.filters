@@ -120,9 +120,6 @@
     <ClCompile Include="Source\TitleUI.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ColliderDebug.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Source\OutlineMeshRenderer.cpp">
       <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
@@ -178,6 +175,9 @@
       <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
     <ClCompile Include="Source\StageSelectUI.cpp">
+      <Filter>ソース ファイル\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ColliderDebug.cpp">
       <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
   </ItemGroup>
@@ -263,12 +263,6 @@
     <ClInclude Include="Source\ClearProduce.h">
       <Filter>ヘッダー ファイル\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Easing.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GuideUIController2.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Source\EditorTypes.h">
       <Filter>ヘッダー ファイル\Utility</Filter>
     </ClInclude>
@@ -278,17 +272,11 @@
     <ClInclude Include="Source\InputManager.h">
       <Filter>ヘッダー ファイル\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GuideUIMenuController.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Source\TitleScene.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\TitleExit.h">
       <Filter>ヘッダー ファイル\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\TitleUI.h">
-      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="source\ColliderDebug.h">
       <Filter>ヘッダー ファイル\Component</Filter>
@@ -298,18 +286,6 @@
     </ClInclude>
     <ClInclude Include="Source\OutlineMeshRenderer.h">
       <Filter>ヘッダー ファイル\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ThirdParty\Effekseer\Effekseer.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ThirdParty\Effekseer\Effekseer.Modules.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ThirdParty\Effekseer\Effekseer.SIMD.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ThirdParty\Effekseer\EffekseerRendererDX11.h">
-      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Source\TitleLogo.h">
       <Filter>ヘッダー ファイル\Component</Filter>
@@ -366,6 +342,30 @@
       <Filter>ヘッダー ファイル\Component</Filter>
     </ClInclude>
     <ClInclude Include="Source\StageSelectUI.h">
+      <Filter>ヘッダー ファイル\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Easing.h">
+      <Filter>ヘッダー ファイル\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Effekseer\Effekseer.h">
+      <Filter>ヘッダー ファイル\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Effekseer\Effekseer.Modules.h">
+      <Filter>ヘッダー ファイル\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Effekseer\Effekseer.SIMD.h">
+      <Filter>ヘッダー ファイル\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Effekseer\EffekseerRendererDX11.h">
+      <Filter>ヘッダー ファイル\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TitleUI.h">
+      <Filter>ヘッダー ファイル\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GuideUIController2.h">
+      <Filter>ヘッダー ファイル\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GuideUIMenuController.h">
       <Filter>ヘッダー ファイル\Component</Filter>
     </ClInclude>
   </ItemGroup>
