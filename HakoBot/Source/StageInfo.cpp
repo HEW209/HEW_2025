@@ -4,6 +4,7 @@
 static const float g_windowSize = 600.0f;
 static const float g_titleSize = 400.0f;
 static const float g_clearShapeSize = 160.0f;
+static const float g_ScreenIconSize = 40.0f;
 static const float g_clearShapeSpace = 10.0f;
 
 StageInfo::StageInfo() :
@@ -35,6 +36,14 @@ void StageInfo::Start()
 		m_clearShapePos[i].y = -0.3f;
 		back->SetOffsetPos(m_clearShapePos[i]);
 		back->SetBackGround(true);
+
+		auto icon = GetGameObject()->AddComponent<SpriteRenderer>();
+		icon->LoadTexture("Assets/Textures/StageSelect/ScreenIcon" + std::to_string(i + 1) + ".png");
+		icon->SetSize(g_ScreenIconSize);
+		icon->SetOffsetPos(m_clearShapePos[i] + Vector2{ 0.0f, 0.7f });
+		icon->SetBackGround(true);
+		icon->SetOrder(1);
+		
 	}
 }
 
