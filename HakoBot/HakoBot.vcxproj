@@ -238,6 +238,7 @@
     <ClInclude Include="Source\InputUI.h" />
     <ClInclude Include="Source\LevelSerializer.h" />
     <ClInclude Include="Source\LifeTime.h" />
+    <ClInclude Include="Source\main.h" />
     <ClInclude Include="Source\OutlineMeshRenderer.h" />
     <ClInclude Include="Source\PlaceCursor.h" />
     <ClInclude Include="Source\Player.h" />

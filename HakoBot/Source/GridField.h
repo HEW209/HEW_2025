@@ -82,6 +82,7 @@ private:
 	bool IsOverlapBlockImpl(const Vec3& pos, const Vec3& start, const Vec3& end);
 	bool IsInsideBlockImpl(const Vec3& pos, const Vec3& start, const Vec3& end);
 	void UpdateFloatEffect();
+	void HideFloatEffect();
 	void ClearFloatEffect();
 
 	std::vector<ObjPtr<GameObject>> m_pPlacedBlocks;
@@ -93,4 +94,5 @@ private:
 	ObjPtr<ShapeScreen> m_pShapeScreen[5];
 	using EffectArray = std::vector<std::vector<std::vector<ObjPtr<EffectRenderer>>>>;
 	EffectArray m_floatEffect;
+	bool m_lastBlockTransparentFlag;
 };

@@ -374,6 +374,9 @@
     <ClInclude Include="Source\ScreenEffect.h">
       <Filter>ヘッダー ファイル\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Source\main.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\HLSL\DXGameFrameShader.hlsli">

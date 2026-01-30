@@ -5,6 +5,7 @@
 #include "SaveData.h"
 #include "Fade.h"
 #include "SoundManager.h"
+#include "main.h"
 
 static const float g_textSize = 300.0f;
 static const float g_startAnimeDuration = 0.3f;
@@ -158,7 +159,7 @@ void TitleExit::Update()
 		if (Input::GetKeyDown(KeyCode::ESC) ||
 			Input::GetButtonDown(PadCode::BACK))
 		{
-			exit(0);
+			ExitGame();
 		}
 	}
 }

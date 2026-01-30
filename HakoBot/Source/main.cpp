@@ -19,7 +19,9 @@
 
 #include "SoundMaster.h"
 #include "SoundManager.h"
+#include "main.h"
 
+static bool g_isGameExit = false;
 static LARGE_INTEGER s_timeFreq;
 
 void InitTimer() {
@@ -173,7 +175,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//----------------------------
 	//		メッセージループ
 	//----------------------------
-	while (message.message != WM_QUIT)
+	while (message.message != WM_QUIT && !g_isGameExit)
 	{
 		if (PeekMessage(&message, NULL, 0, 0, PM_REMOVE))
 		{
@@ -231,4 +233,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	}
 
 	return DefWindowProc(hWnd, message, wParam, lParam);
+}
+
+void ExitGame()
+{
+	g_isGameExit = true;
 }

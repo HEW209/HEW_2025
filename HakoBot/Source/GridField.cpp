@@ -10,6 +10,7 @@
 
 GridField::GridField()
 	: m_removeCursorBlockId(0u)
+	, m_lastBlockTransparentFlag(false)
 {
 
 }
@@ -69,6 +70,12 @@ void GridField::Start()
 
 void GridField::Update()
 {
+	if (m_lastBlockTransparentFlag != GameState::GetInstance()->IsBlockTransparent())
+	{
+		m_lastBlockTransparentFlag = !m_lastBlockTransparentFlag;
+		UpdateFloatEffect();
+	}
+
 	if (GameState::GetInstance()->IsClearEnter())
 	{
 		if (!m_floatEffect.empty())
@@ -138,6 +145,7 @@ void GridField::SetSize(Vec3Int size)
 			}
 		}
 	}
+
 	UpdateFloatEffect();
 }
 
@@ -421,6 +429,12 @@ bool GridField::IsInsideBlockImpl(const Vec3& pos, const Vec3& start, const Vec3
 
 void GridField::UpdateFloatEffect()
 {
+	if (GameState::GetInstance()->IsBlockTransparent())
+	{
+		HideFloatEffect();
+		return;
+	}
+
 	Vec3Int gridPos;
 	Vec3Int gridSize = m_gridData.GetSize();
 
@@ -448,6 +462,21 @@ void GridField::UpdateFloatEffect()
 				}
 				// ‚»‚êˆÈŠO‚Í‰B‚·
 				m_floatEffect[y][z][x]->GetTransform()->SetScale(0.0f, 0.0f, 0.0f);
+			}
+		}
+	}
+}
+
+void GridField::HideFloatEffect()
+{
+	for (auto& effectArrayXZ : m_floatEffect)
+	{
+		for (auto& effectArrayX : effectArrayXZ)
+		{
+			for (auto& effect : effectArrayX)
+			{
+				if (effect)
+					effect->GetTransform()->SetScale(0.0f, 0.0f, 0.0f);
 			}
 		}
 	}
