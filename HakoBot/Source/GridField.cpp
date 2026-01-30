@@ -5,6 +5,7 @@
 #include "BlockObject.h"
 #include "VecUtil.h"
 #include "InputManager.h"
+#include "GameState.h"
 
 
 GridField::GridField()
@@ -68,6 +69,11 @@ void GridField::Start()
 
 void GridField::Update()
 {
+	if (GameState::GetInstance()->IsClearEnter())
+	{
+		if (!m_floatEffect.empty())
+			ClearFloatEffect();
+	}
 }
 
 void GridField::OnDestroy()
@@ -103,6 +109,36 @@ void GridField::SetSize(Vec3Int size)
 	m_pShapeScreen[2]->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
 	m_pShapeScreen[3]->GetTransform()->SetPosition(0.0f, sizeHalf.y + 0.6f, sizeHalf.z + space);
 	m_pShapeScreen[4]->GetTransform()->SetPosition(0.0f, sizeHalf.y + 0.6f, -(sizeHalf.z + space));
+
+	ClearFloatEffect();
+	m_floatEffect.resize(size.y - 1);
+	for (int y = 0; y < size.y - 1; ++y)
+	{
+		Vector3 effectPos;
+		effectPos.y = (float)y + 0.85f;
+		m_floatEffect[y].resize(size.z);
+
+		for (int z = 0; z < size.z; ++z)
+		{
+			effectPos.z = (float)z - (size.z - 1) * 0.5f;
+			m_floatEffect[y][z].resize(size.x);
+
+			for (int x = 0; x < size.x; ++x)
+			{
+				effectPos.x = (float)x - (size.x - 1) * 0.5f;
+
+				auto obj = SceneManager::GetActiveScene()->CreateGameObject();
+				auto trans = obj->GetTransform();
+				trans->SetParent(GetTransform());
+				trans->SetPosition(effectPos, Space::LOCAL);
+				auto effect = obj->AddComponent<EffectRenderer>();
+				effect->Load("Assets/Effect/Float/Float.efkefc");
+				effect->Play();
+				m_floatEffect[y][z][x] = effect;
+			}
+		}
+	}
+	UpdateFloatEffect();
 }
 
 bool GridField::IsOverlap(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation)
@@ -202,6 +238,7 @@ bool GridField::PlaceBlock()
 	m_pShapeScreen[4]->SetCurrentShape(m_gridData.GetShape(2));
 
 	component->CreatePlaceEffect();
+	UpdateFloatEffect();
 
 	return true;
 }
@@ -262,6 +299,8 @@ std::optional<BlockData> GridField::RemoveBlock()
 	m_pShapeScreen[2]->SetCurrentShape(m_gridData.GetShape(1));
 	m_pShapeScreen[3]->SetCurrentShape(m_gridData.GetShape(2));
 	m_pShapeScreen[4]->SetCurrentShape(m_gridData.GetShape(2));
+
+	UpdateFloatEffect();
 
 	return data;
 }
@@ -378,4 +417,54 @@ bool GridField::IsInsideBlockImpl(const Vec3& pos, const Vec3& start, const Vec3
 	}
 
 	return true;
+}
+
+void GridField::UpdateFloatEffect()
+{
+	Vec3Int gridPos;
+	Vec3Int gridSize = m_gridData.GetSize();
+
+	for (int z = 0; z < gridSize.z; ++z)
+	{
+		gridPos.z = z;
+
+		for (int x = 0; x < gridSize.x; ++x)
+		{
+			gridPos.x = x;
+
+			for (int y = 0; y < gridSize.y - 1; ++y)
+			{
+				gridPos.y = y;
+
+				if (m_gridData.GetId(gridPos) == BLOCK_ID_EMPTY)
+				{
+					gridPos.y++;
+					if (m_gridData.GetId(gridPos) != BLOCK_ID_EMPTY)
+					{
+						// ブロックが存在せず、一つ上にブロックがあれば表示
+						m_floatEffect[y][z][x]->GetTransform()->SetScale(1.0f, 1.0f, 1.0f);
+						continue;
+					}
+				}
+				// それ以外は隠す
+				m_floatEffect[y][z][x]->GetTransform()->SetScale(0.0f, 0.0f, 0.0f);
+			}
+		}
+	}
+}
+
+void GridField::ClearFloatEffect()
+{
+	for (auto& effectArrayXZ : m_floatEffect)
+	{
+		for (auto& effectArrayX : effectArrayXZ)
+		{
+			for (auto& effect : effectArrayX)
+			{
+				if (effect)
+					effect->GetGameObject()->Destroy();
+			}
+		}
+	}
+	m_floatEffect.clear();
 }

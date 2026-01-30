@@ -81,6 +81,8 @@ private:
 	Vector3 GetGridOrigin();
 	bool IsOverlapBlockImpl(const Vec3& pos, const Vec3& start, const Vec3& end);
 	bool IsInsideBlockImpl(const Vec3& pos, const Vec3& start, const Vec3& end);
+	void UpdateFloatEffect();
+	void ClearFloatEffect();
 
 	std::vector<ObjPtr<GameObject>> m_pPlacedBlocks;
 	GridBlockData m_gridData;
@@ -89,4 +91,6 @@ private:
 	uint8_t m_removeCursorBlockId;
 	ShapeType m_clearShape[3];
 	ObjPtr<ShapeScreen> m_pShapeScreen[5];
+	using EffectArray = std::vector<std::vector<std::vector<ObjPtr<EffectRenderer>>>>;
+	EffectArray m_floatEffect;
 };

@@ -14,7 +14,7 @@ constexpr float MAX_MENU = 5000.0f;
 constexpr float MENU_SCALE = 0.3f;
 constexpr float MANUAL_SCALE = 0.4f;	// 操作説明の時のフレームのスケール
 constexpr float EASING_TIME = 0.3f;		// イージングする秒数
-constexpr float MANUAL_SIZE = 2400.0f;	// 
+constexpr float MANUAL_SIZE = 3200.0f;	// 
 
 GuideUIMeneController::GuideUIMeneController():
 	m_menuState(MenuState::DEFAULT),
