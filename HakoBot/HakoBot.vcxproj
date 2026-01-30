@@ -172,6 +172,7 @@
     <ClCompile Include="Source\GuideUIMenuController.cpp" />
     <ClCompile Include="Source\InputSystem.cpp" />
     <ClCompile Include="Source\GuideUIController2.cpp" />
+    <ClCompile Include="Source\ScreenEffect.cpp" />
     <ClCompile Include="Source\TimeUI.cpp" />
     <ClCompile Include="Source\InputManager.cpp" />
     <ClCompile Include="Source\InputUI.cpp" />
@@ -247,6 +248,7 @@
     <ClInclude Include="Source\ResultController.h" />
     <ClInclude Include="Source\SampleCamera.h" />
     <ClInclude Include="Source\SaveData.h" />
+    <ClInclude Include="Source\ScreenEffect.h" />
     <ClInclude Include="Source\ShapeScreen.h" />
     <ClInclude Include="Source\StageSelectUI.h" />
     <ClInclude Include="Source\StageInfo.h" />

@@ -154,5 +154,11 @@ void TitleExit::Update()
 			m_startFlag = true;
 			Fade::StartIconIrisOut();
 		}
+
+		if (Input::GetKeyDown(KeyCode::ESC) ||
+			Input::GetButtonDown(PadCode::BACK))
+		{
+			exit(0);
+		}
 	}
 }

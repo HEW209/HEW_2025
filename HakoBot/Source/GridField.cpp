@@ -115,7 +115,7 @@ void GridField::SetSize(Vec3Int size)
 	for (int y = 0; y < size.y - 1; ++y)
 	{
 		Vector3 effectPos;
-		effectPos.y = (float)y + 0.85f;
+		effectPos.y = (float)y + 0.8f;
 		m_floatEffect[y].resize(size.z);
 
 		for (int z = 0; z < size.z; ++z)

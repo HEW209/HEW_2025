@@ -142,8 +142,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return 0;
 	}
 
+#ifdef _DEBUG
 	ImGuiManager::Instance().Init(
 		hWnd, Direct3D::Instance().GetDevice(), Direct3D::Instance().GetContext());
+#endif // _DEBUG
 
 	InputManager::Init();
 	// XAudio2初期化

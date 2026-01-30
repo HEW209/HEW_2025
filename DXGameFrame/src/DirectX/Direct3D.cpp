@@ -24,6 +24,20 @@ Direct3D::Direct3D() :
 {
 }
 
+Direct3D::~Direct3D()
+{
+	// フルスクリーン解除
+	if (m_pSwapChain)
+	{
+		BOOL isFullscreen = FALSE;
+		m_pSwapChain->GetFullscreenState(&isFullscreen, nullptr);
+		if (isFullscreen)
+		{
+			m_pSwapChain->SetFullscreenState(FALSE, nullptr);
+		}
+	}
+}
+
 HRESULT Direct3D::Init(HWND hWnd, UINT width, UINT height, bool fullScreen)
 {
 	HRESULT hr = S_OK;		// 関数の結果
@@ -50,6 +64,17 @@ void Direct3D::Uninit()
 {
 	// 描画関連クラスの解放処理呼び出し
 	UninitAllRenderSystems();
+
+	// フルスクリーン解除
+	if (m_pSwapChain)
+	{
+		BOOL isFullscreen = FALSE;
+		m_pSwapChain->GetFullscreenState(&isFullscreen, nullptr);
+		if (isFullscreen)
+		{
+			m_pSwapChain->SetFullscreenState(FALSE, nullptr);
+		}
+	}
 
 	// リソースの解放
 	m_pDSV.Reset();

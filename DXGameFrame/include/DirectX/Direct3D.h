@@ -116,7 +116,7 @@ public:
 
 private:
 	Direct3D();
-	~Direct3D() = default;
+	~Direct3D();
 
 	/// Direct3Dデバイス
 	ComPtr<ID3D11Device> m_pDevice;

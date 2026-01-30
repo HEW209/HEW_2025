@@ -16,6 +16,7 @@
 #include "GameUI.h"
 #include "Fade.h"
 #include "StageSet.h"
+#include "ScreenEffect.h"
 
 #include "ColliderDebug.h"
 #include <cmath>
@@ -283,6 +284,13 @@ void GameScene::CreateGridField() {
         renderer->LoadModel("Assets/Model/Stage/fbx/Kiken_Corner.fbx");
         obj->GetTransform()->SetPosition(pos);
         obj->GetTransform()->SetEulerAngle(0.0f, 90.0f - 90.0f * i, 0.0f);
+    }
+
+    // エフェクト
+    {
+        auto obj = CreateGameObject();
+        auto scrren = obj->AddComponent<ScreenEffect>();
+        scrren->SetSize(size_x, size_z);
     }
 
     // 当たり判定
