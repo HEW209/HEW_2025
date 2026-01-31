@@ -8,7 +8,7 @@ PlayerMove::PlayerMove() :
 	m_jumpPower(0.5f),
 	m_gravity(0.04f),
 	m_velocity_y(0.0f),
-	m_rotateSpeed (1000.0f),
+	m_rotateSpeed (500.0f),
 	m_IsDirLock(false),
 	m_pHead(nullptr)
 {
@@ -112,6 +112,8 @@ void PlayerMove::Update()
 	Quaternion cameraRotation = Camera::GetMain()->GetTransform()->GetQuaternion();
 	Vector3 moveDir = cameraRotation * input;
 	moveDir.y = 0.0f;
+	float rotatePower = moveDir.Magnitude();
+	rotatePower = Math::Clamp01(rotatePower);
 	moveDir = moveDir.Normalized();
 	float inputMagnitude = inputVec2.Magnitude();
 	move = moveDir * inputMagnitude * m_moveSpeed;
@@ -130,7 +132,7 @@ void PlayerMove::Update()
 		float maxDelta = m_rotateSpeed * dt;  // 1ƒtƒŒ[ƒ€‚Å‰ñ‚¹‚éÅ‘åŠp“x
 
 
-		float newY = MoveTowardsAngle(currentY, targetY, maxDelta);
+		float newY = MoveTowardsAngle(currentY, targetY, maxDelta * rotatePower);
 
 		GetTransform()->SetEulerAngle(0.0f, newY, 0.0f);
 	}
