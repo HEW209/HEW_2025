@@ -95,6 +95,54 @@ bool LevelSerializer::LoadLevelData(const std::string& path, LevelData& outLevel
     return true;
 }
 
+bool LevelSerializer::SaveAnswerData(const std::string& path, const AnswerData& answerData) {
+    using json = nlohmann::json;
+    json j;
+
+    j["gridSize"] = { answerData.gridSize.x, answerData.gridSize.y, answerData.gridSize.z };
+
+    j["targets"] = json::object();
+    j["targets"]["x"] = SerializeShape(answerData.targetShapes[0]);
+    j["targets"]["y"] = SerializeShape(answerData.targetShapes[1]);
+    j["targets"]["z"] = SerializeShape(answerData.targetShapes[2]);
+
+    j["placedBlocks"] = json::array();
+    for (const auto& block : answerData.placedBlocks) {
+        json jBlock;
+        jBlock["modelPath"] = block.modelPath;
+
+        jBlock["position"] = {
+            {"x", block.position.x},
+            {"y", block.position.y},
+            {"z", block.position.z}
+        };
+
+        jBlock["rotation"] = {
+            {"x", block.rotation.x},
+            {"y", block.rotation.y},
+            {"z", block.rotation.z},
+            {"w", block.rotation.w}
+        };
+
+        jBlock["localBlocks"] = json::array();
+        for (const auto& localPos : block.blockSet.blocks) {
+            jBlock["localBlocks"].push_back({ localPos.x, localPos.y, localPos.z });
+        }
+
+        j["placedBlocks"].push_back(jBlock);
+    }
+
+    fs::path fsPath(path);
+    if (fsPath.has_parent_path() && !fs::exists(fsPath.parent_path())) {
+        fs::create_directories(fsPath.parent_path());
+    }
+
+    std::ofstream o(path);
+    if (!o.is_open()) return false;
+    o << j.dump(4) << std::endl;
+    return true;
+}
+
 json LevelSerializer::SerializeShape(const ShapeType& shape) {
     json jShape = json::array();
     size_t w = shape.GetSize(0);

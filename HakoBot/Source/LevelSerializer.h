@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "EditorTypes.h"
+#include "WebTypes.h"
 #include "nlohmann/json.hpp"
 
 class LevelSerializer {
@@ -10,6 +11,8 @@ public:
 
     static bool SaveLevelData(const std::string& path, const LevelData& levelData);
     static bool LoadLevelData(const std::string& path, LevelData& outLevelData);
+
+    static bool SaveAnswerData(const std::string& path, const AnswerData& answerData);
 
 private:
     static nlohmann::json SerializeShape(const ShapeType& shape);

@@ -2,9 +2,43 @@
 #include "InputManager.h"
 #include <GameFrame/Time.h>
 #include "SoundManager.h"
+#include "LevelSerializer.h"
 
 GameState* GameState::s_pInstance = nullptr;
 int GameState::s_currentStageNo = 0;
+
+
+void ExportAnswer() {
+	GridField* pGridField = GameState::GetInstance()->GetGridField();
+	if (!pGridField) return;
+
+	AnswerData answerData;
+	answerData.gridSize = pGridField->GetSize();
+	answerData.targetShapes[0] = pGridField->GetClearShape(0);
+	answerData.targetShapes[1] = pGridField->GetClearShape(1);
+	answerData.targetShapes[2] = pGridField->GetClearShape(2);
+
+	const auto& placedBlocks = pGridField->GetPlacedBlocks();
+
+	for (auto&& block : placedBlocks) {
+		if (!block) continue;
+
+		auto transform = block->GetTransform();
+
+		if (block && transform) {
+			AnswerBlockData blockData;
+			blockData.modelPath = block->GetModelPath();
+			blockData.position = transform->GetPosition() - GameState::GetInstance()->GetGridField()->GetTransform()->GetPosition();
+			blockData.rotation = transform->GetQuaternion();
+			blockData.blockSet = block->GetBlockSet();
+
+			answerData.placedBlocks.push_back(blockData);
+		}
+	}
+
+	std::string exportPath = "Assets/Answers/answer" + std::to_string(GameState::GetCurrentStegaNo()) + ".json";
+	LevelSerializer::SaveAnswerData(exportPath, answerData);
+}
 
 
 GameState::GameState() :
@@ -55,6 +89,7 @@ void GameState::Update()
 		SoundManager::StopBGM();
 		m_timerActive = false;
 		m_isClearEnter = true;
+		ExportAnswer();
 	}
 		
 

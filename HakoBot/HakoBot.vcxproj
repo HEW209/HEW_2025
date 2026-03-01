@@ -267,6 +267,7 @@
     <ClInclude Include="Source\Tutorial.h" />
     <ClInclude Include="Source\Vec.h" />
     <ClInclude Include="Source\VecUtil.h" />
+    <ClInclude Include="Source\WebTypes.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\HLSL\DXGameFrameShader.hlsli" />

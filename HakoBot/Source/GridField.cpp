@@ -87,7 +87,7 @@ void GridField::OnDestroy()
 {
 	for (auto&& block : m_pPlacedBlocks) {
 		if (block) {
-			block->Destroy();
+			block->GetGameObject()->Destroy();
 		}
 	}
 
@@ -231,10 +231,10 @@ bool GridField::PlaceBlock()
 		m_pPlacedBlocks.resize(blockId);
 	}
 	else if (m_pPlacedBlocks[blockId - 1]) {
-		m_pPlacedBlocks[blockId - 1]->Destroy();
+		m_pPlacedBlocks[blockId - 1]->GetGameObject()->Destroy();
 	}
 
-	m_pPlacedBlocks[blockId - 1] = obj;
+	m_pPlacedBlocks[blockId - 1] = component;
 
 	m_pPlaceCursorComponent->SetBlockSet(BlockSetData{});
 	m_pPlaceCursorComponent->SetModelPath("");
@@ -255,7 +255,7 @@ void GridField::SetRemoveCursor(const Vector3& position)
 {
 	if (0u < m_removeCursorBlockId && m_removeCursorBlockId <= m_pPlacedBlocks.size()) {
 		if (m_pPlacedBlocks[m_removeCursorBlockId - 1]) {
-			m_pPlacedBlocks[m_removeCursorBlockId - 1]->GetComponent<BlockObject>()->SetSelect(false);
+			m_pPlacedBlocks[m_removeCursorBlockId - 1]->SetSelect(false);
 		}
 	}
 
@@ -277,7 +277,7 @@ void GridField::SetRemoveCursor(const Vector3& position)
 	}
 	if (0u < m_removeCursorBlockId && m_removeCursorBlockId <= m_pPlacedBlocks.size()) {
 		if (m_pPlacedBlocks[m_removeCursorBlockId - 1]) {
-			m_pPlacedBlocks[m_removeCursorBlockId - 1]->GetComponent<BlockObject>()->SetSelect(true);
+			m_pPlacedBlocks[m_removeCursorBlockId - 1]->SetSelect(true);
 		}
 	}
 }
@@ -286,7 +286,7 @@ void GridField::ResetRemoveCursor()
 {
 	if (0u < m_removeCursorBlockId && m_removeCursorBlockId <= m_pPlacedBlocks.size()) {
 		if (m_pPlacedBlocks[m_removeCursorBlockId - 1]) {
-			m_pPlacedBlocks[m_removeCursorBlockId - 1]->GetComponent<BlockObject>()->SetSelect(false);
+			m_pPlacedBlocks[m_removeCursorBlockId - 1]->SetSelect(false);
 		}
 	}
 	m_removeCursorBlockId = 0u;
@@ -297,7 +297,7 @@ std::optional<BlockData> GridField::RemoveBlock()
 	auto data = m_gridData.RemoveBlock(m_removeCursorBlockId);
 	if (0u < m_removeCursorBlockId && m_removeCursorBlockId <= m_pPlacedBlocks.size()) {
 		if (m_pPlacedBlocks[m_removeCursorBlockId - 1]) {
-			m_pPlacedBlocks[m_removeCursorBlockId - 1]->Destroy();
+			m_pPlacedBlocks[m_removeCursorBlockId - 1]->GetGameObject()->Destroy();
 		}
 	}
 	m_removeCursorBlockId = 0u;

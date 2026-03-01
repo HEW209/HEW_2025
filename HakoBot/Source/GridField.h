@@ -17,6 +17,7 @@
 #include "GridBlockData.h"
 #include "PlaceCursor.h"
 #include "ShapeScreen.h"
+#include "BlockObject.h"
 
 
  /**
@@ -74,6 +75,8 @@ public:
 
 	Vec3Int CalcGridCoord(const Vector3& position);
 
+	const std::vector<ObjPtr<BlockObject>>& GetPlacedBlocks() const { return m_pPlacedBlocks; }
+
 private:
 	bool IsInside(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation);
 	bool CanPlace(const BlockSetData& blockSet, const Vector3& position, const Quaternion& rotation);
@@ -85,7 +88,7 @@ private:
 	void HideFloatEffect();
 	void ClearFloatEffect();
 
-	std::vector<ObjPtr<GameObject>> m_pPlacedBlocks;
+	std::vector<ObjPtr<BlockObject>> m_pPlacedBlocks;
 	GridBlockData m_gridData;
 	ObjPtr<GameObject> m_pPlaceCursor;
 	ObjPtr<PlaceCursor> m_pPlaceCursorComponent;
