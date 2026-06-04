@@ -7,7 +7,7 @@ std::shared_ptr<Texture> TextureManager::LoadTexture(const std::string& filePath
 	auto it = m_textures.find(filePath);
 	if (it != m_textures.end())
 	{
-		// テクスチャを返す
+		// 既存のテクスチャを返す
 		return it->second;
 	}
 
@@ -39,4 +39,10 @@ void TextureManager::CollectGarbage()
 void TextureManager::Clear()
 {
 	m_textures.clear();
+}
+
+TextureManager& TextureManager::Instance()
+{
+	static TextureManager s_instance;
+	return s_instance;
 }

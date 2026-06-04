@@ -1,9 +1,9 @@
-/*****************************************************************//**
+/******************************************************************//**
  * @file   Mesh.h
  * @brief  メッシュを扱う
  * 
  * @author 石田怜
- * @date   2025/10/17
+ * @date   2025/11/22
  *********************************************************************/
 #pragma once
 
@@ -27,16 +27,25 @@ public:
 		DirectX::XMFLOAT2 uv;			// UV座標
 		DirectX::XMFLOAT4 color;		// 頂点カラー
 		float weight[4];				// ボーンへのウェイト
-		unsigned int index[4];			// 対応するボーンへのインデックス
+		UINT index[4];					// 対応するボーンへのインデックス
 	};
+
+	// ボーン情報
+	struct Bone
+	{
+		int nodeIndex;	// 変形情報は階層情報に格納
+		DirectX::XMMATRIX invOffset;	// 逆行列
+	};
+	using Bones = std::vector<Bone>;
 
 	/// メッシュ情報
 	struct Description
 	{
 		std::vector<Vertex> vtx;		// 頂点データ
-		std::vector<int> idx;			// インデックスバッファのデータ
-		unsigned int materialID;		// 対応マテリアルID
+		std::vector<UINT> idx;			// インデックスバッファのデータ
+		UINT materialID;				// 対応マテリアルID
 		bool isWrite;					// 動的な頂点の書き換え可能フラグ
+		Bones bones;					// 対応ボーン
 		D3D11_PRIMITIVE_TOPOLOGY topology;		// トポロジー設定
 	};
 
@@ -56,19 +65,16 @@ public:
 	 * @brief メッシュ情報を取得
 	 * @return メッシュ情報
 	 */
-	const Description& GetDesc()
-	{
-		return m_desc;
-	}
+	const Description& GetDesc() const;
 
 	/**
 	 * @brief 対応マテリアルIDを取得
 	 * @return このメッシュに使用するマテリアルのID
 	 */
-	unsigned int GetMaterialID()
-	{
-		return m_desc.materialID;
-	}
+	UINT GetMaterialID() const;
+
+	// 対応ボーン設定
+	void SetBones(const Bones& bones);
 
 private:
 	/// メッシュ情報
@@ -91,7 +97,7 @@ private:
 	/**
 	 * @brief インデックスバッファを作成する
 	 * @param pIdx インデックス配列
-	 * @return 成功したかを返す 
+	 * @return 成功したかを返す
 	 */
-	HRESULT CreateIndexBuffer(const std::vector<int>& idx);
+	HRESULT CreateIndexBuffer(const std::vector<UINT>& idx);
 };

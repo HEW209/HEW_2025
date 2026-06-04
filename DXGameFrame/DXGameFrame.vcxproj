@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -19,96 +19,133 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="imgui\imconfig.h" />
+    <ClInclude Include="imgui\imgui.h" />
+    <ClInclude Include="imgui\ImGuiManager.h" />
+    <ClInclude Include="imgui\imgui_impl_dx11.h" />
+    <ClInclude Include="imgui\imgui_impl_win32.h" />
+    <ClInclude Include="imgui\imgui_internal.h" />
+    <ClInclude Include="imgui\imstb_rectpack.h" />
+    <ClInclude Include="imgui\imstb_textedit.h" />
+    <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="include\Component\Camera.h" />
+    <ClInclude Include="include\Component\Collider.h" />
     <ClInclude Include="include\Component\DefaultComponent.h" />
     <ClInclude Include="include\Component\DirectionalLight.h" />
+    <ClInclude Include="include\Component\EffectRenderer.h" />
     <ClInclude Include="include\Component\MeshRenderer.h" />
     <ClInclude Include="include\Component\Renderer.h" />
     <ClInclude Include="include\Component\Renderer2D.h" />
-    <ClInclude Include="include\DirectX\BlendState.h" />
-    <ClInclude Include="include\DirectX\ConstantBuffer.h" />
+    <ClInclude Include="include\Component\SpriteRenderer.h" />
+    <ClInclude Include="include\DirectX\BlendStateManager.h" />
+    <ClInclude Include="include\DirectX\ConfigKey.h" />
+    <ClInclude Include="include\DirectX\ConfigManager.h" />
+    <ClInclude Include="include\DirectX\ConstantBufferManager.h" />
     <ClInclude Include="include\DirectX\Debug.h" />
-    <ClInclude Include="include\DirectX\DepthStencilState.h" />
+    <ClInclude Include="include\DirectX\DepthStencilStateManager.h" />
     <ClInclude Include="include\DirectX\Direct3D.h" />
     <ClInclude Include="include\DirectX\DirectX.h" />
     <ClInclude Include="include\DirectX\DirectXInclude.h" />
+    <ClInclude Include="include\DirectX\DXTypes.h" />
     <ClInclude Include="include\DirectX\Geometry.h" />
+    <ClInclude Include="include\DirectX\GeometryShader.h" />
     <ClInclude Include="include\DirectX\Material.h" />
     <ClInclude Include="include\DirectX\Mesh.h" />
     <ClInclude Include="include\DirectX\MeshGroup.h" />
     <ClInclude Include="include\DirectX\Model.h" />
     <ClInclude Include="include\DirectX\ModelManager.h" />
-    <ClInclude Include="include\DirectX\PipelineState.h" />
+    <ClInclude Include="include\DirectX\PipelineStateManager.h" />
     <ClInclude Include="include\DirectX\PixelShader.h" />
-    <ClInclude Include="include\DirectX\RasterizerState.h" />
-    <ClInclude Include="include\DirectX\SamplerState.h" />
+    <ClInclude Include="include\DirectX\RasterizerStateManager.h" />
+    <ClInclude Include="include\DirectX\SamplerStateManager.h" />
     <ClInclude Include="include\DirectX\Shader.h" />
     <ClInclude Include="include\DirectX\ShaderManager.h" />
     <ClInclude Include="include\DirectX\SpriteDrawer.h" />
-    <ClInclude Include="include\DirectX\StateBase.h" />
     <ClInclude Include="include\DirectX\Texture.h" />
     <ClInclude Include="include\DirectX\TextureManager.h" />
     <ClInclude Include="include\DirectX\VertexShader.h" />
     <ClInclude Include="include\DXGameFrame.h" />
+    <ClInclude Include="include\GameFrame\ColliderSystem.h" />
     <ClInclude Include="include\GameFrame\Component.h" />
+    <ClInclude Include="include\GameFrame\EffectManager.h" />
     <ClInclude Include="include\GameFrame\GameFrame.h" />
     <ClInclude Include="include\GameFrame\GameObject.h" />
     <ClInclude Include="include\GameFrame\Object.h" />
+    <ClInclude Include="include\GameFrame\RenderSystem.h" />
     <ClInclude Include="include\GameFrame\Scene.h" />
     <ClInclude Include="include\GameFrame\SceneManager.h" />
+    <ClInclude Include="include\GameFrame\Time.h" />
     <ClInclude Include="include\GameFrame\Transform.h" />
-    <ClInclude Include="include\System\RenderSystem.h" />
-    <ClInclude Include="include\System\System.h" />
     <ClInclude Include="include\Utility\Color.h" />
-    <ClInclude Include="include\Utility\Common.h" />
-    <ClInclude Include="include\Utility\InputManager.h" />
-    <ClInclude Include="include\Utility\MathUtil.h" />
+    <ClInclude Include="include\Utility\Input.h" />
+    <ClInclude Include="include\Utility\Math.h" />
     <ClInclude Include="include\Utility\Quaternion.h" />
     <ClInclude Include="include\Utility\Utility.h" />
     <ClInclude Include="include\Utility\Vector2.h" />
     <ClInclude Include="include\Utility\Vector3.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="imgui\imgui.cpp" />
+    <ClCompile Include="imgui\ImGuiManager.cpp" />
+    <ClCompile Include="imgui\imgui_draw.cpp" />
+    <ClCompile Include="imgui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="imgui\imgui_tables.cpp" />
+    <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\Component\Camera.cpp" />
+    <ClCompile Include="src\Component\Collider.cpp" />
     <ClCompile Include="src\Component\DirectionalLight.cpp" />
+    <ClCompile Include="src\Component\EffectRenderer.cpp" />
     <ClCompile Include="src\Component\MeshRenderer.cpp" />
     <ClCompile Include="src\Component\Renderer.cpp" />
     <ClCompile Include="src\Component\Renderer2D.cpp" />
-    <ClCompile Include="src\DirectX\BlendState.cpp" />
-    <ClCompile Include="src\DirectX\ConstantBuffer.cpp" />
+    <ClCompile Include="src\Component\SpriteRenderer.cpp" />
+    <ClCompile Include="src\DirectX\BlendStateManager.cpp" />
+    <ClCompile Include="src\DirectX\ConfigManager.cpp" />
+    <ClCompile Include="src\DirectX\ConstantBufferManager.cpp" />
     <ClCompile Include="src\DirectX\Debug.cpp" />
-    <ClCompile Include="src\DirectX\DepthStencilState.cpp" />
+    <ClCompile Include="src\DirectX\DepthStencilStateManager.cpp" />
     <ClCompile Include="src\DirectX\Direct3D.cpp" />
     <ClCompile Include="src\DirectX\Geometry.cpp" />
+    <ClCompile Include="src\DirectX\GeometryShader.cpp" />
     <ClCompile Include="src\DirectX\Material.cpp" />
     <ClCompile Include="src\DirectX\Mesh.cpp" />
+    <ClCompile Include="src\DirectX\MeshGroup.cpp" />
     <ClCompile Include="src\DirectX\Model.cpp" />
-    <ClCompile Include="src\DirectX\PipelineState.cpp" />
+    <ClCompile Include="src\DirectX\ModelManager.cpp" />
+    <ClCompile Include="src\DirectX\PipelineStateManager.cpp" />
     <ClCompile Include="src\DirectX\PixelShader.cpp" />
-    <ClCompile Include="src\DirectX\RasterizerState.cpp" />
-    <ClCompile Include="src\DirectX\SamplerState.cpp" />
+    <ClCompile Include="src\DirectX\RasterizerStateManager.cpp" />
+    <ClCompile Include="src\DirectX\SamplerStateManager.cpp" />
     <ClCompile Include="src\DirectX\Shader.cpp" />
     <ClCompile Include="src\DirectX\ShaderManager.cpp" />
-    <ClCompile Include="src\DirectX\StateBase.cpp" />
+    <ClCompile Include="src\DirectX\SpriteDrawer.cpp" />
     <ClCompile Include="src\DirectX\Texture.cpp" />
     <ClCompile Include="src\DirectX\TextureManager.cpp" />
     <ClCompile Include="src\DirectX\VertexShader.cpp" />
+    <ClCompile Include="src\GameFrame\ColliderSystem.cpp" />
     <ClCompile Include="src\GameFrame\Component.cpp" />
+    <ClCompile Include="src\GameFrame\EffectManager.cpp" />
     <ClCompile Include="src\GameFrame\GameObject.cpp" />
+    <ClCompile Include="src\GameFrame\RenderSystem.cpp" />
     <ClCompile Include="src\GameFrame\Scene.cpp" />
     <ClCompile Include="src\GameFrame\SceneManager.cpp" />
+    <ClCompile Include="src\GameFrame\Time.cpp" />
     <ClCompile Include="src\GameFrame\Transform.cpp" />
-    <ClCompile Include="src\MeshGroup.cpp" />
-    <ClCompile Include="src\ModelManager.cpp" />
-    <ClCompile Include="src\System\RenderSystem.cpp" />
     <ClCompile Include="src\Utility\Color.cpp" />
-    <ClCompile Include="src\Utility\InputManager.cpp" />
-    <ClCompile Include="src\Utility\MathUtil.cpp" />
+    <ClCompile Include="src\Utility\Input.cpp" />
+    <ClCompile Include="src\Utility\Math.cpp" />
     <ClCompile Include="src\Utility\Quaternion.cpp" />
     <ClCompile Include="src\Utility\Vector2.cpp" />
     <ClCompile Include="src\Utility\Vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="HLSL\Anime_VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
     <FxCompile Include="HLSL\Default_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -121,11 +158,34 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
+    <FxCompile Include="HLSL\Sprite_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="HLSL\Sprite_VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="HLSL\GroupTransparent_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="HLSL\DXGameFrameShader.hlsli" />
+    <None Include="HLSL\GroupTransparent.hlsli" />
+    <None Include="HLSL\Shadow.hlsli" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{6ccd1338-f322-4121-8273-7fbcf4a1d264}</ProjectGuid>
+    <ProjectGuid>{f555f2f1-d15b-42e9-97ba-db9e00a7e68e}</ProjectGuid>
     <RootNamespace>DXGameFrame</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -174,12 +234,6 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(ProjectDir)lib\$(Platform)\$(Configuration)\</OutDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(ProjectDir)lib\$(Platform)\$(Configuration)\</OutDir>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(ProjectDir)lib\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
@@ -187,6 +241,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(ProjectDir)lib\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(ProjectDir)lib\$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(ProjectDir)lib\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -198,8 +258,8 @@
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\;$(SolutionDir)DXGameFrame\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(ProjectDir)include\;$(SolutionDir)ThirdParty\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -211,7 +271,7 @@
     </Lib>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
-      <ObjectFileOutput>$(ProjectDir)Assets\Default\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput>$(ProjectDir)output\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -226,8 +286,8 @@
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\;$(SolutionDir)DXGameFrame\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(ProjectDir)include\;$(SolutionDir)ThirdParty\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -239,7 +299,7 @@
     </Lib>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
-      <ObjectFileOutput>$(ProjectDir)Assets\Default\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput>$(ProjectDir)output\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -252,8 +312,8 @@
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\;$(SolutionDir)DXGameFrame\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(ProjectDir)include\;$(SolutionDir)ThirdParty\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -265,7 +325,7 @@
     </Lib>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
-      <ObjectFileOutput>$(ProjectDir)Assets\Default\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput>$(ProjectDir)output\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -280,8 +340,8 @@
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\;$(SolutionDir)DXGameFrame\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(ProjectDir)include\;$(SolutionDir)ThirdParty\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -293,7 +353,7 @@
     </Lib>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
-      <ObjectFileOutput>$(ProjectDir)Assets\Default\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput>$(ProjectDir)output\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

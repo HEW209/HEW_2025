@@ -3,7 +3,7 @@
  * @brief  シーンの管理を行う
  *
  * @author 石田怜
- * @date   2025/09/15
+ * @date   2025/11/24
  *********************************************************************/
 #pragma once
 
@@ -28,13 +28,14 @@ public:
 
 	/**
 	 * @brief アクティブなシーンの時間を進める
+	 * @param delta 前のフレームからの経過時間
 	 */
-	static void Execute();
+	static void Execute(float delta);
 
 	/**
 	 * @brief シーンを変更する
 	 * @details 同じフレームで複数回呼ばれた場合は最初に呼ばれたものが有効になります
-	 * @param 次のシーン
+	 * @param nextScene 次のシーン
 	 */
 	static void ChangeScene(std::unique_ptr<Scene> nextScene);
 
@@ -42,10 +43,7 @@ public:
 	 * @brief 現在のアクティブなシーンを取得する
 	 * @return アクティブなシーンへのポインタ
 	 */
-	static Scene* GetActiveScene()
-	{
-		return s_activeScene.get();
-	}
+	static Scene* GetActiveScene();
 
 private:
 	/// 現在のシーン

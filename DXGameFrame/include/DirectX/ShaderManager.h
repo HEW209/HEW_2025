@@ -1,14 +1,15 @@
-/*****************************************************************//**
+/******************************************************************//**
  * @file   ShaderManager.h
  * @brief  シェーダーを管理する
  * 
  * @author 石田怜
- * @date   2025/10/10
+ * @date   2025/11/22
  *********************************************************************/
 #pragma once
 
 #include "VertexShader.h"
 #include "PixelShader.h"
+#include "GeometryShader.h"
 #include <unordered_map>
 #include <memory>
 
@@ -27,10 +28,17 @@ public:
 
 	/**
 	 * @brief 多重読み込みを防ぎつつピクセルシェーダーを読み込む
-	 * @param filePath 頂点シェーダー(.cso)へのファイルパス
+	 * @param filePath ピクセルシェーダー(.cso)へのファイルパス
 	 * @return ピクセルシェーダーへのポインタ(shared_ptr)
 	*/
 	std::shared_ptr<PixelShader> LoadPixelShader(const std::string& filePath);
+
+	/**
+	 * @brief 多重読み込みを防ぎつつジオメトリシェーダーを読み込む
+	 * @param filePath ジオメトリシェーダー(.cso)へのファイルパス
+	 * @return ジオメトリシェーダーへのポインタ(shared_ptr)
+	*/
+	std::shared_ptr<GeometryShader> LoadGeometryShader(const std::string& filePath);
 
 	/**
 	 * @brief 頂点シェーダーをセットする
@@ -44,20 +52,36 @@ public:
 	 * @param pPixelShader 実際のピクセルシェーダーへのポインタ
 	 */
 	void SetPixelShader(ID3D11PixelShader* pPS);
-	
+
+	/**
+	 * @brief ジオメトリシェーダーをセットする
+	 * @param pGeometryShader 実際のジオメトリシェーダーへのポインタ
+	 */
+	void SetGeometryShader(ID3D11GeometryShader* pGS);
+
 	/**
 	 * @brief 全てのシェーダーを解放する
 	 */
 	void Clear();
 
+	void Refresh()
+	{
+		m_pCurrentGS = nullptr;
+		m_pCurrentVS = nullptr;
+		m_pCurrentPS = nullptr;
+	}
+
 private:
 	ShaderManager();
 
 	/// 頂点シェーダーとファイルパスのマップ
-	std::unordered_map<std::string, std::shared_ptr<VertexShader>> m_vertexShaders;
+	std::unordered_map<std::string, std::shared_ptr<VertexShader>> m_pVertexShaders;
 
 	/// ピクセルシェーダーとファイルパスのマップ
-	std::unordered_map<std::string, std::shared_ptr<PixelShader>> m_pixelShaders;
+	std::unordered_map<std::string, std::shared_ptr<PixelShader>> m_pPixelShaders;
+
+	/// ジオメトリシェーダーとファイルパスのマップ
+	std::unordered_map<std::string, std::shared_ptr<GeometryShader>> m_pGeometryShaders;
 
 	/// 現在セットされている頂点シェーダー
 	ID3D11VertexShader* m_pCurrentVS;
@@ -65,14 +89,13 @@ private:
 	/// 現在セットされているピクセルシェーダー
 	ID3D11PixelShader* m_pCurrentPS;
 
+	/// 現在セットされているジオメトリシェーダー
+	ID3D11GeometryShader* m_pCurrentGS;
+
 public:
 	/**
 	 * @brief 唯一のインスタンスを取得する
 	 * @return ShaderManagerインスタンスへの参照
 	 */
-	static ShaderManager& Instance()
-	{
-		static ShaderManager s_instance;
-		return s_instance;
-	}
+	static ShaderManager& Instance();
 };
