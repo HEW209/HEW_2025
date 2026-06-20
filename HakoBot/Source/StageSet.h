@@ -12,6 +12,12 @@ public:
 	void Update() override;
 
 private:
+	struct AlphaDitherParam
+	{
+		float transparency;
+		Vector3 pad;
+	};
+
 	ObjPtr<MeshRenderer> m_pConveyors;
 	ObjPtr<MeshRenderer> m_pMiddleWall;
 	ObjPtr<MeshRenderer> m_pLeftWall;

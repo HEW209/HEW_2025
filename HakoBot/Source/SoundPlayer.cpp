@@ -52,7 +52,7 @@ bool SoundPlayer::PlayWave(WaveData* outData, bool loop, float volume)
 	// âπó ê›íË
 	if (volume < 0.0f)volume = 0.0f;
 	if (volume > 1.0f)volume = 1.0f;
-	pSourceVoice->SetVolume(volume);
+	pSourceVoice->SetVolume(volume * 0.5f);
 
 	// âπÇñ¬ÇÁÇ∑
 	pSourceVoice->Start();

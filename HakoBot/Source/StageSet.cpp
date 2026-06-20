@@ -13,6 +13,9 @@ void StageSet::Awake()
     GameState::GetInstance()->SetStageSize(Vector3(29.2f, 25.0f, 25.0f));
     GameState::GetInstance()->SetStagePos(Vector3(-7.0f, 0.0f, -2.0f));
 
+    AlphaDitherParam alphaDitherParam;
+	alphaDitherParam.pad = Vector3::zero;
+
     // スカイドーム
     {
         auto obj = SceneManager::GetActiveScene()->CreateGameObject();
@@ -100,13 +103,9 @@ void StageSet::Awake()
         auto renderer = obj->AddComponent<MeshRenderer>();
         renderer->LoadModel("Assets/Model/Stage/fbx/LeftWall.fbx");
         for (auto&& material : *renderer->GetMaterials()) {
-            material.SetPixelShader("Assets/Shader/Transparent_PS.cso");
-            struct TransparentParam
-            {
-                float transparency;
-                Vector3 pad;
-            } transparentParam = { 1.0f, Vector3::zero };
-            material.SetParameter(&transparentParam, sizeof(TransparentParam));
+            material.SetPixelShader("Assets/Shader/AlphaDither_PS.cso");
+			alphaDitherParam.transparency = 1.0f;
+            material.SetParameter(&alphaDitherParam, sizeof(alphaDitherParam));
         }
         m_pLeftWall = renderer;
     }
@@ -119,13 +118,9 @@ void StageSet::Awake()
         auto renderer = obj->AddComponent<MeshRenderer>();
         renderer->LoadModel("Assets/Model/Stage/fbx/RightWall.fbx");
         for (auto&& material : *renderer->GetMaterials()) {
-            material.SetPixelShader("Assets/Shader/Transparent_PS.cso");
-            struct TransparentParam
-            {
-                float transparency;
-                Vector3 pad;
-            } transparentParam = { 1.0f, Vector3::zero };
-            material.SetParameter(&transparentParam, sizeof(TransparentParam));
+            material.SetPixelShader("Assets/Shader/AlphaDither_PS.cso");
+            alphaDitherParam.transparency = 1.0f;
+            material.SetParameter(&alphaDitherParam, sizeof(alphaDitherParam));
         }
         m_pRightWall = renderer;
     }
@@ -138,13 +133,9 @@ void StageSet::Awake()
         auto renderer = obj->AddComponent<MeshRenderer>();
         renderer->LoadModel("Assets/Model/Stage/fbx/MiddleWall.fbx");
         for (auto&& material : *renderer->GetMaterials()) {
-            material.SetPixelShader("Assets/Shader/Transparent_PS.cso");
-            struct TransparentParam
-            {
-                float transparency;
-                Vector3 pad;
-            } transparentParam = { 1.0f, Vector3::zero };
-            material.SetParameter(&transparentParam, sizeof(TransparentParam));
+            material.SetPixelShader("Assets/Shader/AlphaDither_PS.cso");
+            alphaDitherParam.transparency = 1.0f;
+            material.SetParameter(&alphaDitherParam, sizeof(alphaDitherParam));
         }
         m_pMiddleWall = renderer;
     }
@@ -188,13 +179,9 @@ void StageSet::Awake()
         auto renderer = obj->AddComponent<MeshRenderer>();
         renderer->LoadModel("Assets/Model/Stage/fbx/Pillar.fbx");
         for (auto&& material : *renderer->GetMaterials()) {
-            material.SetPixelShader("Assets/Shader/Transparent_PS.cso");
-            struct TransparentParam
-            {
-                float transparency;
-                Vector3 pad;
-            } transparentParam = { 1.0f, Vector3::zero };
-            material.SetParameter(&transparentParam, sizeof(TransparentParam));
+            material.SetPixelShader("Assets/Shader/AlphaDither_PS.cso");
+            alphaDitherParam.transparency = 1.0f;
+            material.SetParameter(&alphaDitherParam, sizeof(alphaDitherParam));
         }
         m_pLeftPillar = renderer;
     }
@@ -207,13 +194,9 @@ void StageSet::Awake()
         auto renderer = obj->AddComponent<MeshRenderer>();
         renderer->LoadModel("Assets/Model/Stage/fbx/Pillar.fbx");
         for (auto&& material : *renderer->GetMaterials()) {
-            material.SetPixelShader("Assets/Shader/Transparent_PS.cso");
-            struct TransparentParam
-            {
-                float transparency;
-                Vector3 pad;
-            } transparentParam = { 1.0f, Vector3::zero };
-            material.SetParameter(&transparentParam, sizeof(TransparentParam));
+            material.SetPixelShader("Assets/Shader/AlphaDither_PS.cso");
+            alphaDitherParam.transparency = 1.0f;
+            material.SetParameter(&alphaDitherParam, sizeof(alphaDitherParam));
         }
         m_pRightPillar = renderer;
     }
@@ -329,25 +312,18 @@ void StageSet::Update()
 
 void StageSet::SetTransparent(MeshRenderer* renderer, float transparency)
 {
+    AlphaDitherParam alphaDitherParam;
+    alphaDitherParam.pad = Vector3::zero;
+
     if (transparency < 1.0f) {
-        renderer->SetTransparent(true);
         for (auto&& material : *renderer->GetMaterials()) {
-            material.SetBlendState(BlendState::ALPHA);
-            material.SetDepthStencilState(DepthStencilState::READ_ONLY);
-            material.SetPixelShader("Assets/Shader/Transparent_PS.cso");
-            struct TransparentParam
-            {
-                float transparency;
-                Vector3 pad;
-            } transparentParam = { transparency, Vector3::zero };
-            material.SetParameter(&transparentParam, sizeof(TransparentParam));
+            material.SetPixelShader("Assets/Shader/AlphaDither_PS.cso");
+            alphaDitherParam.transparency = transparency;
+            material.SetParameter(&alphaDitherParam, sizeof(alphaDitherParam));
         }
     }
     else {
-        renderer->SetTransparent(false);
         for (auto&& material : *renderer->GetMaterials()) {
-            material.SetBlendState(BlendState::DEFAULT);
-            material.SetDepthStencilState(DepthStencilState::DEFAULT);
             material.SetPixelShader("Assets/Shader/Default_PS.cso");
         }
     }
