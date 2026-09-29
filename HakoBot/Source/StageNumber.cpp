@@ -107,6 +107,7 @@ void StageNumber::Update()
 		SetDigitUV();
 
 		if (Input::GetKeyDown(KeyCode::ENTER) ||
+			Input::GetKeyDown(KeyCode::SPACE) ||
 			Input::GetButtonDown(PadCode::B))
 		{
 			SoundManager::StopBGM();

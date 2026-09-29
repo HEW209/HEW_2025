@@ -23,20 +23,22 @@ void InputManager::Init()
 		system.CreateAxisAction("Move"_hash);
 		system.CreateAxisAction("CameraMove"_hash);
 
-		system.BindKey("RotateBlockLeft"_hash, KeyCode::LEFT);
-		system.BindKey("RotateBlockRight"_hash, KeyCode::RIGHT);
+		system.BindKey("RotateBlockLeft"_hash, KeyCode::U);
+		system.BindKey("RotateBlockRight"_hash, KeyCode::O);
 		system.BindKey("PlaceAndRemove"_hash, KeyCode::SPACE);
 		system.BindKey("Up"_hash, KeyCode::E);
 		system.BindKey("Down"_hash, KeyCode::Q);
 		system.BindKey("Clear"_hash, KeyCode::X);
+		system.BindKey("Clear"_hash, KeyCode::ENTER);
 		system.BindKey("Menu"_hash, KeyCode::ESC);
 		system.BindKey("LockRotation"_hash, KeyCode::SHIFT);
 		system.BindKey("ChangeBlockTransparency"_hash, KeyCode::R);
 		system.BindKey("Result"_hash, KeyCode::P);
 		system.BindKey("ResultSelect"_hash, KeyCode::ENTER);
+		system.BindKey("ResultSelect"_hash, KeyCode::SPACE);
 
 		system.BindVectorKeys("Move"_hash, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
-		system.BindVectorKeys("CameraMove"_hash, KeyCode::I, KeyCode::K, KeyCode::MOUSE_LEFT, KeyCode::MOUSE_RIGHT);
+		system.BindVectorKeys("CameraMove"_hash, KeyCode::I, KeyCode::K, KeyCode::J, KeyCode::L);
 
 		system.BindPadButton("RotateBlockLeft"_hash, PadCode::LEFT_SHOULDER);
 		system.BindPadButton("RotateBlockRight"_hash, PadCode::RIGHT_SHOULDER);
@@ -48,6 +50,7 @@ void InputManager::Init()
 		system.BindPadButton("LockRotation"_hash, PadCode::RIGHT_TRIGGER);
 		system.BindPadButton("ChangeBlockTransparency"_hash, PadCode::LEFT_TRIGGER);
 		system.BindPadButton("ResultSelect"_hash, PadCode::B);
+
 		system.BindPadStick("Move"_hash, StickCode::LEFT);
 		system.BindPadStick("CameraMove"_hash, StickCode::RIGHT);
 	}
@@ -69,7 +72,12 @@ void InputManager::Init()
 		system.BindKey("MenuDown"_hash, KeyCode::DOWN);
 		system.BindKey("MenuLeft"_hash, KeyCode::LEFT);
 		system.BindKey("MenuRight"_hash, KeyCode::RIGHT);
+		system.BindKey("MenuUp"_hash, KeyCode::W);
+		system.BindKey("MenuDown"_hash, KeyCode::S);
+		system.BindKey("MenuLeft"_hash, KeyCode::A);
+		system.BindKey("MenuRight"_hash, KeyCode::D);
 		system.BindKey("MenuInteract"_hash, KeyCode::ENTER);
+		system.BindKey("MenuInteract"_hash, KeyCode::SPACE);
 		system.BindKey("MenuClose"_hash, KeyCode::ESC);
 
 		system.BindPadButton("MenuBack"_hash, PadCode::A);
