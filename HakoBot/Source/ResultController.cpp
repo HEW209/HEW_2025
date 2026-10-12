@@ -1,4 +1,4 @@
-//ResultController.cpp
+ï»¿//ResultController.cpp
 #include "ResultController.h"
 #include "Easing.h"
 #include "StageSelectScene.h"
@@ -13,35 +13,35 @@
 
 constexpr float EASE_TOTAL_TIME = 0.7f;
 
-//•
+//é»’
 constexpr float KURO_SIZE = 1350.0f;
 constexpr float KURO_POS_X_END = 0.0f;
 constexpr float KURO_POS_Y_END = 3.9f;
 constexpr float KURO_POS_X_START = KURO_POS_X_END;
 constexpr float KURO_POS_Y_START = KURO_POS_Y_END + 5.0f;
 
-//ƒŠƒUƒ‹ƒg
+//ãƒªã‚¶ãƒ«ãƒˆ
 constexpr float RESULT_SIZE = 640.0f;
 constexpr float RESULT_POS_X_END = 3.4f;
 constexpr float RESULT_POS_Y_END = 2.4f;
 constexpr float RESULT_POS_X_START = RESULT_POS_X_END + 8.0f;
 constexpr float RESULT_POS_Y_START = RESULT_POS_Y_END;
 
-//ƒŠƒUƒ‹ƒgƒCƒ‰ƒXƒg
+//ãƒªã‚¶ãƒ«ãƒˆã‚¤ãƒ©ã‚¹ãƒˆ
 constexpr float ILLUST_SIZE = 1400.0f;
 constexpr float ILLUST_POS_X_END = -2.0f;
 constexpr float ILLUST_POS_Y_END = 0.1f;
 constexpr float ILLUST_POS_X_START = ILLUST_POS_X_END + 15.0f;
 constexpr float ILLUST_POS_Y_START = ILLUST_POS_Y_END;
 
-//ƒNƒŠƒAƒ^ƒCƒ€
+//ã‚¯ãƒªã‚¢ã‚¿ã‚¤ãƒ 
 constexpr float TIMEUI_SCALE = 1.6f;
 constexpr float TIMEUI_POS_X_END = 2.0f;
 constexpr float TIMEUI_POS_Y_END = 0.2f;
 constexpr float TIMEUI_POS_X_START = ILLUST_POS_X_END + 8.0f;
 constexpr float TIMEUI_POS_Y_START = ILLUST_POS_Y_END;
 
-// ‘I‘ğˆ
+// é¸æŠè‚¢
 constexpr float SELECT_SIZE_MAX = 550.0f;
 constexpr float SELECT_SIZE_MIN = 450.0f;
 constexpr float SELECT_POS_X_END = 4.0f;
@@ -68,7 +68,12 @@ static const char* g_defaultText[3] = {
 };
 
 ResultController::ResultController():
-	m_state(ResultState::MOVE), m_currentSelect(0), m_resultTime(0.0f), m_bgmState(BGMState::NONE), m_animTime(0.0f)
+	m_state(ResultState::MOVE), 
+	m_currentSelect(0), 
+	m_resultTime(0.0f), 
+	m_bgmState(BGMState::NONE),
+	m_animTime(0.0f),
+	m_cursorWheelTimer(0.0f)
 {
 
 }
@@ -80,14 +85,14 @@ void ResultController::Start()
 		m_currentSelect = Select::STAGE_SELECT;
 	}
 
-	//ƒtƒF[ƒh
+	//ãƒ•ã‚§ãƒ¼ãƒ‰
 	auto fade = GetGameObject()->AddComponent<SpriteRenderer>();
 	fade->SetUI(true);
 	fade->SetSize(1280, 720);
 	fade->SetColor(0.0f, 0.0f, 0.0f, 0.4f);
 	m_screenFade = fade;
 
-	//ƒŠƒUƒ‹ƒgƒCƒ‰ƒXƒg
+	//ãƒªã‚¶ãƒ«ãƒˆã‚¤ãƒ©ã‚¹ãƒˆ
 	auto illust = GetGameObject()->AddComponent<SpriteRenderer>();
 	illust->LoadTexture("Assets/Textures/Result/result_illust_3.png");
 	illust->SetUI(true);
@@ -98,7 +103,7 @@ void ResultController::Start()
 	m_charaPos.y = ILLUST_POS_Y_END;
 	m_charaScale = m_illust->GetSize();
 
-	//ƒŠƒUƒ‹ƒg‚Ì‚Æ‚«‚Å‚é•(‰º)
+	//ãƒªã‚¶ãƒ«ãƒˆã®ã¨ãã§ã‚‹é»’(ä¸‹)
 	auto kuroDownRenderer = GetGameObject()->AddComponent<SpriteRenderer>();
 	kuroDownRenderer->LoadTexture("Assets/Textures/Result/sitakuro.png");
 	kuroDownRenderer->SetUI(true);
@@ -107,7 +112,7 @@ void ResultController::Start()
 	kuroDownRenderer->GetMaterial()->SetSamplerState(SamplerState::LINEAR_CLAMP);
 	m_kuroDown = kuroDownRenderer;
 
-	//ƒŠƒUƒ‹ƒg‚Ì‚Æ‚«‚Å‚é•(ã)
+	//ãƒªã‚¶ãƒ«ãƒˆã®ã¨ãã§ã‚‹é»’(ä¸Š)
 	auto kuroUpRenderer = GetGameObject()->AddComponent<SpriteRenderer>();
 	kuroUpRenderer->LoadTexture("Assets/Textures/Result/uekuro.png");
 	kuroUpRenderer->SetUI(true);
@@ -116,7 +121,7 @@ void ResultController::Start()
 	kuroUpRenderer->GetMaterial()->SetSamplerState(SamplerState::LINEAR_CLAMP);
 	m_kuroUp = kuroUpRenderer;
 
-	//ƒŠƒUƒ‹ƒg
+	//ãƒªã‚¶ãƒ«ãƒˆ
 	m_resultTextRoot = SceneManager::GetActiveScene()->CreateGameObject();
 	m_resultTextRoot->GetTransform()->SetParent(GetGameObject());
 	m_resultTextRoot->GetTransform()->SetPosition(RESULT_POS_X_START, RESULT_POS_Y_START, 0.0f);
@@ -137,7 +142,7 @@ void ResultController::Start()
 		}
 	}
 
-	//ƒNƒŠƒAƒ^ƒCƒ€
+	//ã‚¯ãƒªã‚¢ã‚¿ã‚¤ãƒ 
 	auto timeObj = SceneManager::GetActiveScene()->CreateGameObject();
 	timeObj->GetTransform()->SetPosition(TIMEUI_POS_X_START, TIMEUI_POS_Y_START, 0.0f);
 	timeObj->GetTransform()->SetScale(TIMEUI_SCALE, TIMEUI_SCALE, 1.0f);
@@ -150,7 +155,7 @@ void ResultController::Start()
 	timeUI->SetTextureType(TimeUI::TextureType::RESULT);
 	m_clearTime = timeObj;
 
-	//‘I‘ğˆ
+	//é¸æŠè‚¢
 	Vector2 offsetPos(SELECT_POS_X_START, SELECT_POS_Y_START);
 	for (int i = 0; i < Select::COUNT; ++i)
 	{
@@ -165,18 +170,18 @@ void ResultController::Start()
 			renderer->LoadTexture(g_defaultText[i]);
 			renderer->SetSize(SELECT_SIZE_MIN);
 		}
-		// ƒIƒtƒZƒbƒg‚ğ‚¸‚ç‚·
+		// ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’ãšã‚‰ã™
 		offsetPos.y -= renderer->GetSize().y * SELECT_SPACE_RATIO * 0.01f;
 		renderer->SetOffsetPos(offsetPos);
 		renderer->SetUI(true);
 
-		// ƒIƒtƒZƒbƒg‚ğ‚¸‚ç‚·
+		// ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’ãšã‚‰ã™
 		offsetPos.y -= renderer->GetSize().y * SELECT_SPACE_RATIO * 0.01f;
 
 		m_selectText[i] = renderer;
 	}
 
-	// ƒ‰ƒXƒgƒXƒe[ƒW—p
+	// ãƒ©ã‚¹ãƒˆã‚¹ãƒ†ãƒ¼ã‚¸ç”¨
 	if (GameState::GetInstance()->GetCurrentStegaNo() >= StageCount)
 	{
 		m_selectText[Select::NEXT]->SetEnabled(false);
@@ -211,7 +216,7 @@ void ResultController::Update()
 		}
 	}
 
-	//ƒŠƒUƒ‹ƒg‚ğ‚ä‚ç‚»‚¤III
+	//ãƒªã‚¶ãƒ«ãƒˆã‚’ã‚†ã‚‰ãã†ï¼ï¼ï¼
 
 	float tCycle = std::fmodf(m_animTime / SEC_PER_CYCLE, 1.0f);
 
@@ -229,7 +234,7 @@ void ResultController::Update()
 		tChara = 1.0f - tChara;
 	}
 
-	//ƒCƒ‰ƒXƒgƒTƒCƒY
+	//ã‚¤ãƒ©ã‚¹ãƒˆã‚µã‚¤ã‚º
 	float charaScaleX = Easing::InQuad(tChara, 1.0f, m_charaScale.x + 100.0f, (float)m_charaScale.x);
 	float charaScaleY = Easing::InQuad(tChara, 1.0f, m_charaScale.y + 50.0f, (float)m_charaScale.y);
 	m_illust->SetSize(charaScaleX, charaScaleY);
@@ -237,7 +242,7 @@ void ResultController::Update()
 
 void ResultController::MoveUpdate()
 {
-	//ŠÔ‰ÁZ
+	//æ™‚é–“åŠ ç®—
 	m_resultTime += Time::GetDeltaTime();
 	if (m_resultTime > EASE_TOTAL_TIME)
 	{
@@ -246,34 +251,34 @@ void ResultController::MoveUpdate()
 	}
 
 
-	//ƒŠƒUƒ‹ƒgƒCƒ‰ƒXƒg‚ÌˆÚ“®
+	//ãƒªã‚¶ãƒ«ãƒˆã‚¤ãƒ©ã‚¹ãƒˆã®ç§»å‹•
 	m_illust->SetOffsetPos(
 		Easing::OutQuart(m_resultTime, EASE_TOTAL_TIME, ILLUST_POS_X_END, ILLUST_POS_X_START),
 		Easing::OutQuart(m_resultTime, EASE_TOTAL_TIME, ILLUST_POS_Y_END, ILLUST_POS_Y_START));
 
-	//•‰º‚ÌˆÚ“®
+	//é»’ä¸‹ã®ç§»å‹•
 	m_kuroDown->SetOffsetPos(
 		Easing::OutCubic(m_resultTime, EASE_TOTAL_TIME, -KURO_POS_X_END, -KURO_POS_X_START),
 		Easing::OutCubic(m_resultTime, EASE_TOTAL_TIME, -KURO_POS_Y_END, -KURO_POS_Y_START));
 
-	//•ã‚ÌˆÚ“®
+	//é»’ä¸Šã®ç§»å‹•
 	m_kuroUp->SetOffsetPos(
 		Easing::OutCubic(m_resultTime, EASE_TOTAL_TIME, KURO_POS_X_END, KURO_POS_X_START),
 		Easing::OutCubic(m_resultTime, EASE_TOTAL_TIME, KURO_POS_Y_END, KURO_POS_Y_START));
 
-	//ƒŠƒUƒ‹ƒg‚ÌˆÚ“®
+	//ãƒªã‚¶ãƒ«ãƒˆã®ç§»å‹•
 	m_resultTextRoot->GetTransform()->SetPosition(
 		Easing::OutCubic(m_resultTime, EASE_TOTAL_TIME, RESULT_POS_X_END, RESULT_POS_X_START),
 		Easing::OutCubic(m_resultTime, EASE_TOTAL_TIME, RESULT_POS_Y_END, RESULT_POS_Y_START), 0.0f);
 
-	// ƒNƒŠƒAƒ^ƒCƒ€‚ÌˆÚ“®
+	// ã‚¯ãƒªã‚¢ã‚¿ã‚¤ãƒ ã®ç§»å‹•
 	m_clearTime->GetTransform()->SetPosition(
 		Easing::OutCubic(m_resultTime, EASE_TOTAL_TIME, TIMEUI_POS_X_END, TIMEUI_POS_X_START),
 		Easing::OutCubic(m_resultTime, EASE_TOTAL_TIME, TIMEUI_POS_Y_END, TIMEUI_POS_Y_START),
 		0.0f
 	);
 
-	// ‘I‘ğˆ‚ÌˆÚ“®
+	// é¸æŠè‚¢ã®ç§»å‹•
 	for (int i = 0; i < Select::COUNT; ++i)
 	{
 		Vector2 offset = m_selectText[i]->GetOffsetPos();
@@ -285,35 +290,50 @@ void ResultController::MoveUpdate()
 void ResultController::SelectUpdate()
 {
 	bool isUp = false;
+	const float cursorWheelInterval = 0.1f;
 
-	
-	//ã‘I‘ğ
-	if ((Input::GetLeftStick().y > 0.0f && Input::GetLastLeftStick().y <= 0.0f) || 
-		Input::GetKeyDown(KeyCode::UP) || Input::GetKeyDown(KeyCode::W) || Input::GetButtonDown(PadCode::UP))
+	if (m_cursorWheelTimer > 0.0f)
 	{
-		SoundManager::PlaySE("Result_Select", 1.0f, false);
-		isUp = true;
-		m_currentSelect--;
-		if (m_currentSelect < 0)
+		m_cursorWheelTimer -= Time::GetDeltaTime();
+	}
+	else
+	{
+		//ä¸Šé¸æŠ
+		if ((Input::GetLeftStick().y > 0.0f && Input::GetLastLeftStick().y <= 0.0f) ||
+			Input::GetKeyDown(KeyCode::UP) || Input::GetKeyDown(KeyCode::W) || Input::GetButtonDown(PadCode::UP) ||
+			Input::GetMouseWheelDelta() > 0.0f)
 		{
-			m_currentSelect += Select::COUNT;
+			SoundManager::PlaySE("Result_Select", 1.0f, false);
+			isUp = true;
+			m_currentSelect--;
+			if (m_currentSelect < 0)
+			{
+				m_currentSelect = 0;
+			}
+		}
+
+		//ä¸‹é¸æŠ
+		if ((Input::GetLeftStick().y < 0.0f && Input::GetLastLeftStick().y >= 0.0f) ||
+			Input::GetKeyDown(KeyCode::DOWN) || Input::GetKeyDown(KeyCode::S) || Input::GetButtonDown(PadCode::DOWN) ||
+			Input::GetMouseWheelDelta() < 0.0f)
+		{
+			SoundManager::PlaySE("Result_Select", 1.0f, false);
+			isUp = false;
+			m_currentSelect++;
+			if (m_currentSelect >= Select::COUNT)
+			{
+				m_currentSelect = Select::COUNT - 1;
+			}
+		}
+
+		// ãƒã‚¦ã‚¹ãƒ›ã‚¤ãƒ¼ãƒ«ãŒå›è»¢ã—ãŸå ´åˆã€ã‚«ãƒ¼ã‚½ãƒ«ç§»å‹•ã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«ã‚¿ã‚¤ãƒãƒ¼ã‚’ãƒªã‚»ãƒƒãƒˆ
+		if (Input::GetMouseWheelDelta() != 0.0f)
+		{
+			m_cursorWheelTimer = cursorWheelInterval;
 		}
 	}
 
-	//‰º‘I‘ğ
-	if ((Input::GetLeftStick().y < 0.0f && Input::GetLastLeftStick().y >= 0.0f) ||
-		Input::GetKeyDown(KeyCode::DOWN) || Input::GetKeyDown(KeyCode::S) || Input::GetButtonDown(PadCode::DOWN))
-	{
-		SoundManager::PlaySE("Result_Select", 1.0f, false);
-		isUp = false;
-		m_currentSelect++;
-		if (m_currentSelect >= Select::COUNT)
-		{
-			m_currentSelect -= Select::COUNT;
-		}
-	}
-
-	// Ÿ‚ÌƒXƒe[ƒW‚ğ‘I‘ğ‚Å‚«‚È‚­‚·‚é
+	// æ¬¡ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’é¸æŠã§ããªãã™ã‚‹
 	if (GameState::GetInstance()->GetCurrentStegaNo() >= StageCount &&
 		m_currentSelect == Select::NEXT)
 	{
@@ -350,7 +370,7 @@ void ResultController::SelectUpdate()
 	float selectPosX = Easing::OutSine(tSelect, 1.0f, SELECT_POS_X_END - 0.2f, SELECT_POS_X_END);
 
 	Vector2 offsetPos(SELECT_POS_X_END, SELECT_POS_Y_END);
-	// ‘I‘ğˆXV
+	// é¸æŠè‚¢æ›´æ–°
 	for (int i = 0; i < Select::COUNT; ++i)
 	{
 		if (m_currentSelect == i)
@@ -366,12 +386,12 @@ void ResultController::SelectUpdate()
 			offsetPos.x = SELECT_POS_X_END;
 		}
 
-		// ƒIƒtƒZƒbƒg‚ğ‚¸‚ç‚·
+		// ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’ãšã‚‰ã™
 		offsetPos.y -= m_selectText[i]->GetSize().y * SELECT_SPACE_RATIO * 0.01f;
 		m_selectText[i]->SetOffsetPos(offsetPos);
 		m_selectText[i]->SetUI(true);
 
-		// ƒIƒtƒZƒbƒg‚ğ‚¸‚ç‚·
+		// ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’ãšã‚‰ã™
 		offsetPos.y -= m_selectText[i]->GetSize().y * SELECT_SPACE_RATIO * 0.01f;
 	}
 
@@ -385,10 +405,10 @@ void ResultController::SelectUpdate()
 		{
 		case 0:
 		case 2:
-			Fade::StartIrisOut();//ƒtƒF[ƒh
+			Fade::StartIrisOut();//ãƒ•ã‚§ãƒ¼ãƒ‰
 			break;
 		case 1:
-			Fade::StartIconIrisOut();//ƒtƒF[ƒh
+			Fade::StartIconIrisOut();//ãƒ•ã‚§ãƒ¼ãƒ‰
 			break;
 		}
 	}
@@ -428,7 +448,7 @@ void ResultController::EndUpdate()
 		SaveData::Save();
 	}
 
-	//Ÿ‚ÌƒXƒe[ƒW‚Ö
+	//æ¬¡ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã¸
 	if (m_currentSelect == 0)
 	{
 		int stageNumber = GameState::GetCurrentStegaNo() + 1;
@@ -436,14 +456,14 @@ void ResultController::EndUpdate()
 		std::string path = "Level" + StageIDstr + "";
 
 		GameState::SetCurrentStegaNo(stageNumber);
-		SceneManager::ChangeScene(std::make_unique<GameScene>(path));//ƒXƒe[ƒW“Ç‚İ‚Ş‚â‚Â
+		SceneManager::ChangeScene(std::make_unique<GameScene>(path));//ã‚¹ãƒ†ãƒ¼ã‚¸èª­ã¿è¾¼ã‚€ã‚„ã¤
 	}
-	//ƒXƒe[ƒWƒZƒŒƒNƒg‚Ö
+	//ã‚¹ãƒ†ãƒ¼ã‚¸ã‚»ãƒ¬ã‚¯ãƒˆã¸
 	else if (m_currentSelect == 1)
 	{
 		SceneManager::ChangeScene(std::make_unique<StageSelectScene>());
 	}
-	//ƒŠƒXƒ^[ƒg
+	//ãƒªã‚¹ã‚¿ãƒ¼ãƒˆ
 	else
 	{
 		int stageNumber = GameState::GetCurrentStegaNo();

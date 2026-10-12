@@ -1,4 +1,4 @@
-#include "TitleExit.h"
+Ôªø#include "TitleExit.h"
 #include <memory>
 #include "StageSelectScene.h"
 #include "InputManager.h"
@@ -45,7 +45,7 @@ void TitleExit::Start()
 	text->SetOffsetPos(0.25f, -1.4f);
 	text->SetUI(true);
 
-	// ÉZÅ[ÉuÉfÅ[É^Ç™ë∂ç›Ç∑ÇÍÇŒèâä˙ÉJÅ[É\ÉãÇÇ¬Ç√Ç´Ç©ÇÁÇ…
+	// „Çª„Éº„Éñ„Éá„Éº„Çø„ÅåÂ≠òÂú®„Åô„Çå„Å∞ÂàùÊúü„Ç´„Éº„ÇΩ„É´„Çí„Å§„Å•„Åç„Åã„Çâ„Å´
 	if (SaveData::Find())
 	{
 		m_isNewGame = false;
@@ -62,7 +62,7 @@ void TitleExit::Update()
 {
 	if (m_startFlag)
 	{
-		// ÉXÉPÅ[ÉäÉìÉOÉAÉjÉÅÅ[ÉVÉáÉì
+		// „Çπ„Ç±„Éº„É™„É≥„Ç∞„Ç¢„Éã„É°„Éº„Ç∑„Éß„É≥
 		m_animeTimer += Time::GetDeltaTime();
 		if (m_animeTimer > g_startAnimeDuration)
 			m_animeTimer = g_startAnimeDuration;
@@ -92,7 +92,7 @@ void TitleExit::Update()
 		}
 		else
 		{
-			// Ç¬Ç√Ç´Ç©ÇÁ
+			// „Å§„Å•„Åç„Åã„Çâ
 			SaveData::Load();
 			InputManager::ChangeBindType(InputBindType::GAMEPLAY);
 			SceneManager::ChangeScene(std::make_unique<StageSelectScene>());
@@ -100,18 +100,26 @@ void TitleExit::Update()
 	}
 	else
 	{
-		// ÉJÅ[É\Éãà⁄ìÆ
+		// „Ç´„Éº„ÇΩ„É´ÁßªÂãï
 		if (SaveData::Find())
 		{
-			if (InputManager::CurrentInputSystem().GetButtonDown("MenuUp"_hash))
+			if (InputManager::CurrentInputSystem().GetButtonDown("MenuUp"_hash) ||
+				Input::GetMouseWheelDelta() > 0.0f)
 			{
-				SoundManager::PlaySE("Title_Select", 1.0f, false);
-				m_isNewGame = !m_isNewGame;
+				if (m_isNewGame)
+				{
+					SoundManager::PlaySE("Title_Select", 1.0f, false);
+					m_isNewGame = false;
+				}
 			}
-			if (InputManager::CurrentInputSystem().GetButtonDown("MenuDown"_hash))
+			if (InputManager::CurrentInputSystem().GetButtonDown("MenuDown"_hash) ||
+				Input::GetMouseWheelDelta() < 0.0f)
 			{
-				SoundManager::PlaySE("Title_Select", 1.0f, false);
-				m_isNewGame = !m_isNewGame;
+				if(!m_isNewGame)
+				{
+					SoundManager::PlaySE("Title_Select", 1.0f, false);
+					m_isNewGame = true;
+				}
 			}
 
 			Vector2 currentInput = Input::GetLeftStick(0.5f);
@@ -156,8 +164,7 @@ void TitleExit::Update()
 			Fade::StartIconIrisOut();
 		}
 
-		if (Input::GetKeyDown(KeyCode::ESC) ||
-			Input::GetButtonDown(PadCode::BACK))
+		if (InputManager::CurrentInputSystem().GetButtonDown("MenuClose"_hash))
 		{
 			ExitGame();
 		}

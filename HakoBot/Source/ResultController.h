@@ -1,7 +1,7 @@
-//ResultController.h
-//2026 01 15 ²“¡‘“–ç
-//ƒŠƒUƒ‹ƒg‰æ–Ê‚ğì‚è‚Ü‚·
-//‚ ‚¯‚Ü‚µ‚Ä‚¨‚ß‚Å‚Æ‚¤‚²‚´‚¢‚Ü‚·
+ï»¿//ResultController.h
+//2026 01 15 ä½è—¤è’¼ä¹Ÿ
+//ãƒªã‚¶ãƒ«ãƒˆç”»é¢ã‚’ä½œã‚Šã¾ã™
+//ã‚ã‘ã¾ã—ã¦ãŠã‚ã§ã¨ã†ã”ã–ã„ã¾ã™
 #pragma once
 
 #include <DXGameFrame.h>
@@ -51,4 +51,6 @@ private:
 	};
 
 	BGMState m_bgmState;
+
+	float m_cursorWheelTimer;
 };

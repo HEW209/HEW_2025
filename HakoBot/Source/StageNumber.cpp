@@ -1,4 +1,4 @@
-#include "StageNumber.h"
+ï»¿#include "StageNumber.h"
 #include <memory>
 #include "GameScene.h"
 #include "InputManager.h"
@@ -15,7 +15,7 @@
 
 static const int digitIndex[10] =
 {
-0,  // 0‚ÌˆÊ’u
+0,  // 0ã®ä½ç½®
 1,  // 1
 2,  // 2
 3,  // 3
@@ -42,7 +42,7 @@ StageNumber::StageNumber() :
 
 void StageNumber::Start()
 {
-	float PosInterval = FONT_SIZE / 130.0f;	//•¶šŠÔŠu@–@•¶šƒTƒCƒY‚É‚æ‚éŠÔŠu•â³
+	float PosInterval = FONT_SIZE / 130.0f;	//æ–‡å­—é–“éš”ã€€ï¼Šã€€æ–‡å­—ã‚µã‚¤ã‚ºã«ã‚ˆã‚‹é–“éš”è£œæ­£
 
 	float PosX = -5.2f;
 	float PosY = 1.3f;
@@ -106,9 +106,7 @@ void StageNumber::Update()
 		StageSelect();
 		SetDigitUV();
 
-		if (Input::GetKeyDown(KeyCode::ENTER) ||
-			Input::GetKeyDown(KeyCode::SPACE) ||
-			Input::GetButtonDown(PadCode::B))
+		if (InputManager::CurrentInputSystem().GetButtonHold("MenuInteract"_hash))
 		{
 			SoundManager::StopBGM();
 			SoundManager::PlaySE("StageSelect_Decision", 0.8f, false);
@@ -116,8 +114,7 @@ void StageNumber::Update()
 			m_targetScene = TargetScene::GAME;
 			Fade::StartIrisOut();
 		}
-		else if (Input::GetKeyDown(KeyCode::ESC) ||
-			Input::GetButtonDown(PadCode::BACK))
+		else if (InputManager::CurrentInputSystem().GetButtonHold("MenuClose"_hash))
 		{
 			SoundManager::StopBGM();
 			SoundManager::PlaySE("BackToTitle", 1.0f, false);
@@ -166,7 +163,7 @@ void StageNumber::LoadGame()
 	std::string path = "Level" + StageIDstr + "";
 
 	InputManager::ChangeBindType(InputBindType::GAMEPLAY);
-	SceneManager::ChangeScene(std::make_unique<GameScene>(path));//ƒXƒe[ƒW“Ç‚İ‚Ş‚â‚Â
+	SceneManager::ChangeScene(std::make_unique<GameScene>(path));//ã‚¹ãƒ†ãƒ¼ã‚¸èª­ã¿è¾¼ã‚€ã‚„ã¤
 
 	//SceneManager::ChangeScene(std::make_unique<GameScene>("TestLevel01"));
 }
@@ -181,7 +178,7 @@ void StageNumber::SetDigitUV()
 		selectIndexTemp /= 10;
 	}
 
-	// 1ƒ}ƒX‚ÌUVƒTƒCƒY
+	// 1ãƒã‚¹ã®UVã‚µã‚¤ã‚º
 	const float uSize = 1.0f / 5.0f;
 	const float vSize = 1.0f / 2.0f;
 
@@ -200,24 +197,28 @@ void StageNumber::StageSelect()
 {
 	const int prevIndex = m_selectIndex;
 
-	// “ü—Íæ“¾
+	// å…¥åŠ›å–å¾—
 	int inputSide = 0;
-	if (Input::GetLeftStick().x < 0.0f || InputManager::CurrentInputSystem().GetButtonHold("MenuLeft"_hash))
+	if (Input::GetLeftStick().x < 0.0f ||
+		InputManager::CurrentInputSystem().GetButtonHold("MenuLeft"_hash) ||
+		Input::GetMouseWheelDelta() < 0.0f)
 	{
 		inputSide--;
 	}
-	if (Input::GetLeftStick().x > 0.0f || InputManager::CurrentInputSystem().GetButtonHold("MenuRight"_hash))
+	if (Input::GetLeftStick().x > 0.0f ||
+		InputManager::CurrentInputSystem().GetButtonHold("MenuRight"_hash) ||
+		Input::GetMouseWheelDelta() > 0.0f)
 	{
 		inputSide++;
 	}
 
-	// ‘I‘ğˆÚ“®
+	// é¸æŠç§»å‹•
 	if (m_lastInput == inputSide)
 	{
-		const float holdMoveWait = 0.5f;		// ’·‰Ÿ‚µˆÚ“®‚ªn‚Ü‚é‚Ü‚Å‚ÌŠÔ
-		const float holdMoveInterval = 0.1f;	// ’·‰Ÿ‚µˆÚ“®‚ÌŠÔŠÔŠu
+		const float holdMoveWait = 0.5f;		// é•·æŠ¼ã—ç§»å‹•ãŒå§‹ã¾ã‚‹ã¾ã§ã®æ™‚é–“
+		const float holdMoveInterval = 0.1f;	// é•·æŠ¼ã—ç§»å‹•ã®æ™‚é–“é–“éš”
 
-		// ’·‰Ÿ‚µˆ—
+		// é•·æŠ¼ã—å‡¦ç†
 		m_holdTimer += Time::GetDeltaTime();
 		if (m_holdTimer > holdMoveWait)
 		{
@@ -231,14 +232,14 @@ void StageNumber::StageSelect()
 	}
 	else
 	{
-		// ‰Ÿ‚µ‚½uŠÔ‚Ìˆ—
+		// æŠ¼ã—ãŸç¬é–“ã®å‡¦ç†
 		m_holdTimer = 0.0f;
 		m_repeatTimer = 0.0f;
 		m_selectIndex += inputSide;
 	}
 	m_lastInput = inputSide;
 
-	// ƒNƒ‰ƒ“ƒv
+	// ã‚¯ãƒ©ãƒ³ãƒ—
 	int maxStageNum = SaveData::GetClearLevel() + 1;
 	if (maxStageNum > StageCount)
 	{
@@ -253,7 +254,7 @@ void StageNumber::StageSelect()
 		m_selectIndex = 1;
 	}
 
-	// ƒXƒe[ƒW”Ô†‚ª•Ï‚í‚Á‚½‚¾‚¯SEÄ¶
+	// ã‚¹ãƒ†ãƒ¼ã‚¸ç•ªå·ãŒå¤‰ã‚ã£ãŸæ™‚ã ã‘SEå†ç”Ÿ
 	if (m_selectIndex != prevIndex)
 	{
 		SoundManager::PlaySE("StageSelect_Select", 0.5f, false);

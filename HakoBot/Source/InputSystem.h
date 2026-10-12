@@ -1,11 +1,11 @@
-#pragma once
+ï»¿#pragma once
 
 #include <DXGameFrame.h>
 
 #include "HashUtil.h"
 
 /**
- * @brief ƒAƒNƒVƒ‡ƒ“‚Ì’l‚ÌŒ^
+ * @brief ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã®å€¤ã®å‹
  */
 enum class ActionType
 {
@@ -14,7 +14,7 @@ enum class ActionType
 };
 
 /**
- * @brief •¨—“ü—Í‚ÌŠî’êƒCƒ“ƒ^[ƒtƒF[ƒX
+ * @brief ç‰©ç†å…¥åŠ›ã®åŸºåº•ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹
  */
 struct IInputBinding
 {
@@ -24,7 +24,7 @@ struct IInputBinding
 };
 
 /**
- * @brief “ü—ÍƒAƒNƒVƒ‡ƒ“ƒNƒ‰ƒX
+ * @brief å…¥åŠ›ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚¯ãƒ©ã‚¹
  */
 class InputAction
 {
@@ -33,16 +33,16 @@ public:
         : m_type(type) {
     }
 
-    // ƒoƒCƒ“ƒfƒBƒ“ƒO‚ğ’Ç‰Á
+    // ãƒã‚¤ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ã‚’è¿½åŠ 
     void AddBinding(std::unique_ptr<IInputBinding> binding)
     {
         m_bindings.push_back(std::move(binding));
     }
 
-    // Œ»İ‚Ìbool’l‚ğæ“¾
+    // ç¾åœ¨ã®boolå€¤ã‚’å–å¾—
     bool GetBool() const;
 
-    // Œ»İ‚ÌVector2’l‚ğæ“¾
+    // ç¾åœ¨ã®Vector2å€¤ã‚’å–å¾—
     Vector2 GetVector2() const;
 
     ActionType GetType() const { return m_type; }
@@ -53,7 +53,7 @@ private:
 };
 
 /**
- * @brief “ü—ÍƒVƒXƒeƒ€ŠÇ—ƒNƒ‰ƒX
+ * @brief å…¥åŠ›ã‚·ã‚¹ãƒ†ãƒ ç®¡ç†ã‚¯ãƒ©ã‚¹
  */
 class InputSystem
 {
@@ -61,97 +61,97 @@ public:
     InputSystem() = default;
     ~InputSystem() = default;
 
-    // --- ƒAƒNƒVƒ‡ƒ“ì¬ ---
+    // --- ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ä½œæˆ ---
 
     /**
-     * @brief boolŒ^‚ÌƒAƒNƒVƒ‡ƒ“‚ğì¬
-     * @param name ƒAƒNƒVƒ‡ƒ“–¼
+     * @brief boolå‹ã®ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚’ä½œæˆ
+     * @param name ã‚¢ã‚¯ã‚·ãƒ§ãƒ³å
      */
     void CreateButtonAction(std::string_view name);
 
     /**
-     * @brief boolŒ^‚ÌƒAƒNƒVƒ‡ƒ“‚ğì¬
-	 * @param nameHash ƒAƒNƒVƒ‡ƒ“–¼‚ÌƒnƒbƒVƒ…’l
+     * @brief boolå‹ã®ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚’ä½œæˆ
+	 * @param nameHash ã‚¢ã‚¯ã‚·ãƒ§ãƒ³åã®ãƒãƒƒã‚·ãƒ¥å€¤
      */
     void CreateButtonAction(uint64_t nameHash);
 
     /**
-     * @brief Vector2Œ^‚ÌƒAƒNƒVƒ‡ƒ“‚ğì¬
-     * @param name ƒAƒNƒVƒ‡ƒ“–¼
+     * @brief Vector2å‹ã®ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚’ä½œæˆ
+     * @param name ã‚¢ã‚¯ã‚·ãƒ§ãƒ³å
      */
     void CreateAxisAction(std::string_view name);
 
     /**
-     * @brief Vector2Œ^‚ÌƒAƒNƒVƒ‡ƒ“‚ğì¬
-	 * @param nameHash ƒAƒNƒVƒ‡ƒ“–¼‚ÌƒnƒbƒVƒ…’l
+     * @brief Vector2å‹ã®ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚’ä½œæˆ
+	 * @param nameHash ã‚¢ã‚¯ã‚·ãƒ§ãƒ³åã®ãƒãƒƒã‚·ãƒ¥å€¤
      */
     void CreateAxisAction(uint64_t nameHash);
 
-    // --- ƒAƒNƒVƒ‡ƒ“íœ ---
+    // --- ã‚¢ã‚¯ã‚·ãƒ§ãƒ³å‰Šé™¤ ---
 
     /**
-     * @brief w’è‚µ‚½–¼‘O‚ÌƒAƒNƒVƒ‡ƒ“‚ğíœ‚·‚é
-     * @param name íœ‚µ‚½‚¢ƒAƒNƒVƒ‡ƒ“–¼
+     * @brief æŒ‡å®šã—ãŸåå‰ã®ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚’å‰Šé™¤ã™ã‚‹
+     * @param name å‰Šé™¤ã—ãŸã„ã‚¢ã‚¯ã‚·ãƒ§ãƒ³å
      */
     void RemoveAction(std::string_view name);
 
     /**
-     * @brief w’è‚µ‚½–¼‘O‚ÌƒAƒNƒVƒ‡ƒ“‚ğíœ‚·‚é
-	 * @param nameHash íœ‚µ‚½‚¢ƒAƒNƒVƒ‡ƒ“–¼‚ÌƒnƒbƒVƒ…’l
+     * @brief æŒ‡å®šã—ãŸåå‰ã®ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚’å‰Šé™¤ã™ã‚‹
+	 * @param nameHash å‰Šé™¤ã—ãŸã„ã‚¢ã‚¯ã‚·ãƒ§ãƒ³åã®ãƒãƒƒã‚·ãƒ¥å€¤
      */
     void RemoveAction(uint64_t nameHash);
 
     /**
-     * @brief ‘S‚Ä‚ÌƒAƒNƒVƒ‡ƒ“‚ğíœ‚·‚é
-     * ƒV[ƒ“‘JˆÚ‚È‚Ç‚ÉƒŠƒZƒbƒg‚·‚éê‡‚Ég—p
+     * @brief å…¨ã¦ã®ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚’å‰Šé™¤ã™ã‚‹
+     * ã‚·ãƒ¼ãƒ³é·ç§»æ™‚ãªã©ã«ãƒªã‚»ãƒƒãƒˆã™ã‚‹å ´åˆã«ä½¿ç”¨
      */
     void Clear();
 
-    // --- ƒoƒCƒ“ƒfƒBƒ“ƒOİ’è ---
+    // --- ãƒã‚¤ãƒ³ãƒ‡ã‚£ãƒ³ã‚°è¨­å®š ---
 
-    // ƒL[‚ğƒAƒNƒVƒ‡ƒ“‚ÉŠ„‚è“–‚Ä
+    // ã‚­ãƒ¼ã‚’ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã«å‰²ã‚Šå½“ã¦
     void BindKey(std::string_view actionName, KeyCode key);
     void BindKey(uint64_t actionNameHash, KeyCode key);
 
-    // ƒRƒ“ƒgƒ[ƒ‰[ƒ{ƒ^ƒ“‚ğƒAƒNƒVƒ‡ƒ“‚ÉŠ„‚è“–‚Ä
+    // ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ãƒœã‚¿ãƒ³ã‚’ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã«å‰²ã‚Šå½“ã¦
     void BindPadButton(std::string_view actionName, PadCode button);
     void BindPadButton(uint64_t actionNameHash, PadCode button);
 
-    // ƒRƒ“ƒgƒ[ƒ‰[‚ÌƒXƒeƒBƒbƒN‚ğƒAƒNƒVƒ‡ƒ“‚ÉŠ„‚è“–‚Ä (AxisƒAƒNƒVƒ‡ƒ“—p)
+    // ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã®ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã‚’ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã«å‰²ã‚Šå½“ã¦ (Axisã‚¢ã‚¯ã‚·ãƒ§ãƒ³ç”¨)
     void BindPadStick(std::string_view actionName, StickCode stick, std::optional<float> deadzone = std::nullopt);
     void BindPadStick(uint64_t actionNameHash, StickCode stick, std::optional<float> deadzone = std::nullopt);
 
-    // ƒL[‚ğVector2ƒAƒNƒVƒ‡ƒ“‚Éw’è‚µ‚½’l‚ÅŠ„‚è“–‚Ä
+    // ã‚­ãƒ¼ã‚’Vector2ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã«æŒ‡å®šã—ãŸå€¤ã§å‰²ã‚Šå½“ã¦
     void BindVectorKey(std::string_view actionName, KeyCode key, const Vector2& value);
     void BindVectorKey(uint64_t actionNameHash, KeyCode key, const Vector2& value);
 
-    // 4‚Â‚ÌƒL[‚ğVector2ƒAƒNƒVƒ‡ƒ“‚ÉŠ„‚è“–‚Ä
+    // 4ã¤ã®ã‚­ãƒ¼ã‚’Vector2ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã«å‰²ã‚Šå½“ã¦
     void BindVectorKeys(std::string_view actionName, KeyCode up, KeyCode down, KeyCode left, KeyCode right);
     void BindVectorKeys(uint64_t actionNameHash, KeyCode up, KeyCode down, KeyCode left, KeyCode right);
 
-	// ƒ}ƒEƒXˆÚ“®‚ğVector2ƒAƒNƒVƒ‡ƒ“‚ÉŠ„‚è“–‚Ä
+	// ãƒã‚¦ã‚¹ç§»å‹•ã‚’Vector2ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã«å‰²ã‚Šå½“ã¦
 	void BindMouseDelta(std::string_view actionName);
 	void BindMouseDelta(uint64_t actionNameHash);
 
-    // --- “ü—Íæ“¾ ---
+    // --- å…¥åŠ›å–å¾— ---
 
-    // ƒ{ƒ^ƒ“ƒAƒNƒVƒ‡ƒ“‚Ìó‘Ô‚ğæ“¾
+    // ãƒœã‚¿ãƒ³ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã®çŠ¶æ…‹ã‚’å–å¾—
     bool GetButtonHold(std::string_view name) const;
     bool GetButtonHold(uint64_t nameHash) const;
 
-    // ƒ{ƒ^ƒ“ƒAƒNƒVƒ‡ƒ“‚ª‰Ÿ‚³‚ê‚½uŠÔ‚ğæ“¾
+    // ãƒœã‚¿ãƒ³ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ãŒæŠ¼ã•ã‚ŒãŸç¬é–“ã‚’å–å¾—
     bool GetButtonDown(std::string_view name) const;
     bool GetButtonDown(uint64_t nameHash) const;
 
-    // ƒ{ƒ^ƒ“ƒAƒNƒVƒ‡ƒ“‚ª—£‚³‚ê‚½uŠÔ‚ğæ“¾
+    // ãƒœã‚¿ãƒ³ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ãŒé›¢ã•ã‚ŒãŸç¬é–“ã‚’å–å¾—
     bool GetButtonUp(std::string_view name) const;
     bool GetButtonUp(uint64_t nameHash) const;
 
-    // AxisƒAƒNƒVƒ‡ƒ“‚Ì’l‚ğæ“¾
+    // Axisã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã®å€¤ã‚’å–å¾—
     Vector2 GetAxis(std::string_view name) const;
     Vector2 GetAxis(uint64_t nameHash) const;
 
-    // –ˆƒtƒŒ[ƒ€XV
+    // æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°
     void Update();
 
 private:
@@ -161,14 +161,14 @@ private:
 private:
     std::unordered_map<uint64_t, InputAction> m_actions;
 
-    // ƒgƒŠƒK[”»’è—pA‘OƒtƒŒ[ƒ€‚Ìbooló‘Ô‚ğ•Û
+    // ãƒˆãƒªã‚¬ãƒ¼åˆ¤å®šç”¨ã€å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã®boolçŠ¶æ…‹ã‚’ä¿æŒ
     std::unordered_map<uint64_t, bool> m_prevButtonStates;
 };
 
 
-// ‹ï‘Ì“I‚ÈƒoƒCƒ“ƒfƒBƒ“ƒOÀ‘•ƒNƒ‰ƒX
+// å…·ä½“çš„ãªãƒã‚¤ãƒ³ãƒ‡ã‚£ãƒ³ã‚°å®Ÿè£…ã‚¯ãƒ©ã‚¹
 
-// ƒL[’P‘Ì -> bool
+// ã‚­ãƒ¼å˜ä½“ -> bool
 struct KeyBinding : public IInputBinding
 {
     KeyCode key;
@@ -176,7 +176,7 @@ struct KeyBinding : public IInputBinding
     bool GetBoolValue() const override { return Input::GetKeyHold(key); }
 };
 
-// ƒpƒbƒhƒ{ƒ^ƒ“ -> bool
+// ãƒ‘ãƒƒãƒ‰ãƒœã‚¿ãƒ³ -> bool
 struct PadButtonBinding : public IInputBinding
 {
     PadCode button;
@@ -184,7 +184,7 @@ struct PadButtonBinding : public IInputBinding
     bool GetBoolValue() const override { return Input::GetButtonHold(button); }
 };
 
-// ƒpƒbƒhƒXƒeƒBƒbƒN -> Vector2
+// ãƒ‘ãƒƒãƒ‰ã‚¹ãƒ†ã‚£ãƒƒã‚¯ -> Vector2
 struct PadStickBinding : public IInputBinding
 {
     StickCode stick;
@@ -193,7 +193,7 @@ struct PadStickBinding : public IInputBinding
     Vector2 GetVector2Value() const override { return Input::GetStick(stick, deadzone); }
 };
 
-// ƒL[’P‘Ì -> Vector2
+// ã‚­ãƒ¼å˜ä½“ -> Vector2
 struct VectorKeyBinding : public IInputBinding
 {
     KeyCode key;
@@ -209,7 +209,7 @@ struct VectorKeyBinding : public IInputBinding
     }
 };
 
-// 4ƒL[ -> Vector2
+// 4ã‚­ãƒ¼ -> Vector2
 struct DirectionalKeyBinding : public IInputBinding
 {
     KeyCode up, down, left, right;
@@ -230,14 +230,15 @@ struct DirectionalKeyBinding : public IInputBinding
     }
 };
 
-// ƒ}ƒEƒXˆÚ“® -> Vector2
+// ãƒã‚¦ã‚¹ç§»å‹• -> Vector2
 struct MouseDeltaBinding : public IInputBinding
 {
     Vector2 GetVector2Value() const override
     {
 		Vector2 delta = Input::GetMouseDelta();
-        delta.x *= 0.1;
-		delta.y *= -0.1;
+		const float mouseSensitivity = 0.05f;
+        delta *= mouseSensitivity;
+		delta.y = -delta.y;
 		return delta;
     }
 };
