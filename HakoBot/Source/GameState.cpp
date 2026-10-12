@@ -1,4 +1,4 @@
-#include "GameState.h"
+ï»¿#include "GameState.h"
 #include "InputManager.h"
 #include <GameFrame/Time.h>
 #include "SoundManager.h"
@@ -52,7 +52,11 @@ void GameState::Update()
 
 	if (IsClear() && InputManager::CurrentInputSystem().GetButtonDown("Clear"_hash))
 	{
-		SoundManager::StopBGM();
+		if(m_isClearEnter == false)
+		{
+			SoundManager::StopBGM();
+		}
+
 		m_timerActive = false;
 		m_isClearEnter = true;
 	}
@@ -78,7 +82,7 @@ void GameState::Update()
 	}
 	else
 	{
-		// ƒ‰ƒCƒgFæ“¾
+		// ãƒ©ã‚¤ãƒˆè‰²å–å¾—
 		DirectionalLight* light = DirectionalLight::GetMain();
 		Color lightColor = light->GetLightColor();
 		Color ambientColor = light->GetAmbientColor();
@@ -104,7 +108,7 @@ void GameState::Update()
 			ambientF[2] = 0.5f;
 		}
 
-		// ƒ‰ƒCƒgFİ’è
+		// ãƒ©ã‚¤ãƒˆè‰²è¨­å®š
 		lightColor.r = lightF[0];
 		lightColor.g = lightF[1];
 		lightColor.b = lightF[2];
@@ -140,7 +144,7 @@ void GameState::AppendWorldBlock(BlockObject* pBlockObject)
 {
 	auto it = std::find(m_pWorldBlocks.begin(), m_pWorldBlocks.end(), pBlockObject);
 
-	//‚·‚Å‚ÉƒuƒƒbƒN‚ª’Ç‰Á‚³‚ê‚Ä‚¢‚½ê‡ˆÈ~ˆ—‚µ‚È‚¢
+	//ã™ã§ã«ãƒ–ãƒ­ãƒƒã‚¯ãŒè¿½åŠ ã•ã‚Œã¦ã„ãŸå ´åˆä»¥é™å‡¦ç†ã—ãªã„
 	if (it != m_pWorldBlocks.end()) return;
 
 	m_pWorldBlocks.push_back(pBlockObject);
