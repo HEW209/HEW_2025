@@ -76,8 +76,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 
 	// ウィンドウスタイル設定
+	//DWORD windowStyle;
+	//windowStyle = WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX;
+
 	DWORD windowStyle;
+#ifdef _DEBUG
 	windowStyle = WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX;
+#else
+	windowStyle = WS_POPUP;
+#endif
 
 	// ウィンドウのサイズを計算
 	RECT windowRect;		// ウィンドウサイズ
@@ -89,7 +96,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	// ウィンドウの作成
 	hWnd = CreateWindowEx(
-		WS_EX_OVERLAPPEDWINDOW,				// ウィンドウの見た目(Exからの追加スタイル)
+		0,									// ウィンドウの見た目(Exからの追加スタイル)
 		wcex.lpszClassName,					// ウィンドウクラス名
 		GameTitle,							// ウィンドウのタイトル
 		windowStyle,						// ウィンドウの見た目(スタイル)
@@ -161,6 +168,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SceneManager::Init(std::make_unique<TitleScene>());
 
 
+#ifndef _DEBUG
+	Input::LockMousePos(true);
+	ShowCursor(false);
+#endif
+
+
 	//-------------------------
 	//		その他の準備
 	//-------------------------
@@ -230,6 +243,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		// スレッドの終了をシステムに伝える
 		PostQuitMessage(0);
 		break;
+
+	case WM_MOUSEWHEEL:
+		{
+			float wheelDelta = static_cast<float>(GET_WHEEL_DELTA_WPARAM(wParam)) / WHEEL_DELTA;
+			Input::AddMouseWheelDelta(wheelDelta);
+			break;
+		}
 	}
 
 	return DefWindowProc(hWnd, message, wParam, lParam);
