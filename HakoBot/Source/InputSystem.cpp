@@ -22,14 +22,6 @@ Vector2 InputAction::GetVector2() const
         result += binding->GetVector2Value();
     }
 
-    result.x = std::clamp(result.x, -1.0f, 1.0f);
-    result.y = std::clamp(result.y, -1.0f, 1.0f);
-
-    if (result.Magnitude() > 1.0f)
-    {
-        result = result.Normalized();
-    }
-
     return result;
 }
 
@@ -141,6 +133,22 @@ void InputSystem::BindVectorKeys(uint64_t actionNameHash, KeyCode up, KeyCode do
     {
         action->AddBinding(std::make_unique<DirectionalKeyBinding>(up, down, left, right));
     }
+}
+
+void InputSystem::BindMouseDelta(std::string_view actionName)
+{
+    if (auto *action = FindAction(StringHash(actionName)))
+    {
+        action->AddBinding(std::make_unique<MouseDeltaBinding>());
+	}
+}
+
+void InputSystem::BindMouseDelta(uint64_t actionNameHash)
+{
+    if (auto *action = FindAction(actionNameHash))
+    {
+        action->AddBinding(std::make_unique<MouseDeltaBinding>());
+	}
 }
 
 bool InputSystem::GetButtonHold(std::string_view name) const

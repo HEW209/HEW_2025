@@ -1,11 +1,11 @@
-#include "InputManager.h"
+﻿#include "InputManager.h"
 
 std::array<InputSystem, static_cast<size_t>(InputBindType::MAX_COUNT)> InputManager::m_inputSystems;
 InputBindType InputManager::m_currentBindType = InputBindType::GAMEPLAY;
 
 void InputManager::Init()
 {
-	// �Q�[���v���C�p���̓V�X�e��������
+	// ゲームプレイ用入力システム初期化
 	{
 		InputSystem& system = m_inputSystems[static_cast<size_t>(InputBindType::GAMEPLAY)];
 
@@ -18,28 +18,82 @@ void InputManager::Init()
 		system.CreateButtonAction("Menu"_hash);
 		system.CreateButtonAction("LockRotation"_hash);
 		system.CreateButtonAction("ChangeBlockTransparency"_hash);
-		system.CreateButtonAction("Result"_hash);
 		system.CreateButtonAction("ResultSelect"_hash);
 		system.CreateAxisAction("Move"_hash);
 		system.CreateAxisAction("CameraMove"_hash);
 
-		system.BindKey("RotateBlockLeft"_hash, KeyCode::U);
-		system.BindKey("RotateBlockRight"_hash, KeyCode::O);
-		system.BindKey("PlaceAndRemove"_hash, KeyCode::SPACE);
-		system.BindKey("Up"_hash, KeyCode::E);
-		system.BindKey("Down"_hash, KeyCode::Q);
-		system.BindKey("Clear"_hash, KeyCode::X);
-		system.BindKey("Clear"_hash, KeyCode::ENTER);
-		system.BindKey("Menu"_hash, KeyCode::ESC);
-		system.BindKey("LockRotation"_hash, KeyCode::SHIFT);
-		system.BindKey("ChangeBlockTransparency"_hash, KeyCode::R);
-		system.BindKey("Result"_hash, KeyCode::P);
-		system.BindKey("ResultSelect"_hash, KeyCode::ENTER);
-		system.BindKey("ResultSelect"_hash, KeyCode::SPACE);
+		// キーボード操作
 
-		system.BindVectorKeys("Move"_hash, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
-		system.BindVectorKeys("CameraMove"_hash, KeyCode::I, KeyCode::K, KeyCode::J, KeyCode::L);
+		int type = 3;
+		if (type == 0)
+		{
+			// マウス左右ボタン → ブロック回転
+			system.BindKey("RotateBlockLeft"_hash, KeyCode::MOUSE_LEFT);
+			system.BindKey("RotateBlockRight"_hash, KeyCode::MOUSE_RIGHT);
+			system.BindKey("PlaceAndRemove"_hash, KeyCode::SPACE);
+			system.BindKey("Clear"_hash, KeyCode::X);
+			system.BindKey("Clear"_hash, KeyCode::ENTER);
+			system.BindKey("Menu"_hash, KeyCode::ESC);
+			system.BindKey("LockRotation"_hash, KeyCode::SHIFT);
+			system.BindKey("ChangeBlockTransparency"_hash, KeyCode::E);
+			system.BindKey("ResultSelect"_hash, KeyCode::ENTER);
+			system.BindKey("ResultSelect"_hash, KeyCode::SPACE);
 
+			system.BindVectorKeys("Move"_hash, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
+			system.BindMouseDelta("CameraMove"_hash);
+		}
+		else if (type == 1)
+		{
+			// マウス左 → ブロック配置 / マウス右 → ブロック回転
+			system.BindKey("RotateBlockRight"_hash, KeyCode::MOUSE_RIGHT);
+			system.BindKey("PlaceAndRemove"_hash, KeyCode::MOUSE_LEFT);
+			system.BindKey("Clear"_hash, KeyCode::X);
+			system.BindKey("Clear"_hash, KeyCode::ENTER);
+			system.BindKey("Menu"_hash, KeyCode::ESC);
+			system.BindKey("LockRotation"_hash, KeyCode::SHIFT);
+			system.BindKey("ChangeBlockTransparency"_hash, KeyCode::E);
+			system.BindKey("ResultSelect"_hash, KeyCode::ENTER);
+			system.BindKey("ResultSelect"_hash, KeyCode::SPACE);
+
+			system.BindVectorKeys("Move"_hash, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
+			system.BindMouseDelta("CameraMove"_hash);
+		}
+		else if (type == 2)
+		{
+			// マウス左 → ブロック配置 / マウス右 → 向き固定
+			system.BindKey("RotateBlockLeft"_hash, KeyCode::Q);
+			system.BindKey("RotateBlockRight"_hash, KeyCode::E);
+			system.BindKey("PlaceAndRemove"_hash, KeyCode::MOUSE_LEFT);
+			system.BindKey("Clear"_hash, KeyCode::X);
+			system.BindKey("Clear"_hash, KeyCode::ENTER);
+			system.BindKey("Menu"_hash, KeyCode::ESC);
+			system.BindKey("LockRotation"_hash, KeyCode::MOUSE_RIGHT);
+			system.BindKey("ChangeBlockTransparency"_hash, KeyCode::SHIFT);
+			system.BindKey("ResultSelect"_hash, KeyCode::ENTER);
+			system.BindKey("ResultSelect"_hash, KeyCode::SPACE);
+
+			system.BindVectorKeys("Move"_hash, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
+			system.BindMouseDelta("CameraMove"_hash);
+		}
+		else if (type == 3)
+		{
+			system.BindKey("RotateBlockLeft"_hash, KeyCode::Q);
+			system.BindKey("RotateBlockRight"_hash, KeyCode::E);
+			system.BindKey("PlaceAndRemove"_hash, KeyCode::MOUSE_LEFT);
+			system.BindKey("PlaceAndRemove"_hash, KeyCode::SPACE);
+			system.BindKey("Clear"_hash, KeyCode::X);
+			system.BindKey("Clear"_hash, KeyCode::ENTER);
+			system.BindKey("Menu"_hash, KeyCode::ESC);
+			system.BindKey("LockRotation"_hash, KeyCode::SHIFT);
+			system.BindKey("ChangeBlockTransparency"_hash, KeyCode::MOUSE_RIGHT);
+			system.BindKey("ResultSelect"_hash, KeyCode::ENTER);
+			system.BindKey("ResultSelect"_hash, KeyCode::SPACE);
+			system.BindVectorKeys("Move"_hash, KeyCode::UP, KeyCode::DOWN, KeyCode::LEFT, KeyCode::RIGHT);
+			system.BindMouseDelta("CameraMove"_hash);
+		}
+
+
+		// コントローラー操作
 		system.BindPadButton("RotateBlockLeft"_hash, PadCode::LEFT_SHOULDER);
 		system.BindPadButton("RotateBlockRight"_hash, PadCode::RIGHT_SHOULDER);
 		system.BindPadButton("PlaceAndRemove"_hash, PadCode::B);
@@ -55,11 +109,10 @@ void InputManager::Init()
 		system.BindPadStick("CameraMove"_hash, StickCode::RIGHT);
 	}
 
-	// UI����p���̓V�X�e��������
+	// UI操作用入力システム初期化
 	{
 		InputSystem& system = m_inputSystems[static_cast<size_t>(InputBindType::UI)];
 
-		system.CreateButtonAction("MenuBack"_hash);
 		system.CreateButtonAction("MenuUp"_hash);
 		system.CreateButtonAction("MenuDown"_hash);
 		system.CreateButtonAction("MenuLeft"_hash);
@@ -80,7 +133,6 @@ void InputManager::Init()
 		system.BindKey("MenuInteract"_hash, KeyCode::SPACE);
 		system.BindKey("MenuClose"_hash, KeyCode::ESC);
 
-		system.BindPadButton("MenuBack"_hash, PadCode::A);
 		system.BindPadButton("MenuUp"_hash, PadCode::UP);
 		system.BindPadButton("MenuDown"_hash, PadCode::DOWN);
 		system.BindPadButton("MenuLeft"_hash, PadCode::LEFT);

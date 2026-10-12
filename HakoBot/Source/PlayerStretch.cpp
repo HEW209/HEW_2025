@@ -1,4 +1,4 @@
-#include "PlayerStretch.h"
+ï»¿#include "PlayerStretch.h"
 #include "GameFrame/Time.h"
 #include "InputManager.h"
 #include "Player.h"
@@ -20,7 +20,7 @@ void PlayerStretch::Update()
 {
 	Vector3 pos = GetTransform()->GetPosition(Space::LOCAL);
 
-	// “ªã‚©‚çã•ûŒü‚ÉyˆÚ“®—Ê•ª‚ÌƒŒƒC‚ğ”­Ë
+	// é ­ä¸Šã‹ã‚‰ä¸Šæ–¹å‘ã«yç§»å‹•é‡åˆ†ã®ãƒ¬ã‚¤ã‚’ç™ºå°„
 	Vector3 rayOffset[5]=
 	{
 		{ 0.0f, 0.0f,  0.0f},
@@ -31,7 +31,7 @@ void PlayerStretch::Update()
 	};
 	const float rayWeight = 0.5f;
 
-	if (pos.y < m_targetY)	// L‚Ñ‚æ‚¤‚Æ‚µ‚Ä‚¢‚éê‡
+	if (pos.y < m_targetY)	// ä¼¸ã³ã‚ˆã†ã¨ã—ã¦ã„ã‚‹å ´åˆ
 	{
 		for (int i = 0; i < 5; ++i)
 		{
@@ -54,12 +54,14 @@ void PlayerStretch::Update()
 	
 	if (!m_targetLock)
 	{
-		if (InputManager::CurrentInputSystem().GetButtonHold("Up"_hash))
+		if (InputManager::CurrentInputSystem().GetButtonHold("Up"_hash) ||
+			Input::GetMouseWheelDelta() > 0.0f)
 		{
 			if (m_targetY < LENGTH_MAX)
 				m_targetY = round(floor(pos.y) + BLOCK_SIZE);
 		}
-		else if (InputManager::CurrentInputSystem().GetButtonHold("Down"_hash))
+		else if (InputManager::CurrentInputSystem().GetButtonHold("Down"_hash) ||
+			Input::GetMouseWheelDelta() < 0.0f)
 		{
 			if (0.0f < m_targetY)
 				m_targetY = round(ceil(pos.y) - BLOCK_SIZE);
@@ -93,14 +95,14 @@ void PlayerStretch::Update()
 	GetTransform()->SetPosition(pos, Space::LOCAL);
 
 	
-	//“–‚½‚è”»’èƒTƒCƒY‚ÌXV
+	//å½“ãŸã‚Šåˆ¤å®šã‚µã‚¤ã‚ºã®æ›´æ–°
 	m_pCollider->m_scale.y = pos.y + PlayerDefaultSize_y;
 	m_pCollider->m_positionOffset.y = m_pCollider->m_scale.y * 0.5f;
 }
 
 void PlayerStretch::LateUpdate()
 {
-	// “ª‚É•t‚·‚é‚æ‚¤‚É‚·‚é
+	// é ­ã«ä»˜éšã™ã‚‹ã‚ˆã†ã«ã™ã‚‹
 	Vector3 rootPos = m_pCollider->GetTransform()->GetPosition();
 	Quaternion quaternion = GetTransform()->GetQuaternion();
 	int max_gridStretch = 4;

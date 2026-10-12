@@ -4,7 +4,6 @@
 
 #include "HashUtil.h"
 
-
 /**
  * @brief アクションの値の型
  */
@@ -130,6 +129,10 @@ public:
     void BindVectorKeys(std::string_view actionName, KeyCode up, KeyCode down, KeyCode left, KeyCode right);
     void BindVectorKeys(uint64_t actionNameHash, KeyCode up, KeyCode down, KeyCode left, KeyCode right);
 
+	// マウス移動をVector2アクションに割り当て
+	void BindMouseDelta(std::string_view actionName);
+	void BindMouseDelta(uint64_t actionNameHash);
+
     // --- 入力取得 ---
 
     // ボタンアクションの状態を取得
@@ -221,6 +224,20 @@ struct DirectionalKeyBinding : public IInputBinding
         if (Input::GetKeyHold(down))  vec.y -= 1.0f;
         if (Input::GetKeyHold(right)) vec.x += 1.0f;
         if (Input::GetKeyHold(left))  vec.x -= 1.0f;
+        vec = vec.Normalized();
+
         return vec;
+    }
+};
+
+// マウス移動 -> Vector2
+struct MouseDeltaBinding : public IInputBinding
+{
+    Vector2 GetVector2Value() const override
+    {
+		Vector2 delta = Input::GetMouseDelta();
+        delta.x *= 0.1;
+		delta.y *= -0.1;
+		return delta;
     }
 };

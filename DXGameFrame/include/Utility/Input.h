@@ -202,7 +202,11 @@ public:
 	 */
 	static void Update();
 
-public:
+	/**
+	 * @brief コントローラーが接続されているかを判定する
+	 */
+	static bool IsControllerActive();
+
 	/**
 	 * @brief キーが押されているかを判定する
 	 * @param keyCode キーの種類
@@ -282,8 +286,35 @@ public:
 	 */
 	static Vector2 GetMousePos();
 
+	/**
+	 * @brief マウスの移動量を取得
+	 * @return マウスの移動量
+	 */
+	static Vector2 GetMouseDelta();
+
+	/**
+	 * @brief マウス座標の固定設定
+	 * @param isLock マウス座標を固定するか
+	 */
+	static void LockMousePos(bool isLock);
+
+	/**
+	 * @brief マウスホイールの回転量を取得
+	 * @return マウスホイールの回転量
+	 */
+	static float GetMouseWheelDelta();
+
+	/**
+	 * @brief マウスホイールの回転量を加算する
+	 * @param delta マウスホイールの回転量
+	 */
+	static void AddMouseWheelDelta(float delta);
+
 private:
 	Input() = delete;
+
+	/// ウィンドウハンドル
+	static HWND s_hWnd;
 
 	/// 前のフレームのキー入力情報
 	static uint8_t s_oldKeyTable[MAX_KEY_TYPE];
@@ -296,4 +327,22 @@ private:
 
 	/// 現在フレームのコントローラー入力情報
 	static XINPUT_STATE s_padState;
+
+	/// 前のフレームのマウス座標
+	static Vector2 s_oldMousePos;
+
+	/// 現在フレームのマウス座標
+	static Vector2 s_mousePos;
+
+	/// 現在フレームのマウス移動量
+	static Vector2 s_mouseDelta;
+
+	/// マウス座標固定
+	static bool s_lockMousePos;
+
+	/// マウスホイールの回転量のバッファ
+	static float s_mouseWheelBuffer;
+
+	/// マウスホイールの回転量
+	static float s_mouseWheelDelta;
 };
