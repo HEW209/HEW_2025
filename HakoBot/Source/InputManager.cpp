@@ -38,6 +38,7 @@ void InputManager::Init()
 			system.BindKey("ChangeBlockTransparency"_hash, KeyCode::E);
 			system.BindKey("ResultSelect"_hash, KeyCode::ENTER);
 			system.BindKey("ResultSelect"_hash, KeyCode::SPACE);
+			system.BindKey("ResultSelect"_hash, KeyCode::MOUSE_LEFT);
 
 			system.BindVectorKeys("Move"_hash, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
 			system.BindMouseDelta("CameraMove"_hash);
@@ -54,6 +55,7 @@ void InputManager::Init()
 			system.BindKey("ChangeBlockTransparency"_hash, KeyCode::E);
 			system.BindKey("ResultSelect"_hash, KeyCode::ENTER);
 			system.BindKey("ResultSelect"_hash, KeyCode::SPACE);
+			system.BindKey("ResultSelect"_hash, KeyCode::MOUSE_LEFT);
 
 			system.BindVectorKeys("Move"_hash, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
 			system.BindMouseDelta("CameraMove"_hash);
@@ -71,6 +73,7 @@ void InputManager::Init()
 			system.BindKey("ChangeBlockTransparency"_hash, KeyCode::SHIFT);
 			system.BindKey("ResultSelect"_hash, KeyCode::ENTER);
 			system.BindKey("ResultSelect"_hash, KeyCode::SPACE);
+			system.BindKey("ResultSelect"_hash, KeyCode::MOUSE_LEFT);
 
 			system.BindVectorKeys("Move"_hash, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
 			system.BindMouseDelta("CameraMove"_hash);
@@ -88,7 +91,9 @@ void InputManager::Init()
 			system.BindKey("ChangeBlockTransparency"_hash, KeyCode::MOUSE_RIGHT);
 			system.BindKey("ResultSelect"_hash, KeyCode::ENTER);
 			system.BindKey("ResultSelect"_hash, KeyCode::SPACE);
-			system.BindVectorKeys("Move"_hash, KeyCode::UP, KeyCode::DOWN, KeyCode::LEFT, KeyCode::RIGHT);
+			system.BindKey("ResultSelect"_hash, KeyCode::MOUSE_LEFT);
+
+			system.BindVectorKeys("Move"_hash, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
 			system.BindMouseDelta("CameraMove"_hash);
 		}
 
@@ -131,6 +136,7 @@ void InputManager::Init()
 		system.BindKey("MenuRight"_hash, KeyCode::D);
 		system.BindKey("MenuInteract"_hash, KeyCode::ENTER);
 		system.BindKey("MenuInteract"_hash, KeyCode::SPACE);
+		system.BindKey("MenuInteract"_hash, KeyCode::MOUSE_LEFT);
 		system.BindKey("MenuClose"_hash, KeyCode::ESC);
 
 		system.BindPadButton("MenuUp"_hash, PadCode::UP);
