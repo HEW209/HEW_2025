@@ -23,79 +23,21 @@ void InputManager::Init()
 		system.CreateAxisAction("CameraMove"_hash);
 
 		// キーボード操作
+		system.BindKey("RotateBlockLeft"_hash, KeyCode::Q);
+		system.BindKey("RotateBlockRight"_hash, KeyCode::E);
+		system.BindKey("PlaceAndRemove"_hash, KeyCode::MOUSE_LEFT);
+		system.BindKey("PlaceAndRemove"_hash, KeyCode::SPACE);
+		system.BindKey("Clear"_hash, KeyCode::X);
+		system.BindKey("Clear"_hash, KeyCode::ENTER);
+		system.BindKey("Menu"_hash, KeyCode::ESC);
+		system.BindKey("LockRotation"_hash, KeyCode::MOUSE_RIGHT);
+		system.BindKey("ChangeBlockTransparency"_hash, KeyCode::SHIFT);
+		system.BindKey("ResultSelect"_hash, KeyCode::ENTER);
+		system.BindKey("ResultSelect"_hash, KeyCode::SPACE);
+		system.BindKey("ResultSelect"_hash, KeyCode::MOUSE_LEFT);
 
-		int type = 3;
-		if (type == 0)
-		{
-			// マウス左右ボタン → ブロック回転
-			system.BindKey("RotateBlockLeft"_hash, KeyCode::MOUSE_LEFT);
-			system.BindKey("RotateBlockRight"_hash, KeyCode::MOUSE_RIGHT);
-			system.BindKey("PlaceAndRemove"_hash, KeyCode::SPACE);
-			system.BindKey("Clear"_hash, KeyCode::X);
-			system.BindKey("Clear"_hash, KeyCode::ENTER);
-			system.BindKey("Menu"_hash, KeyCode::ESC);
-			system.BindKey("LockRotation"_hash, KeyCode::SHIFT);
-			system.BindKey("ChangeBlockTransparency"_hash, KeyCode::E);
-			system.BindKey("ResultSelect"_hash, KeyCode::ENTER);
-			system.BindKey("ResultSelect"_hash, KeyCode::SPACE);
-			system.BindKey("ResultSelect"_hash, KeyCode::MOUSE_LEFT);
-
-			system.BindVectorKeys("Move"_hash, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
-			system.BindMouseDelta("CameraMove"_hash);
-		}
-		else if (type == 1)
-		{
-			// マウス左 → ブロック配置 / マウス右 → ブロック回転
-			system.BindKey("RotateBlockRight"_hash, KeyCode::MOUSE_RIGHT);
-			system.BindKey("PlaceAndRemove"_hash, KeyCode::MOUSE_LEFT);
-			system.BindKey("Clear"_hash, KeyCode::X);
-			system.BindKey("Clear"_hash, KeyCode::ENTER);
-			system.BindKey("Menu"_hash, KeyCode::ESC);
-			system.BindKey("LockRotation"_hash, KeyCode::SHIFT);
-			system.BindKey("ChangeBlockTransparency"_hash, KeyCode::E);
-			system.BindKey("ResultSelect"_hash, KeyCode::ENTER);
-			system.BindKey("ResultSelect"_hash, KeyCode::SPACE);
-			system.BindKey("ResultSelect"_hash, KeyCode::MOUSE_LEFT);
-
-			system.BindVectorKeys("Move"_hash, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
-			system.BindMouseDelta("CameraMove"_hash);
-		}
-		else if (type == 2)
-		{
-			// マウス左 → ブロック配置 / マウス右 → 向き固定
-			system.BindKey("RotateBlockLeft"_hash, KeyCode::Q);
-			system.BindKey("RotateBlockRight"_hash, KeyCode::E);
-			system.BindKey("PlaceAndRemove"_hash, KeyCode::MOUSE_LEFT);
-			system.BindKey("Clear"_hash, KeyCode::X);
-			system.BindKey("Clear"_hash, KeyCode::ENTER);
-			system.BindKey("Menu"_hash, KeyCode::ESC);
-			system.BindKey("LockRotation"_hash, KeyCode::MOUSE_RIGHT);
-			system.BindKey("ChangeBlockTransparency"_hash, KeyCode::SHIFT);
-			system.BindKey("ResultSelect"_hash, KeyCode::ENTER);
-			system.BindKey("ResultSelect"_hash, KeyCode::SPACE);
-			system.BindKey("ResultSelect"_hash, KeyCode::MOUSE_LEFT);
-
-			system.BindVectorKeys("Move"_hash, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
-			system.BindMouseDelta("CameraMove"_hash);
-		}
-		else if (type == 3)
-		{
-			system.BindKey("RotateBlockLeft"_hash, KeyCode::Q);
-			system.BindKey("RotateBlockRight"_hash, KeyCode::E);
-			system.BindKey("PlaceAndRemove"_hash, KeyCode::MOUSE_LEFT);
-			system.BindKey("PlaceAndRemove"_hash, KeyCode::SPACE);
-			system.BindKey("Clear"_hash, KeyCode::X);
-			system.BindKey("Clear"_hash, KeyCode::ENTER);
-			system.BindKey("Menu"_hash, KeyCode::ESC);
-			system.BindKey("LockRotation"_hash, KeyCode::SHIFT);
-			system.BindKey("ChangeBlockTransparency"_hash, KeyCode::MOUSE_RIGHT);
-			system.BindKey("ResultSelect"_hash, KeyCode::ENTER);
-			system.BindKey("ResultSelect"_hash, KeyCode::SPACE);
-			system.BindKey("ResultSelect"_hash, KeyCode::MOUSE_LEFT);
-
-			system.BindVectorKeys("Move"_hash, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
-			system.BindMouseDelta("CameraMove"_hash);
-		}
+		system.BindVectorKeys("Move"_hash, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
+		system.BindMouseDelta("CameraMove"_hash);
 
 
 		// コントローラー操作

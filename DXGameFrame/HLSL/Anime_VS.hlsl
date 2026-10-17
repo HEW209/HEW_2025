@@ -1,4 +1,4 @@
-#include "DXGameFrameShader.hlsli"
+﻿#include "DXGameFrameShader.hlsli"
 
 struct VS_OUT
 {
@@ -11,7 +11,7 @@ struct VS_OUT
 
 cbuffer Bone : register(b2)
 {
-    float4x4 bone[200];
+    float4x4 bone[64];
 };
 
 VS_OUT main(VS_IN vin)
